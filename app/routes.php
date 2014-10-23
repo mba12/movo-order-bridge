@@ -11,7 +11,14 @@
 |
 */
 
-Route::get('/', function()
+Route::get('/order', function()
 {
-	return View::make('hello');
+	return "order stuff here";
+});
+
+Route::group(array('before' => 'admin'), function () {
+	Route::get('/admin/orders', array(
+		'as' => 'admin-orders',
+		'uses' => 'AdminController@getOrders',
+	));
 });
