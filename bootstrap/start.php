@@ -24,11 +24,27 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment(array(
+if(isset($_SERVER['HTTP_HOST'])) {
+    $env = $app->detectEnvironment(function(){
+        switch($_SERVER['HTTP_HOST']) {
+            case 'movo.app:8000':
+                return 'jumpkick-dev';
+                break;
+            case 'movo.jumpkick.pro':
+                return 'jumpkick-dev';
+                break;
+            default:
+                return 'production';
+        }
+    });
+} else{
+    $env = $app->detectEnvironment(function(){
 
-	'local' => array('homestead'),
+                return 'local';
 
-));
+
+    });;
+}
 
 /*
 |--------------------------------------------------------------------------

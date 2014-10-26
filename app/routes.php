@@ -10,11 +10,13 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
-Route::get('/order', function()
+Route::post('stripe/webhook', 'WebhookController@handleWebhook');
+/*Route::get('/', function()
 {
-	return "order stuff here";
-});
+	new Movo\Orders\Charge();
+});*/
+
+Route::get('/', 'HomeController@showWelcome');
 
 Route::group(array('before' => 'admin'), function () {
 	Route::get('/admin/orders', array(

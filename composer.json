@@ -4,7 +4,8 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.2.*"
+		"laravel/framework": "4.2.*",
+		"laravel/cashier": "~2.0"
 	},
 	"autoload": {
 		"classmap": [
@@ -14,7 +15,10 @@
 			"app/database/migrations",
 			"app/database/seeds",
 			"app/tests/TestCase.php"
-		]
+		],
+		"psr-4":{
+		    "Movo\\":"app/Movo"
+		}
 	},
 	"scripts": {
 		"post-install-cmd": [
