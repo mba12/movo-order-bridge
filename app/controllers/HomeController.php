@@ -17,7 +17,6 @@ class HomeController extends BaseController {
 
 	public function showWelcome()
 	{
-		new Movo\Orders\Charge();
 		return View::make('hello');
 	}
 

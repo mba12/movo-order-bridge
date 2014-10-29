@@ -20,10 +20,16 @@ class Charge
 
         Stripe::setApiKey("sk_test_6k4usddYrqLuqbUk1Whjv9Rk");
         $foo = Stripe_Event::retrieve("evt_14qBdOG7qzeE6UFgT56ufYru");
+        //Log::info()
         $user = User::find(1);
         $user->name = "foo";
         $user->save();
-        dd($foo['type']);
+        dd("Alex is cool");
+        dd($payload['type']);
+
+    }
+
+    private function validatePayload(){
 
     }
 }
