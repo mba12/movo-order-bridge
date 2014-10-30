@@ -5,6 +5,7 @@ class Order extends \Eloquent {
 	protected $fillable = [
 		'amount',
 		'quantity',
+		'sizes',
 		'first_name',
 		'last_name',
 		'shipping_address_1',

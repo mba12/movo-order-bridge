@@ -12,10 +12,25 @@ class OrderController extends BaseController {
 
 	public function buy(){
 		$billing=App::make('Movo\Billing\BillingInterface');
-		return $billing->charge([
+		$result= $billing->charge([
 		  'email'=>'alex@jumpkick.pro',
 		  'token'=>Input::get("token"),
 		]);
+
+		switch($result){
+			case 1:
+				return "The charge went through";
+				break;
+			case 2:
+				return "The charge did not go through";
+				break;
+			case 3:
+				return "The charge did not go through";
+				break;
+			default:
+
+		}
+
 	}
 
 }

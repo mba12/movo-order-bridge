@@ -4,8 +4,10 @@ namespace Movo\Billing;
 
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Order;
+use Product;
 use Stripe;
 use Stripe_Charge;
 
@@ -19,7 +21,8 @@ class StripeBilling implements BillingInterface
     public function charge(array $data)
     {
         try {
-            $amount=$this->calculateTotal();
+            $quantity=3;
+            $amount=$this->calculateTotal($quantity);
             $result = Stripe_Charge::create([
                 'amount' => $amount,
                 'currency' => 'usd',
@@ -47,20 +50,21 @@ class StripeBilling implements BillingInterface
             $order->tracking_code = "";
             $order->error_flag = "";
             $order->save();
-            return "Product was ordered";
+            return 1;
         } catch (\Stripe_InvalidRequestError $e) {
             //card was declined
+            return 2;
 
-            dd("Invalid request");
         }catch (\Stripe_CardError $e) {
             //card was declined
-
-            dd("card was declined");
+            return 3;
         }
     }
 
-    private function calculateTotal()
+    private function calculateTotal($quantity)
     {
-        return 1000;
+        $product= DB::table('products')->where('quantity',">=", $quantity)->first();
+        dd($product->price*$quantity);
+        return $product->price;
     }
 }

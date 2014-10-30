@@ -16,6 +16,7 @@ class CreateOrderTable extends Migration {
 			$table->increments('id');
 			$table->integer('amount')->nullable();
 			$table->integer('quantity')->nullable();
+			$table->string('sizes')->nullable();
 
 			$table->string('first_name')->nullable();
 			$table->string('last_name')->nullable();
