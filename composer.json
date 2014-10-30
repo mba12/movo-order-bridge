@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"laravel/cashier": "~2.0"
+		"laravel/cashier": "~2.0",
+		"soapbox/laravel-formatter": "2.x"
 	},
 	"require-dev": {
 	  "way/generators": "~2.0"
