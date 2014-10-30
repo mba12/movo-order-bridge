@@ -14,31 +14,34 @@ class CreateOrderTable extends Migration {
 	{
 		Schema::create('orders', function ($table) {
 			$table->increments('id');
-			$table->integer('amount');
-			$table->integer('quantity');
-			$table->string('first_name');
-			$table->string('last_name');
-			$table->string('address_1');
-			$table->string('address_2');
-			$table->string('city');
-			$table->string('state');
-			$table->string('zip');
-			$table->string('country');
-			$table->string('phone');
-			$table->string('email');
-			$table->string('shipping_service');
-			$table->integer('charged');
-			$table->integer('shipped');
-			$table->string('tracking_code');
-			$table->string('error_flag');
-			$table->datetime('order_date');
-			$table->datetime('fulfilment_date');
+			$table->integer('amount')->nullable();
+			$table->integer('quantity')->nullable();
+
+			$table->string('first_name')->nullable();
+			$table->string('last_name')->nullable();
+
+			$table->string('shipping_address_1')->nullable();
+			$table->string('shipping_address_2')->nullable();
+			$table->string('shipping_city')->nullable();
+			$table->string('shipping_state')->nullable();
+			$table->string('shipping_zip')->nullable();
+			$table->string('shipping_country')->nullable();
+
+			$table->string('phone')->nullable();
+			$table->string('email')->nullable();
+
+			$table->string('shipping_service')->nullable();
+			$table->string('stripe_charge_id')->nullable();
+			$table->string('ingram_order_id')->nullable();
+			$table->integer('status')->nullable();
+			$table->string('tracking_code')->nullable();
+			$table->string('error_flag')->nullable();
 			$table->timestamps();
 		});
 	}
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('orders');
 	}
 
 }

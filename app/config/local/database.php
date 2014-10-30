@@ -7,9 +7,6 @@ return array(
 			'database'  => 'movo',
 			'username'  => 'homestead',
 			'password'  => 'secret',
-
 		)
-
 	),
-
 );

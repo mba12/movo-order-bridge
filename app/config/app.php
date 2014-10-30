@@ -122,7 +122,9 @@ return array(
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Workbench\WorkbenchServiceProvider',
-        'Laravel\Cashier\CashierServiceProvider'
+        'Laravel\Cashier\CashierServiceProvider',
+        'Movo\Providers\BillingServiceProvider',
+        'Way\Generators\GeneratorsServiceProvider',
     ),
 
     /*

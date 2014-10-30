@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+
+
+
 class OrderController extends BaseController {
 	public function showForm()
 	{
@@ -7,7 +11,11 @@ class OrderController extends BaseController {
 	}
 
 	public function buy(){
-		dd(Input::all());
+		$billing=App::make('Movo\Billing\BillingInterface');
+		return $billing->charge([
+		  'email'=>'alex@jumpkick.pro',
+		  'token'=>Input::get("token"),
+		]);
 	}
 
 }

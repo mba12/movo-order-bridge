@@ -16,14 +16,14 @@
         <div class="form-row">
             <label for="">
                 <span>Card Number: </span>
-                <input type="text" data-stripe="number"/>
+                <input type="text" data-stripe="number" value="4242424242424242"/>
             </label>
         </div>
 
        <div class="form-row">
              <label for="">
                    <span>CVC: </span>
-                   <input type="text" data-stripe="cvc"/>
+                   <input type="text" data-stripe="cvc" value="123"/>
              </label>
        </div>
 
@@ -31,7 +31,7 @@
               <label for="">
                     <span>Expiration: </span>
                     {{Form::selectMonth(null, null, ['data-stripe'=>"exp-month"])}}
-                    {{Form::selectYear(null, date('Y'), date('Y')+10,null, ['data-stripe'=>'exp-year'])}}
+                    {{Form::selectYear(null, date('Y'), date('Y')+10,date('Y')+1, ['data-stripe'=>'exp-year'])}}
               </label>
         </div>
        {{Form::submit("Buy Now")}}
