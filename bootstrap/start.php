@@ -28,7 +28,7 @@ if(isset($_SERVER['HTTP_HOST'])) {
     $env = $app->detectEnvironment(function(){
         switch($_SERVER['HTTP_HOST']) {
             case 'movo.app:8000':
-                return 'jumpkick-dev';
+                return 'local';
                 break;
             case 'movo.jumpkick.pro':
                 return 'jumpkick-dev';
