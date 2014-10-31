@@ -2,6 +2,7 @@
 /// <reference path="stripe.d.ts" />
 /// <reference path="forms/form-error.ts" />
 /// <reference path="forms/validation.ts" />
+/// <reference path="pagination.ts" />
 
 class Billing {
 
@@ -10,11 +11,19 @@ class Billing {
     private submitButtonDefaultValue:string;
     private stripeKey:string;
     private validation:Validation;
+    private pagination:Pagination;
     constructor() {
-        this.validation=new Validation($('[data-validate]'));
+
         this.setSelectors();
         this.initStripe();
         this.bindEvents();
+        this.pagination=new Pagination();
+        this.pagination.showCurrentPage();
+        setInterval( ()=> {
+            this.pagination.next();
+            this.pagination.showCurrentPage();
+        },3000);
+
 
     }
 
@@ -36,6 +45,7 @@ class Billing {
 
     private onFormSubmit(e) {
         e.preventDefault();
+        this.validation=new Validation($('[data-validate]'));
         if (this.validation.isValidForm()) {
             this.$submitBtn.val("One moment...").attr('disabled', <any>true);
             this.createStripeToken();

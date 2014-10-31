@@ -1,7 +1,7 @@
 /*
  Example usage:
-
- <input type="text" name="month" placeholder="01" maxlength="2" data-validate="number|minValue:1|maxValue:12" data-error-selector=".error-messages .month"/>
+ data-error-selector=".error-messages .month"
+ <input type="text" name="month" placeholder="01" maxlength="2" data-validate="number|minValue:1|maxValue:12" />
 
  this.$submitBtn.on('click', ()=> {
      var validation:Validation = new Validation($('[data-validate]', "#age-gate"));

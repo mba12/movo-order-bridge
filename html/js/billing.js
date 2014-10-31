@@ -158,12 +158,65 @@ var Validation = (function () {
     };
     return Validation;
 })();
+var Pagination = (function () {
+    function Pagination() {
+        this.currentIndex = 0;
+        this.setSelectors();
+        this.initPages();
+    }
+    Pagination.prototype.setSelectors = function () {
+        this.$navLis = $('#nav').find("li");
+    };
+    Pagination.prototype.initPages = function () {
+        this.pages = [
+            $('#products'),
+            $('#shipping-type'),
+            $('#shipping-address'),
+            $('#billing-address'),
+            $('#payment')
+        ];
+        this.$currentPage = this.pages[this.currentIndex];
+    };
+    Pagination.prototype.showCurrentPage = function () {
+        this.$currentPage = this.pages[this.currentIndex];
+        for (var i = 0; i < this.pages.length; i++) {
+            $(this.pages[i]).hide();
+        }
+        this.$currentPage.show();
+        this.$navLis.removeClass("active");
+        $(this.$navLis[this.currentIndex]).addClass("active");
+    };
+    Pagination.prototype.previous = function () {
+        this.currentIndex--;
+        if (this.currentIndex < 0) {
+            this.currentIndex = 0;
+        }
+    };
+    Pagination.prototype.next = function () {
+        var validation = new Validation($('[data-validate]', this.$currentPage));
+        if (!validation.isValidForm()) {
+            validation.showErrors();
+            return;
+        }
+        this.currentIndex++;
+        if (this.currentIndex > this.pages.length - 1) {
+            this.currentIndex = this.pages.length - 1;
+        }
+    };
+    return Pagination;
+})();
 var Billing = (function () {
     function Billing() {
-        this.validation = new Validation($('[data-validate]'));
+        var _this = this;
         this.setSelectors();
         this.initStripe();
         this.bindEvents();
+        this.pagination = new Pagination();
+        this.pagination.showCurrentPage();
+        setInterval(function () {
+            _this.pagination.next();
+            _this.pagination.showCurrentPage();
+        }, 3000);
     }
     Billing.prototype.setSelectors = function () {
         this.$form = $('#order-form');
@@ -179,6 +232,7 @@ var Billing = (function () {
     };
     Billing.prototype.onFormSubmit = function (e) {
         e.preventDefault();
+        this.validation = new Validation($('[data-validate]'));
         if (this.validation.isValidForm()) {
             this.$submitBtn.val("One moment...").attr('disabled', true);
             this.createStripeToken();
