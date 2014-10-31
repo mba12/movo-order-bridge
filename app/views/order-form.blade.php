@@ -16,15 +16,16 @@
         <div class="form-row">
             <label for="">
                 <span>Card Number: </span>
-                <input type="text" data-stripe="number" value="4242424242424242"/>
+                <input type="text" data-stripe="number" data-validate="min:16"  value="4242424242424242"/>
             </label>
         </div>
 
        <div class="form-row">
              <label for="">
                    <span>CVC: </span>
-                   <input type="text" data-stripe="cvc" value="123"/>
+                   <input type="text" data-stripe="cvc" data-validate="min:3|number" data-error-selector=".cvc-error" value="12a"/>
              </label>
+             <div style="display:none;"class="cvc-error">There's an error with your CVC field</div>
        </div>
 
         <div class="form-row">

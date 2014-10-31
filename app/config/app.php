@@ -125,6 +125,7 @@ return array(
         'Laravel\Cashier\CashierServiceProvider',
         'Movo\Providers\BillingServiceProvider',
         'Movo\Providers\ShippingServiceProvider',
+        'Movo\Providers\ReceiptsServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
     ),
 

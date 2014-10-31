@@ -15,8 +15,8 @@ return array(
 	*/
 
 	'mailgun' => array(
-		'domain' => '',
-		'secret' => '',
+		'domain' => 'getmovo.com',
+		'secret' => 'key-20507900adecce50ee0c8faea5ffa3e2',
 	),
 
 	'mandrill' => array(
