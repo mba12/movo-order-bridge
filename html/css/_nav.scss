@@ -1,0 +1,25 @@
+#nav {
+  height: 50px;
+  background-color: $mediumGray;
+  position: relative;
+  z-index: 1;
+  ul {
+    padding: 19px 10px 0 25px;
+    li {
+      color: #9a9a9a;
+      float: left;
+      margin-right: 25px;
+      font-size: em(13);
+      cursor: pointer;
+      text-rendering:         optimizeLegibility;
+      @include fw-bold;
+      @include transition(0.3s all);
+      &.active {
+        color: #f1f0f0;
+      }
+      &:hover {
+        color: #f1f0f0;
+      }
+    }
+  }
+}

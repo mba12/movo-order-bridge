@@ -1,0 +1,27 @@
+@import "vendor/neat/neat-helpers";
+
+$column: 90px;
+$gutter: 0px;
+$grid-columns: 12;
+$max-width: 1520px;
+$visual-grid: false;
+
+// Define your breakpoints
+
+$tabletWidth: 601;
+$navWidth: 720;
+$ipadPortraitWidth: 768;
+$desktopWidth: 769;
+$ipadLandscapeWidth: 1024;
+$largeWidth: 1025;
+$extraLargeWidth: 1300;
+
+$tablet: new-breakpoint(min-width #{$tabletWidth}px  12);
+$ipadPortrait: new-breakpoint(min-width #{$ipadPortraitWidth}px  12);
+$navMobileBreak: new-breakpoint(min-width #{$navWidth}px  12);
+$ipadLandscape: new-breakpoint(min-width #{$ipadLandscapeWidth}px 12);
+$desktop: new-breakpoint(min-width #{$desktopWidth}px 12);
+$large: new-breakpoint(min-width #{$largeWidth}px  12);
+$extraLarge: new-breakpoint(min-width #{$extraLargeWidth}px  12);
+
+$landscape: new-breakpoint(orientation landscape 12);

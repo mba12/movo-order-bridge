@@ -1,0 +1,70 @@
+#fixed-right-module {
+  float: right;
+  width: 290px;
+  background-color: $white;
+  padding: 30px 17px 0;
+  margin-top: 15px;
+  .top {
+    margin-bottom: 25px;
+    .left {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 10px;
+      .thumb {
+        margin-bottom: 8px;
+      }
+      .product-title {
+        color: $darkGray;
+        font-size: em(14);
+        @include fw-medium;
+        text-rendering:         optimizeLegibility;
+      }
+    }
+    .right {
+      display: table-cell;
+      width: 100%;
+      @include clearfix;
+      .quantity {
+        float: right;
+        margin-right: 10px;
+        h5 {
+          margin-top: 24px;
+          text-align: right;
+          font-size: em(12);
+          margin-bottom: 5px;
+        }
+        input {
+          text-align: right;
+          padding-right: 26px;
+          width: 60px;
+          border: none;
+        }
+      }
+    }
+  }
+  #subtotal {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+  #total {
+    font-size:     em(16);
+  }
+  .pricing {
+    font-size: em(12.5);
+    padding:       15px 10px;
+    @include clearfix;
+    line-height:   1.5em;
+    text-align:    right;
+    .price {
+      float: right;
+      margin-left: 20px;
+      min-width:   60px;
+      @include fw-bold;
+    }
+    .text {
+      float: right;
+      @include fw-medium;
+    }
+  }
+
+}

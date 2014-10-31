@@ -1,0 +1,112 @@
+@import "../bourbon/bourbon";
+@import "../../grid-settings";
+
+@mixin hide-for-view($view) {
+  display: block;
+  @include media($view) {
+    display: none;
+  }
+}
+
+
+@mixin mediaBetween($min, $max) {
+  @media screen and (min-width: #{$min}px) and (max-width: #{$max}px) {
+    @content;
+  }
+}
+
+@mixin gpu {
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective:         1000;
+  backface-visibility:         hidden;
+  perspective:                 1000;
+  @include transform(translate3d(0, 0, 0));
+}
+
+@mixin omega-reset($nth) {
+  &:nth-child(#{$nth}) {
+    margin-right: flex-gutter();
+  }
+  &:nth-child(#{$nth}+1) {
+    clear: none
+  }
+}
+
+@mixin unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select:   none;
+  -khtml-user-select:    none;
+  -moz-user-select:      none;
+  -ms-user-select:       none;
+  user-select:           none;
+  select:                none;
+}
+
+@mixin fw-ffmac($weight) {
+  .ua-desktop-macintosh.ua-firefox & {
+    font-weight: $weight;
+  }
+}
+@mixin fw-ios($weight) {
+  .ua-ios & {
+    font-weight: $weight;
+  }
+}
+
+@function breakpoint($breakpointWidth:600, $columns: 12) {
+  @return (min-width #{$breakpointWidth}px #{$columns});
+}
+
+
+// e.g.: @include retina-div('../img/global/book-icon', 'png', 18, 17);
+@mixin retina-div($file, $type, $width, $height) {
+  width:             #{$width}px;
+  height:            #{$height}px;
+  background-image:  url('#{$file}.#{$type}');
+  background-size:   #{$width}px #{$height}px;
+  background-repeat: no-repeat;
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+    & {
+      background-image: url('#{$file}@2x.#{$type}');
+      background-size:  #{$width}px #{$height}px;
+    }
+  }
+}
+
+// Based on a [blog post by Ryan Fait](http://ryanfait.com/resources/footer-stick-to-bottom-of-page/).
+// Must be mixed into the top level of your stylesheet.
+// Footer element must be outside of root wrapper element.
+// Footer must be a fixed height.
+/*
+USAGE:
+<body>
+  <div id="page-wrapper">
+    <div id="footer-push"></div>
+  </div>
+  <div id="footer">
+  </div>
+</body>
+
+@include sticky-footer(54px)
+
+*/
+@mixin sticky-footer($footer-height, $root-selector: unquote("#page-wrapper"), $root-footer-selector: unquote("#footer-push"), $footer-selector: unquote("#footer")) {
+  html, body {
+    height: 100%;
+  }
+  #{$root-selector} {
+    clear:         both;
+    min-height:    100%;
+    height:        auto !important;
+    height:        100%;
+    margin-bottom: -$footer-height;
+    #{$root-footer-selector} {
+      height: $footer-height;
+    }
+  }
+  #{$footer-selector} {
+    clear:    both;
+    position: relative;
+    height:   $footer-height;
+  }
+}

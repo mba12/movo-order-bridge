@@ -1,0 +1,90 @@
+@import "variables";
+@import "vendor/bourbon/bourbon";
+@import "vendor/scut/scut";
+@import "grid-settings";
+@import "vendor/neat/neat";
+@import "vendor/jumpkick/boilerplate";
+@import "vendor/jumpkick/jumpkick";
+@import "vendor/stepper/stepper";
+@import "mixins";
+@import "fonts";
+@import "colors";
+
+body {
+  background-color: $white;
+  color:            $darkGray;
+  font-family:      'Open Sans', sans-serif;
+  @include fw-regular;
+}
+
+#form-modal {
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  #form-content-box {
+    max-width: 750px;
+    height: 505px;
+    margin: 50px auto;
+    background-color: $lightGray;
+    padding: 32px;
+
+    p {
+      color:       $darkGray;
+      @include fw-light;
+      font-size:   em(15);
+      line-height: 1.7em;
+    }
+
+    a {
+      color: inherit;
+      @include transition(0.3s all);
+      &:hover {
+        //color: darken($blue1, 3%);
+      }
+    }
+
+    h1 {
+      text-rendering: optimizeLegibility;
+      @include fw-light;
+      font-size:      em(37);
+      margin-bottom:  24px;
+    }
+
+    h5 {
+      font-size:      em(15.5);
+      text-rendering: optimizeLegibility;
+    }
+
+    .button {
+      //background-color: $blue1;
+      color:          $white;
+      font-size:      rem(19);
+      padding:        17px 20px;
+      text-align:     center;
+      cursor:         pointer;
+      text-rendering: optimizeLegibility;
+      border-radius:  3px;
+      @include transition(0.3s all);
+      &:hover {
+        //background-color: darken($blue1, 4%);
+      }
+    }
+
+    input {
+      outline: none;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      height: 28px;
+      padding: 0px 5px 0 10px;
+    }
+
+    @import "nav";
+    @import "fixed-right-module";
+  }
+
+
+}
+
