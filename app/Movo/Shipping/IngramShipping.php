@@ -54,7 +54,7 @@ class IngramShipping implements ShippingInterface
                 ]
             ],
         ];
-        $xml= $this->convertToXML($array);
+        $xml = $this->convertToXML($array);
         $this->sendToFulfillment($xml);
 
     }
@@ -75,7 +75,7 @@ class IngramShipping implements ShippingInterface
                 'quantity' => '1.0',
                 'unit-of-measure' => 'EA',
             ],
-             [
+            [
                 'line-no' => '1',
                 'item-code' => 'M04-100007-US',
                 'quantity' => '3.0',
@@ -88,7 +88,31 @@ class IngramShipping implements ShippingInterface
 
     private function sendToFulfillment($xml)
     {
-        echo($xml);
+        $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";
+
+        $header = "GET HTTP/1.0 \r\n";
+        $header .= "Content-type: text/xml \r\n";
+        $header .= "Content-length: " . strlen($xml) . " \r\n";
+        $header .= "Content-transfer-encoding: text \r\n";
+        $header .= "Connection: close \r\n\r\n";
+        $header .= $xml;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $header);
+
+        $data = curl_exec($ch);
+
+        if (curl_errno($ch))
+            print curl_error($ch);
+        else
+            curl_close($ch);
+
+
+        //echo($data);
     }
 
 

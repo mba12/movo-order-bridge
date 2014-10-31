@@ -14,7 +14,7 @@ class OrderController extends BaseController {
 
 		$billing=App::make('Movo\Billing\BillingInterface');
 		$shipping=App::make('Movo\Shipping\ShippingInterface');
-
+		$receipt=App::make('Movo\Receipts\ReceiptsInterface');
 		$result= $billing->charge([
 		  'email'=>'alex@jumpkick.pro',
 		  'token'=>Input::get("token"),
@@ -25,6 +25,7 @@ class OrderController extends BaseController {
 				'result'=>$result
 			]);
 			$this->saveOrder($result);
+			$receipt->send(["result"=>$result]);
 			return "The charge went through";
 		}else{
 			return "The charge did not go through";

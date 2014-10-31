@@ -15,3 +15,15 @@ Route::group(array('before' => 'admin'), function () {
 		'uses' => 'AdminController@getOrders',
 	));
 });
+
+Route::get('/mail',function(){
+	$data[]=new Item("widget 1", 4, "$10.00");
+	$data[]=new Item("widget 2", 3,  "$10.00");
+	Mail::send('emails.receipt', array('items' => $data), function($message)
+	{
+		$message->to('alex@jumpkick.pro', 'John Smith')->subject('Welcome!')->from("orders@getmovo.com");
+	});
+});
+
+
+
