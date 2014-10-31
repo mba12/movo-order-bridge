@@ -2,10 +2,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="publishable-key" content="{{{Config::get("services.stripe.publishable")}}}"/>
-        <title>Order Form</title>
+        <title>Movo - Order Form</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/main.css"/>
     </head>
 <body>
-       <h1>Buy Now</h1>
+
        {{Form::open([
             'class' => 'order-form',
             'id' => 'order-form',
@@ -13,10 +15,10 @@
             ])
        }}
 
-        <div class="form-row">
+       <!-- <div class="form-row">
             <label for="">
                 <span>Card Number: </span>
-                <input type="text" data-stripe="number" value="4242424242424242"/>
+                <input type="number" data-stripe="number" value="4242424242424242" min="1" max="2000"/>
             </label>
         </div>
 
@@ -34,11 +36,21 @@
                     {{Form::selectYear(null, date('Y'), date('Y')+10,date('Y')+1, ['data-stripe'=>'exp-year'])}}
               </label>
         </div>
-       {{Form::submit("Buy Now")}}
+       {{Form::submit("Buy Now")}}-->
+
+
+       <div id="form-modal">
+           <div id="form-content-box">
+               @include('nav')
+               @include('fixed-right-module')
+           </div>
+       </div>
+
 
        <div class="payment-errors"></div>
        {{Form::close()}}
        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+       <script src="js/vendor/jquery/jquery.fs.stepper.js"></script>
        <script src="https://js.stripe.com/v2/"></script>
        <script src="/js/billing.js"></script>
 </body>

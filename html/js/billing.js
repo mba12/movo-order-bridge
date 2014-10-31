@@ -21,6 +21,7 @@
 
         bindEvents: function () {
             this.$form.on('submit', $.proxy(this.onFormSubmit, this));
+            $('#fixed-right-module').find('input').stepper({ min: 1, max: 999});
         },
 
         onFormSubmit: function (e) {

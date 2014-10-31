@@ -1,0 +1,40 @@
+.stepper {
+  margin:   0 0 10px 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+}
+.stepper .stepper-input {
+  margin:          0;
+  overflow:        hidden;
+  -moz-appearance: textfield;
+}
+
+.stepper .stepper-input::-webkit-inner-spin-button,
+.stepper .stepper-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin:             0;
+}
+
+.stepper .stepper-arrow {
+  background:  #eee url(../img/jquery.fs.stepper-arrows.png) no-repeat;
+  border-left:      1px solid #ccc;
+  cursor:      pointer !important;
+  display:     block;
+  height:      50%;
+  position:    absolute;
+  right:       0;
+  text-indent: -99999px;
+  width:       18px;
+  z-index: 50;
+}
+.stepper .stepper-arrow.up {
+  background-position: center 0px;
+  border-bottom:       none;
+  top:                 0;
+}
+.stepper .stepper-arrow.down {
+  background-position: center -21px;
+  bottom:              0;
+}

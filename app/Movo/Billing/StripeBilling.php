@@ -21,8 +21,8 @@ class StripeBilling implements BillingInterface
     public function charge(array $data)
     {
         try {
-            $quantity=3;
-            $amount=$this->calculateTotal($quantity);
+            $quantity = 3;
+            $amount = $this->calculateTotal($quantity);
             $result = Stripe_Charge::create([
                 'amount' => $amount,
                 'currency' => 'usd',
@@ -55,7 +55,7 @@ class StripeBilling implements BillingInterface
             //card was declined
             return 2;
 
-        }catch (\Stripe_CardError $e) {
+        } catch (\Stripe_CardError $e) {
             //card was declined
             return 3;
         }
@@ -63,8 +63,8 @@ class StripeBilling implements BillingInterface
 
     private function calculateTotal($quantity)
     {
-        $product= DB::table('products')->where('quantity',">=", $quantity)->first();
-        dd($product->price*$quantity);
+        $product = DB::table('products')->where('quantity', ">=", $quantity)->first();
+        //dd($product->price * $quantity);
         return $product->price;
     }
 }

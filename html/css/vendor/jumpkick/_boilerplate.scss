@@ -1,0 +1,420 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, menu, nav, section, summary,
+time, mark, audio, video {
+  margin:         0;
+  padding:        0;
+  border:         0;
+  outline:        0;
+  font-size:      100%;
+  font:           inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: ' ';
+  content: none;
+}
+
+::-moz-selection {
+  background:  #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background:  #b3d4fc;
+  text-shadow: none;
+}
+
+/**
+ * 1. Correct text resizing oddly in IE 6/7 when body `font-size` is set using
+ *    `em` units.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+  font-size:                100%; /* 1 */
+  -ms-text-size-adjust:     100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+
+}
+
+img {
+  border:         0;
+  vertical-align: middle;
+}
+
+//.clearfix:before,
+//.clearfix:after {
+//  content: " ";
+//  display: table;
+//}
+//
+//.clearfix:after {
+//  clear: both;
+//}
+
+p {
+  margin: 1em 0;
+  &:first-of-type {
+    margin-top: 0;
+  }
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.screen-size-check {
+  display: none;
+  width:   1px;
+  @include media($tablet) {
+    width: 2px;
+  }
+  @include media($desktop) {
+    width: 3px;
+  }
+  @include media($large) {
+    width: 4px;
+  }
+  @include media($extraLarge) {
+    width: 5px;
+  }
+}
+
+.clearfix {
+  @include clearfix;
+}
+
+.table {
+  display: table;
+}
+
+.table-row {
+  display: table-row;
+}
+
+.table-cell {
+  display: table-cell;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.hide-for-mobile {
+  display: none !important;
+  @include media($tablet) {
+    display: block !important;
+  }
+}
+.hide-for-tablet-up {
+  @include media($tablet) {
+    display: none !important;
+  }
+}
+.hide-for-tablet-only {
+  @include media($tablet) {
+    display: none !important;
+  }
+  @include media($desktop) {
+    display: block !important;
+  }
+}
+.hide-for-desktop-up {
+  @include media($desktop) {
+    display: none !important;
+  }
+}
+.hide-for-desktop-only {
+  @include media($desktop) {
+    display: none !important;
+  }
+  @include media($large) {
+    display: block !important;
+  }
+}
+.hide-for-large-up {
+  @include media($large) {
+    display: none !important;
+  }
+}
+.hide-for-large-only {
+  @include media($large) {
+    display: none !important;
+  }
+}
+
+.show-for-mobile-only {
+  @include media($tablet) {
+    display: none !important;
+  }
+}
+.show-for-tablet-up {
+  display: none !important;
+  @include media($tablet) {
+    display: block !important;
+  }
+}
+.show-for-tablet-only {
+  display: none !important;
+  @include media($tablet) {
+    display: block !important;
+  }
+  @include media($desktop) {
+    display: none !important;
+  }
+}
+
+.show-for-ipad-portrait-up {
+  display: none !important;
+  @include media($ipadPortrait) {
+    display: block !important;
+  }
+}
+
+.show-for-desktop-up {
+  display: none !important;
+  @include media($desktop) {
+    display: block !important;
+  }
+}
+.show-for-desktop-only {
+  display: none !important;
+  @include media($desktop) {
+    display: block !important;
+  }
+  @include media($large) {
+    display: none !important;
+  }
+}
+.show-for-large-up {
+  display: none !important;
+  @include media($large) {
+    display: block !important;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+#guide {
+  position: absolute;
+  z-index:  1000000;
+  top:      0;
+  left:     0;
+}
+
+/* Hover Effects */
+
+.hover-black-gradient {
+  width:      100%;
+  height:     100%;
+  position:   absolute;
+  top:        0;
+  left:       0;
+  background-color: rgba(0, 0, 0, 0.17);
+  /*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPHN0b3Agb2Zmc2V0PSIxNiUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPHN0b3Agb2Zmc2V0PSI3OSUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMC40OCIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIiBzdG9wLW9wYWNpdHk9IjAuNDgiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0.35) 79%, rgba(0, 0, 0, 0.35) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(16%, rgba(0, 0, 0, 0)), color-stop(79%, rgba(0, 0, 0, 0.35)), color-stop(100%, rgba(0, 0, 0, 0.35)));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0.35) 79%, rgba(0, 0, 0, 0.35) 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0.35) 79%, rgba(0, 0, 0, 0.35) 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0.35) 79%, rgba(0, 0, 0, 0.35) 100%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0.35) 79%, rgba(0, 0, 0, 0.35) 100%);
+  filter:     progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#7a000000', GradientType=1);*/
+}
+
+/* Youtube Players */
+
+.youtube-player {
+  position:         absolute;
+  top:              0;
+  left:             0;
+  width:            100%;
+  height:           100%;
+  background-color: black;
+  z-index:          100;
+  iframe {
+    width:  100%;
+    height: 100%;
+  }
+  .close-btn {
+    position:         absolute;
+    top:              22px;
+    right:            22px;
+    cursor:           pointer;
+    width:            25px;
+    height:           25px;
+    opacity:          0.7;
+    @include transition(0.3s opacity);
+    .ua-ios & {
+      opacity: 0.9;
+    }
+    &:hover {
+      opacity: 1;
+    }
+    .closeText {
+      display: none;
+      .ua-mobile-ipad & {
+        display: inline-block;
+        vertical-align: super;
+        //margin-bottom: 15px;
+        line-height: 0.5em;
+        margin-left: 7px;
+      }
+    }
+    .ua-ios & {
+      top: auto;
+      right: 0;
+      bottom: -40px;
+      background-color: black;
+      width: auto;
+      height: 40px;
+      margin-left: 5px;
+      color: #fff;
+      white-space: nowrap;
+      padding: 10px 18px;
+    }
+    .x {
+      width: 25px;
+      height: 25px;
+      background-size: 25px;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAA/klEQVRYw+3XSw7CMAwEUAuqZkWPTMOl0juVQwwbhKhi5zPxBlQvk7HeIlE+Imf9QOE60Htpi92REEhiRsJaj60AwDGYkQCgwrwJivkQZeaL6GYOhM1gwgZwTEYAGyY9GjhGJew+hukkGIYgehmS6GEGiFZmkGhhHIga40SUGEfCZG6uhMHszoTBeBMVxosoMJ6EiAiWbC12LL5EyHaUegr4E55MgfBiFOLpzCjEhoV/C7QSQR1nGYsw5himRDgxNcKBaSEGmVZigOkhSKaXIBiG6GQw8Xe3yhiv+sgRKvOwo5EjMiaWo5EjDkysRyN/dyMgNRAig//4gd6z/q5eapb6FknzQzkAAAAASUVORK5CYII=);
+      .ua-ios & {
+        display: inline-block;
+        background-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left:     -9999px;
+
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position:     relative;
+  padding-left: 32px;
+  padding-top:  4px;
+  cursor:       pointer;
+  font-size:    rem(15);
+  //@include font-avenir-65-medium;
+  display:      block;
+  line-height:  1.3em;
+  color: $darkGray;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content:    '';
+  position:   absolute;
+  left:       0;
+  top:        2px;
+  /*.ua-chrome & {
+    top: 2px;
+  }
+  .ua-safari & {
+    top: 3px;
+  }*/
+  width:      20px;
+  height:     20px;
+  //border:     1px solid #d5d5d5;
+  background: #191919;
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content:    'x';
+  position:   absolute;
+  top:        2px;
+  left:       6px;
+  color:      #666;
+  transition: all .2s;
+  font-size:  rem(19);
+  .ua-chrome & {
+    top: 3px;
+  }
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity:   0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity:   1;
+  transform: scale(1);
+}
+
+.anchor-top {
+  background-position-y: 0% !important;
+}
+
+.anchor-right {
+  background-position-x: 100% !important;
+}
+
+.anchor-bottom {
+  background-position-y: 100% !important;
+}
+
+.anchor-left {
+  background-position-x: 0% !important;
+}
+
+.cover {
+  background-size:     cover;
+  background-position: 50%;
+  background-repeat:   no-repeat;
+}
+
+// removes stepper from numeric input fields
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin:             0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
