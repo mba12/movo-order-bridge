@@ -124,6 +124,7 @@ return array(
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Laravel\Cashier\CashierServiceProvider',
         'Movo\Providers\BillingServiceProvider',
+        'Movo\Providers\ShippingServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
     ),
 

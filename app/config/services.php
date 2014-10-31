@@ -24,9 +24,12 @@ return array(
 	),
 
 	'stripe' => array(
-		'model'  => 'User',
 		'secret' => getenv('stripeKeys.secret'),
 		'publishable' => getenv('stripeKeys.publishable'),
 	),
-
+	'ingram' => array(
+		'source-url' => getenv('ingram.source-url'),
+		'publishable' => getenv('ingram.partner-name'),
+		'customer-id' => getenv('ingram.customer-id'),
+	),
 );

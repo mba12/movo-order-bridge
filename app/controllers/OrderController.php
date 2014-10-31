@@ -11,26 +11,30 @@ class OrderController extends BaseController {
 	}
 
 	public function buy(){
+
 		$billing=App::make('Movo\Billing\BillingInterface');
+		$shipping=App::make('Movo\Shipping\ShippingInterface');
+
 		$result= $billing->charge([
 		  'email'=>'alex@jumpkick.pro',
 		  'token'=>Input::get("token"),
 		]);
 
-		switch($result){
-			case 1:
-				return "The charge went through";
-				break;
-			case 2:
-				return "The charge did not go through";
-				break;
-			case 3:
-				return "The charge did not go through";
-				break;
-			default:
+		if($result){
+			$shipping->ship([
+				'result'=>$result
+			]);
+			$this->saveOrder($result);
+			return "The charge went through";
+		}else{
+			return "The charge did not go through";
 
 		}
-
 	}
 
+	private function saveOrder($result)
+	{
+		$order=new Order();
+		$order->saveOrder($result['amount'], $result['id']);
+	}
 }
