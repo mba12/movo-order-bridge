@@ -12,18 +12,18 @@ class Billing {
     private stripeKey:string;
     private validation:Validation;
     private pagination:Pagination;
-    constructor() {
 
+    constructor() {
         this.setSelectors();
         this.initStripe();
+        this.initQuantityStepper();
         this.bindEvents();
-        this.pagination=new Pagination();
+        this.pagination = new Pagination();
         this.pagination.showCurrentPage();
         setInterval( ()=> {
-            this.pagination.next();
-            this.pagination.showCurrentPage();
-        },3000);
-
+         this.pagination.next();
+         this.pagination.showCurrentPage();
+         },3000);
 
     }
 
@@ -38,6 +38,9 @@ class Billing {
         Stripe.setPublishableKey(this.stripeKey);
     }
 
+    private initQuantityStepper():void {
+        $('#fixed-right-module').find('input').stepper({ min: 1, max: 999});
+    }
 
     private bindEvents() {
         this.$form.on('submit', $.proxy(this.onFormSubmit, this));
@@ -45,7 +48,7 @@ class Billing {
 
     private onFormSubmit(e) {
         e.preventDefault();
-        this.validation=new Validation($('[data-validate]'));
+        this.validation = new Validation($('[data-validate]'));
         if (this.validation.isValidForm()) {
             this.$submitBtn.val("One moment...").attr('disabled', <any>true);
             this.createStripeToken();
@@ -79,9 +82,8 @@ class Billing {
     }
 
     private submitForm() {
-       this.$form[0].submit();
+        this.$form[0].submit();
     }
 }
 
 new Billing();
-

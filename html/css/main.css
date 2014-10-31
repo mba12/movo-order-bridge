@@ -456,48 +456,60 @@ body {
     margin: 50px auto;
     background-color: #ececec;
     padding: 32px; }
-    #form-modal #form-content-box p {
-      color: #333333;
-      font-weight: 300;
-      font-size: 0.9375em;
-      line-height: 1.7em; }
-    #form-modal #form-content-box a {
-      color: inherit;
-      -webkit-transition: 0.3s all;
-      -moz-transition: 0.3s all;
-      transition: 0.3s all; }
-    #form-modal #form-content-box h1 {
-      text-rendering: optimizeLegibility;
-      font-weight: 300;
-      font-size: 2.3125em;
-      margin-bottom: 24px; }
-    #form-modal #form-content-box h5 {
-      font-size: 0.96875em;
-      text-rendering: optimizeLegibility; }
-    #form-modal #form-content-box .button {
-      color: white;
-      font-size: 1.1875rem;
-      padding: 17px 20px;
-      text-align: center;
-      cursor: pointer;
-      text-rendering: optimizeLegibility;
-      border-radius: 3px;
-      -webkit-transition: 0.3s all;
-      -moz-transition: 0.3s all;
-      transition: 0.3s all; }
-    #form-modal #form-content-box input {
+    #form-modal #form-content-box input, #form-modal #form-content-box select {
       outline: none;
       border: 1px solid #cccccc;
       border-radius: 4px;
       height: 28px;
       padding: 0px 5px 0 10px; }
+    #form-modal #form-content-box .select-group {
+      margin-bottom: 14px; }
+      #form-modal #form-content-box .select-group h5 {
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        margin-left: 1px; }
     #form-modal #form-content-box section {
       background-color: white;
       padding: 30px;
-      margin-right: 20px;
-      width: 370px;
+      margin-right: 15px;
+      width: 405px;
       margin-top: 15px;
-      min-height: 300px; }
+      min-height: 300px;
+      max-height: 373px;
+      overflow: auto; }
+      #form-modal #form-content-box section .section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 25px; }
+    #form-modal #form-content-box .prev-next {
+      margin-top: 40px;
+      *zoom: 1; }
+      #form-modal #form-content-box .prev-next:before, #form-modal #form-content-box .prev-next:after {
+        content: " ";
+        display: table; }
+      #form-modal #form-content-box .prev-next:after {
+        clear: both; }
+      #form-modal #form-content-box .prev-next .prev {
+        float: left; }
+      #form-modal #form-content-box .prev-next .next {
+        float: right; }
+      #form-modal #form-content-box .prev-next .button {
+        background-color: #545454;
+        color: white;
+        font-size: 0.9375em;
+        font-weight: 600;
+        padding: 10px 20px;
+        text-align: center;
+        cursor: pointer;
+        text-rendering: optimizeLegibility;
+        border-radius: 3px;
+        display: inline-block;
+        -webkit-transition: 0.3s all;
+        -moz-transition: 0.3s all;
+        transition: 0.3s all; }
+        #form-modal #form-content-box .prev-next .button:hover {
+          background-color: #454545; }
     #form-modal #form-content-box #nav {
       height: 50px;
       background-color: #545454;
@@ -510,7 +522,6 @@ body {
           float: left;
           margin-right: 25px;
           font-size: 0.8125em;
-          cursor: pointer;
           text-rendering: optimizeLegibility;
           font-weight: 700;
           -webkit-transition: 0.3s all;
@@ -518,11 +529,9 @@ body {
           transition: 0.3s all; }
           #form-modal #form-content-box #nav ul li.active {
             color: #f1f0f0; }
-          #form-modal #form-content-box #nav ul li:hover {
-            color: #f1f0f0; }
     #form-modal #form-content-box #fixed-right-module {
       float: right;
-      width: 290px;
+      width: 260px;
       background-color: white;
       padding: 30px 17px 0;
       margin-top: 15px; }

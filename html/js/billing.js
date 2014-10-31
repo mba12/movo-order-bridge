@@ -210,6 +210,7 @@ var Billing = (function () {
         var _this = this;
         this.setSelectors();
         this.initStripe();
+        this.initQuantityStepper();
         this.bindEvents();
         this.pagination = new Pagination();
         this.pagination.showCurrentPage();
@@ -226,6 +227,9 @@ var Billing = (function () {
     Billing.prototype.initStripe = function () {
         this.stripeKey = $('meta[name="publishable-key"]').attr('content');
         Stripe.setPublishableKey(this.stripeKey);
+    };
+    Billing.prototype.initQuantityStepper = function () {
+        $('#fixed-right-module').find('input').stepper({ min: 1, max: 999 });
     };
     Billing.prototype.bindEvents = function () {
         this.$form.on('submit', $.proxy(this.onFormSubmit, this));

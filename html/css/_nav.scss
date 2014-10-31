@@ -10,16 +10,15 @@
       float: left;
       margin-right: 25px;
       font-size: em(13);
-      cursor: pointer;
       text-rendering:         optimizeLegibility;
       @include fw-bold;
       @include transition(0.3s all);
       &.active {
         color: #f1f0f0;
       }
-      &:hover {
-        color: #f1f0f0;
-      }
+//      &:hover {
+//        color: #f1f0f0;
+//      }
     }
   }
 }

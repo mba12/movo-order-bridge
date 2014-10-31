@@ -1923,6 +1923,7 @@ interface JQuery {
      * @param complete A function to call once the animation is complete.
      */
     fadeIn(duration?: number, complete?: Function): JQuery;
+    stepper(options?:any): JQuery;
     /**
      * Display the matched elements by fading them to opaque.
      *

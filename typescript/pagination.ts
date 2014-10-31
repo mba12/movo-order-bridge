@@ -2,31 +2,28 @@ class Pagination {
     private pages:JQuery[];
     private $currentPage:JQuery;
     private currentIndex:number = 0;
-     private $navLis:JQuery;
+    private $navLis:JQuery;
+
     constructor() {
         this.setSelectors();
         this.initPages();
     }
 
-    private setSelectors():void{
-        this.$navLis=$('#nav').find("li");
+    private setSelectors():void {
+        this.$navLis = $('#nav').find("li");
     }
 
     private initPages():void {
         this.pages = [
-            $('#products'),
-            $('#shipping-type'),
-            $('#shipping-address'),
-            $('#billing-address'),
-            $('#payment')
+            $('#products'), $('#shipping-type'), $('#shipping-address'), $('#billing-address'), $('#payment')
         ];
         this.$currentPage = this.pages[this.currentIndex];
     }
 
-    public showCurrentPage():void{
+    public showCurrentPage():void {
         this.$currentPage = this.pages[this.currentIndex];
         for (var i = 0; i < this.pages.length; i++) {
-           $(this.pages[i]).hide();
+            $(this.pages[i]).hide();
 
         }
         this.$currentPage.show();
@@ -42,10 +39,10 @@ class Pagination {
     }
 
     public next():void {
-        var validation=new Validation($('[data-validate]', this.$currentPage));
-        if(!validation.isValidForm()){
+        var validation = new Validation($('[data-validate]', this.$currentPage));
+        if (!validation.isValidForm()) {
             validation.showErrors();
-             return;
+            return;
         }
 
         this.currentIndex++;

@@ -31,49 +31,7 @@ body {
     background-color: $lightGray;
     padding: 32px;
 
-    p {
-      color:       $darkGray;
-      @include fw-light;
-      font-size:   em(15);
-      line-height: 1.7em;
-    }
-
-    a {
-      color: inherit;
-      @include transition(0.3s all);
-      &:hover {
-        //color: darken($blue1, 3%);
-      }
-    }
-
-    h1 {
-      text-rendering: optimizeLegibility;
-      @include fw-light;
-      font-size:      em(37);
-      margin-bottom:  24px;
-    }
-
-    h5 {
-      font-size:      em(15.5);
-      text-rendering: optimizeLegibility;
-    }
-
-    .button {
-      //background-color: $blue1;
-      color:          $white;
-      font-size:      rem(19);
-      padding:        17px 20px;
-      text-align:     center;
-      cursor:         pointer;
-      text-rendering: optimizeLegibility;
-      border-radius:  3px;
-      @include transition(0.3s all);
-      &:hover {
-        //background-color: darken($blue1, 4%);
-      }
-    }
-
-    input {
+    input, select {
       outline: none;
       border: 1px solid #cccccc;
       border-radius: 4px;
@@ -81,14 +39,59 @@ body {
       padding: 0px 5px 0 10px;
     }
 
+    .select-group {
+      margin-bottom: 14px;
+      h5 {
+        font-size: rem(12);
+        @include fw-medium;
+        margin-bottom: 5px;
+        margin-left: 1px;
+      }
+    }
+
     section {
       background-color: $white;
       padding: 30px;
-      margin-right: 20px;
-      width: 370px;
+      margin-right: 15px;
+      width: 405px;
       margin-top: 15px;
       min-height: 300px;
+      max-height: 373px;
+      overflow: auto;
+      .section-title {
+        font-size:     rem(16);
+        @include fw-bold;
+        margin-bottom: 25px;
+      }
     }
+
+    .prev-next {
+      margin-top: 40px;
+      @include clearfix;
+      .prev {
+        float: left;
+      }
+      .next {
+        float: right;
+      }
+      .button {
+        background-color: #545454;
+        color:            $white;
+        font-size:        em(15);
+        @include fw-medium;
+        padding:          10px 20px;
+        text-align:       center;
+        cursor:           pointer;
+        text-rendering:   optimizeLegibility;
+        border-radius:    3px;
+        display:          inline-block;
+        @include transition(0.3s all);
+        &:hover {
+          background-color: darken(#545454, 6%);
+        }
+      }
+    }
+
 
     @import "nav";
     @import "fixed-right-module";
