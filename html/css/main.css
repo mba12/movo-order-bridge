@@ -491,6 +491,13 @@ body {
       border-radius: 4px;
       height: 28px;
       padding: 0px 5px 0 10px; }
+    #form-modal #form-content-box section {
+      background-color: white;
+      padding: 30px;
+      margin-right: 20px;
+      width: 370px;
+      margin-top: 15px;
+      min-height: 300px; }
     #form-modal #form-content-box #nav {
       height: 50px;
       background-color: #545454;
@@ -553,7 +560,8 @@ body {
               text-align: right;
               padding-right: 26px;
               width: 60px;
-              border: none; }
+              border: none;
+              font-size: 0.75em; }
       #form-modal #form-content-box #fixed-right-module #subtotal {
         border-top: 1px solid #cccccc;
         border-bottom: 1px solid #cccccc; }
@@ -578,3 +586,11 @@ body {
         #form-modal #form-content-box #fixed-right-module .pricing .text {
           float: right;
           font-weight: 600; }
+    #form-modal #form-content-box #products {
+      display: none; }
+    #form-modal #form-content-box #shipping-type {
+      display: none; }
+    #form-modal #form-content-box #billing-address {
+      display: none; }
+    #form-modal #form-content-box #payment {
+      display: none; }

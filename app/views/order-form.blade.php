@@ -43,6 +43,11 @@
            <div id="form-content-box">
                @include('nav')
                @include('fixed-right-module')
+               @include('products')
+               @include('shipping-type')
+               @include('shipping-address')
+               @include('billing-address')
+               @include('payment')
            </div>
        </div>
 

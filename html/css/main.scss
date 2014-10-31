@@ -81,8 +81,22 @@ body {
       padding: 0px 5px 0 10px;
     }
 
+    section {
+      background-color: $white;
+      padding: 30px;
+      margin-right: 20px;
+      width: 370px;
+      margin-top: 15px;
+      min-height: 300px;
+    }
+
     @import "nav";
     @import "fixed-right-module";
+    @import "products";
+    @import "shipping-type";
+    @import "shipping-address";
+    @import "billing-address";
+    @import "payment";
   }
 
 
