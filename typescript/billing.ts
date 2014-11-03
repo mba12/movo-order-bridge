@@ -21,8 +21,8 @@ class Billing {
         this.pagination = new Pagination();
         this.pagination.showCurrentPage();
         setInterval( ()=> {
-         this.pagination.next();
-         this.pagination.showCurrentPage();
+//         this.pagination.next();
+//         this.pagination.showCurrentPage();
          },3000);
 
     }

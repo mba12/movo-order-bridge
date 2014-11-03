@@ -207,7 +207,6 @@ var Pagination = (function () {
 })();
 var Billing = (function () {
     function Billing() {
-        var _this = this;
         this.setSelectors();
         this.initStripe();
         this.initQuantityStepper();
@@ -215,8 +214,6 @@ var Billing = (function () {
         this.pagination = new Pagination();
         this.pagination.showCurrentPage();
         setInterval(function () {
-            _this.pagination.next();
-            _this.pagination.showCurrentPage();
         }, 3000);
     }
     Billing.prototype.setSelectors = function () {
