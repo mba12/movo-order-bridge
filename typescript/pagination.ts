@@ -15,7 +15,7 @@ class Pagination {
 
     private initPages():void {
         this.pages = [
-            $('#products'), $('#shipping-type'), $('#shipping-address'), $('#billing-address'), $('#payment')
+            $('#products'), $('#billing-info'), $('#shipping-info'), $('#payment')
         ];
         this.$currentPage = this.pages[this.currentIndex];
     }

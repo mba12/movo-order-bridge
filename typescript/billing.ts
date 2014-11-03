@@ -24,6 +24,12 @@ class Billing {
 //         this.pagination.next();
 //         this.pagination.showCurrentPage();
          },3000);
+        this.pagination.next();
+        this.pagination.showCurrentPage();
+        this.pagination.next();
+        this.pagination.showCurrentPage();
+        this.pagination.next();
+        this.pagination.showCurrentPage();
 
     }
 

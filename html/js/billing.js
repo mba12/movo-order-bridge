@@ -170,9 +170,8 @@ var Pagination = (function () {
     Pagination.prototype.initPages = function () {
         this.pages = [
             $('#products'),
-            $('#shipping-type'),
-            $('#shipping-address'),
-            $('#billing-address'),
+            $('#billing-info'),
+            $('#shipping-info'),
             $('#payment')
         ];
         this.$currentPage = this.pages[this.currentIndex];
@@ -215,6 +214,12 @@ var Billing = (function () {
         this.pagination.showCurrentPage();
         setInterval(function () {
         }, 3000);
+        this.pagination.next();
+        this.pagination.showCurrentPage();
+        this.pagination.next();
+        this.pagination.showCurrentPage();
+        this.pagination.next();
+        this.pagination.showCurrentPage();
     }
     Billing.prototype.setSelectors = function () {
         this.$form = $('#order-form');

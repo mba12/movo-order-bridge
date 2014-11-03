@@ -1,3 +1,30 @@
 #payment {
   display: none;
+  .credit-cards {
+    @include retina-div('../img/credit-cards', 'png', 159, 26);
+    margin-bottom: 10px;
+    float: left;
+  }
+  #secure {
+    width: 100px;
+    text-align: right;
+    margin-top: 9px;
+    float: right;
+    #lock-icon {
+      @include retina-div('../img/lock', 'png', 13, 17);
+      display: inline-block;
+      opacity: 0.8;
+    }
+    h5 {
+      display: inline-block;
+      font-size: em(13);
+    }
+  }
+  #submit-order {
+    background-color: #5499b4;
+    @include transition(0.3s all);
+    &:hover {
+      background-color: darken(#5499b4, 5%);
+    }
+  }
 }

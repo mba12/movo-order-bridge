@@ -325,67 +325,6 @@ a {
   }
 }
 
-/* Base for label styling */
-[type="checkbox"]:not(:checked),
-[type="checkbox"]:checked {
-  position: absolute;
-  left:     -9999px;
-
-}
-[type="checkbox"]:not(:checked) + label,
-[type="checkbox"]:checked + label {
-  position:     relative;
-  padding-left: 32px;
-  padding-top:  4px;
-  cursor:       pointer;
-  font-size:    rem(15);
-  //@include font-avenir-65-medium;
-  display:      block;
-  line-height:  1.3em;
-  color: $darkGray;
-}
-
-/* checkbox aspect */
-[type="checkbox"]:not(:checked) + label:before,
-[type="checkbox"]:checked + label:before {
-  content:    '';
-  position:   absolute;
-  left:       0;
-  top:        2px;
-  /*.ua-chrome & {
-    top: 2px;
-  }
-  .ua-safari & {
-    top: 3px;
-  }*/
-  width:      20px;
-  height:     20px;
-  //border:     1px solid #d5d5d5;
-  background: #191919;
-}
-/* checked mark aspect */
-[type="checkbox"]:not(:checked) + label:after,
-[type="checkbox"]:checked + label:after {
-  content:    'x';
-  position:   absolute;
-  top:        2px;
-  left:       6px;
-  color:      #666;
-  transition: all .2s;
-  font-size:  rem(19);
-  .ua-chrome & {
-    top: 3px;
-  }
-}
-/* checked mark aspect changes */
-[type="checkbox"]:not(:checked) + label:after {
-  opacity:   0;
-  transform: scale(0);
-}
-[type="checkbox"]:checked + label:after {
-  opacity:   1;
-  transform: scale(1);
-}
 
 .anchor-top {
   background-position-y: 0% !important;

@@ -1,5 +1,6 @@
 @import "variables";
 @import "vendor/bourbon/bourbon";
+@import "vendor/neat/neat";
 @import "vendor/scut/scut";
 @import "grid-settings";
 @import "vendor/neat/neat";
@@ -26,17 +27,16 @@ body {
   height: 100%;
   #form-content-box {
     max-width: 750px;
-    height: 505px;
     margin: 50px auto;
     background-color: $lightGray;
     padding: 32px;
-
     input, select {
       outline: none;
       border: 1px solid #cccccc;
       border-radius: 4px;
       height: 28px;
       padding: 0px 5px 0 10px;
+      color: $darkGray;
     }
 
     .select-group {
@@ -55,8 +55,7 @@ body {
       margin-right: 15px;
       width: 405px;
       margin-top: 15px;
-      min-height: 300px;
-      max-height: 373px;
+      min-height: 312px;
       overflow: auto;
       .section-title {
         font-size:     rem(16);
@@ -66,7 +65,7 @@ body {
     }
 
     .prev-next {
-      margin-top: 40px;
+      margin-top: 35px;
       @include clearfix;
       .prev {
         float: left;
@@ -75,9 +74,9 @@ body {
         float: right;
       }
       .button {
-        background-color: #545454;
+        background-color: lighten(#545454, 5%);
         color:            $white;
-        font-size:        em(15);
+        font-size:        em(14.5);
         @include fw-medium;
         padding:          10px 20px;
         text-align:       center;
@@ -92,13 +91,52 @@ body {
       }
     }
 
+    .row {
+      margin-bottom: 7px;
+
+      &.single {
+        @include outer-container;
+        .field {
+          @include span-columns(12);
+        }
+      }
+      &.double {
+        @include outer-container;
+        .field {
+          @include span-columns(6);
+        }
+      }
+      &.triple {
+        @include outer-container;
+        .field {
+          @include span-columns(4);
+        }
+      }
+      input, select {
+        height: 34px;
+        width: 100%;
+      }
+      select {
+        width: 100%;
+        background-color: $white;
+      }
+    }
+
+    .hide {
+      display: none !important;
+    }
+
+    label {
+      display: none;
+    }
+
 
     @import "nav";
     @import "fixed-right-module";
     @import "products";
     @import "shipping-type";
-    @import "shipping-address";
-    @import "billing-address";
+    @import "shipping-info";
+    @import "billing-info";
     @import "payment";
   }
 

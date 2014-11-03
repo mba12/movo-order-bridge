@@ -11,7 +11,8 @@
        {{Form::open([
             'class' => 'order-form',
             'id' => 'order-form',
-            'route'=>'buy'
+            'route'=>'buy',
+            'autocomplete'=>'on'
             ])
        }}
 
@@ -44,9 +45,8 @@
                @include('nav')
                @include('fixed-right-module')
                @include('products')
-               @include('shipping-type')
-               @include('shipping-address')
-               @include('billing-address')
+               @include('shipping')
+               @include('billing')
                @include('payment')
            </div>
        </div>

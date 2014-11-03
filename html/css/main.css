@@ -1,3 +1,8 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
 /*
 * Scut, a collection of Sass utilities to ease and improve our implementations of common style-code patterns.
 * v0.7.2
@@ -303,58 +308,6 @@ a {
         width: 20px;
         height: 20px; }
 
-/* Base for label styling */
-[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
-  position: absolute;
-  left: -9999px; }
-
-[type="checkbox"]:not(:checked) + label, [type="checkbox"]:checked + label {
-  position: relative;
-  padding-left: 32px;
-  padding-top: 4px;
-  cursor: pointer;
-  font-size: 0.9375rem;
-  display: block;
-  line-height: 1.3em;
-  color: #333333; }
-
-/* checkbox aspect */
-[type="checkbox"]:not(:checked) + label:before, [type="checkbox"]:checked + label:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 2px;
-  /*.ua-chrome & {
-    top: 2px;
-  }
-  .ua-safari & {
-    top: 3px;
-  }*/
-  width: 20px;
-  height: 20px;
-  background: #191919; }
-
-/* checked mark aspect */
-[type="checkbox"]:not(:checked) + label:after, [type="checkbox"]:checked + label:after {
-  content: 'x';
-  position: absolute;
-  top: 2px;
-  left: 6px;
-  color: #666666;
-  transition: all 0.2s;
-  font-size: 1.1875rem; }
-  .ua-chrome [type="checkbox"]:not(:checked) + label:after, .ua-chrome [type="checkbox"]:checked + label:after {
-    top: 3px; }
-
-/* checked mark aspect changes */
-[type="checkbox"]:not(:checked) + label:after {
-  opacity: 0;
-  transform: scale(0); }
-
-[type="checkbox"]:checked + label:after {
-  opacity: 1;
-  transform: scale(1); }
-
 .anchor-top {
   background-position-y: 0% !important; }
 
@@ -452,7 +405,6 @@ body {
   height: 100%; }
   #form-modal #form-content-box {
     max-width: 750px;
-    height: 505px;
     margin: 50px auto;
     background-color: #ececec;
     padding: 32px; }
@@ -461,7 +413,8 @@ body {
       border: 1px solid #cccccc;
       border-radius: 4px;
       height: 28px;
-      padding: 0px 5px 0 10px; }
+      padding: 0px 5px 0 10px;
+      color: #333333; }
     #form-modal #form-content-box .select-group {
       margin-bottom: 14px; }
       #form-modal #form-content-box .select-group h5 {
@@ -475,15 +428,14 @@ body {
       margin-right: 15px;
       width: 405px;
       margin-top: 15px;
-      min-height: 300px;
-      max-height: 373px;
+      min-height: 312px;
       overflow: auto; }
       #form-modal #form-content-box section .section-title {
         font-size: 1rem;
         font-weight: 700;
         margin-bottom: 25px; }
     #form-modal #form-content-box .prev-next {
-      margin-top: 40px;
+      margin-top: 35px;
       *zoom: 1; }
       #form-modal #form-content-box .prev-next:before, #form-modal #form-content-box .prev-next:after {
         content: " ";
@@ -495,9 +447,9 @@ body {
       #form-modal #form-content-box .prev-next .next {
         float: right; }
       #form-modal #form-content-box .prev-next .button {
-        background-color: #545454;
+        background-color: #616161;
         color: white;
-        font-size: 0.9375em;
+        font-size: 0.90625em;
         font-weight: 600;
         padding: 10px 20px;
         text-align: center;
@@ -510,6 +462,69 @@ body {
         transition: 0.3s all; }
         #form-modal #form-content-box .prev-next .button:hover {
           background-color: #454545; }
+    #form-modal #form-content-box .row {
+      margin-bottom: 7px; }
+      #form-modal #form-content-box .row.single {
+        *zoom: 1;
+        max-width: 1520px;
+        margin-left: auto;
+        margin-right: auto; }
+        #form-modal #form-content-box .row.single:before, #form-modal #form-content-box .row.single:after {
+          content: " ";
+          display: table; }
+        #form-modal #form-content-box .row.single:after {
+          clear: both; }
+        #form-modal #form-content-box .row.single .field {
+          display: block;
+          float: left;
+          margin-right: 1.53846%;
+          width: 100%; }
+          #form-modal #form-content-box .row.single .field:last-child {
+            margin-right: 0; }
+      #form-modal #form-content-box .row.double {
+        *zoom: 1;
+        max-width: 1520px;
+        margin-left: auto;
+        margin-right: auto; }
+        #form-modal #form-content-box .row.double:before, #form-modal #form-content-box .row.double:after {
+          content: " ";
+          display: table; }
+        #form-modal #form-content-box .row.double:after {
+          clear: both; }
+        #form-modal #form-content-box .row.double .field {
+          display: block;
+          float: left;
+          margin-right: 1.53846%;
+          width: 49.23077%; }
+          #form-modal #form-content-box .row.double .field:last-child {
+            margin-right: 0; }
+      #form-modal #form-content-box .row.triple {
+        *zoom: 1;
+        max-width: 1520px;
+        margin-left: auto;
+        margin-right: auto; }
+        #form-modal #form-content-box .row.triple:before, #form-modal #form-content-box .row.triple:after {
+          content: " ";
+          display: table; }
+        #form-modal #form-content-box .row.triple:after {
+          clear: both; }
+        #form-modal #form-content-box .row.triple .field {
+          display: block;
+          float: left;
+          margin-right: 1.53846%;
+          width: 32.30769%; }
+          #form-modal #form-content-box .row.triple .field:last-child {
+            margin-right: 0; }
+      #form-modal #form-content-box .row input, #form-modal #form-content-box .row select {
+        height: 34px;
+        width: 100%; }
+      #form-modal #form-content-box .row select {
+        width: 100%;
+        background-color: white; }
+    #form-modal #form-content-box .hide {
+      display: none !important; }
+    #form-modal #form-content-box label {
+      display: none; }
     #form-modal #form-content-box #nav {
       height: 50px;
       background-color: #545454;
@@ -571,6 +586,8 @@ body {
               width: 60px;
               border: none;
               font-size: 0.75em; }
+            #form-modal #form-content-box #fixed-right-module .top .right .quantity label {
+              display: block; }
       #form-modal #form-content-box #fixed-right-module #subtotal {
         border-top: 1px solid #cccccc;
         border-bottom: 1px solid #cccccc; }
@@ -597,9 +614,56 @@ body {
           font-weight: 600; }
     #form-modal #form-content-box #products {
       display: none; }
-    #form-modal #form-content-box #shipping-type {
+    #form-modal #form-content-box #shipping-info {
       display: none; }
-    #form-modal #form-content-box #billing-address {
+    #form-modal #form-content-box #shipping-info #use-billing-address {
+      margin-bottom: 11px;
+      font-size: 0.8125em; }
+      #form-modal #form-content-box #shipping-info #use-billing-address label {
+        display: block; }
+      #form-modal #form-content-box #shipping-info #use-billing-address input {
+        height: 12px;
+        margin-right: 5px; }
+    #form-modal #form-content-box #billing-info {
       display: none; }
     #form-modal #form-content-box #payment {
       display: none; }
+      #form-modal #form-content-box #payment .credit-cards {
+        width: 159px;
+        height: 26px;
+        background-image: url('../img/credit-cards.png');
+        background-size: 159px 26px;
+        background-repeat: no-repeat;
+        margin-bottom: 10px;
+        float: left; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+          #form-modal #form-content-box #payment .credit-cards {
+            background-image: url('../img/credit-cards@2x.png');
+            background-size: 159px 26px; } }
+      #form-modal #form-content-box #payment #secure {
+        width: 100px;
+        text-align: right;
+        margin-top: 9px;
+        float: right; }
+        #form-modal #form-content-box #payment #secure #lock-icon {
+          width: 13px;
+          height: 17px;
+          background-image: url('../img/lock.png');
+          background-size: 13px 17px;
+          background-repeat: no-repeat;
+          display: inline-block;
+          opacity: 0.8; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+            #form-modal #form-content-box #payment #secure #lock-icon {
+              background-image: url('../img/lock@2x.png');
+              background-size: 13px 17px; } }
+        #form-modal #form-content-box #payment #secure h5 {
+          display: inline-block;
+          font-size: 0.8125em; }
+      #form-modal #form-content-box #payment #submit-order {
+        background-color: #5499b4;
+        -webkit-transition: 0.3s all;
+        -moz-transition: 0.3s all;
+        transition: 0.3s all; }
+        #form-modal #form-content-box #payment #submit-order:hover {
+          background-color: #498da6; }

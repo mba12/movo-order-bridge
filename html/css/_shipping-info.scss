@@ -1,0 +1,14 @@
+#shipping-info {
+  //display: none;
+  #use-billing-address {
+    margin-bottom: 11px;
+    font-size:     em(13);
+    label {
+      display: block;
+    }
+    input {
+      height:       12px;
+      margin-right: 5px;
+    }
+  }
+}
