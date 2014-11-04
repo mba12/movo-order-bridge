@@ -21,10 +21,10 @@
     }
   }
   #submit-order {
-    background-color: #5499b4;
+    background-color: $blue;
     @include transition(0.3s all);
     &:hover {
-      background-color: darken(#5499b4, 5%);
+      background-color: darken($blue, 5%);
     }
   }
 }

@@ -195,7 +195,7 @@
 		if (!data.$input.is(':disabled') && !data.$stepper.hasClass("disabled")) {
 			var change = $(e.target).hasClass("up") ? data.step : -data.step;
 
-			data.timer = _startTimer(data.timer, 125, function() {
+			data.timer = _startTimer(data.timer, 220, function() {
 				_step(data, change, false);
 			});
 			_step(data, change);

@@ -1,3 +1,15 @@
 #products {
   display: none;
+  select {
+    width: 100%;
+  }
+  .products {
+    margin-bottom: 22px;
+  }
+  #too-many-units{
+    font-size: rem(13);
+    a, a:visited, a:active {
+      color: $red;
+    }
+  }
 }

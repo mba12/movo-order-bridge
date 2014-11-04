@@ -209,21 +209,15 @@ var Billing = (function () {
         this.setSelectors();
         this.initStripe();
         this.initQuantityStepper();
-        this.bindEvents();
+        this.initEvents();
         this.pagination = new Pagination();
-        this.pagination.showCurrentPage();
-        setInterval(function () {
-        }, 3000);
-        this.pagination.next();
-        this.pagination.showCurrentPage();
-        this.pagination.next();
-        this.pagination.showCurrentPage();
-        this.pagination.next();
         this.pagination.showCurrentPage();
     }
     Billing.prototype.setSelectors = function () {
         this.$form = $('#order-form');
-        this.$submitBtn = this.$form.find('input[type=submit]');
+        this.$nextBtns = $('.prev-next .next');
+        this.$previousBtns = $('.prev-next .prev');
+        this.$submitBtn = $('#submit-order');
         this.submitButtonDefaultValue = this.$submitBtn.val();
     };
     Billing.prototype.initStripe = function () {
@@ -233,8 +227,19 @@ var Billing = (function () {
     Billing.prototype.initQuantityStepper = function () {
         $('#fixed-right-module').find('input').stepper({ min: 1, max: 999 });
     };
-    Billing.prototype.bindEvents = function () {
+    Billing.prototype.initEvents = function () {
+        var _this = this;
         this.$form.on('submit', $.proxy(this.onFormSubmit, this));
+        this.$nextBtns.on('click', function () { return _this.onNextButtonClick(); });
+        this.$previousBtns.on('click', function () { return _this.onPreviousButtonClick(); });
+    };
+    Billing.prototype.onNextButtonClick = function () {
+        this.pagination.next();
+        this.pagination.showCurrentPage();
+    };
+    Billing.prototype.onPreviousButtonClick = function () {
+        this.pagination.previous();
+        this.pagination.showCurrentPage();
     };
     Billing.prototype.onFormSubmit = function (e) {
         e.preventDefault();
@@ -267,6 +272,11 @@ var Billing = (function () {
     };
     Billing.prototype.submitForm = function () {
         this.$form[0].submit();
+    };
+    Billing.prototype.getParameterByName = function (name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     };
     return Billing;
 })();

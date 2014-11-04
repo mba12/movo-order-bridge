@@ -1,4 +1,4 @@
-class Billing {
+class Shipping {
 
     constructor() {
         this.setSelectors();

@@ -414,7 +414,8 @@ body {
       border-radius: 4px;
       height: 28px;
       padding: 0px 5px 0 10px;
-      color: #333333; }
+      color: #333333;
+      font-size: 0.75em; }
     #form-modal #form-content-box .select-group {
       margin-bottom: 14px; }
       #form-modal #form-content-box .select-group h5 {
@@ -614,6 +615,14 @@ body {
           font-weight: 600; }
     #form-modal #form-content-box #products {
       display: none; }
+      #form-modal #form-content-box #products select {
+        width: 100%; }
+      #form-modal #form-content-box #products .products {
+        margin-bottom: 22px; }
+      #form-modal #form-content-box #products #too-many-units {
+        font-size: 0.8125rem; }
+        #form-modal #form-content-box #products #too-many-units a, #form-modal #form-content-box #products #too-many-units a:visited, #form-modal #form-content-box #products #too-many-units a:active {
+          color: #dd2a2a; }
     #form-modal #form-content-box #shipping-info {
       display: none; }
     #form-modal #form-content-box #shipping-info #use-billing-address {

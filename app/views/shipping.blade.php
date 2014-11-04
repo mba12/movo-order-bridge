@@ -1,9 +1,9 @@
 <section id="shipping-info">
-    <h3 class="section-title">Shipping</h3>
+    <h3 class="section-title">Shipping Info</h3>
     <div id="use-billing-address">
         <label for="use-billing-address-checkbox"><input type="checkbox" id="use-billing-address-checkbox" checked/>Use billing address</label>
     </div>
-    <div class="fields">
+    <div class="fields hide">
         <div class="row double">
             <div class="field">
                 <label for="shipping-first-name">First Name</label>
@@ -298,7 +298,7 @@
             <div class="field">
                 <label for="shipping-state-select">State</label>
                 <select id="shipping-state-select">
-                    <option value="">(Select State)</option>
+                    <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>
@@ -362,7 +362,7 @@
         <div class="field">
             <label for="shipping-type">Country</label>
             <select id="shipping-type">
-                <option value="">(Select shipping type)</option>
+                <option value="">-- Shipping type --</option>
                 <option value="">Ground Shipping ($5.99)</option>
                 <option value="">2-Day Shipping ($10.00)</option>
                 <option value="">Overnight ($20.00)</option>

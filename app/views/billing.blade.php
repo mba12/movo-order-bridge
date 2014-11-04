@@ -1,5 +1,5 @@
 <section id="billing-info">
-    <h3 class="section-title">Billing</h3>
+    <h3 class="section-title">Billing Info</h3>
     <div class="fields">
         <div class="row double">
             <div class="field">
@@ -288,7 +288,7 @@
             </div>
             <div class="field">
                 <label for="billing-state-select">State</label> <select id="billing-state-select">
-                    <option value="">(Select State)</option>
+                    <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>
