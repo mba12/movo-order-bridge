@@ -51,4 +51,9 @@ class Pagination {
         }
     }
 
+    public gotoProductsPage():void {
+        this.currentIndex = 0;
+        this.showCurrentPage();
+    }
+
 }

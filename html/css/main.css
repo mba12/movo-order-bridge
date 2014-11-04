@@ -589,7 +589,7 @@ body {
               font-size: 0.75em; }
             #form-modal #form-content-box #fixed-right-module .top .right .quantity label {
               display: block; }
-      #form-modal #form-content-box #fixed-right-module #subtotal {
+      #form-modal #form-content-box #fixed-right-module #subtotal-fields {
         border-top: 1px solid #cccccc;
         border-bottom: 1px solid #cccccc; }
       #form-modal #form-content-box #fixed-right-module #total {

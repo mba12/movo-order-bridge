@@ -14,11 +14,11 @@
                 </div>
             </div>
         </div>
-        <div id="subtotal" class="pricing">
+        <div id="subtotal-fields" class="pricing">
             <ul class="price">
-                <li>$29.99</li>
-                <li>$59.98</li>
-                <li>$6.00</li>
+                <li class="unit-price"></li>
+                <li class="subtotal"></li>
+                <li class="shipping"></li>
             </ul>
             <ul class="text">
                 <li>Unit Price</li>
@@ -28,7 +28,7 @@
         </div>
         <div id="total" class="pricing">
             <ul class="price">
-                <li>$59.97</li>
+                <li></li>
             </ul>
             <ul class="text">
                 <li>TOTAL</li>

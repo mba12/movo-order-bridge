@@ -2,9 +2,10 @@
 /// <reference path="forms/form-error.ts" />
 /// <reference path="forms/validation.ts" />
 /// <reference path="pagination.ts" />
+/// <reference path="fixed-right-module.ts" />
 /// <reference path="products.ts" />
-/// <reference path="billing.ts" />
-/// <reference path="shipping.ts" />
+/// <reference path="billing-info.ts" />
+/// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
 
 class OrderForm {
@@ -20,10 +21,14 @@ class OrderForm {
         this.pagination = new Pagination();
         this.pagination.showCurrentPage();
 
+        new FixedRightModule(this.pagination);
         new Products();
-        new Billing();
-        new Shipping();
+        new BillingInfo();
+        new ShippingInfo();
         new Payment();
+
+//        this.onNextButtonClick();
+//        this.onNextButtonClick();
     }
 
     private setSelectors() {

@@ -12,7 +12,11 @@
             'class' => 'order-form',
             'id' => 'order-form',
             'route'=>'buy',
-            'autocomplete'=>'on'
+            'autocomplete'=>'on',
+            'data-product-prices'=>'29.99',
+            'data-shipping-types'=>'7-10 Day Ground|3-5 Day Ground|2 Day|Priority Overnight|International',
+            'data-shipping-ids'=>'1|2|3|4|5',
+            'data-shipping-rates'=>'5.75|8.50|12.00|18.00|17.00'
             ])
        }}
 

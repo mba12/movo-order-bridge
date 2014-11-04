@@ -363,9 +363,6 @@
             <label for="shipping-type">Country</label>
             <select id="shipping-type">
                 <option value="">-- Shipping type --</option>
-                <option value="">Ground Shipping ($5.99)</option>
-                <option value="">2-Day Shipping ($10.00)</option>
-                <option value="">Overnight ($20.00)</option>
             </select>
         </div>
     </div>
