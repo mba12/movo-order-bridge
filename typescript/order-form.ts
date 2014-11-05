@@ -27,7 +27,7 @@ class OrderForm {
         new ShippingInfo();
         new Payment();
 
-//        this.onNextButtonClick();
+        this.onNextButtonClick();
 //        this.onNextButtonClick();
     }
 
