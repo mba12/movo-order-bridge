@@ -31,12 +31,13 @@ class FixedRightModule {
 
     private initEvents() {
         this.$quantityInputField.on('change blur', ()=>this.onQuantityChange());
+        this.$quantityInputField.on('keypress', (e)=>this.onKeyPress(e));
         this.$shippingSelect.on('change', ()=>this.onShippingSelectChange());
     }
 
     private setQuantityFieldIfPassedIn():void {
         var passedInQuantity:number = parseInt(this.getParameterByName('quantity'));
-        if(passedInQuantity > 0) {
+        if (passedInQuantity > 0) {
             this.$quantityInputField.val(passedInQuantity.toString());
         }
     }
@@ -82,7 +83,7 @@ class FixedRightModule {
     }
 
     private setShipping():void {
-        if(this.$shippingSelect.val() == '') {
+        if (this.$shippingSelect.val() == '') {
             this.shippingAmt = 0;
             this.$shipping = this.$shipping.html('--');
         } else {
@@ -94,6 +95,21 @@ class FixedRightModule {
     private setTotal():void {
         var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt).toFixed(2);
         this.$total.html(totalStr);
+    }
+
+    private onKeyPress(e):void {
+        this.restrictInputToNumbers(e);
+    }
+
+    private restrictInputToNumbers(evt) {
+        var theEvent = evt || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
     }
 
 }

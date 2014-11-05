@@ -10,7 +10,7 @@
             <div class="right">
                 <div class="quantity">
                     <h5>Quantity</h5>
-                    <label> <input type="number" value="1" min="1" max="999"/> </label>
+                    <label> <input type="number" value="1" maxlength="1"/> </label>
                 </div>
             </div>
         </div>

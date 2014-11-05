@@ -523,7 +523,7 @@ body {
         width: 100%;
         background-color: white; }
     #form-modal #form-content-box .hide {
-      display: none !important; }
+      display: none; }
     #form-modal #form-content-box label {
       display: none; }
     #form-modal #form-content-box #nav {

@@ -361,9 +361,7 @@
     <div class="row single">
         <div class="field">
             <label for="shipping-type">Country</label>
-            <select id="shipping-type">
-                <option value="">-- Shipping type --</option>
-            </select>
+            <select id="shipping-type"></select>
         </div>
     </div>
     <div class="prev-next">

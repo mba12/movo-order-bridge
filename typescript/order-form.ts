@@ -21,10 +21,10 @@ class OrderForm {
         this.pagination = new Pagination();
         this.pagination.showCurrentPage();
 
+        new ShippingInfo();
         new FixedRightModule(this.pagination);
         new Products();
         new BillingInfo();
-        new ShippingInfo();
         new Payment();
 
         this.onNextButtonClick();
