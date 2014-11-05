@@ -16,18 +16,11 @@
         </div>
         <div class="row double">
             <div class="field">
-                <label for="shipping-email">Email</label>
-                <input type="text" name="shipping-email" placeholder="Email" id="shipping-email"/>
-            </div>
-            <div class="field">
                 <label for="shipping-phone">Phone</label>
                 <input type="text" name="shipping-phone" placeholder="Phone" id="shipping-phone"/>
             </div>
-        </div>
-        <div class="row single">
             <div class="field">
-                <label for="shipping-country">Country</label>
-                <select id="shipping-country">
+                <label for="shipping-country">Country</label> <select id="shipping-country">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
                     <option value="AL">Albania</option>

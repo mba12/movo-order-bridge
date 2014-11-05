@@ -7,17 +7,17 @@
                 <input type="text" name="billing-first-name" placeholder="First Name" id="billing-first-name"/>
             </div>
             <div class="field">
-                <label for="billing-last-name">Last Name</label>
+                <label for="billing-last-name">Billing Last Name</label>
                 <input type="text" name="billing-last-name" placeholder="Last Name" id="billing-last-name"/>
             </div>
         </div>
         <div class="row double">
             <div class="field">
-                <label for="billing-phone">Phone</label>
+                <label for="billing-phone">Billing Phone</label>
                 <input type="text" name="billing-phone" placeholder="Phone" id="billing-phone"/>
             </div>
             <div class="field">
-                <label for="billing-country">Country</label>
+                <label for="billing-country">Billing Country</label>
                 <select id="billing-country">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
@@ -273,21 +273,21 @@
         </div>
         <div class="row single">
             <div class="field">
-                <label for="billing-address">Address</label>
+                <label for="billing-address">Billing Address</label>
                 <input type="text" name="billing-address" placeholder="Address" id="billing-address"/>
             </div>
         </div>
         <div class="row triple">
             <div class="field">
-                <label for="billing-city">City</label>
+                <label for="billing-city">Billing City</label>
                 <input type="text" name="billing-city" placeholder="City" id="billing-city"/>
             </div>
             <div class="field">
-                <label for="billing-state-input">Address</label>
+                <label for="billing-state-input">Billing Address</label>
                 <input type="text" name="billing-state" placeholder="State" id="billing-state-input" class="hide"/>
             </div>
             <div class="field">
-                <label for="billing-state-select">State</label> <select id="billing-state-select">
+                <label for="billing-state-select">Billing State</label> <select id="billing-state-select">
                     <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -343,7 +343,7 @@
                 </select>
             </div>
             <div class="field">
-                <label for="billing-zip">Zip</label>
+                <label for="billing-zip">Billing Zip</label>
                 <input type="text" name="billing-zip" placeholder="Zip" id="billing-zip"/>
             </div>
         </div>
