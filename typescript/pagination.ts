@@ -7,6 +7,7 @@ class Pagination {
     constructor() {
         this.setSelectors();
         this.initPages();
+        this.showCurrentPage();
     }
 
     private setSelectors():void {
@@ -39,11 +40,12 @@ class Pagination {
     }
 
     public next():void {
-        var validation = new Validation($('[data-validate]', this.$currentPage));
+        /*var validation = new Validation($('[data-validate]', this.$currentPage));
         if (!validation.isValidForm()) {
             validation.showErrors();
             return;
         }
+        validation.resetErrors();*/
 
         this.currentIndex++;
         if (this.currentIndex > this.pages.length - 1) {

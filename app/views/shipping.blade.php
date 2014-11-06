@@ -1,23 +1,24 @@
 <section id="shipping-info">
     <h3 class="section-title">Shipping Info</h3>
     <div id="use-billing-address">
-        <label for="use-billing-address-checkbox"><input type="checkbox" id="use-billing-address-checkbox" checked/>Use billing address</label>
+        <label for="use-billing-address-checkbox"><input type="checkbox" id="use-billing-address-checkbox"/>Use
+            billing address</label>
     </div>
-    <div class="fields hide">
+    <div class="fields hide2">
         <div class="row double">
             <div class="field">
                 <label for="shipping-first-name">First Name</label>
-                <input type="text" name="shipping-first-name" placeholder="First Name" id="shipping-first-name"/>
+                <input type="text" name="shipping-first-name" placeholder="First Name" id="shipping-first-name" data-validate="min:1" data-error-selector=".error-messages .first-name"/>
             </div>
             <div class="field">
                 <label for="shipping-last-name">Last Name</label>
-                <input type="text" name="shipping-last-name" placeholder="Last Name" id="shipping-last-name"/>
+                <input type="text" name="shipping-last-name" placeholder="Last Name" id="shipping-last-name" data-validate="min:1" data-error-selector=".error-messages .last-name"/>
             </div>
         </div>
         <div class="row double">
             <div class="field">
                 <label for="shipping-phone">Phone</label>
-                <input type="text" name="shipping-phone" placeholder="Phone" id="shipping-phone"/>
+                <input type="text" name="shipping-phone" placeholder="Phone" id="shipping-phone" data-validate="min:1" data-error-selector=".error-messages .phone"/>
             </div>
             <div class="field">
                 <label for="shipping-country">Country</label> <select id="shipping-country">
@@ -276,21 +277,20 @@
         <div class="row single">
             <div class="field">
                 <label for="shipping-address">Address</label>
-                <input type="text" name="shipping-address" placeholder="Address" id="shipping-address"/>
+                <input type="text" name="shipping-address" placeholder="Address" id="shipping-address" data-validate="min:1" data-error-selector=".error-messages .address"/>
             </div>
         </div>
         <div class="row triple">
             <div class="field">
                 <label for="shipping-city">City</label>
-                <input type="text" name="shipping-city" placeholder="City" id="shipping-city"/>
+                <input type="text" name="shipping-city" placeholder="City" id="shipping-city" data-validate="min:1" data-error-selector=".error-messages .city"/>
             </div>
             <div class="field">
                 <label for="shipping-state-input">Address</label>
-                <input type="text" name="shipping-state" placeholder="State" id="shipping-state-input" class="hide"/>
+                <input type="text" name="shipping-state" placeholder="State" id="shipping-state-input"/>
             </div>
             <div class="field">
-                <label for="shipping-state-select">State</label>
-                <select id="shipping-state-select">
+                <label for="shipping-state-select">State</label> <select id="shipping-state-select">
                     <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -347,16 +347,27 @@
             </div>
             <div class="field">
                 <label for="shipping-zip">Zip</label>
-                <input type="text" name="shipping-zip" placeholder="Zip" id="shipping-zip"/>
+                <input type="text" name="shipping-zip" placeholder="Zip" id="shipping-zip" data-validate="min:1" data-error-selector=".error-messages .zip"/>
             </div>
         </div>
     </div>
     <div class="row single">
         <div class="field">
             <label for="shipping-type">Country</label>
-            <select id="shipping-type"></select>
+            <select id="shipping-type" data-validate="min:1" data-error-selector=".error-messages .shipping-type"></select>
         </div>
     </div>
+    <ul class="error-messages">
+        <li class="first-name">Please enter a first name!</li>
+        <li class="last-name">Please enter a last name!</li>
+        <li class="email">Please enter an email!</li>
+        <li class="phone">Please enter a phone number!</li>
+        <li class="address">Please enter an address!</li>
+        <li class="city">Please enter a city!</li>
+        <li class="zip">Please enter a zip!</li>
+        <li class="shipping-type">Please select a shipping type!</li>
+        <li class="country">Movo will be shipping internationally soon!</li>
+    </ul>
     <div class="prev-next">
         <div class="button next">Next</div>
         <div class="button prev">Previous</div>

@@ -9,6 +9,7 @@ class FixedRightModule {
     private shippingAmt:number;
     private $total:JQuery;
     private $shippingSelect:JQuery;
+    private $shippingCountrySelect:JQuery;
     public static MAX_UNITS:number = 8;
 
     constructor(public pagination:Pagination) {
@@ -27,12 +28,14 @@ class FixedRightModule {
         this.$shipping = $subtotalFields.find('.shipping');
         this.$total = $('#total').find('.price').find('li');
         this.$shippingSelect = $('#shipping-type');
+        this.$shippingCountrySelect = $('#shipping-country');
     }
 
     private initEvents() {
         this.$quantityInputField.on('change blur', ()=>this.onQuantityChange());
         this.$quantityInputField.on('keypress', (e)=>this.onKeyPress(e));
         this.$shippingSelect.on('change', ()=>this.onShippingSelectChange());
+        this.$shippingCountrySelect.on('change', ()=>this.onShippingCountrySelectChange());
     }
 
     private setQuantityFieldIfPassedIn():void {
@@ -58,6 +61,10 @@ class FixedRightModule {
     }
 
     private onShippingSelectChange():void {
+        this.calculatePrice();
+    }
+
+    private onShippingCountrySelectChange():void {
         this.calculatePrice();
     }
 

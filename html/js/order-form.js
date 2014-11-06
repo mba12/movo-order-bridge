@@ -66,7 +66,6 @@ var Validation = (function () {
             if (!$el.data("validate")) {
                 return true;
             }
-            ;
             var isValid = true;
             var value = $el.val();
             var data = $el.data("validate");
@@ -163,6 +162,7 @@ var Pagination = (function () {
         this.currentIndex = 0;
         this.setSelectors();
         this.initPages();
+        this.showCurrentPage();
     }
     Pagination.prototype.setSelectors = function () {
         this.$navLis = $('#nav').find("li");
@@ -192,11 +192,6 @@ var Pagination = (function () {
         }
     };
     Pagination.prototype.next = function () {
-        var validation = new Validation($('[data-validate]', this.$currentPage));
-        if (!validation.isValidForm()) {
-            validation.showErrors();
-            return;
-        }
         this.currentIndex++;
         if (this.currentIndex > this.pages.length - 1) {
             this.currentIndex = this.pages.length - 1;
@@ -207,6 +202,35 @@ var Pagination = (function () {
         this.showCurrentPage();
     };
     return Pagination;
+})();
+var ScreenBase = (function () {
+    function ScreenBase($pagination) {
+        this.$pagination = $pagination;
+    }
+    ScreenBase.prototype.setSelectors = function () {
+        this.$prevBtn = $('.prev', this.$currentPage);
+        this.$nextBtn = $('.next', this.$currentPage);
+    };
+    ScreenBase.prototype.initEvents = function () {
+        var _this = this;
+        this.$prevBtn.on('click', function () { return _this.onPrevClick(); });
+        this.$nextBtn.on('click', function () { return _this.onNextClick(); });
+    };
+    ScreenBase.prototype.onPrevClick = function () {
+        this.$pagination.previous();
+        this.$pagination.showCurrentPage();
+    };
+    ScreenBase.prototype.onNextClick = function () {
+        var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        if (!validation.isValidForm()) {
+            validation.showErrors();
+            return;
+        }
+        validation.resetErrors();
+        this.$pagination.next();
+        this.$pagination.showCurrentPage();
+    };
+    return ScreenBase;
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
@@ -226,12 +250,14 @@ var FixedRightModule = (function () {
         this.$shipping = $subtotalFields.find('.shipping');
         this.$total = $('#total').find('.price').find('li');
         this.$shippingSelect = $('#shipping-type');
+        this.$shippingCountrySelect = $('#shipping-country');
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
         this.$quantityInputField.on('change blur', function () { return _this.onQuantityChange(); });
         this.$quantityInputField.on('keypress', function (e) { return _this.onKeyPress(e); });
         this.$shippingSelect.on('change', function () { return _this.onShippingSelectChange(); });
+        this.$shippingCountrySelect.on('change', function () { return _this.onShippingCountrySelectChange(); });
     };
     FixedRightModule.prototype.setQuantityFieldIfPassedIn = function () {
         var passedInQuantity = parseInt(this.getParameterByName('quantity'));
@@ -252,6 +278,9 @@ var FixedRightModule = (function () {
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     };
     FixedRightModule.prototype.onShippingSelectChange = function () {
+        this.calculatePrice();
+    };
+    FixedRightModule.prototype.onShippingCountrySelectChange = function () {
         this.calculatePrice();
     };
     FixedRightModule.prototype.getQuantity = function () {
@@ -302,8 +331,16 @@ var FixedRightModule = (function () {
     FixedRightModule.MAX_UNITS = 8;
     return FixedRightModule;
 })();
-var Products = (function () {
-    function Products() {
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var Products = (function (_super) {
+    __extends(Products, _super);
+    function Products($pagination) {
+        _super.call(this, $pagination);
         this.setSelectors();
         this.initEvents();
         this.showSizeSelectsBasedOnQuantity();
@@ -313,10 +350,13 @@ var Products = (function () {
         this.$products = $('.products');
         this.$quantityInputField = $('#fixed-right-module').find('input');
         this.$tooManyUnitsMsg = $('#too-many-units');
+        this.$currentPage = $('#products');
+        _super.prototype.setSelectors.call(this);
     };
     Products.prototype.initEvents = function () {
         var _this = this;
         this.$quantityInputField.on('change blur', function () { return _this.onQuantityChange(); });
+        _super.prototype.initEvents.call(this);
     };
     Products.prototype.onQuantityChange = function () {
         this.showSizeSelectsBasedOnQuantity();
@@ -348,29 +388,61 @@ var Products = (function () {
         }
     };
     return Products;
-})();
-new Products();
-var BillingInfo = (function () {
-    function BillingInfo() {
+})(ScreenBase);
+var BillingInfo = (function (_super) {
+    __extends(BillingInfo, _super);
+    function BillingInfo($pagination) {
+        _super.call(this, $pagination);
         this.setSelectors();
         this.initEvents();
-        this.setCountrySelectToUS();
+        this.setCountryToUnitedStates();
+        this.showStateSelectOrInput();
     }
     BillingInfo.prototype.setSelectors = function () {
         this.$countrySelect = $('#billing-country');
+        this.$stateSelect = $('#billing-state-select');
+        this.$stateInput = $('#billing-state-input');
+        this.$currentPage = $('#billing-info');
+        _super.prototype.setSelectors.call(this);
     };
     BillingInfo.prototype.initEvents = function () {
+        var _this = this;
+        this.$countrySelect.on('change', function () { return _this.onCountryChange(); });
+        _super.prototype.initEvents.call(this);
     };
-    BillingInfo.prototype.setCountrySelectToUS = function () {
+    BillingInfo.prototype.setCountryToUnitedStates = function () {
         this.$countrySelect.find("option[value='US']").attr("selected", "selected");
     };
+    BillingInfo.prototype.onCountryChange = function () {
+        this.showStateSelectOrInput();
+    };
+    BillingInfo.prototype.showStateSelectOrInput = function () {
+        if (this.$countrySelect.val() == 'US') {
+            this.showStateSelect();
+        }
+        else {
+            this.showStateInput();
+        }
+    };
+    BillingInfo.prototype.showStateSelect = function () {
+        this.$stateSelect.parent().show();
+        this.$stateInput.parent().hide();
+    };
+    BillingInfo.prototype.showStateInput = function () {
+        this.$stateInput.parent().show();
+        this.$stateSelect.parent().hide();
+    };
     return BillingInfo;
-})();
-var ShippingInfo = (function () {
-    function ShippingInfo() {
+})(ScreenBase);
+var ShippingInfo = (function (_super) {
+    __extends(ShippingInfo, _super);
+    function ShippingInfo($pagination) {
+        _super.call(this, $pagination);
         this.setSelectors();
         this.initEvents();
         this.initPriceSelect();
+        this.setCountryToUnitedStates();
+        this.showStateSelectOrInput();
     }
     ShippingInfo.prototype.setSelectors = function () {
         this.$shippingSelect = $('#shipping-type');
@@ -395,12 +467,15 @@ var ShippingInfo = (function () {
         this.$billingCity = this.$billingPage.find('#billing-city');
         this.$billingState = this.$billingPage.find('#billing-state-select');
         this.$billingZip = this.$billingPage.find('#billing-zip');
+        this.$currentPage = this.$shippingPage;
+        _super.prototype.setSelectors.call(this);
     };
     ShippingInfo.prototype.initEvents = function () {
         var _this = this;
         this.$quantityInputField.on('change blur', function () { return _this.onQuantityChange(); });
         this.$useBillingAddressCheckbox.on('change', function () { return _this.onUseBillingAddressCheckboxChange(); });
-        this.$billingPage.find('input, select').on('change', function () { return _this.onBillingInputChange(); });
+        this.$shippingCountry.on('change', function () { return _this.onCountryChange(); });
+        _super.prototype.initEvents.call(this);
     };
     ShippingInfo.prototype.initPriceSelect = function () {
         var $form = $('form');
@@ -409,8 +484,14 @@ var ShippingInfo = (function () {
         var shippingIds = $form.data('shipping-ids').split('|');
         var qty = parseInt(this.$quantityInputField.val());
         var startingIndex = qty > 1 ? 1 : 0;
+        var endIndex = shippingRates.length - 1;
+        if (this.$shippingCountry.val() != 'US') {
+            startingIndex = shippingTypes.length - 1;
+            endIndex = shippingRates.length;
+        }
+        this.$shippingSelect.empty();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
-        for (var i = startingIndex; i < shippingTypes.length - 1; i++) {
+        for (var i = startingIndex; i < endIndex; i++) {
             var price = shippingRates[i];
             this.$shippingSelect.append('<option value="' + shippingIds[i] + '" data-price="' + price + '" >' + shippingTypes[i] + ' - $' + price + '</option>');
         }
@@ -422,21 +503,16 @@ var ShippingInfo = (function () {
         this.emptyShippingSelect();
         this.initPriceSelect();
     };
+    ShippingInfo.prototype.setCountryToUnitedStates = function () {
+        this.$shippingCountry.find("option[value='US']").attr("selected", "selected");
+    };
     ShippingInfo.prototype.onUseBillingAddressCheckboxChange = function () {
-        var _this = this;
         if (this.$useBillingAddressCheckbox.is(":checked")) {
-            this.$addressFields.slideUp(300, function () {
-                _this.copyInBillingFieldValues();
-            });
+            this.copyInBillingFieldValues();
+            this.initPriceSelect();
         }
         else {
             this.resetAllFields();
-            this.$addressFields.slideDown();
-        }
-    };
-    ShippingInfo.prototype.onBillingInputChange = function () {
-        if (this.$useBillingAddressCheckbox.is(":checked")) {
-            this.copyInBillingFieldValues();
         }
     };
     ShippingInfo.prototype.copyInBillingFieldValues = function () {
@@ -457,25 +533,62 @@ var ShippingInfo = (function () {
         this.$shippingCity.val('');
         this.$shippingZip.val('');
     };
+    ShippingInfo.prototype.onCountryChange = function () {
+        this.initPriceSelect();
+        this.showStateSelectOrInput();
+    };
+    ShippingInfo.prototype.showStateSelectOrInput = function () {
+        if (this.$shippingCountry.val() == 'US') {
+            $('#shipping-state-select').parent().show();
+            $('#shipping-state-input').parent().hide();
+        }
+        else {
+            $('#shipping-state-select').parent().hide();
+            $('#shipping-state-input').parent().show();
+        }
+    };
+    ShippingInfo.prototype.onNextClick = function () {
+        this.$shippingCountry.removeClass('error');
+        this.$currentPage.find('.error-messages').find('.country').hide();
+        var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        validation.resetErrors();
+        if (this.$shippingCountry.val() != 'US') {
+            this.$shippingCountry.addClass('error');
+            this.$currentPage.find('.error-messages').find('.country').show();
+            return;
+        }
+        if (!validation.isValidForm()) {
+            validation.showErrors();
+            return;
+        }
+        validation.resetErrors();
+        this.$pagination.next();
+        this.$pagination.showCurrentPage();
+    };
     return ShippingInfo;
-})();
-var Payment = (function () {
-    function Payment() {
+})(ScreenBase);
+var Payment = (function (_super) {
+    __extends(Payment, _super);
+    function Payment($pagination) {
+        _super.call(this, $pagination);
         this.setSelectors();
-        this.initStripe();
         this.initEvents();
+        this.initStripe();
     }
     Payment.prototype.setSelectors = function () {
         this.$form = $('#order-form');
         this.$submitBtn = $('#submit-order');
         this.submitButtonDefaultValue = this.$submitBtn.val();
+        this.$currentPage = $('#payment');
+        _super.prototype.setSelectors.call(this);
+    };
+    Payment.prototype.initEvents = function () {
+        this.$form.on('submit', $.proxy(this.onFormSubmit, this));
+        _super.prototype.initEvents.call(this);
     };
     Payment.prototype.initStripe = function () {
         this.stripeKey = $('meta[name="publishable-key"]').attr('content');
         Stripe.setPublishableKey(this.stripeKey);
-    };
-    Payment.prototype.initEvents = function () {
-        this.$form.on('submit', $.proxy(this.onFormSubmit, this));
     };
     Payment.prototype.onFormSubmit = function (e) {
         e.preventDefault();
@@ -509,39 +622,28 @@ var Payment = (function () {
     Payment.prototype.submitForm = function () {
         this.$form[0].submit();
     };
+    Payment.prototype.onPrevClick = function () {
+        _super.prototype.onPrevClick.call(this);
+    };
+    Payment.prototype.onNextClick = function () {
+        var validation = new Validation($('[data-validate]', this.$currentPage));
+        if (!validation.isValidForm()) {
+            validation.showErrors();
+            return;
+        }
+        validation.resetErrors();
+    };
     return Payment;
-})();
-new Payment();
+})(ScreenBase);
 var OrderForm = (function () {
     function OrderForm() {
-        this.setSelectors();
-        this.initEvents();
-        this.pagination = new Pagination();
-        this.pagination.showCurrentPage();
-        new ShippingInfo();
-        new FixedRightModule(this.pagination);
-        new Products();
-        new BillingInfo();
-        new Payment();
-        this.onNextButtonClick();
+        var pagination = new Pagination();
+        new ShippingInfo(pagination);
+        new FixedRightModule(pagination);
+        new Products(pagination);
+        new BillingInfo(pagination);
+        new Payment(pagination);
     }
-    OrderForm.prototype.setSelectors = function () {
-        this.$nextBtns = $('.prev-next .next');
-        this.$previousBtns = $('.prev-next .prev');
-    };
-    OrderForm.prototype.initEvents = function () {
-        var _this = this;
-        this.$nextBtns.on('click', function () { return _this.onNextButtonClick(); });
-        this.$previousBtns.on('click', function () { return _this.onPreviousButtonClick(); });
-    };
-    OrderForm.prototype.onNextButtonClick = function () {
-        this.pagination.next();
-        this.pagination.showCurrentPage();
-    };
-    OrderForm.prototype.onPreviousButtonClick = function () {
-        this.pagination.previous();
-        this.pagination.showCurrentPage();
-    };
     return OrderForm;
 })();
 new OrderForm();

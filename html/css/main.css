@@ -413,9 +413,11 @@ body {
       border: 1px solid #cccccc;
       border-radius: 4px;
       height: 28px;
-      padding: 0px 5px 0 10px;
+      padding: 0 5px 0 10px;
       color: #333333;
       font-size: 0.75em; }
+      #form-modal #form-content-box input.error, #form-modal #form-content-box select.error {
+        border: 1px solid #dd2a2a; }
     #form-modal #form-content-box .select-group {
       margin-bottom: 14px; }
       #form-modal #form-content-box .select-group h5 {
@@ -435,6 +437,14 @@ body {
         font-size: 1rem;
         font-weight: 700;
         margin-bottom: 25px; }
+    #form-modal #form-content-box .error-messages {
+      color: #dd2a2a;
+      font-size: 0.8125em;
+      margin: 10px 0 10px;
+      line-height: 1.3em; }
+      #form-modal #form-content-box .error-messages li {
+        display: none;
+        margin-bottom: 3px; }
     #form-modal #form-content-box .prev-next {
       margin-top: 35px;
       *zoom: 1; }

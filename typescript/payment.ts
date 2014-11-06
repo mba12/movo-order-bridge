@@ -1,6 +1,6 @@
 /// <reference path="stripe.d.ts" />
 
-class Payment {
+class Payment extends ScreenBase {
 
     private $form:any;
     private $submitBtn:JQuery;
@@ -8,25 +8,29 @@ class Payment {
     private stripeKey:string;
     private validation:Validation;
 
-    constructor() {
+    constructor($pagination:Pagination) {
+        super($pagination);
         this.setSelectors();
-        this.initStripe();
         this.initEvents();
+        this.initStripe();
     }
 
-    private setSelectors() {
+    public setSelectors() {
         this.$form = $('#order-form');
         this.$submitBtn = $('#submit-order');
         this.submitButtonDefaultValue = this.$submitBtn.val();
+        this.$currentPage = $('#payment');
+        super.setSelectors();
+    }
+
+    public initEvents() {
+        this.$form.on('submit', $.proxy(this.onFormSubmit, this));
+        super.initEvents();
     }
 
     private initStripe() {
         this.stripeKey = $('meta[name="publishable-key"]').attr('content');
         Stripe.setPublishableKey(this.stripeKey);
-    }
-
-    private initEvents() {
-        this.$form.on('submit', $.proxy(this.onFormSubmit, this));
     }
 
     private onFormSubmit(e) {
@@ -56,9 +60,7 @@ class Payment {
 
     private createHiddenInput(response) {
         $('<input>', {
-            type: 'hidden',
-            name: 'token',
-            'value': response.id
+            type: 'hidden', name: 'token', 'value': response.id
         }).appendTo(this.$form);
     }
 
@@ -66,6 +68,19 @@ class Payment {
         this.$form[0].submit();
     }
 
-}
+    onPrevClick():void {
+        super.onPrevClick();
+    }
 
-new Payment();
+    onNextClick():void {
+        var validation = new Validation($('[data-validate]', this.$currentPage));
+        if (!validation.isValidForm()) {
+            validation.showErrors();
+            return;
+        }
+        validation.resetErrors();
+
+        // TODO: submit form here
+    }
+
+}

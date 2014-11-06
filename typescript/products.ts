@@ -1,24 +1,28 @@
-class Products {
+class Products extends ScreenBase {
 
     private $products:JQuery;
     private $quantityInputField:JQuery;
     private $tooManyUnitsMsg:JQuery;
 
-    constructor() {
+    constructor($pagination:Pagination) {
+        super($pagination);
         this.setSelectors();
         this.initEvents();
         this.showSizeSelectsBasedOnQuantity();
         this.showHideTooManyUnitsMessage();
     }
 
-    private setSelectors() {
+    public setSelectors() {
         this.$products = $('.products');
         this.$quantityInputField = $('#fixed-right-module').find('input');
         this.$tooManyUnitsMsg = $('#too-many-units');
+        this.$currentPage = $('#products');
+        super.setSelectors();
     }
 
-    private initEvents() {
+    public initEvents() {
         this.$quantityInputField.on('change blur', ()=>this.onQuantityChange());
+        super.initEvents();
     }
 
     private onQuantityChange():void {
@@ -52,5 +56,3 @@ class Products {
     }
 
 }
-
-new Products();

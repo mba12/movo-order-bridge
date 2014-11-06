@@ -4,17 +4,17 @@
         <div class="row double">
             <div class="field">
                 <label for="billing-first-name">First Name</label>
-                <input type="text" name="billing-first-name" placeholder="First Name" id="billing-first-name"/>
+                <input type="text" name="billing-first-name" placeholder="First Name" id="billing-first-name" data-validate="min:1" data-error-selector=".error-messages .first-name"/>
             </div>
             <div class="field">
                 <label for="billing-last-name">Billing Last Name</label>
-                <input type="text" name="billing-last-name" placeholder="Last Name" id="billing-last-name"/>
+                <input type="text" name="billing-last-name" placeholder="Last Name" id="billing-last-name" data-validate="min:1" data-error-selector=".error-messages .last-name"/>
             </div>
         </div>
         <div class="row double">
             <div class="field">
                 <label for="billing-phone">Billing Phone</label>
-                <input type="text" name="billing-phone" placeholder="Phone" id="billing-phone"/>
+                <input type="text" name="billing-phone" placeholder="Phone" id="billing-phone" data-validate="min:1" data-error-selector=".error-messages .phone"/>
             </div>
             <div class="field">
                 <label for="billing-country">Billing Country</label>
@@ -274,20 +274,21 @@
         <div class="row single">
             <div class="field">
                 <label for="billing-address">Billing Address</label>
-                <input type="text" name="billing-address" placeholder="Address" id="billing-address"/>
+                <input type="text" name="billing-address" placeholder="Address" id="billing-address" data-validate="min:1" data-error-selector=".error-messages .address"/>
             </div>
         </div>
         <div class="row triple">
             <div class="field">
                 <label for="billing-city">Billing City</label>
-                <input type="text" name="billing-city" placeholder="City" id="billing-city"/>
+                <input type="text" name="billing-city" placeholder="City" id="billing-city" data-validate="min:1" data-error-selector=".error-messages .city"/>
             </div>
             <div class="field">
-                <label for="billing-state-input">Billing Address</label>
-                <input type="text" name="billing-state" placeholder="State" id="billing-state-input" class="hide"/>
+                <label for="billing-state-input">Billing State</label>
+                <input type="text" name="billing-state" placeholder="State" id="billing-state-input" data-validate="min:1" data-error-selector=".error-messages .state"/>
             </div>
             <div class="field">
-                <label for="billing-state-select">Billing State</label> <select id="billing-state-select">
+                <label for="billing-state-select">Billing State</label>
+                <select id="billing-state-select" data-validate="min:1" data-error-selector=".error-messages .state">
                     <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -344,10 +345,20 @@
             </div>
             <div class="field">
                 <label for="billing-zip">Billing Zip</label>
-                <input type="text" name="billing-zip" placeholder="Zip" id="billing-zip"/>
+                <input type="text" name="billing-zip" placeholder="Zip" id="billing-zip" data-validate="min:1" data-error-selector=".error-messages .zip"/>
             </div>
         </div>
     </div>
+    <ul class="error-messages">
+        <li class="first-name">Please enter a first name!</li>
+        <li class="last-name">Please enter a last name!</li>
+        <li class="email">Please enter an email!</li>
+        <li class="phone">Please enter a phone number!</li>
+        <li class="address">Please enter an address!</li>
+        <li class="city">Please enter a city!</li>
+        <li class="state">Please enter a state!</li>
+        <li class="zip">Please enter a zip!</li>
+    </ul>
     <div class="prev-next">
         <div class="button next">Next</div>
         <div class="button prev">Previous</div>

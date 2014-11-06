@@ -5,6 +5,9 @@
         <p>Want to order more than 8 Waves?</p>
         <p>Email <a href="mailto:sales@getmovo.com">sales@getmovo.com</a></p>
     </div>
+    <ul class="error-messages">
+        <li class="size">Please select a size!</li>
+    </ul>
     <div class="prev-next">
         <div class="button next">Next</div>
     </div>
@@ -14,7 +17,8 @@
 <script type="text/template" id="product-select-tpl">
     <div class="select-group">
         <h5>Unit X Size</h5>
-        <label for="unit1"></label> <select id="unit1">
+        <label for="unit1"></label>
+        <select id="unit1" data-validate="min:1" data-error-selector=".error-messages .size">
             <option value="">-- Please Select--</option>
             <option value="extra-small">
                 Extra Small (14.5 cm - Small Female Wrist)

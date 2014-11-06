@@ -81,7 +81,6 @@ class Validation {
             if (!$el.data("validate")) {
                 return true;
             }
-            ;
             /*if (this.fieldContainsPlaceholderText($el)) {
              return false;
              }*/

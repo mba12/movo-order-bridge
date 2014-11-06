@@ -1,4 +1,4 @@
-class ShippingInfo {
+class ShippingInfo extends ScreenBase {
 
     private $shippingSelect:JQuery;
     private $quantityInputField:JQuery;
@@ -25,13 +25,16 @@ class ShippingInfo {
     private $billingState:JQuery;
     private $billingZip:JQuery;
 
-    constructor() {
+    constructor($pagination:Pagination) {
+        super($pagination);
         this.setSelectors();
         this.initEvents();
         this.initPriceSelect();
+        this.setCountryToUnitedStates();
+        this.showStateSelectOrInput();
     }
 
-    private setSelectors():void {
+    public setSelectors() {
         this.$shippingSelect = $('#shipping-type');
         this.$quantityInputField = $('#fixed-right-module').find('input');
         this.$useBillingAddressCheckbox = $('#use-billing-address-checkbox');
@@ -56,12 +59,16 @@ class ShippingInfo {
         this.$billingCity = this.$billingPage.find('#billing-city');
         this.$billingState = this.$billingPage.find('#billing-state-select');
         this.$billingZip = this.$billingPage.find('#billing-zip');
+        this.$currentPage = this.$shippingPage;
+        super.setSelectors();
     }
 
-    private initEvents():void {
+    public initEvents() {
         this.$quantityInputField.on('change blur', ()=>this.onQuantityChange());
         this.$useBillingAddressCheckbox.on('change', ()=>this.onUseBillingAddressCheckboxChange());
-        this.$billingPage.find('input, select').on('change', ()=>this.onBillingInputChange());
+        //this.$billingPage.find('input, select').on('change', ()=>this.onBillingInputChange());
+        this.$shippingCountry.on('change', ()=>this.onCountryChange());
+        super.initEvents();
     }
 
     private initPriceSelect():void {
@@ -71,8 +78,14 @@ class ShippingInfo {
         var shippingIds:any = $form.data('shipping-ids').split('|');
         var qty:number = parseInt(this.$quantityInputField.val());
         var startingIndex:number = qty > 1 ? 1 : 0;
+        var endIndex:number = shippingRates.length-1;
+        if(this.$shippingCountry.val() != 'US') {
+            startingIndex = shippingTypes.length-1;
+            endIndex = shippingRates.length;
+        }
+        this.$shippingSelect.empty();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
-        for (var i = startingIndex; i < shippingTypes.length - 1; i++) {
+        for (var i = startingIndex; i < endIndex; i++) {
             var price = shippingRates[i];
             this.$shippingSelect.append('<option value="' + shippingIds[i] + '" data-price="' + price + '" >' + shippingTypes[i] + ' - $' + price + '</option>');
         }
@@ -87,22 +100,23 @@ class ShippingInfo {
         this.initPriceSelect();
     }
 
+    private setCountryToUnitedStates():void {
+        this.$shippingCountry.find("option[value='US']").attr("selected", "selected");
+    }
+
     private onUseBillingAddressCheckboxChange():void {
         if (this.$useBillingAddressCheckbox.is(":checked")) {
-            this.$addressFields.slideUp(300, ()=> {
-                this.copyInBillingFieldValues();
-            });
+            this.copyInBillingFieldValues();
+            this.initPriceSelect();
         } else {
             this.resetAllFields();
-            this.$addressFields.slideDown();
         }
     }
 
-    private onBillingInputChange():void {
-        if (this.$useBillingAddressCheckbox.is(":checked")) {
-            this.copyInBillingFieldValues();
-        }
-    }
+    /*private onBillingInputChange():void {
+        this.copyInBillingFieldValues();
+        this.initPriceSelect();
+    }*/
 
     private copyInBillingFieldValues():void {
         this.$shippingFirstName.val(this.$billingFirstName.val());
@@ -119,10 +133,47 @@ class ShippingInfo {
         this.$shippingFirstName.val('');
         this.$shippingLastName.val('');
         this.$shippingPhone.val('');
-//        this.$shippingCountry.val('');
         this.$shippingAddress.val('');
         this.$shippingCity.val('');
-//        this.$shippingState.val('');
         this.$shippingZip.val('');
     }
+
+    private onCountryChange():void {
+        this.initPriceSelect();
+        this.showStateSelectOrInput();
+    }
+
+    private showStateSelectOrInput():void {
+        if (this.$shippingCountry.val() == 'US') {
+            $('#shipping-state-select').parent().show();
+            $('#shipping-state-input').parent().hide();
+        } else {
+            $('#shipping-state-select').parent().hide();
+            $('#shipping-state-input').parent().show();
+        }
+    }
+
+    onNextClick():void {
+        this.$shippingCountry.removeClass('error');
+        this.$currentPage.find('.error-messages').find('.country').hide();
+
+        var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        validation.resetErrors();
+
+        if (this.$shippingCountry.val() != 'US') {
+            this.$shippingCountry.addClass('error');
+            this.$currentPage.find('.error-messages').find('.country').show();
+            return;
+        }
+
+
+        if (!validation.isValidForm()) {
+            validation.showErrors();
+            return;
+        }
+        validation.resetErrors();
+        this.$pagination.next();
+        this.$pagination.showCurrentPage();
+    }
+
 }
