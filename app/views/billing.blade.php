@@ -18,7 +18,7 @@
             </div>
             <div class="field">
                 <label for="billing-country">Billing Country</label>
-                <select id="billing-country">
+                <select name="billing-country" id="billing-country">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
                     <option value="AL">Albania</option>
@@ -288,7 +288,7 @@
             </div>
             <div class="field">
                 <label for="billing-state-select">Billing State</label>
-                <select id="billing-state-select" data-validate="min:1" data-error-selector=".error-messages .state">
+                <select  name="billing-state"  id="billing-state-select" data-validate="min:1" data-error-selector=".error-messages .state">
                     <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>

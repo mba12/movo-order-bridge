@@ -369,7 +369,8 @@ var Products = (function (_super) {
         var templateHtml = $('#product-select-tpl').html();
         if (curQty < targetQty) {
             for (var i = curQty; i < targetQty; i++) {
-                templateHtml = templateHtml.replace('X', (i + 1).toString());
+                templateHtml = templateHtml.replace(/#unitID/g, "unit" + (i + 1).toString());
+                templateHtml = templateHtml.replace(/#unitNum/g, (i + 1).toString());
                 this.$products.append($(templateHtml));
             }
         }
@@ -583,7 +584,7 @@ var Payment = (function (_super) {
         _super.prototype.setSelectors.call(this);
     };
     Payment.prototype.initEvents = function () {
-        this.$form.on('submit', $.proxy(this.onFormSubmit, this));
+        this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
         _super.prototype.initEvents.call(this);
     };
     Payment.prototype.initStripe = function () {
@@ -592,16 +593,19 @@ var Payment = (function (_super) {
     };
     Payment.prototype.onFormSubmit = function (e) {
         e.preventDefault();
-        this.validation = new Validation($('[data-validate]'));
+        this.validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
         if (this.validation.isValidForm()) {
+            console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', true);
             this.createStripeToken();
         }
         else {
+            console.log("not valid");
             this.validation.showErrors();
         }
     };
     Payment.prototype.createStripeToken = function () {
+        var data = this.$form.serialize();
         Stripe.createToken(this.$form, $.proxy(this.stripResponseHandler, this));
     };
     Payment.prototype.stripResponseHandler = function (status, response) {

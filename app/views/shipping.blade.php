@@ -21,7 +21,8 @@
                 <input type="text" name="shipping-phone" placeholder="Phone" id="shipping-phone" data-validate="min:1" data-error-selector=".error-messages .phone"/>
             </div>
             <div class="field">
-                <label for="shipping-country">Country</label> <select id="shipping-country">
+                <label for="shipping-country">Country</label>
+                <select name="shipping-country" id="shipping-country">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
                     <option value="AL">Albania</option>
@@ -290,7 +291,7 @@
                 <input type="text" name="shipping-state" placeholder="State" id="shipping-state-input"/>
             </div>
             <div class="field">
-                <label for="shipping-state-select">State</label> <select id="shipping-state-select">
+                <label for="shipping-state-select">State</label> <select name="shipping-state" id="shipping-state-select">
                     <option value="">-- State --</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -353,8 +354,8 @@
     </div>
     <div class="row single">
         <div class="field">
-            <label for="shipping-type">Country</label>
-            <select id="shipping-type" data-validate="min:1" data-error-selector=".error-messages .shipping-type"></select>
+            <label for="shipping-type">Shipping Type</label>
+            <select name="shipping-type" id="shipping-type" data-validate="min:1" data-error-selector=".error-messages .shipping-type"></select>
         </div>
     </div>
     <ul class="error-messages">

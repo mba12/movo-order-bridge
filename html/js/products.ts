@@ -37,7 +37,8 @@ class Products extends ScreenBase {
         var templateHtml:string = $('#product-select-tpl').html();
         if (curQty < targetQty) {
             for (var i = curQty; i < targetQty; i++) {
-                templateHtml = templateHtml.replace('X', (i+1).toString());
+                templateHtml=templateHtml.replace(/#unitID/g, "unit"+(i+1).toString());
+                templateHtml=templateHtml.replace(/#unitNum/g, (i+1).toString());
                 this.$products.append($(templateHtml));
             }
         } else {

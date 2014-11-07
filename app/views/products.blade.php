@@ -1,4 +1,5 @@
 <section id="products">
+
     <h3 class="section-title">Products</h3>
     <div class="products"></div>
     <div id="too-many-units">
@@ -16,9 +17,9 @@
 
 <script type="text/template" id="product-select-tpl">
     <div class="select-group">
-        <h5>Unit X Size</h5>
-        <label for="unit1"></label>
-        <select id="unit1" data-validate="min:1" data-error-selector=".error-messages .size">
+        <h5>Unit #unitNum Size</h5>
+        <label for="#unitID"></label>
+        <select name="#unitID" id="#unitID" data-validate="min:1" data-error-selector=".error-messages .size">
             <option value="">-- Please Select--</option>
             <option value="extra-small">
                 Extra Small (14.5 cm - Small Female Wrist)

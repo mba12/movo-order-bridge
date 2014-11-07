@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\App;
-
+use Illuminate\Support\Facades\Input;
 
 
 class OrderController extends BaseController {

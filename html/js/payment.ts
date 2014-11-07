@@ -24,9 +24,10 @@ class Payment extends ScreenBase {
     }
 
     public initEvents() {
-        this.$form.on('submit', $.proxy(this.onFormSubmit, this));
+        this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
         super.initEvents();
     }
+
 
     private initStripe() {
         this.stripeKey = $('meta[name="publishable-key"]').attr('content');
@@ -35,16 +36,19 @@ class Payment extends ScreenBase {
 
     private onFormSubmit(e) {
         e.preventDefault();
-        this.validation = new Validation($('[data-validate]'));
+        this.validation = new  Validation($('[data-validate]', this.$currentPage).filter(':visible'));
         if (this.validation.isValidForm()) {
+            console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', <any>true);
             this.createStripeToken();
         } else {
+            console.log("not valid");
             this.validation.showErrors();
         }
     }
 
     private createStripeToken() {
+        var data=this.$form.serialize();
         Stripe.createToken(this.$form, $.proxy(this.stripResponseHandler, this));
     }
 
