@@ -1,6 +1,10 @@
 <?php
 
 
+App::bind("Pusher", function ($app){
+	$keys=$app['config']->get('services.pusher');
+	return new Pusher($keys['public'], $keys['secret'], $keys['app-id']);
+});
 Route::post('stripe/webhook', 'WebhookController@handleWebhook');
 
 Route::get('/', 'OrderController@showForm');
@@ -15,6 +19,8 @@ Route::group(array('before' => 'admin'), function () {
 		'uses' => 'AdminController@getOrders',
 	));
 });
+
+Route::get('/admin', 'AdminController@index');
 
 Route::get('/mail',function(){
 	$data[]=new Item("widget 1", 4, "$10.00");

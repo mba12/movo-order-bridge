@@ -25,7 +25,7 @@ body {
              </li>
        @endforeach
 </ul>
-
+ <div class="total">Shipping: {{$data['shipping-type']}} {{$data['shipping-rate']}}</div>
 <div class="total">Total: {{$data['total']}}</div>
 
 <p align="center">Thanks for your order</p>

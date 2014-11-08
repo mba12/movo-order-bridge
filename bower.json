@@ -1,0 +1,27 @@
+{
+  "name": "bridge",
+  "version": "0.0.0",
+  "authors": [
+    "Alex Bogartz <alex@jumpkick.pro>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.1",
+    "pusher": "~2.2.3",
+    "Stepper": "https://github.com/Formstone/Stepper.git#~3.0.8",
+    "placeholder": "https://github.com/danbentley/placeholder.git"
+  },
+  "install": {
+    "path": "html/js/vendor",
+    "sources" : {
+      "placeholder" : "bower_components/placeholder/js/jquery.placeholder.js"
+    }
+  }
+}

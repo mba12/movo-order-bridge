@@ -69,6 +69,22 @@ class Payment extends ScreenBase {
     }
 
     private submitForm() {
+        var formURL = this.$form.attr("action");
+        $.ajax({
+            type: 'POST',
+            url: formURL,
+            data: this.$form.serialize(),
+            success: (response)=> {
+                console.log(response);
+                if (response.status == 200) {
+
+                   // this.$pagination.gotoSummaryPage();
+                } else if (response.status == 400) {
+                    console.log("crap, something went wrong");
+                }
+            }
+        });
+        return;
         this.$form[0].submit();
     }
 

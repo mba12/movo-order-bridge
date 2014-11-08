@@ -8,39 +8,23 @@
 * v0.7.2
 * Docs at http://davidtheclark.github.io/scut
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, menu, nav, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, menu, nav, section, summary,
+time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -50,7 +34,8 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline; }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
   display: block; }
 
 body {
@@ -62,7 +47,8 @@ ol, ul {
 blockquote, q {
   quotes: none; }
 
-blockquote:before, blockquote:after, q:before, q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
   content: ' ';
   content: none; }
 
@@ -108,16 +94,16 @@ a {
 .screen-size-check {
   display: none;
   width: 1px; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .screen-size-check {
       width: 2px; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .screen-size-check {
       width: 3px; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .screen-size-check {
       width: 4px; } }
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: min-width 1300px 12) {
     .screen-size-check {
       width: 5px; } }
 
@@ -146,83 +132,83 @@ a {
 
 .hide-for-mobile {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .hide-for-mobile {
       display: block !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-up {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-only {
     display: none !important; } }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-tablet-only {
     display: block !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-up {
     display: none !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-only {
     display: none !important; } }
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-desktop-only {
     display: block !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-up {
     display: none !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-only {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .show-for-mobile-only {
     display: none !important; } }
 
 .show-for-tablet-up {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-up {
       display: block !important; } }
 
 .show-for-tablet-only {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-only {
       display: block !important; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-tablet-only {
       display: none !important; } }
 
 .show-for-ipad-portrait-up {
   display: none !important; }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: min-width 768px 12) {
     .show-for-ipad-portrait-up {
       display: block !important; } }
 
 .show-for-desktop-up {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-up {
       display: block !important; } }
 
 .show-for-desktop-only {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-only {
       display: block !important; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-desktop-only {
       display: none !important; } }
 
 .show-for-large-up {
   display: none !important; }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-large-up {
       display: block !important; } }
 
@@ -294,7 +280,7 @@ a {
       width: auto;
       height: 40px;
       margin-left: 5px;
-      color: white;
+      color: #fff;
       white-space: nowrap;
       padding: 10px 18px; }
     .youtube-player .close-btn .x {
@@ -325,7 +311,8 @@ a {
   background-position: 50%;
   background-repeat: no-repeat; }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
@@ -357,13 +344,14 @@ USAGE:
   overflow: hidden;
   -moz-appearance: textfield; }
 
-.stepper .stepper-input::-webkit-inner-spin-button, .stepper .stepper-input::-webkit-outer-spin-button {
+.stepper .stepper-input::-webkit-inner-spin-button,
+.stepper .stepper-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
 .stepper .stepper-arrow {
   background: #eeeeee url(../img/jquery.fs.stepper-arrows.png) no-repeat;
-  border-left: 1px solid #cccccc;
+  border-left: 1px solid #ccc;
   cursor: pointer !important;
   display: block;
   height: 50%;
@@ -600,8 +588,8 @@ body {
             #form-modal #form-content-box #fixed-right-module .top .right .quantity label {
               display: block; }
       #form-modal #form-content-box #fixed-right-module #subtotal-fields {
-        border-top: 1px solid #cccccc;
-        border-bottom: 1px solid #cccccc; }
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc; }
       #form-modal #form-content-box #fixed-right-module #total {
         font-size: 1em; }
       #form-modal #form-content-box #fixed-right-module .pricing {
@@ -650,14 +638,14 @@ body {
       #form-modal #form-content-box #payment .credit-cards {
         width: 159px;
         height: 26px;
-        background-image: url('../img/credit-cards.png');
+        background-image: url("../img/credit-cards.png");
         background-size: 159px 26px;
         background-repeat: no-repeat;
         margin-bottom: 10px;
         float: left; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
           #form-modal #form-content-box #payment .credit-cards {
-            background-image: url('../img/credit-cards@2x.png');
+            background-image: url("../img/credit-cards@2x.png");
             background-size: 159px 26px; } }
       #form-modal #form-content-box #payment #secure {
         width: 100px;
@@ -667,14 +655,14 @@ body {
         #form-modal #form-content-box #payment #secure #lock-icon {
           width: 13px;
           height: 17px;
-          background-image: url('../img/lock.png');
+          background-image: url("../img/lock.png");
           background-size: 13px 17px;
           background-repeat: no-repeat;
           display: inline-block;
           opacity: 0.8; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
             #form-modal #form-content-box #payment #secure #lock-icon {
-              background-image: url('../img/lock@2x.png');
+              background-image: url("../img/lock@2x.png");
               background-size: 13px 17px; } }
         #form-modal #form-content-box #payment #secure h5 {
           display: inline-block;
@@ -685,4 +673,6 @@ body {
         -moz-transition: 0.3s all;
         transition: 0.3s all; }
         #form-modal #form-content-box #payment #submit-order:hover {
-          background-color: #498da6; }
+          background-color: #498ca6; }
+    #form-modal #form-content-box #summary {
+      display: none; }

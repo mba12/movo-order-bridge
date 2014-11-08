@@ -53,15 +53,16 @@
                @include('billing')
                @include('shipping')
                @include('payment')
+               @include('summary')
            </div>
        </div>
 
 
        <div class="payment-errors"></div>
        {{Form::close()}}
-       <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-       <script src="js/vendor/jquery/jquery.fs.stepper.js"></script>
-       <script src="js/vendor/jquery/jquery.placeholder.js"></script>
+       <script src="js/vendor/jquery/jquery.js"></script>
+       <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
+       <script src="js/vendor/placeholder/jquery.placeholder.js"></script>
        <script src="https://js.stripe.com/v2/"></script>
        <script src="/js/order-form.js"></script>
 </body>

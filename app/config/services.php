@@ -19,8 +19,10 @@ return array(
 		'secret' => 'key-20507900adecce50ee0c8faea5ffa3e2',
 	),
 
-	'mandrill' => array(
-		'secret' => '',
+	'pusher' => array(
+		'public' =>  getenv('pusher.public'),
+		'secret' =>  getenv('pusher.secret'),
+		'app-id' =>  getenv('pusher.app-id'),
 	),
 
 	'stripe' => array(

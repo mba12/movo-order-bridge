@@ -172,7 +172,8 @@ var Pagination = (function () {
             $('#products'),
             $('#billing-info'),
             $('#shipping-info'),
-            $('#payment')
+            $('#payment'),
+            $('#summary')
         ];
         this.$currentPage = this.pages[this.currentIndex];
     };
@@ -199,6 +200,10 @@ var Pagination = (function () {
     };
     Pagination.prototype.gotoProductsPage = function () {
         this.currentIndex = 0;
+        this.showCurrentPage();
+    };
+    Pagination.prototype.gotoSummaryPage = function () {
+        this.currentIndex = 4;
         this.showCurrentPage();
     };
     return Pagination;
@@ -624,6 +629,21 @@ var Payment = (function (_super) {
         }).appendTo(this.$form);
     };
     Payment.prototype.submitForm = function () {
+        var formURL = this.$form.attr("action");
+        $.ajax({
+            type: 'POST',
+            url: formURL,
+            data: this.$form.serialize(),
+            success: function (response) {
+                console.log(response);
+                if (response.status == 200) {
+                }
+                else if (response.status == 400) {
+                    console.log("crap, something went wrong");
+                }
+            }
+        });
+        return;
         this.$form[0].submit();
     };
     Payment.prototype.onPrevClick = function () {

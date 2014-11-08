@@ -16,7 +16,7 @@ class Pagination {
 
     private initPages():void {
         this.pages = [
-            $('#products'), $('#billing-info'), $('#shipping-info'), $('#payment')
+            $('#products'), $('#billing-info'), $('#shipping-info'), $('#payment'), $('#summary')
         ];
         this.$currentPage = this.pages[this.currentIndex];
     }
@@ -40,13 +40,6 @@ class Pagination {
     }
 
     public next():void {
-        /*var validation = new Validation($('[data-validate]', this.$currentPage));
-        if (!validation.isValidForm()) {
-            validation.showErrors();
-            return;
-        }
-        validation.resetErrors();*/
-
         this.currentIndex++;
         if (this.currentIndex > this.pages.length - 1) {
             this.currentIndex = this.pages.length - 1
@@ -58,4 +51,8 @@ class Pagination {
         this.showCurrentPage();
     }
 
+    public gotoSummaryPage():void {
+        this.currentIndex = 4;
+        this.showCurrentPage();
+    }
 }

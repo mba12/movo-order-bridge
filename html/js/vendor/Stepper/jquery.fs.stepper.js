@@ -1,3 +1,11 @@
+/* 
+ * Stepper v3.0.8 - 2014-09-14 
+ * A jQuery plugin for cross browser number inputs. Part of the Formstone Library. 
+ * http://formstone.it/stepper/ 
+ * 
+ * Copyright 2014 Ben Plum; MIT Licensed 
+ */ 
+
 ;(function ($, window) {
 	"use strict";
 
@@ -152,11 +160,6 @@
 			// Bind click events
 			$stepper.on("touchstart.stepper mousedown.stepper", ".stepper-arrow", data, _onMouseDown)
 					.data("stepper", data);
-
-            $stepper.find('span').on('click', function(e){
-                e.preventDefault();
-                $stepper.blur();
-            })
 		}
 	}
 
@@ -195,10 +198,11 @@
 		if (!data.$input.is(':disabled') && !data.$stepper.hasClass("disabled")) {
 			var change = $(e.target).hasClass("up") ? data.step : -data.step;
 
-			data.timer = _startTimer(data.timer, 220, function() {
+			data.timer = _startTimer(data.timer, 125, function() {
 				_step(data, change, false);
 			});
 			_step(data, change);
+
 			$("body").on("touchend.stepper mouseup.stepper", data, _onMouseUp);
 		}
 	}
@@ -218,9 +222,6 @@
 		_clearTimer(data.timer);
 
 		$("body").off(".stepper");
-//        setTimeout(function () {
-//            $('input').blur();
-//        }, 0);
 	}
 
 	/**

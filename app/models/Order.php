@@ -3,32 +3,7 @@
 class Order extends \Eloquent
 {
 
-/*$table->integer('amount')->nullable();
-$table->integer('quantity')->nullable();
-$table->integer('shipping-type')->nullable();
-$table->string('sizes')->nullable();
 
-$table->string('billing-first-name')->nullable();
-$table->string('billing-last-name')->nullable();
-$table->string('billing-address')->nullable();
-$table->string('billing-city')->nullable();
-$table->string('billing-state')->nullable();
-$table->string('billing-zip')->nullable();
-$table->string('billing-phone')->nullable();
-
-$table->string('shipping-first-name')->nullable();
-$table->string('shipping-last-name')->nullable();
-$table->string('shipping-address')->nullable();
-$table->string('shipping-city')->nullable();
-$table->string('shipping-state')->nullable();
-$table->string('shipping-zip')->nullable();
-$table->string('shipping-phone')->nullable();
-
-$table->string('stripe-charge-id')->nullable();
-$table->string('ingram-order-id')->nullable();
-$table->integer('status')->nullable();
-$table->string('tracking-code')->nullable();
-$table->string('error-flag')->nullable();*/
     protected $fillable = [
         'amount',
         'quantity',
@@ -60,12 +35,20 @@ $table->string('error-flag')->nullable();*/
         'error_flag',
     ];
 
-    public function saveOrder($amount,$chargeID)
+    public function saveOrder($amount, $chargeID)
     {
-		$this->amount = $amount;
-		$this->quantity = Input::get("quantity");
+        $this->amount = $amount;
+        $this->quantity = Input::get("quantity");
         $this->shipping_type = Input::get("shipping-type");
+        $strSizes = "";
+        for ($i = 0; $i < Input::get("quantity"); $i++) {
+            if ($i > 0) {
+                $strSizes .= "|";
+            }
+            $strSizes .= Input::get("unit" . ($i + 1));
 
+        }
+        $this->sizes = $strSizes;
 
         $this->shipping_first_name = Input::get("shipping-first-name");
         $this->shipping_last_name = Input::get("shipping-last-name");
@@ -86,11 +69,13 @@ $table->string('error-flag')->nullable();*/
         $this->billing_phone = Input::get("billing-phone");
 
         $this->email = Input::get("email");
-		$this->stripe_charge_id = $chargeID;
-		$this->ingram_order_id = "";
-		$this->status = 1;
-		$this->tracking_code = "";
-		$this->error_flag = "";
-		$this->save();
+        $this->stripe_charge_id = $chargeID;
+        $this->ingram_order_id = "";
+        $this->status = 1;
+        $this->tracking_code = "";
+        $this->error_flag = "";
+
+
+        $this->save();
     }
 }
