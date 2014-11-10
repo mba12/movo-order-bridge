@@ -18,7 +18,7 @@
             </div>
               <div class="field">
                              <label for="email">Email</label>
-                             <input type="text" name="email" placeholder="Email" id="email" data-validate="min:1|email" data-error-selector=".error-messages .email"/>
+                             <input type="text"  name="email" placeholder="Email" id="email" data-validate="min:1|email" data-error-selector=".error-messages .email"/>
                          </div>
         </div>
         <div class="row single">

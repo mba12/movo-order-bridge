@@ -8,25 +8,7 @@
         <link rel="stylesheet" href="css/main.css"/>
     </head>
 <body>
-        <?php
 
-        $shippingTypes="";
-        $shippingIds="";
-        $shippingRates="";
-        $i=0;
-        foreach($shippingInfo as $info){
-            if($i>0){
-               $shippingTypes.='|';
-               $shippingIds.='|';
-               $shippingRates.='|';
-            }
-            $shippingTypes.=$info->type;
-            $shippingIds.=$info->id;
-            $shippingRates.=\Movo\Helpers\Format::FormatDecimals($info->rate);
-            $i++;
-        }
-           //dd( $shippingTypes);
-        ?>
 
        {{Form::open([
             'class' => 'order-form',
@@ -34,9 +16,9 @@
             'route'=>'buy',
             'autocomplete'=>'on',
             'data-product-prices'=>$unitPrice,
-            'data-shipping-types'=>$shippingTypes,
-            'data-shipping-ids'=>$shippingIds,
-            'data-shipping-rates'=>$shippingRates
+            'data-shipping-types'=>$shippingDropdownData['shippingTypes'],
+            'data-shipping-ids'=>$shippingDropdownData['shippingIds'],
+            'data-shipping-rates'=>$shippingDropdownData['shippingRates']
             ])
        }}
 
