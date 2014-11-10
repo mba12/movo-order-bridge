@@ -11,10 +11,13 @@ class OrderController extends BaseController
     {
         $pusher=App::make("Pusher");
         $pusher->trigger("orderChannel", "userStartedOrder",[]);
+        $unitPrice=$this->getUnitPrice();
+        $shippingInfo=Shipping::all();
+        return View::make('order-form', [
+            'shippingInfo'=> $shippingInfo,
+            'unitPrice'=> $unitPrice,
 
-        //$pusher=App::make("Pusher");
-       // dd($pusher);
-        return View::make('order-form');
+        ]);
     }
 
     public function buy()

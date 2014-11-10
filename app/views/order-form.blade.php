@@ -8,43 +8,41 @@
         <link rel="stylesheet" href="css/main.css"/>
     </head>
 <body>
+        <?php
+
+        $shippingTypes="";
+        $shippingIds="";
+        $shippingRates="";
+        $i=0;
+        foreach($shippingInfo as $info){
+            if($i>0){
+               $shippingTypes.='|';
+               $shippingIds.='|';
+               $shippingRates.='|';
+            }
+            $shippingTypes.=$info->type;
+            $shippingIds.=$info->id;
+            $shippingRates.=\Movo\Helpers\Format::FormatDecimals($info->rate);
+            $i++;
+        }
+           //dd( $shippingTypes);
+        ?>
 
        {{Form::open([
             'class' => 'order-form',
             'id' => 'order-form',
             'route'=>'buy',
             'autocomplete'=>'on',
-            'data-product-prices'=>'29.99',
-            'data-shipping-types'=>'7-10 Day Ground|3-5 Day Ground|2 Day|Priority Overnight|International',
-            'data-shipping-ids'=>'1|2|3|4|5',
-            'data-shipping-rates'=>'5.75|8.50|12.00|18.00|17.00'
+            'data-product-prices'=>$unitPrice,
+            'data-shipping-types'=>$shippingTypes,
+            'data-shipping-ids'=>$shippingIds,
+            'data-shipping-rates'=>$shippingRates
             ])
        }}
 
-       <!-- <div class="form-row">
-            <label for="">
-                <span>Card Number: </span>
-                <input type="number" data-stripe="number" value="4242424242424242" min="1" max="2000"/>
-            </label>
-        </div>
-
-       <div class="form-row">
-             <label for="">
-                   <span>CVC: </span>
-                   <input type="text" data-stripe="cvc" value="123"/>
-             </label>
-       </div>
-
-        <div class="form-row">
-              <label for="">
-                    <span>Expiration: </span>
-                    {{Form::selectMonth(null, null, ['data-stripe'=>"exp-month"])}}
-                    {{Form::selectYear(null, date('Y'), date('Y')+10,date('Y')+1, ['data-stripe'=>'exp-year'])}}
-              </label>
-        </div>
+       {{Form::selectMonth(null, null, ['data-stripe'=>"exp-month"])}}
+       {{Form::selectYear(null, date('Y'), date('Y')+10,date('Y')+1, ['data-stripe'=>'exp-year'])}}
        {{Form::submit("Buy Now")}}-->
-
-
        <div id="form-modal">
            <div id="form-content-box">
                @include('nav')
