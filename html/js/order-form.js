@@ -629,6 +629,7 @@ var Payment = (function (_super) {
         }).appendTo(this.$form);
     };
     Payment.prototype.submitForm = function () {
+        var _this = this;
         var formURL = this.$form.attr("action");
         $.ajax({
             type: 'POST',
@@ -637,6 +638,7 @@ var Payment = (function (_super) {
             success: function (response) {
                 console.log(response);
                 if (response.status == 200) {
+                    _this.$pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
                     console.log("crap, something went wrong");

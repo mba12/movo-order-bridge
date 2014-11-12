@@ -2,6 +2,7 @@
 
 namespace Movo\Receipts;
 
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Movo\Helpers\Format;
@@ -21,7 +22,7 @@ class MailgunReceipts implements ReceiptsInterface
         $emailData['shipping-type'] = $data['shipping-type'];
 
         Mail::send('emails.receipt', array('data' => $emailData), function ($message) {
-            $message->to(Input::get("email"), Input::get("billing-first-name") . ' ' . Input::get("billing-last-name"))->subject('Your Movo Order!')->from("orders@getmovo.com");
+            $message->to(Input::get("email"), Input::get("billing-first-name") . ' ' . Input::get("billing-last-name"))->subject('Your Movo Order!')->from("orders@orders.getmovo.com");
         });
     }
 }

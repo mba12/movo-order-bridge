@@ -22,9 +22,6 @@
             ])
        }}
 
-       {{Form::selectMonth(null, null, ['data-stripe'=>"exp-month"])}}
-       {{Form::selectYear(null, date('Y'), date('Y')+10,date('Y')+1, ['data-stripe'=>'exp-year'])}}
-       {{Form::submit("Buy Now")}}-->
        <div id="form-modal">
            <div id="form-content-box">
                @include('nav')

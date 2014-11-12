@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Movo\Helpers\Format;
-
 
 class OrderController extends BaseController
 {
