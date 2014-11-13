@@ -1,5 +1,7 @@
 <?php
 
 class Coupon extends \Eloquent {
-	protected $fillable = [];
+	protected $fillable = [
+	//	'name','code','amount','method','limit','min_units'
+	];
 }

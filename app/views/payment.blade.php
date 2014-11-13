@@ -9,7 +9,7 @@
         <div class="row single">
             <div class="field">
                 <label for="credit-card-number">Credit Card Number</label>
-                <input type="text" data-stripe="number" placeholder="Credit Card Number" id="credit-card-number" maxlength="16" data-validate="min:16|max:16|number" data-error-selector=".error-messages .credit-card"/>
+                <input type="text" @if(App::environment()=='local'){{'value="4242424242424242"'}}  @endif data-stripe="number" placeholder="Credit Card Number" id="credit-card-number" maxlength="16" data-validate="min:16|max:16|number" data-error-selector=".error-messages .credit-card"/>
             </div>
         </div>
         <div class="row triple">

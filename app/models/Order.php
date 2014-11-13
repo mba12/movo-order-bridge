@@ -2,8 +2,6 @@
 
 class Order extends \Eloquent
 {
-
-
     protected $fillable = [
         'amount',
         'quantity',

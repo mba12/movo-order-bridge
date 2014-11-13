@@ -8,17 +8,23 @@ class OrderController extends BaseController
 {
     public function showForm()
     {
-        $pusher = App::make("Pusher");
-        $pusher->trigger("orderChannel", "userStartedOrder", []);
+
         $unitPrice = $this->getUnitPrice();
         $shippingInfo = Shipping::all();
         $shippingDropdownData=  $this->createShippingDropdownData($shippingInfo);
-
-
+        $sizeInfo=Size::all();
+        $taxRates=Tax::all();
+        $coupon=null;
+        $code=Input::get("code");
+        if( $code){
+            $coupon= Coupon::where("code", "=", $code)->first();
+        }
         return View::make('order-form', [
             'shippingDropdownData' => $shippingDropdownData,
             'unitPrice' => $unitPrice,
-
+            'sizeInfo' => $sizeInfo,
+            'coupon' => $coupon,
+            'taxRates' => $taxRates,
         ]);
     }
 
@@ -78,6 +84,9 @@ class OrderController extends BaseController
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
             ]);
+            $pusher = App::make("Pusher");
+            $pusher->trigger("orderChannel", "completedOrder", []);
+            return;
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!'));
 
         } else {

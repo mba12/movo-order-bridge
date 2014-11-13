@@ -1,6 +1,7 @@
 <?php namespace Movo\Shipping;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
 use SoapBox\Formatter\Formatter;
 
 class IngramShipping implements ShippingInterface
@@ -68,26 +69,28 @@ class IngramShipping implements ShippingInterface
 
     private function createOrderList()
     {
-        $items = [
-            [
-                'line-no' => '1',
-                'item-code' => 'M04-100005-US',
-                'quantity' => '1.0',
-                'unit-of-measure' => 'EA',
-            ],
-            [
-                'line-no' => '1',
-                'item-code' => 'M04-100007-US',
-                'quantity' => '3.0',
-                'unit-of-measure' => 'EA',
-            ]
-        ];
-
+        $items = [];
+        for ($i = 0; $i < Input::get("quantity"); $i++) {
+            array_push($items,
+                [
+                    'line-no' => '1',
+                    'item-code' => Input::get("unit" . ($i + 1)),
+                    'quantity' => '1.0',
+                    'unit-of-measure' => 'EA',
+                ]);
+        }
         return $items;
     }
 
     private function sendToFulfillment($xml)
     {
+        $xml = str_replace("<xml>", "", $xml);
+        $xml = str_replace("</xml>", "", $xml);
+        $xml = str_replace("<item>", "<line-item>", $xml);
+        $xml = str_replace("</item>", "</line-item>", $xml);
+        //echo($xml);
+        //dd("");
+
         $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";
 
         $header = "GET HTTP/1.0 \r\n";

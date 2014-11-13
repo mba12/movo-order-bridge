@@ -251,6 +251,7 @@ var FixedRightModule = (function () {
         this.$quantityInputField = $('#fixed-right-module').find('input');
         var $subtotalFields = $('#subtotal-fields');
         this.$unitPrice = $subtotalFields.find('.unit-price');
+        this.$salesTax = $subtotalFields.find('.sales-tax');
         this.$subtotal = $subtotalFields.find('.subtotal');
         this.$shipping = $subtotalFields.find('.shipping');
         this.$total = $('#total').find('.price').find('li');
@@ -294,6 +295,7 @@ var FixedRightModule = (function () {
     FixedRightModule.prototype.calculatePrice = function () {
         this.setUnitPrice();
         this.setSubtotal();
+        this.setSalesTax();
         this.setShipping();
         this.setTotal();
     };
@@ -304,6 +306,10 @@ var FixedRightModule = (function () {
     FixedRightModule.prototype.setSubtotal = function () {
         this.subtotalAmt = this.getQuantity() * this.unitPriceAmt;
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
+    };
+    FixedRightModule.prototype.setSalesTax = function () {
+        this.salesTax = this.getQuantity() * this.unitPriceAmt * TAX_RATES[0].rate;
+        this.$salesTax.html('$' + this.salesTax.toFixed(2));
     };
     FixedRightModule.prototype.setShipping = function () {
         if (this.$shippingSelect.val() == '') {
@@ -316,7 +322,7 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.setTotal = function () {
-        var totalStr = '$' + (this.subtotalAmt + this.shippingAmt).toFixed(2);
+        var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.salesTax).toFixed(2);
         this.$total.html(totalStr);
     };
     FixedRightModule.prototype.onKeyPress = function (e) {

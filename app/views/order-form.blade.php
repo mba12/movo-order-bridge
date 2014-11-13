@@ -8,8 +8,23 @@
         <link rel="stylesheet" href="css/main.css"/>
     </head>
 <body>
-
-
+       @if($coupon)
+         <script type="text/javascript">
+            var COUPON={
+                code: '{{$coupon->code}}',
+                name: '{{$coupon->name}}',
+                amount: {{$coupon->amount}},
+                method: '{{$coupon->method}}',
+                min_units: {{$coupon->min_units}},
+                limit: {{$coupon->limit}}
+            };
+       @endif
+       <script type="text/javascript">
+          var TAX_RATES=[];
+                        @foreach($taxRates as $tax)
+                         TAX_RATES.push({"state":"{{$tax->state}}", "rate":{{$tax->rate}}})
+                        @endforeach
+       </script>
        {{Form::open([
             'class' => 'order-form',
             'id' => 'order-form',

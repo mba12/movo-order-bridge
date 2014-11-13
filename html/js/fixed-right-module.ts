@@ -4,7 +4,9 @@ class FixedRightModule {
     private $unitPrice:JQuery;
     private unitPriceAmt:number = parseFloat($('form').data('product-prices'));
     private $subtotal:JQuery;
+    private $salesTax:JQuery;
     private subtotalAmt:number;
+    private salesTax:number;
     private $shipping:JQuery;
     private shippingAmt:number;
     private $total:JQuery;
@@ -24,6 +26,7 @@ class FixedRightModule {
         this.$quantityInputField = $('#fixed-right-module').find('input');
         var $subtotalFields = $('#subtotal-fields');
         this.$unitPrice = $subtotalFields.find('.unit-price');
+        this.$salesTax = $subtotalFields.find('.sales-tax');
         this.$subtotal = $subtotalFields.find('.subtotal');
         this.$shipping = $subtotalFields.find('.shipping');
         this.$total = $('#total').find('.price').find('li');
@@ -75,6 +78,7 @@ class FixedRightModule {
     private calculatePrice():void {
         this.setUnitPrice();
         this.setSubtotal();
+        this.setSalesTax();
         this.setShipping();
         this.setTotal();
     }
@@ -89,6 +93,10 @@ class FixedRightModule {
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
     }
 
+    private setSalesTax():void {
+        this.salesTax = this.getQuantity() * this.unitPriceAmt*TAX_RATES[0].rate;
+        this.$salesTax.html('$' + this.salesTax.toFixed(2));
+    }
     private setShipping():void {
         if (this.$shippingSelect.val() == '') {
             this.shippingAmt = 0;
@@ -100,7 +108,7 @@ class FixedRightModule {
     }
 
     private setTotal():void {
-        var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt).toFixed(2);
+        var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt+this.salesTax).toFixed(2);
         this.$total.html(totalStr);
     }
 

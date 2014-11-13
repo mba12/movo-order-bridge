@@ -13,7 +13,6 @@ class OrderForm {
 
     constructor() {
         var pagination = new Pagination();
-
         new ShippingInfo(pagination);
         new FixedRightModule(pagination);
         new Products(pagination);
@@ -24,3 +23,5 @@ class OrderForm {
 }
 
 new OrderForm();
+declare var TAX_RATES;
+
