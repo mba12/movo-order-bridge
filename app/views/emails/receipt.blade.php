@@ -25,6 +25,10 @@ body {
              </li>
        @endforeach
 </ul>
+@if ($data['discount'])
+     <div class="discount">Coupon Discount: {{$data['discount']}}</div>
+@endif
+
  <div class="total">Shipping: {{$data['shipping-type']}} {{$data['shipping-rate']}}</div>
 <div class="total">Total: {{$data['total']}}</div>
 

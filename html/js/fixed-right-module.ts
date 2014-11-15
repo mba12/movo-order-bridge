@@ -2,7 +2,8 @@ class FixedRightModule {
 
     private $quantityInputField:JQuery;
     private $unitPrice:JQuery;
-    private unitPriceAmt:number = parseFloat($('form').data('product-prices'));
+    private $form;
+    private unitPriceAmt:number;
     private $subtotal:JQuery;
     private $salesTax:JQuery;
     private subtotalAmt:number;
@@ -13,18 +14,22 @@ class FixedRightModule {
     private $shippingSelect:JQuery;
     private $shippingCountrySelect:JQuery;
     public static MAX_UNITS:number = 8;
-
+    private coupon:CouponData;
+    private discount:number=0;
     constructor(public pagination:Pagination) {
         this.setSelectors();
+        this.setUnitPrice();
         this.initEvents();
         this.initQuantityStepper();
         this.setQuantityFieldIfPassedIn();
         this.calculatePrice();
+        new Coupon((result)=>this.onCouponSuccess(result));
     }
 
     private setSelectors() {
-        this.$quantityInputField = $('#fixed-right-module').find('input');
+        this.$quantityInputField = $('#quantity');
         var $subtotalFields = $('#subtotal-fields');
+        this.$form=$('#order-form');
         this.$unitPrice = $subtotalFields.find('.unit-price');
         this.$salesTax = $subtotalFields.find('.sales-tax');
         this.$subtotal = $subtotalFields.find('.subtotal');
@@ -48,6 +53,16 @@ class FixedRightModule {
         }
     }
 
+    private onCouponSuccess(result):void{
+        if(result){
+            this.coupon=result.coupon;
+            this.$form.append('<input type="hidden" name="coupon_instance" value="'+result.token+'"/>')
+            $("#coupon-code").attr("name", "code");
+            this.calculatePrice();
+        }
+
+        //TODO make not input
+    }
     private onQuantityChange():void {
         this.calculatePrice();
         this.pagination.gotoProductsPage();
@@ -77,6 +92,7 @@ class FixedRightModule {
 
     private calculatePrice():void {
         this.setUnitPrice();
+        this.applyCoupon();
         this.setSubtotal();
         this.setSalesTax();
         this.setShipping();
@@ -84,17 +100,32 @@ class FixedRightModule {
     }
 
     private setUnitPrice():void {
+        this.unitPriceAmt=  parseFloat(this.$form.data('product-prices'))
         var priceStr:string = '$' + this.unitPriceAmt;
         this.$unitPrice.html(priceStr);
     }
 
+    private applyCoupon():void{
+         if(this.coupon){
+             if(this.getQuantity()>=this.coupon.min_units){
+                 if(this.coupon.method=="$"){
+                     this.discount=this.coupon.amount;
+                 }else{
+                     this.discount=(this.coupon.amount/100)*this.getQuantity() * this.unitPriceAmt;
+
+                 }
+             }
+
+         }
+    }
+
     private setSubtotal():void {
-        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt;
+        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt-this.discount;
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
     }
 
     private setSalesTax():void {
-        this.salesTax = this.getQuantity() * this.unitPriceAmt*TAX_RATES[0].rate;
+        this.salesTax = (this.getQuantity() * this.unitPriceAmt-this.discount)*TAX_RATES[0].rate;
         this.$salesTax.html('$' + this.salesTax.toFixed(2));
     }
     private setShipping():void {

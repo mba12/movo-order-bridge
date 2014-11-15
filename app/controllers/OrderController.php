@@ -11,13 +11,13 @@ class OrderController extends BaseController
 
         $unitPrice = $this->getUnitPrice();
         $shippingInfo = Shipping::all();
-        $shippingDropdownData=  $this->createShippingDropdownData($shippingInfo);
-        $sizeInfo=Size::all();
-        $taxRates=Tax::all();
-        $coupon=null;
-        $code=Input::get("code");
-        if( $code){
-            $coupon= Coupon::where("code", "=", $code)->first();
+        $shippingDropdownData = $this->createShippingDropdownData($shippingInfo);
+        $sizeInfo = Size::all();
+        $taxRates = Tax::all();
+        $coupon = null;
+        $code = Input::get("code");
+        if ($code) {
+            $coupon = Coupon::where("code", "=", $code)->first();
         }
         return View::make('order-form', [
             'shippingDropdownData' => $shippingDropdownData,
@@ -30,42 +30,46 @@ class OrderController extends BaseController
 
     private function  createShippingDropdownData($shippingInfo)
     {
-        $shippingTypes="";
-        $shippingIds="";
-        $shippingRates="";
-        $i=0;
-        foreach($shippingInfo as $info){
-            if($i>0){
-                $shippingTypes.='|';
-                $shippingIds.='|';
-                $shippingRates.='|';
+        $shippingTypes = "";
+        $shippingIds = "";
+        $shippingRates = "";
+        $i = 0;
+        foreach ($shippingInfo as $info) {
+            if ($i > 0) {
+                $shippingTypes .= '|';
+                $shippingIds .= '|';
+                $shippingRates .= '|';
             }
-            $shippingTypes.=$info->type;
-            $shippingIds.=$info->id;
-            $shippingRates.=$info->rate;
+            $shippingTypes .= $info->type;
+            $shippingIds .= $info->id;
+            $shippingRates .= $info->rate;
             $i++;
         }
-        $dropdownData=[
-            'shippingTypes'=>$shippingTypes,
-            'shippingIds'=>$shippingIds,
-            'shippingRates'=>$shippingRates,
+        $dropdownData = [
+            'shippingTypes' => $shippingTypes,
+            'shippingIds' => $shippingIds,
+            'shippingRates' => $shippingRates,
         ];
         return $dropdownData;
     }
 
     public function buy()
     {
-        $unitPrice = $this->getUnitPrice();
-        $shippingMethod = $this->getShippingRate();
-
 
         $billing = App::make('Movo\Billing\BillingInterface');
         $shipping = App::make('Movo\Shipping\ShippingInterface');
         $receipt = App::make('Movo\Receipts\ReceiptsInterface');
+
+        $couponData = $this->validateCouponCode();
+
+        $unitPrice = $this->getUnitPrice();
+        $shippingMethod = $this->getShippingRate();
+
         //dd(Input::all());
         $result = $billing->charge([
             'token' => Input::get("token"),
             'unit-price' => $unitPrice,
+            'couponData' => $couponData,
             'shipping-rate' => $shippingMethod->rate,
             'shipping-type' => $shippingMethod->type,
         ]);
@@ -74,6 +78,7 @@ class OrderController extends BaseController
             $shipping->ship([
                 'result' => $result,
                 'unit-price' => $unitPrice,
+                'couponData'=>$couponData,
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
             ]);
@@ -81,12 +86,12 @@ class OrderController extends BaseController
             $receipt->send([
                 "result" => $result,
                 'unit-price' => $unitPrice,
+                'couponData'=>$couponData,
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
             ]);
             $pusher = App::make("Pusher");
             $pusher->trigger("orderChannel", "completedOrder", []);
-            return;
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!'));
 
         } else {
@@ -113,5 +118,24 @@ class OrderController extends BaseController
         $shipping = Shipping::find(Input::get("shipping-type"));
         return $shipping;
 
+    }
+
+    private function validateCouponCode()
+    {
+        if (Input::has("code")&& Input::has("coupon_instance")) {
+            $validCoupon = CouponInstance::where("code", "=", Input::get("code"))
+                ->where("token", "=", Input::get("coupon_instance"))
+                ->where("used", "=", 0);
+            if ($validCoupon) {
+                $couponData = Coupon::where("code", "=", Input::get("code"))->first();
+                if ($couponData) {
+                     if ($couponData->min_units == 0 || $couponData->min_units <= Input::get("quantity")) {
+                         return $couponData;
+                    }
+                }
+            }
+
+        }
+        return null;
     }
 }

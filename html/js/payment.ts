@@ -8,11 +8,13 @@ class Payment extends ScreenBase {
     private stripeKey:string;
     private validation:Validation;
 
+
     constructor($pagination:Pagination) {
         super($pagination);
         this.setSelectors();
         this.initEvents();
         this.initStripe();
+
     }
 
     public setSelectors() {
@@ -22,6 +24,7 @@ class Payment extends ScreenBase {
         this.$currentPage = $('#payment');
         super.setSelectors();
     }
+
 
     public initEvents() {
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
@@ -75,7 +78,6 @@ class Payment extends ScreenBase {
             url: formURL,
             data: this.$form.serialize(),
             success: (response)=> {
-                console.log(response);
                 if (response.status == 200) {
                     this.$pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
@@ -83,8 +85,6 @@ class Payment extends ScreenBase {
                 }
             }
         });
-        return;
-        this.$form[0].submit();
     }
 
     onPrevClick():void {
@@ -98,8 +98,6 @@ class Payment extends ScreenBase {
             return;
         }
         validation.resetErrors();
-
-        // TODO: submit form here
     }
 
 }

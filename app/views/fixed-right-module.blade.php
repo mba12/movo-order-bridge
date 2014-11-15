@@ -10,7 +10,7 @@
             <div class="right">
                 <div class="quantity">
                     <h5>Quantity</h5>
-                    <label> <input name="quantity" type="number" value="1" maxlength="1"/> </label>
+                    <label> <input id="quantity" name="quantity" type="number" value="1" maxlength="1"/> </label>
                 </div>
             </div>
         </div>
@@ -36,5 +36,7 @@
                 <li>TOTAL</li>
             </ul>
         </div>
+
     </div>
+
 </div>

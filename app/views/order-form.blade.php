@@ -25,33 +25,35 @@
                          TAX_RATES.push({"state":"{{$tax->state}}", "rate":{{$tax->rate}}})
                         @endforeach
        </script>
-       {{Form::open([
-            'class' => 'order-form',
-            'id' => 'order-form',
-            'route'=>'buy',
-            'autocomplete'=>'on',
-            'data-product-prices'=>$unitPrice,
-            'data-shipping-types'=>$shippingDropdownData['shippingTypes'],
-            'data-shipping-ids'=>$shippingDropdownData['shippingIds'],
-            'data-shipping-rates'=>$shippingDropdownData['shippingRates']
-            ])
-       }}
 
        <div id="form-modal">
            <div id="form-content-box">
                @include('nav')
-               @include('fixed-right-module')
-               @include('products')
-               @include('billing')
-               @include('shipping')
-               @include('payment')
-               @include('summary')
+
+               {{Form::open([
+                           'class' => 'order-form',
+                           'id' => 'order-form',
+                           'route'=>'buy',
+                           'autocomplete'=>'on',
+                           'data-product-prices'=>$unitPrice,
+                           'data-shipping-types'=>$shippingDropdownData['shippingTypes'],
+                           'data-shipping-ids'=>$shippingDropdownData['shippingIds'],
+                           'data-shipping-rates'=>$shippingDropdownData['shippingRates']
+                           ])
+                      }}
+                       @include('fixed-right-module')
+                       @include('products')
+                       @include('billing')
+                       @include('shipping')
+                       @include('payment')
+                       @include('summary')
+               {{Form::close()}}
            </div>
        </div>
 
 
        <div class="payment-errors"></div>
-       {{Form::close()}}
+
        <script src="js/vendor/jquery/jquery.js"></script>
        <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
        <script src="js/vendor/placeholder/jquery.placeholder.js"></script>

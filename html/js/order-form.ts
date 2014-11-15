@@ -8,6 +8,9 @@
 /// <reference path="billing-info.ts" />
 /// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
+/// <reference path="coupon.ts" />
+/// <reference path="coupon-data.ts" />
+
 
 class OrderForm {
 
@@ -18,6 +21,8 @@ class OrderForm {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
+
+        //pagination.gotoPage(3);
     }
 
 }

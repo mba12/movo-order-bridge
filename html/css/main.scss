@@ -88,22 +88,7 @@ body {
       .next {
         float: right;
       }
-      .button {
-        background-color: lighten(#545454, 5%);
-        color:            $white;
-        font-size:        em(14.5);
-        @include fw-medium;
-        padding:          10px 20px;
-        text-align:       center;
-        cursor:           pointer;
-        text-rendering:   optimizeLegibility;
-        border-radius:    3px;
-        display:          inline-block;
-        @include transition(0.3s all);
-        &:hover {
-          background-color: darken(#545454, 6%);
-        }
-      }
+
     }
 
     .row {
@@ -160,3 +145,28 @@ body {
 
 }
 
+.button {
+  background-color: lighten(#545454, 5%);
+  color:            $white;
+  font-size:        em(14.5);
+  @include fw-medium;
+  padding:          10px 20px;
+  text-align:       center;
+  cursor:           pointer;
+  text-rendering:   optimizeLegibility;
+  border-radius:    3px;
+  display:          inline-block;
+  @include transition(0.3s all);
+  &:hover {
+    background-color: darken(#545454, 6%);
+  }
+}
+
+#submit-coupon-code {
+  color:white;
+  background-color: $blue;
+  @include transition(0.3s all);
+  &:hover {
+    background-color: darken($blue, 5%);
+  }
+}

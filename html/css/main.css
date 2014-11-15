@@ -445,22 +445,6 @@ body {
         float: left; }
       #form-modal #form-content-box .prev-next .next {
         float: right; }
-      #form-modal #form-content-box .prev-next .button {
-        background-color: #616161;
-        color: white;
-        font-size: 0.90625em;
-        font-weight: 600;
-        padding: 10px 20px;
-        text-align: center;
-        cursor: pointer;
-        text-rendering: optimizeLegibility;
-        border-radius: 3px;
-        display: inline-block;
-        -webkit-transition: 0.3s all;
-        -moz-transition: 0.3s all;
-        transition: 0.3s all; }
-        #form-modal #form-content-box .prev-next .button:hover {
-          background-color: #454545; }
     #form-modal #form-content-box .row {
       margin-bottom: 7px; }
       #form-modal #form-content-box .row.single {
@@ -676,3 +660,29 @@ body {
           background-color: #498ca6; }
     #form-modal #form-content-box #summary {
       display: none; }
+
+.button {
+  background-color: #616161;
+  color: white;
+  font-size: 0.90625em;
+  font-weight: 600;
+  padding: 10px 20px;
+  text-align: center;
+  cursor: pointer;
+  text-rendering: optimizeLegibility;
+  border-radius: 3px;
+  display: inline-block;
+  -webkit-transition: 0.3s all;
+  -moz-transition: 0.3s all;
+  transition: 0.3s all; }
+  .button:hover {
+    background-color: #454545; }
+
+#submit-coupon-code {
+  color: white;
+  background-color: #5499b4;
+  -webkit-transition: 0.3s all;
+  -moz-transition: 0.3s all;
+  transition: 0.3s all; }
+  #submit-coupon-code:hover {
+    background-color: #498ca6; }

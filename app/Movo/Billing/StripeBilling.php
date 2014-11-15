@@ -20,10 +20,11 @@ class StripeBilling implements BillingInterface
     public function charge(array $data)
     {
         try {
-            $quantity=Input::get("quantity");
-            $amount=$data['unit-price']*$quantity;
-            $amount+=$data['shipping-rate'];
-            $amount*=100;
+            $quantity = Input::get("quantity");
+            $discount = $data['couponData'] ? $data['couponData']->calculateDiscount($data['unit-price'], Input::get("quantity")) : 0;
+            $amount = $data['unit-price'] * $quantity - $discount;
+            $amount += $data['shipping-rate'];
+            $amount *= 100;
             $result = Stripe_Charge::create([
                 'amount' => $amount,
                 'currency' => 'usd',
@@ -34,10 +35,10 @@ class StripeBilling implements BillingInterface
             return $result;
         } catch (\Stripe_InvalidRequestError $e) {
             //card was declined
-           // dd($e->getMessage());
+            // dd($e->getMessage());
             return null;
 
-        }catch (\Stripe_CardError $e) {
+        } catch (\Stripe_CardError $e) {
             //card was declined
             //dd($e->getMessage());
             return null;

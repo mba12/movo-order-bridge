@@ -206,6 +206,10 @@ var Pagination = (function () {
         this.currentIndex = 4;
         this.showCurrentPage();
     };
+    Pagination.prototype.gotoPage = function (page) {
+        this.currentIndex = page;
+        this.showCurrentPage();
+    };
     return Pagination;
 })();
 var ScreenBase = (function () {
@@ -239,17 +243,21 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
+        var _this = this;
         this.pagination = pagination;
-        this.unitPriceAmt = parseFloat($('form').data('product-prices'));
+        this.discount = 0;
         this.setSelectors();
+        this.setUnitPrice();
         this.initEvents();
         this.initQuantityStepper();
         this.setQuantityFieldIfPassedIn();
         this.calculatePrice();
+        new Coupon(function (result) { return _this.onCouponSuccess(result); });
     }
     FixedRightModule.prototype.setSelectors = function () {
-        this.$quantityInputField = $('#fixed-right-module').find('input');
+        this.$quantityInputField = $('#quantity');
         var $subtotalFields = $('#subtotal-fields');
+        this.$form = $('#order-form');
         this.$unitPrice = $subtotalFields.find('.unit-price');
         this.$salesTax = $subtotalFields.find('.sales-tax');
         this.$subtotal = $subtotalFields.find('.subtotal');
@@ -269,6 +277,14 @@ var FixedRightModule = (function () {
         var passedInQuantity = parseInt(this.getParameterByName('quantity'));
         if (passedInQuantity > 0) {
             this.$quantityInputField.val(passedInQuantity.toString());
+        }
+    };
+    FixedRightModule.prototype.onCouponSuccess = function (result) {
+        if (result) {
+            this.coupon = result.coupon;
+            this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>');
+            $("#coupon-code").attr("name", "code");
+            this.calculatePrice();
         }
     };
     FixedRightModule.prototype.onQuantityChange = function () {
@@ -294,21 +310,35 @@ var FixedRightModule = (function () {
     };
     FixedRightModule.prototype.calculatePrice = function () {
         this.setUnitPrice();
+        this.applyCoupon();
         this.setSubtotal();
         this.setSalesTax();
         this.setShipping();
         this.setTotal();
     };
     FixedRightModule.prototype.setUnitPrice = function () {
+        this.unitPriceAmt = parseFloat(this.$form.data('product-prices'));
         var priceStr = '$' + this.unitPriceAmt;
         this.$unitPrice.html(priceStr);
     };
+    FixedRightModule.prototype.applyCoupon = function () {
+        if (this.coupon) {
+            if (this.getQuantity() >= this.coupon.min_units) {
+                if (this.coupon.method == "$") {
+                    this.discount = this.coupon.amount;
+                }
+                else {
+                    this.discount = (this.coupon.amount / 100) * this.getQuantity() * this.unitPriceAmt;
+                }
+            }
+        }
+    };
     FixedRightModule.prototype.setSubtotal = function () {
-        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt;
+        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt - this.discount;
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
     };
     FixedRightModule.prototype.setSalesTax = function () {
-        this.salesTax = this.getQuantity() * this.unitPriceAmt * TAX_RATES[0].rate;
+        this.salesTax = (this.getQuantity() * this.unitPriceAmt - this.discount) * TAX_RATES[0].rate;
         this.$salesTax.html('$' + this.salesTax.toFixed(2));
     };
     FixedRightModule.prototype.setShipping = function () {
@@ -490,7 +520,7 @@ var ShippingInfo = (function (_super) {
         _super.prototype.initEvents.call(this);
     };
     ShippingInfo.prototype.initPriceSelect = function () {
-        var $form = $('form');
+        var $form = $('#order-form');
         var shippingTypes = $form.data('shipping-types').split('|');
         var shippingRates = $form.data('shipping-rates').split('|');
         var shippingIds = $form.data('shipping-ids').split('|');
@@ -642,7 +672,6 @@ var Payment = (function (_super) {
             url: formURL,
             data: this.$form.serialize(),
             success: function (response) {
-                console.log(response);
                 if (response.status == 200) {
                     _this.$pagination.gotoSummaryPage();
                 }
@@ -651,8 +680,6 @@ var Payment = (function (_super) {
                 }
             }
         });
-        return;
-        this.$form[0].submit();
     };
     Payment.prototype.onPrevClick = function () {
         _super.prototype.onPrevClick.call(this);
@@ -667,6 +694,68 @@ var Payment = (function (_super) {
     };
     return Payment;
 })(ScreenBase);
+var Coupon = (function () {
+    function Coupon(callback) {
+        this.callback = callback;
+        this.setSelectors();
+        this.initEvents();
+    }
+    Coupon.prototype.setSelectors = function () {
+        this.$coupon = $("#coupon");
+        this.$form = $("#order-form");
+        this.$couponButton = $("#submit-coupon-code");
+        this.$couponInput = $("#coupon-code");
+        this.$couponResponse = $('.error-messages .coupon');
+    };
+    Coupon.prototype.initEvents = function () {
+        var _this = this;
+        this.$couponButton.click(function (e) { return _this.onCouponApply(e); });
+    };
+    Coupon.prototype.onCouponApply = function (event) {
+        var _this = this;
+        event.preventDefault();
+        event.stopPropagation();
+        var code = this.$couponInput.val();
+        this.$couponResponse.hide();
+        if (code.length < 1) {
+            this.$couponResponse.show();
+            return;
+        }
+        var $myForm = $("<form></form>");
+        $myForm.attr("action", "coupons/" + this.$couponInput.val());
+        $myForm.append('<input type="hidden" name="_token" value="' + $('input[name=_token]').val() + '"/>');
+        $myForm.serialize();
+        $myForm.on("submit", function (e) {
+            var method = $myForm.find('input[name="_method"]').val() || "POST";
+            var url = $myForm.prop("action");
+            $.ajax({
+                type: method,
+                url: url,
+                data: $myForm.serialize(),
+                success: function (result) {
+                    _this.$couponInput.attr("name", "code");
+                    _this.callback(result);
+                },
+                error: function (result) {
+                }
+            });
+            e.preventDefault();
+        });
+        $myForm.submit();
+    };
+    Coupon.prototype.onSuccess = function (result) {
+        console.log(result);
+    };
+    Coupon.prototype.onError = function (result) {
+        console.log(result);
+    };
+    return Coupon;
+})();
+var CouponData = (function () {
+    function CouponData() {
+    }
+    return CouponData;
+})();
 var OrderForm = (function () {
     function OrderForm() {
         var pagination = new Pagination();

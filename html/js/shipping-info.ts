@@ -72,7 +72,7 @@ class ShippingInfo extends ScreenBase {
     }
 
     private initPriceSelect():void {
-        var $form = $('form');
+        var $form = $('#order-form');
         var shippingTypes:any = $form.data('shipping-types').split('|');
         var shippingRates:any = $form.data('shipping-rates').split('|');
         var shippingIds:any = $form.data('shipping-ids').split('|');

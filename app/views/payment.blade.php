@@ -47,11 +47,17 @@
         </div>
     </div>
     <ul class="error-messages">
+        <li class="coupon">Please enter a coupon code!</li>
+        <li class="coupon-invalid">That code is not a valid code</li>
         <li class="credit-card">Please enter a credit card number!</li>
         <li class="month">Please enter an expiration month!</li>
         <li class="year">Please enter an expiration year!</li>
         <li class="cvc">Please enter the CVC!</li>
     </ul>
+     <div class="coupon-container">
+          <input type="text"  placeholder="Enter coupon code" id="coupon-code" value="friends20"/>
+          <div class="button apply" id="submit-coupon-code">Apply coupon</div>
+        </div>
     <div class="prev-next">
         <div class="button next" id="submit-order">Submit Order</div>
         <div class="button prev">Previous</div>
