@@ -24,7 +24,9 @@ return array(
 		'secret' =>  getenv('pusher.secret'),
 		'app-id' =>  getenv('pusher.app-id'),
 	),
-
+	'zip-tax' => array(
+		'key' =>  getenv('zip-tax.key'),
+	),
 	'stripe' => array(
 		'secret' => getenv('stripeKeys.secret'),
 		'publishable' => getenv('stripeKeys.publishable'),

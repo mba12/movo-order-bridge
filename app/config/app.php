@@ -126,6 +126,7 @@ return array(
         'Movo\Providers\BillingServiceProvider',
         'Movo\Providers\ShippingServiceProvider',
         'Movo\Providers\ReceiptsServiceProvider',
+        'Movo\Providers\SalesTaxServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
     ),
 
