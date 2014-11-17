@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
@@ -108,8 +109,11 @@ class OrderController extends BaseController
 
     private function getUnitPrice()
     {
-
+        if(Cache::get('unit-price')) {
+            return Cache::get('unit-price');
+        }
         $product = DB::table('products')->first();
+        Cache::put('unit-price', $product->price, 1440);
         return $product->price;
     }
 

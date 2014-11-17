@@ -4,8 +4,10 @@
         <meta charset="UTF-8">
         <meta name="publishable-key" content="{{{Config::get("services.stripe.publishable")}}}"/>
         <title>Movo - Order Form</title>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css"/>
+
+
     </head>
 <body>
        @if($coupon)
@@ -26,9 +28,9 @@
                         @endforeach
        </script>
 
-       <div id="form-modal">
            <div id="form-content-box">
                @include('nav')
+               <div id="close">X</div>
 
                {{Form::open([
                            'class' => 'order-form',
@@ -49,13 +51,12 @@
                        @include('summary')
                {{Form::close()}}
            </div>
-       </div>
-
 
        <div class="payment-errors"></div>
 
        <script src="js/vendor/jquery/jquery.js"></script>
        <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
+       <script src="js/vendor/greensock/TweenMax.min.js"></script>
        <script src="js/vendor/placeholder/jquery.placeholder.js"></script>
        <script src="https://js.stripe.com/v2/"></script>
        <script src="/js/order-form.js"></script>

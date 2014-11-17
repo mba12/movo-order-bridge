@@ -160,6 +160,11 @@
 			// Bind click events
 			$stepper.on("touchstart.stepper mousedown.stepper", ".stepper-arrow", data, _onMouseDown)
 					.data("stepper", data);
+
+			$stepper.find('span').on('click', function (e) {
+				e.preventDefault();
+				$stepper.blur();
+			})
 		}
 	}
 

@@ -243,8 +243,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        var _this = this;
         this.pagination = pagination;
+        var _this = this;
         this.discount = 0;
         this.setSelectors();
         this.setUnitPrice();
@@ -758,6 +758,9 @@ var CouponData = (function () {
 })();
 var OrderForm = (function () {
     function OrderForm() {
+        this.setSelectors();
+        this.initEvents();
+        this.setInitialFormScale();
         var pagination = new Pagination();
         new ShippingInfo(pagination);
         new FixedRightModule(pagination);
@@ -765,6 +768,29 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
     }
+    OrderForm.prototype.setSelectors = function () {
+        this.$contentBox = $('#form-content-box');
+    };
+    OrderForm.prototype.initEvents = function () {
+        var _this = this;
+        $(window).on('load', function () { return _this.onWindowLoad(); });
+        $('document').on('keyup', function (e) { return _this.onKeyPress(e); });
+    };
+    OrderForm.prototype.onWindowLoad = function () {
+        this.animateInForm();
+    };
+    OrderForm.prototype.setInitialFormScale = function () {
+        TweenMax.set(this.$contentBox, { css: { scale: 0.5 } });
+    };
+    OrderForm.prototype.animateInForm = function () {
+        TweenMax.to(this.$contentBox, 1, { css: { scale: 1, opacity: 1 }, ease: Power3.easeInOut });
+    };
+    OrderForm.prototype.onKeyPress = function (e) {
+        if (e.which == 27) {
+            console.log('keyup from form');
+        }
+        console.log('form key up');
+    };
     return OrderForm;
 })();
 new OrderForm();
