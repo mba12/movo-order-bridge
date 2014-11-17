@@ -24,9 +24,9 @@ Route::get('coupons/{code}', array(
     'uses' => 'CouponController@check',
 ));
 
-Route::get('tax/{zipcode}', array(
+Route::get('tax/{zipcode}/{state}', array(
     'as' => 'sales-tax',
-    'uses' => 'TaxController@getSalesTax',
+    'uses' => 'SalesTaxController@getSalesTax',
 ));
 
 
