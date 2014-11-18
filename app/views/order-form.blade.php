@@ -21,12 +21,6 @@
                 limit: {{$coupon->limit}}
             };
        @endif
-       <script type="text/javascript">
-          var TAX_RATES=[];
-                        @foreach($taxRates as $tax)
-                         TAX_RATES.push({"state":"{{$tax->state}}", "rate":{{$tax->rate}}})
-                        @endforeach
-       </script>
 
            <div id="form-content-box">
                @include('nav')

@@ -7,6 +7,8 @@ class ShippingInfo extends ScreenBase {
     private $billingPage:JQuery;
     private $shippingPage:JQuery;
 
+
+
     private $shippingFirstName:JQuery;
     private $shippingLastName:JQuery;
     private $shippingPhone:JQuery;
@@ -25,7 +27,9 @@ class ShippingInfo extends ScreenBase {
     private $billingState:JQuery;
     private $billingZip:JQuery;
 
-    constructor($pagination:Pagination) {
+
+
+    constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
         this.setSelectors();
         this.initEvents();
@@ -166,14 +170,20 @@ class ShippingInfo extends ScreenBase {
             return;
         }
 
-
         if (!validation.isValidForm()) {
             validation.showErrors();
             return;
         }
-        validation.resetErrors();
-        this.$pagination.next();
-        this.$pagination.showCurrentPage();
+
+        this.fixedRightModule.setSalesTax((result)=>{
+            if(result.error){
+                this.$currentPage.find('.error-messages').find('.sales-tax').show();
+                return;
+            }
+            validation.resetErrors();
+            this.$pagination.next();
+            this.$pagination.showCurrentPage();
+        });
     }
 
 }

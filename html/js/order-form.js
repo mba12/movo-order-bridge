@@ -243,9 +243,12 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        this.pagination = pagination;
         var _this = this;
+        this.pagination = pagination;
+        this.salesTax = 0;
         this.discount = 0;
+        this.currentState = "";
+        this.currentZipcode = "";
         this.setSelectors();
         this.setUnitPrice();
         this.initEvents();
@@ -265,6 +268,8 @@ var FixedRightModule = (function () {
         this.$total = $('#total').find('.price').find('li');
         this.$shippingSelect = $('#shipping-type');
         this.$shippingCountrySelect = $('#shipping-country');
+        this.$shippingZipCode = $('#shipping-zip');
+        this.$shippingStateSelect = $('#shipping-state-select');
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -337,12 +342,40 @@ var FixedRightModule = (function () {
         this.subtotalAmt = this.getQuantity() * this.unitPriceAmt - this.discount;
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
     };
-    FixedRightModule.prototype.setSalesTax = function () {
-        this.salesTax = (this.getQuantity() * this.unitPriceAmt - this.discount) * TAX_RATES[0].rate;
-        this.$salesTax.html('$' + this.salesTax.toFixed(2));
+    FixedRightModule.prototype.setSalesTax = function (callback) {
+        var _this = this;
+        if (this.$shippingCountrySelect.val() != "US") {
+            return;
+        }
+        if (this.$shippingStateSelect.val() == "" || this.$shippingStateSelect.val() == this.currentState) {
+            return;
+        }
+        if (this.$shippingZipCode.val() == "" || this.$shippingZipCode.val() == this.currentZipcode) {
+            return;
+        }
+        var taxRate = 0;
+        $.ajax({
+            type: 'GET',
+            url: "/tax/" + this.$shippingZipCode.val() + "/" + this.$shippingStateSelect.val(),
+            success: function (taxRate) {
+                if (callback)
+                    callback(taxRate);
+                if (taxRate.error) {
+                    return;
+                }
+                _this.salesTax = (_this.getQuantity() * _this.unitPriceAmt - _this.discount) * taxRate.rate;
+                _this.$salesTax.html('$' + _this.salesTax.toFixed(2));
+            },
+            error: function (response) {
+                if (callback)
+                    callback({ error: "There was an error retrieving sales tax" });
+                ;
+            }
+        });
     };
     FixedRightModule.prototype.setShipping = function () {
-        if (this.$shippingSelect.val() == '') {
+        var foo = this.$shippingSelect.val();
+        if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
             this.shippingAmt = 0;
             this.$shipping = this.$shipping.html('--');
         }
@@ -478,8 +511,9 @@ var BillingInfo = (function (_super) {
 })(ScreenBase);
 var ShippingInfo = (function (_super) {
     __extends(ShippingInfo, _super);
-    function ShippingInfo($pagination) {
+    function ShippingInfo($pagination, fixedRightModule) {
         _super.call(this, $pagination);
+        this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
         this.initPriceSelect();
@@ -590,6 +624,7 @@ var ShippingInfo = (function (_super) {
         }
     };
     ShippingInfo.prototype.onNextClick = function () {
+        var _this = this;
         this.$shippingCountry.removeClass('error');
         this.$currentPage.find('.error-messages').find('.country').hide();
         var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
@@ -603,9 +638,15 @@ var ShippingInfo = (function (_super) {
             validation.showErrors();
             return;
         }
-        validation.resetErrors();
-        this.$pagination.next();
-        this.$pagination.showCurrentPage();
+        this.fixedRightModule.setSalesTax(function (result) {
+            if (result.error) {
+                _this.$currentPage.find('.error-messages').find('.sales-tax').show();
+                return;
+            }
+            validation.resetErrors();
+            _this.$pagination.next();
+            _this.$pagination.showCurrentPage();
+        });
     };
     return ShippingInfo;
 })(ScreenBase);
@@ -667,10 +708,17 @@ var Payment = (function (_super) {
     Payment.prototype.submitForm = function () {
         var _this = this;
         var formURL = this.$form.attr("action");
+        var data = this.$form.serializeArray();
+        var quantity = $('#quantity').val();
+        for (var i = 0; i < quantity; i++) {
+            var itemName = "unit" + (i + 1);
+            var unitText = $("#" + itemName + " option:selected").text().trim();
+            data.push({ "name": itemName + "Name", "value": unitText });
+        }
         $.ajax({
             type: 'POST',
             url: formURL,
-            data: this.$form.serialize(),
+            data: data,
             success: function (response) {
                 if (response.status == 200) {
                     _this.$pagination.gotoSummaryPage();
@@ -758,39 +806,13 @@ var CouponData = (function () {
 })();
 var OrderForm = (function () {
     function OrderForm() {
-        this.setSelectors();
-        this.initEvents();
-        this.setInitialFormScale();
         var pagination = new Pagination();
-        new ShippingInfo(pagination);
-        new FixedRightModule(pagination);
+        var fixedRightModule = new FixedRightModule(pagination);
+        new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
     }
-    OrderForm.prototype.setSelectors = function () {
-        this.$contentBox = $('#form-content-box');
-    };
-    OrderForm.prototype.initEvents = function () {
-        var _this = this;
-        $(window).on('load', function () { return _this.onWindowLoad(); });
-        $('document').on('keyup', function (e) { return _this.onKeyPress(e); });
-    };
-    OrderForm.prototype.onWindowLoad = function () {
-        this.animateInForm();
-    };
-    OrderForm.prototype.setInitialFormScale = function () {
-        TweenMax.set(this.$contentBox, { css: { scale: 0.5 } });
-    };
-    OrderForm.prototype.animateInForm = function () {
-        TweenMax.to(this.$contentBox, 1, { css: { scale: 1, opacity: 1 }, ease: Power3.easeInOut });
-    };
-    OrderForm.prototype.onKeyPress = function (e) {
-        if (e.which == 27) {
-            console.log('keyup from form');
-        }
-        console.log('form key up');
-    };
     return OrderForm;
 })();
 new OrderForm();

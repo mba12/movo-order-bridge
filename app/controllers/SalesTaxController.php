@@ -9,7 +9,13 @@ class SalesTaxController extends \BaseController
     {
 
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
-        return $salesTax->getRate($zipcode,$state);
+        $rate = $salesTax->getRate($zipcode, $state);
+
+        if (!isset($rate)) {
+            return Response::json(array('error' => 'There is no match for zip code '.$zipcode . " in ".$state));
+        }
+
+        return Response::json(array('rate' => $rate));
 
 
     }

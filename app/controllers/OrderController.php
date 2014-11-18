@@ -11,10 +11,9 @@ class OrderController extends BaseController
     {
 
         $unitPrice = $this->getUnitPrice();
-        $shippingInfo = Shipping::all();
+        $shippingInfo = $this->getShippingInfo();
         $shippingDropdownData = $this->createShippingDropdownData($shippingInfo);
-        $sizeInfo = Size::all();
-        $taxRates = Tax::all();
+        $sizeInfo = $this->getUnitSizes();
         $coupon = null;
         $code = Input::get("code");
         if ($code) {
@@ -25,7 +24,6 @@ class OrderController extends BaseController
             'unitPrice' => $unitPrice,
             'sizeInfo' => $sizeInfo,
             'coupon' => $coupon,
-            'taxRates' => $taxRates,
         ]);
     }
 
@@ -60,9 +58,13 @@ class OrderController extends BaseController
         $billing = App::make('Movo\Billing\BillingInterface');
         $shipping = App::make('Movo\Shipping\ShippingInterface');
         $receipt = App::make('Movo\Receipts\ReceiptsInterface');
+        $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
 
         $couponData = $this->validateCouponCode();
-
+        $salesTaxRate=$salesTax->getRate(Input::get("shipping-zip"),Input::get("shipping-state"));
+        if(!isset($salesTaxRate)){
+            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Your state and zip code do not match'));
+        }
         $unitPrice = $this->getUnitPrice();
         $shippingMethod = $this->getShippingRate();
 
@@ -93,6 +95,7 @@ class OrderController extends BaseController
             ]);
             $pusher = App::make("Pusher");
             $pusher->trigger("orderChannel", "completedOrder", []);
+            //return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order'));
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!'));
 
         } else {
@@ -109,11 +112,11 @@ class OrderController extends BaseController
 
     private function getUnitPrice()
     {
-        if(Cache::get('unit-price')) {
-            return Cache::get('unit-price');
+        if(Cache::has("unit-price")){
+            return Cache::get("unit-price");
         }
         $product = DB::table('products')->first();
-        Cache::put('unit-price', $product->price, 1440);
+        Cache::put("unit-price", $product->price, 1440);
         return $product->price;
     }
 
@@ -133,7 +136,10 @@ class OrderController extends BaseController
             if ($validCoupon) {
                 $couponData = Coupon::where("code", "=", Input::get("code"))->first();
                 if ($couponData) {
+
                      if ($couponData->min_units == 0 || $couponData->min_units <= Input::get("quantity")) {
+                         $validCoupon->used=1;
+                         $validCoupon->save();
                          return $couponData;
                     }
                 }
@@ -141,5 +147,26 @@ class OrderController extends BaseController
 
         }
         return null;
+    }
+
+    private function getShippingInfo()
+    {
+        if(Cache::has("shipping-info")){
+            return Cache::get("shipping-info");
+        }
+        $shippingInfo=Shipping::all();
+        Cache::put("shipping-info", $shippingInfo, 1440);
+        return $shippingInfo;
+    }
+
+    private function getUnitSizes()
+    {
+        if(Cache::has("unit-sizes")){
+            return Cache::get("unit-sizes");
+        }
+        $unitSizes=Size::all();
+        Cache::put("unit-sizes", $unitSizes, 1440);
+        return $unitSizes;
+
     }
 }

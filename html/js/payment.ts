@@ -73,10 +73,17 @@ class Payment extends ScreenBase {
 
     private submitForm() {
         var formURL = this.$form.attr("action");
+        var data=this.$form.serializeArray();
+        var quantity = $('#quantity').val();
+        for (var i = 0; i < quantity; i++) {
+            var itemName:string="unit"+(i+1);
+            var unitText:string=$("#"+itemName+" option:selected").text().trim();
+            data.push({"name":itemName+"Name", "value": unitText});
+        }
         $.ajax({
             type: 'POST',
             url: formURL,
-            data: this.$form.serialize(),
+            data: data,
             success: (response)=> {
                 if (response.status == 200) {
                     this.$pagination.gotoSummaryPage();
