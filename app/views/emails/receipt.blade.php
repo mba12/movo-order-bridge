@@ -11,28 +11,31 @@ body {
   background-image: url("");
 
 }
+
+li{
+     list-style-type: none;
+      padding: 0px;
+      margin: 0px;
+}
 </style>
 
 </head>
 
 <body>
 
+ <p>This email is to confirm your order on {{date('m-d-Y')}}:</p>
+ <p>Shipping Address: {{$data['shippingAddress']}}</p>
 
-<ul class="items">
-       @foreach($data['items'] as $item)
-             <li>
-                  <span class="title">{{$item->title}}: </span><span class="quantity">{{$item->quantity}}</span> <span class="price">{{$item->price}}</span>
-             </li>
-       @endforeach
-</ul>
-@if ($data['discount'])
-     <div class="discount">Coupon Discount: {{$data['discount']}}</div>
-@endif
+@foreach($data['items'] as $item)
+    <p><span class="quantity">{{$item->quantity}} </span><span class="title">{{$item->title}}: </span> <span class="price">{{$item->price}}</span></p>
+@endforeach
 
- <div class="total">Shipping: {{$data['shipping-type']}} {{$data['shipping-rate']}}</div>
-<div class="total">Total: {{$data['total']}}</div>
 
-<p align="center">Thanks for your order</p>
+<div class="total">Order Total: {{$data['total']}}</div>
+
+<p>Thank you for your order! If you need to manage your order, click here: <a href="mailto:info@getmovo.com">info@getmovo.com</a></p>
+<p>Enjoy your Wave!</p>
+<p>-Team Movo</p>
 
 
 </body>

@@ -9,7 +9,7 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
     {
        $emailData=$this->createEmailData($data);
         Mail::send('emails.receipt', array('data' => $emailData), function ($message) {
-            $message->to(Input::get("email"), Input::get("billing-first-name") . ' ' . Input::get("billing-last-name"))->subject('Your Movo Order!')->from("orders@getmovo.com");
+            $message->to(Input::get("email"), Input::get("billing-first-name") . ' ' . Input::get("billing-last-name"))->subject('Movo Order Confirmation')->from("orders@getmovo.com");
         });
     }
 

@@ -18,8 +18,8 @@
             <ul class="price">
                 <li class="unit-price"></li>
                 <li class="subtotal"></li>
-                <li class="sales-tax"></li>
-                <li class="shipping"></li>
+                <li class="sales-tax">--</li>
+                <li class="shipping">--</li>
             </ul>
             <ul class="text">
                 <li>Unit Price</li>

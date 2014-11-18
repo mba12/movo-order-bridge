@@ -16,8 +16,8 @@ class OrderForm {
 
     constructor() {
         var pagination = new Pagination();
-        new ShippingInfo(pagination);
-        new FixedRightModule(pagination);
+        var fixedRightModule:FixedRightModule= new FixedRightModule(pagination);
+        new ShippingInfo(pagination,fixedRightModule);
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);

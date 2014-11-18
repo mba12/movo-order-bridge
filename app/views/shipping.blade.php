@@ -368,6 +368,7 @@
         <li class="zip">Please enter a zip!</li>
         <li class="shipping-type">Please select a shipping type!</li>
         <li class="country">Movo will be shipping internationally soon!</li>
+        <li class="sales-tax">Your zip code and state do not match.</li>
     </ul>
     <div class="prev-next">
         <div class="button next">Next</div>
