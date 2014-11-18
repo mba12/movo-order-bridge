@@ -24,7 +24,7 @@
 
            <div id="form-content-box">
                @include('nav')
-               <div id="close">X</div>
+               <div id="close"></div>
 
                {{Form::open([
                            'class' => 'order-form',

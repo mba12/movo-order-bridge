@@ -393,14 +393,14 @@ USAGE:
 body {
   color: #333333;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 400; }
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.7); }
 
 #form-content-box {
   max-width: 750px;
   margin: 80px auto 0;
   background-color: #ececec;
   padding: 32px;
-  opacity: 0;
   position: relative; }
   #form-content-box input, #form-content-box select {
     outline: none;
@@ -518,22 +518,26 @@ body {
     position: absolute;
     top: -15px;
     right: -15px;
-    width: 35px;
-    height: 35px;
-    background-color: black;
-    border-radius: 200px;
-    color: rgba(255, 255, 255, 0.85);
-    text-align: center;
-    font-size: 1.25em;
-    padding-top: 5px;
+    width: 36px;
+    height: 36px;
+    background-image: url('../img/close.png');
+    background-size: 36px 36px;
+    background-repeat: no-repeat;
     cursor: pointer;
-    border: 2px solid white;
-    font-weight: 700;
-    -webkit-transition: 0.3s color;
-    -moz-transition: 0.3s color;
-    transition: 0.3s color; }
+    -webkit-transition: 0.3s all;
+    -moz-transition: 0.3s all;
+    transition: 0.3s all; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+      #form-content-box #close {
+        background-image: url('../img/close@2x.png');
+        background-size: 36px 36px; } }
     #form-content-box #close:hover {
-      color: white; }
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+      cursor: pointer; }
   #form-content-box #nav {
     height: 50px;
     background-color: #545454;

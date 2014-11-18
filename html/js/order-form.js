@@ -243,8 +243,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        var _this = this;
         this.pagination = pagination;
+        var _this = this;
         this.salesTax = 0;
         this.discount = 0;
         this.currentState = "";
@@ -806,6 +806,8 @@ var CouponData = (function () {
 })();
 var OrderForm = (function () {
     function OrderForm() {
+        this.setSelectors();
+        this.initEvents();
         var pagination = new Pagination();
         var fixedRightModule = new FixedRightModule(pagination);
         new ShippingInfo(pagination, fixedRightModule);
@@ -813,6 +815,26 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
     }
+    OrderForm.prototype.setSelectors = function () {
+        this.$closeBtn = $('#close');
+    };
+    OrderForm.prototype.initEvents = function () {
+        var _this = this;
+        $('body').on('keydown', function (e) { return _this.onKeyPress(e); });
+        this.$closeBtn.on('click', function () { return _this.onCloseClick(); });
+    };
+    OrderForm.prototype.onKeyPress = function (e) {
+        if (e.which == 27) {
+            this.closeForm();
+        }
+    };
+    OrderForm.prototype.closeForm = function () {
+        var parentUrl = (window.location != window.parent.location) ? document.referrer : document.location;
+        parent.window.postMessage('close-order-lightbox', parentUrl);
+    };
+    OrderForm.prototype.onCloseClick = function () {
+        this.closeForm();
+    };
     return OrderForm;
 })();
 new OrderForm();

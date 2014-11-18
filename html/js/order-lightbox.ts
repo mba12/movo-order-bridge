@@ -2,59 +2,64 @@
 class OrderLightbox {
 
     private $orderLightbox:JQuery;
+    private $body:JQuery;
 
     constructor() {
         this.setSelectors();
+        this.loadLightbox();
         this.initEvents();
     }
 
     private setSelectors():void {
+        this.$body = $('body');
     }
 
     private initEvents():void {
         $('a[href="https://orders.getmovo.com"]').on('click', (e)=>this.onBuyNowClick(e));
         $(document).on('keyup', (e)=>this.onKeyPress(e));
+
+        // used for cross-domain call from orders.getmovo.com iframe
+        if (window.addEventListener) {
+            addEventListener("message", (e)=>this.messageListener(e), false);
+        } else {
+            attachEvent("onmessage", (e)=>this.messageListener(e));
+        }
     }
-    
+
+    private messageListener(event) {
+        if (event.origin !== "https://orders.getmovo.com")
+        return;
+        if(event.data == 'close-order-lightbox') {
+            this.hideLightbox();
+        }
+    }
+
+    private loadLightbox():void {
+        this.$body.append('<iframe src="https://orders.getmovo.com" id="order-lightbox"></iframe>');
+        this.$orderLightbox = $('#order-lightbox');
+    }
+
     private onKeyPress(e):void {
         if (e.which == 27) {
-            this.fadeOutLightbox();
+            this.hideLightbox();
         }
-        console.log('keyup from ligthbox');
-        /*$(document).bind('keypress', (event)=> {
-            if (event.which === 126) {
-                this.onBuyNowClick();
-            }
-        });*/
-
     }
 
     private onBuyNowClick(e):void {
-        try {
-            e.preventDefault();
-        } catch(e) {
-
-        }
-
-        this.apendLightboxMarkup();
+        e.preventDefault();
+        this.showLightbox();
     }
 
-    private apendLightboxMarkup():void {
-        $('#order-lightbox').remove();
-        $('body')
-            .append('<div id="order-lightbox"><iframe src="https://orders.getmovo.com"></iframe></div>')
-            .addClass('order-lightbox-open');
-        this.$orderLightbox = $('#order-lightbox').fadeIn();
+    private showLightbox():void {
+        this.$body.addClass('order-lightbox-open');
+        this.$orderLightbox = this.$orderLightbox.fadeIn();
     }
 
-    private fadeOutLightbox():void {
+    private hideLightbox():void {
         this.$orderLightbox.fadeOut(300, ()=> {
-            this.$orderLightbox.remove();
-            $('body').removeClass('order-lightbox-open');
+            this.$body.removeClass('order-lightbox-open');
         });
     }
-    
-    
 
 }
 
