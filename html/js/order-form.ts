@@ -24,7 +24,7 @@ class OrderForm {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
-        pagination.gotoPage(3);
+        //pagination.gotoPage(3);
 
     }
 

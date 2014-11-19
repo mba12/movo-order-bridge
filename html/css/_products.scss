@@ -4,12 +4,23 @@
     width: 100%;
   }
   .products {
-    margin-bottom: 22px;
+    margin-bottom: 17px;
   }
   #too-many-units{
     font-size: rem(13);
+    margin-bottom: 15px !important;
     a, a:visited, a:active {
       color: $red;
     }
+  }
+  #product-sizing-btn {
+    color: $darkGray;
+    font-size: em(14);
+    text-decoration: underline;
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+  .error-messages {
+    margin-top: 0;
   }
 }

@@ -835,7 +835,6 @@ var OrderForm = (function () {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
-        pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

@@ -2,6 +2,9 @@
 
     <h3 class="section-title">Products</h3>
     <div class="products"></div>
+    <a href="img/product-sizing-guide.jpg" target="_blank" id="product-sizing-btn">
+        Product sizing guide
+    </a>
     <div id="too-many-units">
         <p>Want to order more than 8 Waves?</p>
         <p>Email <a href="mailto:sales@getmovo.com">sales@getmovo.com</a></p>

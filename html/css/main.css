@@ -634,11 +634,20 @@ body {
     #form-content-box #products select {
       width: 100%; }
     #form-content-box #products .products {
-      margin-bottom: 22px; }
+      margin-bottom: 17px; }
     #form-content-box #products #too-many-units {
-      font-size: 0.8125rem; }
+      font-size: 0.8125rem;
+      margin-bottom: 15px !important; }
       #form-content-box #products #too-many-units a, #form-content-box #products #too-many-units a:visited, #form-content-box #products #too-many-units a:active {
         color: #e60b21; }
+    #form-content-box #products #product-sizing-btn {
+      color: #333333;
+      font-size: 0.875em;
+      text-decoration: underline;
+      margin-bottom: 15px;
+      display: inline-block; }
+    #form-content-box #products .error-messages {
+      margin-top: 0; }
   #form-content-box #shipping-info {
     display: none; }
   #form-content-box #shipping-info #use-billing-address {
