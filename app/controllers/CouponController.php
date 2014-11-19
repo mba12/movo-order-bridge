@@ -9,8 +9,7 @@ class CouponController extends \BaseController
         $coupon = Coupon::where("code", "=", $code)->first();
         if ($coupon) {
             $instanceCount = CouponInstance::where("code", "=", $code)->count();
-            if ($instanceCount <= $coupon->limit || $coupon->limit == 0) {
-
+            if (($instanceCount <= $coupon->limit || $coupon->limit == 0) && $coupon->min_units<=Input::get("quantity")) {
                 $token = str_random(40);
                 CouponInstance::create([
                     "code" => $code,
@@ -23,4 +22,6 @@ class CouponController extends \BaseController
             }
         }
     }
+
+
 }

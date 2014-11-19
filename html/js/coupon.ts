@@ -37,6 +37,7 @@ class Coupon {
         var $myForm = $("<form></form>");
         $myForm.attr("action", "coupons/" + this.$couponInput.val());
         $myForm.append('<input type="hidden" name="_token" value="' + $('input[name=_token]').val() + '"/>');
+        $myForm.append('<input type="hidden" name="quantity" value="' + $('#quantity').val() + '"/>');
         $myForm.serialize();
         $myForm.on("submit", (e)=> {
             var method:string = $myForm.find('input[name="_method"]').val() || "POST";

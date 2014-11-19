@@ -7,7 +7,7 @@ class FixedRightModule {
     private $subtotal:JQuery;
     private $salesTax:JQuery;
     private subtotalAmt:number;
-    private salesTax:number = 0;
+
     private $shipping:JQuery;
     private shippingAmt:number;
     private $total:JQuery;
@@ -20,6 +20,7 @@ class FixedRightModule {
     private discount:number = 0;
     private currentState:string = "";
     private currentZipcode:string = "";
+    private salesTax:SalesTax = new SalesTax();
 
     constructor(public pagination:Pagination) {
         this.setSelectors();
@@ -141,26 +142,19 @@ class FixedRightModule {
         if (this.$shippingZipCode.val() == "" || this.$shippingZipCode.val() == this.currentZipcode) {
             return;
         }
-        var taxRate:number = 0;
-        $.ajax({
-            type: 'GET',
-            url: "/tax/" + this.$shippingZipCode.val() + "/" + this.$shippingStateSelect.val(),
-            success: (taxRate)=> {
-                if (callback) callback(taxRate);
-                if (taxRate.error) {
-                    return;
-                }
-                this.salesTax = (this.getQuantity() * this.unitPriceAmt - this.discount) * taxRate.rate;
-                this.$salesTax.html('$' + this.salesTax.toFixed(2));
-            },
-            error: (response)=> {
-                if (callback) callback({error: "There was an error retrieving sales tax"});
-            }
-        });
+
+        this.salesTax.setLocation(this.$shippingZipCode.val(), this.$shippingStateSelect.val(), (response)=> {
+            this.$salesTax.html('$' + this.getSalesTax().toFixed(2));
+            if (callback) callback(response);
+        })
+    }
+
+    private getSalesTax():number {
+        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.$shippingStateSelect.val());
     }
 
     private setShipping():void {
-        var foo = this.$shippingSelect.val();
+
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
             this.shippingAmt = 0;
             this.$shipping = this.$shipping.html('--');
@@ -171,7 +165,7 @@ class FixedRightModule {
     }
 
     private setTotal():void {
-        var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt + this.salesTax).toFixed(2);
+        var totalStr:string = '$' + (this.subtotalAmt  + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     }
 

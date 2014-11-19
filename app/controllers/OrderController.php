@@ -132,7 +132,7 @@ class OrderController extends BaseController
         if (Input::has("code")&& Input::has("coupon_instance")) {
             $validCoupon = CouponInstance::where("code", "=", Input::get("code"))
                 ->where("token", "=", Input::get("coupon_instance"))
-                ->where("used", "=", 0);
+                ->where("used", "=", 0)->first();
             if ($validCoupon) {
                 $couponData = Coupon::where("code", "=", Input::get("code"))->first();
                 if ($couponData) {

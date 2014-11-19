@@ -1,0 +1,2 @@
+* * * * * php /home/vagrant/Code/movo/bridge/artisan scheduled:run 1>> /dev/null 2>&1
+
