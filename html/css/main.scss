@@ -157,16 +157,8 @@ body {
   text-rendering:   optimizeLegibility;
   border-radius:    3px;
   display:          inline-block;
-  @include transition(0.3s all);
+  @include transition(0.2s all);
   &:hover {
-    background-color: darken($movoRed, 10%);
-  }
-}
-#submit-coupon-code {
-  color:            white;
-  background-color: $blue;
-  @include transition(0.3s all);
-  &:hover {
-    background-color: darken($movoRed, 15%);
+    background-color: darken($movoRed, 8%);
   }
 }

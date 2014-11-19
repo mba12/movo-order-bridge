@@ -45,6 +45,11 @@
                 <input type="text" data-stripe="cvc" placeholder="CVC" id="cvc" maxlength="4" data-validate="number|min:3|max:4" data-error-selector=".error-messages .cvc"/>
             </div>
         </div>
+
+    </div>
+    <div class="coupon-container">
+        <input type="text"  placeholder="Enter coupon code" id="coupon-code" value="friends20"/>
+        <div class="apply" id="submit-coupon-code">Apply</div>
     </div>
     <ul class="error-messages">
         <li class="coupon">Please enter a coupon code!</li>
@@ -54,10 +59,7 @@
         <li class="year">Please enter an expiration year!</li>
         <li class="cvc">Please enter the CVC!</li>
     </ul>
-     <div class="coupon-container">
-          <input type="text"  placeholder="Enter coupon code" id="coupon-code" value="friends20"/>
-          <div class="button apply" id="submit-coupon-code">Apply coupon</div>
-        </div>
+
     <div class="prev-next">
         <div class="button next" id="submit-order">Submit Order</div>
         <div class="button prev">Previous</div>

@@ -24,6 +24,8 @@ class OrderForm {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
+        pagination.gotoPage(3);
+
     }
 
     private setSelectors():void {

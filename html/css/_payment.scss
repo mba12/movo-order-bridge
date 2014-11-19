@@ -21,13 +21,22 @@
     }
   }
   #submit-order {
-    background-color: $blue;
+    background-color: #666;
     @include transition(0.3s all);
     &:hover {
-      background-color: darken($blue, 5%);
+      background-color: #555;
     }
   }
-
+  #submit-coupon-code {
+    margin-left: 5px;
+    display: inline-block;
+    font-size: em(13);
+    cursor:           pointer;
+    text-rendering:   optimizeLegibility;
+    @include transition(0.3s all);
+    &:hover {
+    }
+  }
 
 }
 

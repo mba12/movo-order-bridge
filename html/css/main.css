@@ -686,12 +686,21 @@ body {
         display: inline-block;
         font-size: 0.8125em; }
     #form-content-box #payment #submit-order {
-      background-color: #5499b4;
+      background-color: #666666;
       -webkit-transition: 0.3s all;
       -moz-transition: 0.3s all;
       transition: 0.3s all; }
       #form-content-box #payment #submit-order:hover {
-        background-color: #498da6; }
+        background-color: #555555; }
+    #form-content-box #payment #submit-coupon-code {
+      margin-left: 5px;
+      display: inline-block;
+      font-size: 0.8125em;
+      cursor: pointer;
+      text-rendering: optimizeLegibility;
+      -webkit-transition: 0.3s all;
+      -moz-transition: 0.3s all;
+      transition: 0.3s all; }
   #form-content-box #summary {
     display: none; }
 
@@ -706,17 +715,8 @@ body {
   text-rendering: optimizeLegibility;
   border-radius: 3px;
   display: inline-block;
-  -webkit-transition: 0.3s all;
-  -moz-transition: 0.3s all;
-  transition: 0.3s all; }
+  -webkit-transition: 0.2s all;
+  -moz-transition: 0.2s all;
+  transition: 0.2s all; }
   .button:hover {
-    background-color: #e60b21; }
-
-#submit-coupon-code {
-  color: white;
-  background-color: #5499b4;
-  -webkit-transition: 0.3s all;
-  -moz-transition: 0.3s all;
-  transition: 0.3s all; }
-  #submit-coupon-code:hover {
-    background-color: #ce0a1d; }
+    background-color: #f00c22; }
