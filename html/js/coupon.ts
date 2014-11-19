@@ -5,6 +5,7 @@ class Coupon {
     private $couponButton:JQuery;
     private $couponInput:JQuery;
     private $couponResponse:JQuery;
+
     constructor(public callback) {
         this.setSelectors();
         this.initEvents();
@@ -16,7 +17,6 @@ class Coupon {
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
         this.$couponResponse = $('.error-messages .coupon');
-
     }
 
     private initEvents():void {
@@ -28,9 +28,9 @@ class Coupon {
         event.preventDefault();
         event.stopPropagation();
 
-        var code:string= this.$couponInput.val();
+        var code:string = this.$couponInput.val();
         this.$couponResponse.hide();
-        if(code.length<1) {
+        if (code.length < 1) {
             this.$couponResponse.show();
             return;
         }
@@ -42,15 +42,11 @@ class Coupon {
             var method:string = $myForm.find('input[name="_method"]').val() || "POST";
             var url = $myForm.prop("action");
             $.ajax({
-                type: method,
-                url: url,
-                data: $myForm.serialize(),
-                success: (result)=> {
+                type: method, url: url, data: $myForm.serialize(), success: (result)=> {
                     this.$couponInput.attr("name", "code");
                     this.callback(result);
 
-                },
-                error: (result)=> {
+                }, error: (result)=> {
                     //this.errorCallback(result);
                 }
             });

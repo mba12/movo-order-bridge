@@ -158,6 +158,9 @@ class ShippingInfo extends ScreenBase {
     }
 
     onNextClick():void {
+        if(this.ajaxCallPending) {
+            return;
+        }
         this.$shippingCountry.removeClass('error');
         this.$currentPage.find('.error-messages').find('.country').hide();
 
@@ -174,8 +177,10 @@ class ShippingInfo extends ScreenBase {
             validation.showErrors();
             return;
         }
+        this.ajaxCallPending = true;
 
         this.fixedRightModule.setSalesTax((result)=>{
+            this.ajaxCallPending = false;
             if(result.error){
                 this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;

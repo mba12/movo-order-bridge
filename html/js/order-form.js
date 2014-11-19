@@ -217,6 +217,7 @@ var Pagination = (function () {
 var ScreenBase = (function () {
     function ScreenBase(pagination) {
         this.pagination = pagination;
+        this.ajaxCallPending = false;
     }
     ScreenBase.prototype.setSelectors = function () {
         this.$prevBtn = $('.prev', this.$currentPage);
@@ -374,7 +375,6 @@ var FixedRightModule = (function () {
             error: function (response) {
                 if (callback)
                     callback({ error: "There was an error retrieving sales tax" });
-                ;
             }
         });
     };
@@ -646,6 +646,9 @@ var ShippingInfo = (function (_super) {
     };
     ShippingInfo.prototype.onNextClick = function () {
         var _this = this;
+        if (this.ajaxCallPending) {
+            return;
+        }
         this.$shippingCountry.removeClass('error');
         this.$currentPage.find('.error-messages').find('.country').hide();
         var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
@@ -659,7 +662,9 @@ var ShippingInfo = (function (_super) {
             validation.showErrors();
             return;
         }
+        this.ajaxCallPending = true;
         this.fixedRightModule.setSalesTax(function (result) {
+            _this.ajaxCallPending = false;
             if (result.error) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
@@ -728,6 +733,10 @@ var Payment = (function (_super) {
     };
     Payment.prototype.submitForm = function () {
         var _this = this;
+        if (this.ajaxCallPending) {
+            return;
+        }
+        this.ajaxCallPending = true;
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
@@ -741,12 +750,16 @@ var Payment = (function (_super) {
             url: formURL,
             data: data,
             success: function (response) {
+                _this.ajaxCallPending = false;
                 if (response.status == 200) {
                     _this.pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
-                    console.log("crap, something went wrong");
+                    console.log("card couldn't be charged");
                 }
+            },
+            error: function (response) {
+                _this.ajaxCallPending = false;
             }
         });
     };

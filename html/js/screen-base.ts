@@ -3,6 +3,7 @@ class ScreenBase {
     public $prevBtn:JQuery;
     public $nextBtn:JQuery;
     public $currentPage:JQuery;
+    public ajaxCallPending:boolean = false;
 
     constructor(public pagination:Pagination) {
     }

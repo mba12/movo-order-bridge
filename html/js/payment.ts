@@ -8,13 +8,11 @@ class Payment extends ScreenBase {
     private stripeKey:string;
     private validation:Validation;
 
-
     constructor($pagination:Pagination) {
         super($pagination);
         this.setSelectors();
         this.initEvents();
         this.initStripe();
-
     }
 
     public setSelectors() {
@@ -25,12 +23,10 @@ class Payment extends ScreenBase {
         super.setSelectors();
     }
 
-
     public initEvents() {
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
         super.initEvents();
     }
-
 
     private initStripe() {
         this.stripeKey = $('meta[name="publishable-key"]').attr('content');
@@ -39,7 +35,7 @@ class Payment extends ScreenBase {
 
     private onFormSubmit(e) {
         e.preventDefault();
-        this.validation = new  Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        this.validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
         if (this.validation.isValidForm()) {
             console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', <any>true);
@@ -51,7 +47,7 @@ class Payment extends ScreenBase {
     }
 
     private createStripeToken() {
-        var data=this.$form.serialize();
+        var data = this.$form.serialize();
         Stripe.createToken(this.$form, $.proxy(this.stripResponseHandler, this));
     }
 
@@ -72,24 +68,30 @@ class Payment extends ScreenBase {
     }
 
     private submitForm() {
+        if (this.ajaxCallPending) {
+            return;
+        }
+        this.ajaxCallPending = true;
         var formURL = this.$form.attr("action");
-        var data=this.$form.serializeArray();
+        var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
         for (var i = 0; i < quantity; i++) {
-            var itemName:string="unit"+(i+1);
-            var unitText:string=$("#"+itemName+" option:selected").text().trim();
-            data.push({"name":itemName+"Name", "value": unitText});
+            var itemName:string = "unit" + (i + 1);
+            var unitText:string = $("#" + itemName + " option:selected").text().trim();
+            data.push({"name": itemName + "Name", "value": unitText});
         }
         $.ajax({
-            type: 'POST',
-            url: formURL,
-            data: data,
-            success: (response)=> {
+            type: 'POST', url: formURL, data: data, success: (response)=> {
+                this.ajaxCallPending = false;
                 if (response.status == 200) {
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
-                    console.log("crap, something went wrong");
+                    // TODO: display message on screen
+                    console.log("card couldn't be charged");
                 }
+            }, error: (response)=> {
+                this.ajaxCallPending = false;
+                // TODO: display something
             }
         });
     }
