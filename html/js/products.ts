@@ -56,4 +56,22 @@ class Products extends ScreenBase {
         }
     }
 
+    private disableQuantityStepper():void {
+        $('#fixed-right-module').find('.stepper').addClass('disabled');
+        $('#fixed-right-module').find('input').attr('disabled');
+    }
+
+    private enableQuantityStepper():void {
+        $('#fixed-right-module').find('.stepper').removeClass('disabled');
+        $('#fixed-right-module').find('input').removeProp('disabled');
+    }
+
+    public onPageChanged(pageIndex:number):void {
+        if(pageIndex == 0) {
+            this.enableQuantityStepper();
+        } else {
+            this.disableQuantityStepper();
+        }
+    }
+
 }

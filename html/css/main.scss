@@ -32,7 +32,7 @@ body {
     color:         $darkGray;
     font-size:     em(12);
     &.error {
-      border: 1px solid $red;
+      border: 1px solid $movoRed;
     }
   }
 
@@ -147,7 +147,7 @@ body {
 
 }
 .button {
-  background-color: lighten(#545454, 5%);
+  background-color: $movoRed;
   color:            $white;
   font-size:        em(14.5);
   @include fw-medium;
@@ -159,7 +159,7 @@ body {
   display:          inline-block;
   @include transition(0.3s all);
   &:hover {
-    background-color: darken(#545454, 6%);
+    background-color: darken($movoRed, 10%);
   }
 }
 #submit-coupon-code {
@@ -167,6 +167,6 @@ body {
   background-color: $blue;
   @include transition(0.3s all);
   &:hover {
-    background-color: darken($blue, 5%);
+    background-color: darken($movoRed, 15%);
   }
 }

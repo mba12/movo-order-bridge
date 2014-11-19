@@ -4,5 +4,6 @@ $white: #fff;
 $darkGray: #333;
 $lightGray: #ececec;
 $mediumGray: #545454;
-$red: #dd2a2a;
+$movoRed: #f52f41;
+$red: darken($movoRed, 10%);
 $blue: #5499b4;

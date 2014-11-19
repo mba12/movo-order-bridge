@@ -382,6 +382,11 @@ USAGE:
   background-position: center -21px;
   bottom: 0; }
 
+.stepper.disabled {
+  opacity: 0.5; }
+  .stepper.disabled .stepper-arrow {
+    cursor: default !important; }
+
 .white {
   color: white !important; }
 
@@ -411,7 +416,7 @@ body {
     color: #333333;
     font-size: 0.75em; }
     #form-content-box input.error, #form-content-box select.error {
-      border: 1px solid #dd2a2a; }
+      border: 1px solid #f52f41; }
   #form-content-box .select-group {
     margin-bottom: 14px; }
     #form-content-box .select-group h5 {
@@ -432,7 +437,7 @@ body {
       font-weight: 700;
       margin-bottom: 25px; }
   #form-content-box .error-messages {
-    color: #dd2a2a;
+    color: #e60b21;
     font-size: 0.8125em;
     margin: 10px 0 10px;
     line-height: 1.3em; }
@@ -540,13 +545,13 @@ body {
       cursor: pointer; }
   #form-content-box #nav {
     height: 50px;
-    background-color: #545454;
+    background-color: #4d4d4d;
     position: relative;
     z-index: 1; }
     #form-content-box #nav ul {
       padding: 19px 10px 0 25px; }
       #form-content-box #nav ul li {
-        color: #9a9a9a;
+        color: rgba(255, 255, 255, 0.7);
         float: left;
         margin-right: 25px;
         font-size: 0.8125em;
@@ -556,7 +561,7 @@ body {
         -moz-transition: 0.3s all;
         transition: 0.3s all; }
         #form-content-box #nav ul li.active {
-          color: #f1f0f0; }
+          color: white; }
   #form-content-box #fixed-right-module {
     float: right;
     width: 260px;
@@ -633,7 +638,7 @@ body {
     #form-content-box #products #too-many-units {
       font-size: 0.8125rem; }
       #form-content-box #products #too-many-units a, #form-content-box #products #too-many-units a:visited, #form-content-box #products #too-many-units a:active {
-        color: #dd2a2a; }
+        color: #e60b21; }
   #form-content-box #shipping-info {
     display: none; }
   #form-content-box #shipping-info #use-billing-address {
@@ -691,7 +696,7 @@ body {
     display: none; }
 
 .button {
-  background-color: #616161;
+  background-color: #f52f41;
   color: white;
   font-size: 0.90625em;
   font-weight: 600;
@@ -705,7 +710,7 @@ body {
   -moz-transition: 0.3s all;
   transition: 0.3s all; }
   .button:hover {
-    background-color: #454545; }
+    background-color: #e60b21; }
 
 #submit-coupon-code {
   color: white;
@@ -714,4 +719,4 @@ body {
   -moz-transition: 0.3s all;
   transition: 0.3s all; }
   #submit-coupon-code:hover {
-    background-color: #498da6; }
+    background-color: #ce0a1d; }

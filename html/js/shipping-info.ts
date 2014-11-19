@@ -181,8 +181,8 @@ class ShippingInfo extends ScreenBase {
                 return;
             }
             validation.resetErrors();
-            this.$pagination.next();
-            this.$pagination.showCurrentPage();
+            this.pagination.next();
+            this.pagination.showCurrentPage();
         });
     }
 

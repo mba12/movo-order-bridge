@@ -160,6 +160,7 @@ var Validation = (function () {
 var Pagination = (function () {
     function Pagination() {
         this.currentIndex = 0;
+        this.pageChanged = new signals.Signal();
         this.setSelectors();
         this.initPages();
         this.showCurrentPage();
@@ -185,6 +186,7 @@ var Pagination = (function () {
         this.$currentPage.show();
         this.$navLis.removeClass("active");
         $(this.$navLis[this.currentIndex]).addClass("active");
+        this.pageChanged.dispatch(this.currentIndex);
     };
     Pagination.prototype.previous = function () {
         this.currentIndex--;
@@ -213,8 +215,8 @@ var Pagination = (function () {
     return Pagination;
 })();
 var ScreenBase = (function () {
-    function ScreenBase($pagination) {
-        this.$pagination = $pagination;
+    function ScreenBase(pagination) {
+        this.pagination = pagination;
     }
     ScreenBase.prototype.setSelectors = function () {
         this.$prevBtn = $('.prev', this.$currentPage);
@@ -224,10 +226,11 @@ var ScreenBase = (function () {
         var _this = this;
         this.$prevBtn.on('click', function () { return _this.onPrevClick(); });
         this.$nextBtn.on('click', function () { return _this.onNextClick(); });
+        this.pagination.pageChanged.add(function (pageIndex) { return _this.onPageChanged(pageIndex); });
     };
     ScreenBase.prototype.onPrevClick = function () {
-        this.$pagination.previous();
-        this.$pagination.showCurrentPage();
+        this.pagination.previous();
+        this.pagination.showCurrentPage();
     };
     ScreenBase.prototype.onNextClick = function () {
         var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
@@ -236,8 +239,10 @@ var ScreenBase = (function () {
             return;
         }
         validation.resetErrors();
-        this.$pagination.next();
-        this.$pagination.showCurrentPage();
+        this.pagination.next();
+        this.pagination.showCurrentPage();
+    };
+    ScreenBase.prototype.onPageChanged = function (pageIndex) {
     };
     return ScreenBase;
 })();
@@ -462,6 +467,22 @@ var Products = (function (_super) {
             this.$tooManyUnitsMsg.hide();
         }
     };
+    Products.prototype.disableQuantityStepper = function () {
+        $('#fixed-right-module').find('.stepper').addClass('disabled');
+        $('#fixed-right-module').find('input').attr('disabled');
+    };
+    Products.prototype.enableQuantityStepper = function () {
+        $('#fixed-right-module').find('.stepper').removeClass('disabled');
+        $('#fixed-right-module').find('input').removeProp('disabled');
+    };
+    Products.prototype.onPageChanged = function (pageIndex) {
+        if (pageIndex == 0) {
+            this.enableQuantityStepper();
+        }
+        else {
+            this.disableQuantityStepper();
+        }
+    };
     return Products;
 })(ScreenBase);
 var BillingInfo = (function (_super) {
@@ -644,8 +665,8 @@ var ShippingInfo = (function (_super) {
                 return;
             }
             validation.resetErrors();
-            _this.$pagination.next();
-            _this.$pagination.showCurrentPage();
+            _this.pagination.next();
+            _this.pagination.showCurrentPage();
         });
     };
     return ShippingInfo;
@@ -721,7 +742,7 @@ var Payment = (function (_super) {
             data: data,
             success: function (response) {
                 if (response.status == 200) {
-                    _this.$pagination.gotoSummaryPage();
+                    _this.pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
                     console.log("crap, something went wrong");

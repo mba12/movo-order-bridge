@@ -1,8 +1,11 @@
+/// <reference path="js-signals.d.ts" />
+
 class Pagination {
     private pages:JQuery[];
     private $currentPage:JQuery;
     private currentIndex:number = 0;
     private $navLis:JQuery;
+    public pageChanged:Signal = new signals.Signal();
 
     constructor() {
         this.setSelectors();
@@ -25,11 +28,11 @@ class Pagination {
         this.$currentPage = this.pages[this.currentIndex];
         for (var i = 0; i < this.pages.length; i++) {
             $(this.pages[i]).hide();
-
         }
         this.$currentPage.show();
         this.$navLis.removeClass("active");
         $(this.$navLis[this.currentIndex]).addClass("active");
+        this.pageChanged.dispatch(this.currentIndex);
     }
 
     public previous():void {

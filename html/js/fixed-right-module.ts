@@ -67,7 +67,6 @@ class FixedRightModule {
             $("#coupon-code").attr("name", "code");
             this.calculatePrice();
         }
-
         //TODO make not input
     }
 
@@ -124,7 +123,6 @@ class FixedRightModule {
 
                 }
             }
-
         }
     }
 
@@ -148,7 +146,7 @@ class FixedRightModule {
             type: 'GET',
             url: "/tax/" + this.$shippingZipCode.val() + "/" + this.$shippingStateSelect.val(),
             success: (taxRate)=> {
-                if(callback) callback(taxRate);
+                if (callback) callback(taxRate);
                 if (taxRate.error) {
                     return;
                 }
@@ -156,11 +154,11 @@ class FixedRightModule {
                 this.$salesTax.html('$' + this.salesTax.toFixed(2));
             },
             error: (response)=> {
-                if(callback) callback({error:"There was an error retrieving sales tax"});;
+                if (callback) callback({error: "There was an error retrieving sales tax"});
+                ;
             }
         });
     }
-
 
     private setShipping():void {
         var foo = this.$shippingSelect.val();

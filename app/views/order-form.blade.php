@@ -52,6 +52,7 @@
        <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
        <script src="js/vendor/greensock/TweenMax.min.js"></script>
        <script src="js/vendor/placeholder/jquery.placeholder.js"></script>
+       <script src="js/vendor/js-signals/signals.js"></script>
        <script src="https://js.stripe.com/v2/"></script>
        <script src="/js/order-form.js"></script>
 </body>

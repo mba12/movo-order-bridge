@@ -4,7 +4,7 @@ class ScreenBase {
     public $nextBtn:JQuery;
     public $currentPage:JQuery;
 
-    constructor(public $pagination:Pagination) {
+    constructor(public pagination:Pagination) {
     }
 
     public setSelectors() {
@@ -15,11 +15,12 @@ class ScreenBase {
     public initEvents() {
         this.$prevBtn.on('click', ()=>this.onPrevClick());
         this.$nextBtn.on('click', ()=>this.onNextClick());
+        this.pagination.pageChanged.add((pageIndex)=>this.onPageChanged(pageIndex));
     }
 
     public onPrevClick():void {
-        this.$pagination.previous();
-        this.$pagination.showCurrentPage();
+        this.pagination.previous();
+        this.pagination.showCurrentPage();
     }
 
     public onNextClick():void {
@@ -29,9 +30,12 @@ class ScreenBase {
             return;
         }
         validation.resetErrors();
-        this.$pagination.next();
-        this.$pagination.showCurrentPage();
+        this.pagination.next();
+        this.pagination.showCurrentPage();
     }
 
+    public onPageChanged(pageIndex:number):void {
+
+    }
 
 }

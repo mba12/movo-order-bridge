@@ -1,12 +1,12 @@
 #nav {
   height: 50px;
-  background-color: $mediumGray;
+  background-color: #4d4d4d;
   position: relative;
   z-index: 1;
   ul {
     padding: 19px 10px 0 25px;
     li {
-      color: #9a9a9a;
+      color: rgba(255,255,255, 0.7);
       float: left;
       margin-right: 25px;
       font-size: em(13);
@@ -14,11 +14,8 @@
       @include fw-bold;
       @include transition(0.3s all);
       &.active {
-        color: #f1f0f0;
+        color: #fff;
       }
-//      &:hover {
-//        color: #f1f0f0;
-//      }
     }
   }
 }

@@ -86,7 +86,7 @@ class Payment extends ScreenBase {
             data: data,
             success: (response)=> {
                 if (response.status == 200) {
-                    this.$pagination.gotoSummaryPage();
+                    this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
                     console.log("crap, something went wrong");
                 }
