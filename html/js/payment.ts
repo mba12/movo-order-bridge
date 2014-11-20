@@ -72,7 +72,6 @@ class Payment extends ScreenBase {
         if (this.ajaxCallPending) {
             return;
         }
-        this.ajaxCallPending = true;
         this.showSpinner();
         this.sendDataToServer();
     }
@@ -88,6 +87,7 @@ class Payment extends ScreenBase {
     }
 
     private sendDataToServer():void {
+        this.ajaxCallPending = true;
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();

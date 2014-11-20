@@ -48,7 +48,7 @@
 
     </div>
     <div class="coupon-container">
-        <input type="text"  placeholder="Enter coupon code" id="coupon-code" value="friends20"/>
+        <input type="text"  placeholder="Enter coupon code" id="coupon-code" value=""/>
         <div class="apply" id="submit-coupon-code">Apply</div>
     </div>
     <ul class="error-messages">

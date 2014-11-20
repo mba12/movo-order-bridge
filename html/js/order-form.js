@@ -55,7 +55,7 @@ var Validation = (function () {
             $el.addClass("error");
         }
         if ($el.data("error-selector")) {
-            $($el.data("error-selector")).show();
+            $($el.data("error-selector"), $el.closest('section')).show();
             if ($el.data("error-message")) {
                 $($el.data("error-selector")).html($el.data("error-message"));
             }
@@ -230,6 +230,8 @@ var ScreenBase = (function () {
         this.pagination.pageChanged.add(function (pageIndex) { return _this.onPageChanged(pageIndex); });
     };
     ScreenBase.prototype.onPrevClick = function () {
+        var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        validation.resetErrors();
         this.pagination.previous();
         this.pagination.showCurrentPage();
     };
@@ -734,7 +736,6 @@ var Payment = (function (_super) {
         if (this.ajaxCallPending) {
             return;
         }
-        this.ajaxCallPending = true;
         this.showSpinner();
         this.sendDataToServer();
     };
@@ -748,6 +749,7 @@ var Payment = (function (_super) {
     };
     Payment.prototype.sendDataToServer = function () {
         var _this = this;
+        this.ajaxCallPending = true;
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
