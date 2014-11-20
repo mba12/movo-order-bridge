@@ -128,6 +128,7 @@ return array(
         'Movo\Providers\ReceiptsServiceProvider',
         'Movo\Providers\SalesTaxServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
+        'Indatus\Dispatcher\ServiceProvider',
     ),
 
     /*

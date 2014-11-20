@@ -18,8 +18,8 @@ class ZipTax implements SalesTaxInterface
     public function getRate($zipcode, $state)
     {
 
-        if(Cache::has("zip-code-".$zipcode)){
-            return Cache::get("zip-code-".$zipcode);
+        if(Cache::has("zip-code-".$zipcode.$state)){
+            return Cache::get("zip-code-".$zipcode.$state);
         }
 
         $url = "http://api.zip-tax.com/request/v20?key=" . Config::get("services.zip-tax.key") . "&postalcode=" . $zipcode . "&state=" . $state . "&format=JSON";
@@ -31,7 +31,7 @@ class ZipTax implements SalesTaxInterface
         }
 
         //cache results
-        Cache::put("zip-code-".$zipcode, $jsonObject['results'][0]['taxSales'], 1440);
+        Cache::put("zip-code-".$zipcode.$state, $jsonObject['results'][0]['taxSales'], 1440);
 
         return $jsonObject['results'][0]['taxSales'];
     }

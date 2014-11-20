@@ -10,6 +10,7 @@
 /// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
 /// <reference path="coupon.ts" />
+/// <reference path="sales-tax.ts" />
 /// <reference path="coupon-data.ts" />
 class OrderForm {
 

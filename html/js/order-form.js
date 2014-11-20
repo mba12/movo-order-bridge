@@ -249,12 +249,12 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        this.pagination = pagination;
         var _this = this;
-        this.salesTax = 0;
+        this.pagination = pagination;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";
+        this.salesTax = new SalesTax();
         this.setSelectors();
         this.setUnitPrice();
         this.initEvents();
@@ -276,6 +276,8 @@ var FixedRightModule = (function () {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
+        this.$couponButton = $("#submit-coupon-code");
+        this.$couponInput = $("#coupon-code");
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -292,6 +294,8 @@ var FixedRightModule = (function () {
     };
     FixedRightModule.prototype.onCouponSuccess = function (result) {
         if (result) {
+            this.$couponInput.fadeOut();
+            this.$couponButton.fadeOut();
             this.coupon = result.coupon;
             this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>');
             $("#coupon-code").attr("name", "code");
@@ -359,27 +363,16 @@ var FixedRightModule = (function () {
         if (this.$shippingZipCode.val() == "" || this.$shippingZipCode.val() == this.currentZipcode) {
             return;
         }
-        var taxRate = 0;
-        $.ajax({
-            type: 'GET',
-            url: "/tax/" + this.$shippingZipCode.val() + "/" + this.$shippingStateSelect.val(),
-            success: function (taxRate) {
-                if (callback)
-                    callback(taxRate);
-                if (taxRate.error) {
-                    return;
-                }
-                _this.salesTax = (_this.getQuantity() * _this.unitPriceAmt - _this.discount) * taxRate.rate;
-                _this.$salesTax.html('$' + _this.salesTax.toFixed(2));
-            },
-            error: function (response) {
-                if (callback)
-                    callback({ error: "There was an error retrieving sales tax" });
-            }
+        this.salesTax.setLocation(this.$shippingZipCode.val(), this.$shippingStateSelect.val(), function (response) {
+            _this.$salesTax.html('$' + _this.getSalesTax().toFixed(2));
+            if (callback)
+                callback(response);
         });
     };
+    FixedRightModule.prototype.getSalesTax = function () {
+        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.$shippingStateSelect.val());
+    };
     FixedRightModule.prototype.setShipping = function () {
-        var foo = this.$shippingSelect.val();
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
             this.shippingAmt = 0;
             this.$shipping = this.$shipping.html('--');
@@ -390,7 +383,7 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.setTotal = function () {
-        var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.salesTax).toFixed(2);
+        var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     };
     FixedRightModule.prototype.onKeyPress = function (e) {
@@ -806,6 +799,7 @@ var Coupon = (function () {
         var $myForm = $("<form></form>");
         $myForm.attr("action", "coupons/" + this.$couponInput.val());
         $myForm.append('<input type="hidden" name="_token" value="' + $('input[name=_token]').val() + '"/>');
+        $myForm.append('<input type="hidden" name="quantity" value="' + $('#quantity').val() + '"/>');
         $myForm.serialize();
         $myForm.on("submit", function (e) {
             var method = $myForm.find('input[name="_method"]').val() || "POST";
@@ -832,6 +826,44 @@ var Coupon = (function () {
         console.log(result);
     };
     return Coupon;
+})();
+var SalesTax = (function () {
+    function SalesTax() {
+        this.rate = 0;
+        this.state = "";
+        this.zipcode = "";
+    }
+    SalesTax.prototype.setLocation = function (zipcode, state, callback) {
+        var _this = this;
+        if (zipcode == this.zipcode && state == this.state) {
+            if (callback)
+                callback({});
+            return;
+        }
+        this.zipcode = zipcode;
+        this.state = state;
+        $.ajax({
+            type: 'GET',
+            url: "/tax/" + zipcode + "/" + state,
+            success: function (response) {
+                if (response.error) {
+                    return;
+                }
+                _this.rate = response.rate;
+                if (callback)
+                    callback(response);
+            },
+            error: function (response) {
+                if (callback)
+                    callback({ error: "There was an error retrieving sales tax" });
+            }
+        });
+    };
+    SalesTax.prototype.total = function (quantity, unitPrice, discount, state) {
+        var totalTax = (quantity * unitPrice - discount) * this.rate;
+        return totalTax;
+    };
+    return SalesTax;
 })();
 var CouponData = (function () {
     function CouponData() {

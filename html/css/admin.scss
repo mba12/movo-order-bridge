@@ -1,6 +1,30 @@
-#page-wrap{
+#page-wrap {
   padding: 10px;
   .row {
     max-width: 100%;
+  }
+  .coupon {
+    display: table;
+    .coupon-row {
+      display: table-row;
+      width: 100%;
+      span {
+        float:left;
+        padding-right: 20px;
+        width: 200px;
+        margin-right: 20px;
+      }
+      input {
+        width: 200px;
+      }
+      select {
+        width: 200px;
+      }
+
+      .button {
+        width: 200px;
+      }
+    }
+
   }
 }

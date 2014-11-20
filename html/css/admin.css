@@ -2,3 +2,19 @@
   padding: 10px; }
   #page-wrap .row {
     max-width: 100%; }
+  #page-wrap .coupon {
+    display: table; }
+    #page-wrap .coupon .coupon-row {
+      display: table-row;
+      width: 100%; }
+      #page-wrap .coupon .coupon-row span {
+        float: left;
+        padding-right: 20px;
+        width: 200px;
+        margin-right: 20px; }
+      #page-wrap .coupon .coupon-row input {
+        width: 200px; }
+      #page-wrap .coupon .coupon-row select {
+        width: 200px; }
+      #page-wrap .coupon .coupon-row .button {
+        width: 200px; }

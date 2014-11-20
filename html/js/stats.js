@@ -20,7 +20,8 @@ var Stats = (function () {
             url: "/admin/stats",
             success: function (response) {
                 console.log(response.orderCount);
-                $('.order-count').html(response.orderCount);
+                $('.order-count').find('.count').html(response.orderCount);
+                $('.error-count').find('.count').html(response.errorCount);
             }
         });
     };
