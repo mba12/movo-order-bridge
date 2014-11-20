@@ -372,6 +372,9 @@
     </ul>
     <div class="prev-next">
         <div class="button next">Next</div>
+        <div class="spinner">
+            <img src="img/spinner.gif" />
+        </div>
         <div class="button prev">Previous</div>
     </div>
 </section>

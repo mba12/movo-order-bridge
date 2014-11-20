@@ -457,6 +457,10 @@ body {
       float: left; }
     #form-content-box .prev-next .next {
       float: right; }
+  #form-content-box .spinner {
+    float: right;
+    margin: 5px 10px 0 0;
+    display: none; }
   #form-content-box .row {
     margin-bottom: 7px; }
     #form-content-box .row.single {
@@ -552,7 +556,7 @@ body {
     #form-content-box #nav ul {
       padding: 19px 10px 0 25px; }
       #form-content-box #nav ul li {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.5);
         float: left;
         margin-right: 25px;
         font-size: 0.8125em;

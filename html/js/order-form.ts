@@ -1,5 +1,5 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="greensock.d.ts" />
+/// <reference path="definitions/jquery.d.ts" />
+/// <reference path="definitions/greensock.d.ts" />
 /// <reference path="forms/form-error.ts" />
 /// <reference path="forms/validation.ts" />
 /// <reference path="pagination.ts" />

@@ -1,4 +1,4 @@
-/// <reference path="stripe.d.ts" />
+/// <reference path="definitions/stripe.d.ts" />
 
 class Payment extends ScreenBase {
 
@@ -7,6 +7,7 @@ class Payment extends ScreenBase {
     private submitButtonDefaultValue:string;
     private stripeKey:string;
     private validation:Validation;
+    private $spinner:JQuery;
 
     constructor($pagination:Pagination) {
         super($pagination);
@@ -21,6 +22,7 @@ class Payment extends ScreenBase {
         this.submitButtonDefaultValue = this.$submitBtn.val();
         this.$currentPage = $('#payment');
         super.setSelectors();
+        this.$spinner = this.$currentPage.find('.spinner');
     }
 
     public initEvents() {
@@ -72,6 +74,8 @@ class Payment extends ScreenBase {
             return;
         }
         this.ajaxCallPending = true;
+        this.$spinner.fadeIn();
+        this.$nextBtn.css({opacity: 0.6, cursor: 'default'});
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
@@ -83,6 +87,8 @@ class Payment extends ScreenBase {
         $.ajax({
             type: 'POST', url: formURL, data: data, success: (response)=> {
                 this.ajaxCallPending = false;
+                this.$spinner.fadeOut();
+                this.$nextBtn.css({opacity: 1, cursor: 'pointer'});
                 if (response.status == 200) {
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
@@ -94,10 +100,6 @@ class Payment extends ScreenBase {
                 // TODO: display something
             }
         });
-    }
-
-    onPrevClick():void {
-        super.onPrevClick();
     }
 
     onNextClick():void {

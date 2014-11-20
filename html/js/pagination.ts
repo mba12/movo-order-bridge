@@ -1,4 +1,4 @@
-/// <reference path="js-signals.d.ts" />
+/// <reference path="definitions/js-signals.d.ts" />
 
 class Pagination {
     private pages:JQuery[];

@@ -1,4 +1,4 @@
-/// <reference path="jquery.d.ts" />
+/// <reference path="definitions/jquery.d.ts" />
 
 class Stats {
 
@@ -19,7 +19,7 @@ class Stats {
 
     }
 
-    private reloadStats():void{
+    private reloadStats():void {
         $.ajax({
             type: 'POST',
             url: "/admin/stats",

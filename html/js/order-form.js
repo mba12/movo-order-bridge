@@ -249,8 +249,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        var _this = this;
         this.pagination = pagination;
+        var _this = this;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";
@@ -559,6 +559,7 @@ var ShippingInfo = (function (_super) {
         this.$billingZip = this.$billingPage.find('#billing-zip');
         this.$currentPage = this.$shippingPage;
         _super.prototype.setSelectors.call(this);
+        this.$spinner = this.$currentPage.find('.spinner');
     };
     ShippingInfo.prototype.initEvents = function () {
         var _this = this;
@@ -656,8 +657,12 @@ var ShippingInfo = (function (_super) {
             return;
         }
         this.ajaxCallPending = true;
+        this.$spinner.fadeIn();
+        this.$nextBtn.css({ opacity: 0.6, cursor: 'default' });
         this.fixedRightModule.setSalesTax(function (result) {
             _this.ajaxCallPending = false;
+            _this.$spinner.fadeOut();
+            _this.$nextBtn.css({ opacity: 1, cursor: 'pointer' });
             if (result.error) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
@@ -683,6 +688,7 @@ var Payment = (function (_super) {
         this.submitButtonDefaultValue = this.$submitBtn.val();
         this.$currentPage = $('#payment');
         _super.prototype.setSelectors.call(this);
+        this.$spinner = this.$currentPage.find('.spinner');
     };
     Payment.prototype.initEvents = function () {
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
@@ -730,6 +736,8 @@ var Payment = (function (_super) {
             return;
         }
         this.ajaxCallPending = true;
+        this.$spinner.fadeIn();
+        this.$nextBtn.css({ opacity: 0.6, cursor: 'default' });
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
@@ -744,6 +752,8 @@ var Payment = (function (_super) {
             data: data,
             success: function (response) {
                 _this.ajaxCallPending = false;
+                _this.$spinner.fadeOut();
+                _this.$nextBtn.css({ opacity: 1, cursor: 'pointer' });
                 if (response.status == 200) {
                     _this.pagination.gotoSummaryPage();
                 }
@@ -755,9 +765,6 @@ var Payment = (function (_super) {
                 _this.ajaxCallPending = false;
             }
         });
-    };
-    Payment.prototype.onPrevClick = function () {
-        _super.prototype.onPrevClick.call(this);
     };
     Payment.prototype.onNextClick = function () {
         var validation = new Validation($('[data-validate]', this.$currentPage));
