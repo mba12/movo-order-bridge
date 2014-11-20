@@ -532,8 +532,8 @@ var ShippingInfo = (function (_super) {
         this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
-        this.initPriceSelect();
         this.setCountryToUnitedStates();
+        this.initPriceSelect();
         this.showStateSelectOrInput();
     }
     ShippingInfo.prototype.setSelectors = function () {
@@ -582,7 +582,7 @@ var ShippingInfo = (function (_super) {
             startingIndex = shippingTypes.length - 1;
             endIndex = shippingRates.length;
         }
-        this.$shippingSelect.empty();
+        this.emptyShippingSelect();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
         for (var i = startingIndex; i < endIndex; i++) {
             var price = shippingRates[i];
