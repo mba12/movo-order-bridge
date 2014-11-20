@@ -38,12 +38,9 @@ if(isset($_SERVER['HTTP_HOST'])) {
         }
     });
 } else{
-    $env = $app->detectEnvironment(function(){
-
-                return 'local';
-
-
-    });;
+    $env = $app->detectEnvironment(array(
+        'local' => array('homestead'),
+    ));;
 }
 
 /*

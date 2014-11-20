@@ -276,6 +276,8 @@ var FixedRightModule = (function () {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
+        this.$couponButton = $("#submit-coupon-code");
+        this.$couponInput = $("#coupon-code");
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -292,6 +294,8 @@ var FixedRightModule = (function () {
     };
     FixedRightModule.prototype.onCouponSuccess = function (result) {
         if (result) {
+            this.$couponInput.fadeOut();
+            this.$couponButton.fadeOut();
             this.coupon = result.coupon;
             this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>');
             $("#coupon-code").attr("name", "code");

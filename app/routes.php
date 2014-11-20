@@ -30,7 +30,6 @@ Route::get('tax/{zipcode}/{state}', array(
 ));
 
 
-
 Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/orders', array(
         'as' => 'admin-orders',
@@ -48,6 +47,20 @@ Route::group(array('before' => 'admin'), function () {
     ));
 
     Route::get('/admin', 'AdminController@index');
+    Route::group(array('before' => 'csrf'), function () {
+        Route::put('/admin/coupon/{id}', [
+            'as' => 'update-coupon',
+            'uses' => 'AdminController@updateCoupon'
+        ]);
+    });
+
+    Route::group(array('before' => 'csrf'), function () {
+        Route::post('/admin/orders', [
+            'as' => 'order-search',
+            'uses' => 'AdminController@orderSearch'
+        ]);
+    });
+
 });
 
 Route::get('admin/login', array(
@@ -63,7 +76,7 @@ Route::group(array('before' => 'csrf'), function () {
 });
 
 
-Route::get('/info', function(){
+Route::get('/info', function () {
         echo phpinfo();
         return '';
     }

@@ -15,6 +15,8 @@ class FixedRightModule {
     private $shippingCountrySelect:JQuery;
     private $shippingStateSelect:JQuery;
     private $shippingZipCode:JQuery;
+    private $couponButton:JQuery;
+    private $couponInput:JQuery;
     public static MAX_UNITS:number = 8;
     private coupon:CouponData;
     private discount:number = 0;
@@ -45,6 +47,8 @@ class FixedRightModule {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
+        this.$couponButton = $("#submit-coupon-code");
+        this.$couponInput = $("#coupon-code");
     }
 
     private initEvents() {
@@ -63,6 +67,8 @@ class FixedRightModule {
 
     private onCouponSuccess(result):void {
         if (result) {
+            this.$couponInput.fadeOut();
+            this.$couponButton.fadeOut();
             this.coupon = result.coupon;
             this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>')
             $("#coupon-code").attr("name", "code");
@@ -165,7 +171,7 @@ class FixedRightModule {
     }
 
     private setTotal():void {
-        var totalStr:string = '$' + (this.subtotalAmt  + this.shippingAmt + this.getSalesTax()).toFixed(2);
+        var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     }
 

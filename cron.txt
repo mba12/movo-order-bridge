@@ -1,2 +1,1 @@
-* * * * * php /home/vagrant/Code/movo/bridge/artisan scheduled:run 1>> /dev/null 2>&1
-
+* * * * * php /var/www/vhosts/rx7w-7k7n.accessdomain.com/artisan scheduled:run 1>> /dev/null 2>&1
