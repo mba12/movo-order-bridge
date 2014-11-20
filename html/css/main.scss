@@ -90,6 +90,15 @@ body {
     display: none;
   }
 
+  a {
+    color: $red;
+    text-decoration: underline;
+    @include transition(0.3s color);
+    &:hover {
+      color:$movoRed;
+    }
+  }
+
   .row {
     margin-bottom: 7px;
 

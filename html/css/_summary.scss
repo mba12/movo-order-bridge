@@ -1,3 +1,13 @@
 #summary{
   display: none;
+  h1 {
+    @include fw-bold;
+    margin-bottom: 10px;
+    font-size: em(20);
+  }
+  p {
+    line-height: 1.3em;
+    font-size: em(15.5);
+    width: 90%;
+  }
 }

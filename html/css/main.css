@@ -461,6 +461,14 @@ body {
     float: right;
     margin: 5px 10px 0 0;
     display: none; }
+  #form-content-box a {
+    color: #e60b21;
+    text-decoration: underline;
+    -webkit-transition: 0.3s color;
+    -moz-transition: 0.3s color;
+    transition: 0.3s color; }
+    #form-content-box a:hover {
+      color: #f52f41; }
   #form-content-box .row {
     margin-bottom: 7px; }
     #form-content-box .row.single {
@@ -561,6 +569,7 @@ body {
         margin-right: 25px;
         font-size: 0.8125em;
         text-rendering: optimizeLegibility;
+        cursor: default;
         font-weight: 700;
         -webkit-transition: 0.3s all;
         -moz-transition: 0.3s all;
@@ -717,6 +726,14 @@ body {
       transition: 0.3s all; }
   #form-content-box #summary {
     display: none; }
+    #form-content-box #summary h1 {
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 1.25em; }
+    #form-content-box #summary p {
+      line-height: 1.3em;
+      font-size: 0.96875em;
+      width: 90%; }
 
 .button {
   background-color: #f52f41;

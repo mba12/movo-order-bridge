@@ -11,6 +11,7 @@
       margin-right: 25px;
       font-size: em(13);
       text-rendering:         optimizeLegibility;
+      cursor: default;
       @include fw-bold;
       @include transition(0.3s all);
       &.active {

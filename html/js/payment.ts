@@ -55,7 +55,6 @@ class Payment extends ScreenBase {
 
     private stripResponseHandler(status, response) {
         if (response.error) {
-
             this.$submitBtn.val(this.submitButtonDefaultValue).attr('disabled', <any>false);
             return this.$form.find('.payment-errors').show().text(response.error.message);
         }
@@ -74,8 +73,21 @@ class Payment extends ScreenBase {
             return;
         }
         this.ajaxCallPending = true;
+        this.showSpinner();
+        this.sendDataToServer();
+    }
+
+    private showSpinner():void {
         this.$spinner.fadeIn();
         this.$nextBtn.css({opacity: 0.6, cursor: 'default'});
+    }
+
+    private hideSpinner():void {
+        this.$spinner.fadeOut();
+        this.$nextBtn.css({opacity: 1, cursor: 'pointer'});
+    }
+
+    private sendDataToServer():void {
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
@@ -87,9 +99,9 @@ class Payment extends ScreenBase {
         $.ajax({
             type: 'POST', url: formURL, data: data, success: (response)=> {
                 this.ajaxCallPending = false;
-                this.$spinner.fadeOut();
-                this.$nextBtn.css({opacity: 1, cursor: 'pointer'});
+                this.hideSpinner();
                 if (response.status == 200) {
+                    $('#credit-card-number, #cvc').val('');
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
                     // TODO: display message on screen
