@@ -53,8 +53,8 @@
         <ul id="coupon-error-messages" class="error-messages">
             <li class="coupon-blank">Please enter a coupon code!</li>
             <li class="coupon-invalid">Coupon code has expired or is invalid!</li>
-            <li class="coupon-applied">Your coupon has been applied!</li>
         </ul>
+        <div id="coupon-success" >Coupon applied: <span class="code"></span></div>
     </div>
     <div id="shipping-confirmation">
         <h5>Ship to:</h5>
@@ -64,7 +64,6 @@
         <div id="edit-shipping" class="small-gray-button">EDIT</div>
     </div>
     <ul class="error-messages">
-        <li class="coupon-invalid">That code is not a valid code</li>
         <li class="credit-card">Please enter a credit card number!</li>
         <li class="month">Please enter an expiration month!</li>
         <li class="year">Please enter an expiration year!</li>

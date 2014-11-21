@@ -255,8 +255,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        this.pagination = pagination;
         var _this = this;
+        this.pagination = pagination;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";
@@ -284,6 +284,7 @@ var FixedRightModule = (function () {
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
+        this.$couponSuccess = $("#coupon-success");
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -300,13 +301,24 @@ var FixedRightModule = (function () {
     };
     FixedRightModule.prototype.onCouponSuccess = function (result) {
         if (result) {
-            this.$couponInput.fadeOut();
-            this.$couponButton.fadeOut();
             this.coupon = result.coupon;
-            this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>');
-            $("#coupon-code").attr("name", "code");
+            this.showCouponSuccessText(result.coupon.code);
+            this.updateFormWithCouponData(result.token);
             this.calculatePrice();
         }
+        else {
+            $(".error-messages").find(".coupon-invalid").show();
+        }
+    };
+    FixedRightModule.prototype.showCouponSuccessText = function (code) {
+        this.$couponInput.hide();
+        this.$couponButton.hide();
+        this.$couponSuccess.show().find(".code").html(code);
+        $(".error-messages").find(".coupon-invalid").hide();
+    };
+    FixedRightModule.prototype.updateFormWithCouponData = function (token) {
+        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
+        $("#coupon-code").attr("name", "code");
     };
     FixedRightModule.prototype.onQuantityChange = function () {
         this.calculatePrice();
@@ -353,6 +365,7 @@ var FixedRightModule = (function () {
                 }
             }
         }
+        this.discount = Math.round(this.discount);
     };
     FixedRightModule.prototype.setSubtotal = function () {
         this.subtotalAmt = this.getQuantity() * this.unitPriceAmt - this.discount;
@@ -376,7 +389,7 @@ var FixedRightModule = (function () {
         });
     };
     FixedRightModule.prototype.getSalesTax = function () {
-        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.shippingAmt, this.$shippingStateSelect.val());
     };
     FixedRightModule.prototype.setShipping = function () {
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
@@ -389,6 +402,7 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.setTotal = function () {
+        console.log(this.subtotalAmt, this.discount, this.shippingAmt, this.getSalesTax());
         var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     };
@@ -673,6 +687,7 @@ var ShippingInfo = (function (_super) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
             }
+            _this.fixedRightModule.setTotal();
             validation.resetErrors();
             _this.pagination.next();
             _this.pagination.showCurrentPage();
@@ -871,6 +886,7 @@ var Coupon = (function () {
                     _this.callback(result);
                 },
                 error: function (result) {
+                    _this.callback(result);
                 }
             });
             e.preventDefault();
@@ -895,7 +911,7 @@ var SalesTax = (function () {
         var _this = this;
         if (zipcode == this.zipcode && state == this.state) {
             if (callback)
-                callback({});
+                callback({ rate: this.rate });
             return;
         }
         this.zipcode = zipcode;
@@ -908,6 +924,7 @@ var SalesTax = (function () {
                     return;
                 }
                 _this.rate = response.rate;
+                console.log("tax rate", response.rate);
                 if (callback)
                     callback(response);
             },
@@ -917,9 +934,32 @@ var SalesTax = (function () {
             }
         });
     };
-    SalesTax.prototype.total = function (quantity, unitPrice, discount, state) {
-        var totalTax = (quantity * unitPrice - discount) * this.rate;
+    SalesTax.prototype.total = function (quantity, unitPrice, discount, shippingRate, state) {
+        if (!state || state == "") {
+            return;
+        }
+        var method = this.getTaxMethod(state);
+        var totalTax;
+        switch (method) {
+            case 0:
+                totalTax = ((quantity * unitPrice) - discount) * this.rate;
+                break;
+            case 1:
+                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
+                break;
+        }
+        console.log(totalTax);
         return totalTax;
+    };
+    SalesTax.prototype.getTaxMethod = function (state) {
+        console.log("getTaxMethod");
+        for (var i = 0; i < TAX_TABLE.length; i++) {
+            var taxObj = TAX_TABLE[i];
+            if (taxObj.state.trim() == state.trim()) {
+                return taxObj.method;
+            }
+        }
+        throw new Error("state not found in list");
     };
     return SalesTax;
 })();
@@ -939,7 +979,6 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
         new Summary(pagination);
-        pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

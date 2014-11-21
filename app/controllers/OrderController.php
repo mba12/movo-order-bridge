@@ -15,6 +15,7 @@ class OrderController extends BaseController
         $shippingInfo = $this->getShippingInfo();
         $shippingDropdownData = Shipping::createShippingDropdownData($shippingInfo);
         $sizeInfo = $this->getUnitSizes();
+        $stateTaxMethods=$this->getStateTaxMethods();
         $coupon = null;
         $code = Input::get("code");
         if ($code) {
@@ -25,12 +26,12 @@ class OrderController extends BaseController
             'unitPrice' => $unitPrice,
             'sizeInfo' => $sizeInfo,
             'coupon' => $coupon,
+            'stateTaxMethods'=>$stateTaxMethods
         ]);
     }
 
     public function buy()
     {
-
         $billing = App::make('Movo\Billing\BillingInterface');
         $shipping = App::make('Movo\Shipping\ShippingInterface');
         $receipt = App::make('Movo\Receipts\ReceiptsInterface');
@@ -38,26 +39,26 @@ class OrderController extends BaseController
 
         $couponInstance = Coupon::getValidCouponInstance();
 
-        $salesTaxRate=$salesTax->getRate(Input::get("shipping-zip"),Input::get("shipping-state"));
-        if(!isset($salesTaxRate)){
+        $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), Input::get("shipping-state"));
+        if (!isset($salesTaxRate)) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Your state and zip code do not match'));
         }
-        $unitPrice = $this->getUnitPrice();
-        $shippingMethod = $this->getShippingRate();
 
-         $result = $billing->charge([
+        $unitPrice = $this->getUnitPrice();
+        $shippingMethod = $this->getShippingMethod();
+        $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
+
+        $result = $billing->charge([
             'token' => Input::get("token"),
-            'unit-price' => $unitPrice,
-            'couponInstance' => $couponInstance,
-            'shipping-rate' => $shippingMethod->rate,
-            'shipping-type' => $shippingMethod->type,
+            'amount' => $this->getOrderTotal($unitPrice,Input::get("quantity"),$discount,$shippingMethod,$salesTaxRate,Input::get("shipping-state")),
+            'email'=>Input::get("email")
         ]);
 
         if ($result) {
             $shipping->ship([
                 'result' => $result,
                 'unit-price' => $unitPrice,
-                'couponInstance'=>$couponInstance,
+                'couponInstance' => $couponInstance,
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
             ]);
@@ -65,7 +66,7 @@ class OrderController extends BaseController
             $receipt->send([
                 "result" => $result,
                 'unit-price' => $unitPrice,
-                'couponInstance'=>$couponInstance,
+                'couponInstance' => $couponInstance,
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
             ]);
@@ -87,7 +88,7 @@ class OrderController extends BaseController
 
     private function getUnitPrice()
     {
-        if(Cache::has("unit-price")){
+        if (Cache::has("unit-price")) {
             return Cache::get("unit-price");
         }
         $product = DB::table('products')->first();
@@ -95,30 +96,57 @@ class OrderController extends BaseController
         return $product->price;
     }
 
-    private function getShippingRate()
+    private function getShippingMethod()
     {
+        if (Cache::has("shipping-method-".Input::get("shipping-type"))) {
+            return Cache::get("shipping-method-".Input::get("shipping-type"));
+        }
         $shipping = Shipping::find(Input::get("shipping-type"));
+        Cache::put("shipping-method-".Input::get("shipping-type"), $shipping, 1440);
         return $shipping;
     }
 
     private function getShippingInfo()
     {
-        if(Cache::has("shipping-info")){
+        if (Cache::has("shipping-info")) {
             return Cache::get("shipping-info");
         }
-        $shippingInfo=Shipping::all();
+        $shippingInfo = Shipping::all();
         Cache::put("shipping-info", $shippingInfo, 1440);
         return $shippingInfo;
     }
 
     private function getUnitSizes()
     {
-        if(Cache::has("unit-sizes")){
+        if (Cache::has("unit-sizes")) {
             return Cache::get("unit-sizes");
         }
-        $unitSizes=Size::all();
+        $unitSizes = Size::all();
         Cache::put("unit-sizes", $unitSizes, 1440);
         return $unitSizes;
 
+    }
+
+    private function getOrderTotal($unitPrice,$quantity, $discount,$shippingMethod,$salesTaxRate,$state)
+    {
+        $orderTotal = Order::calculateTotal([
+            "quantity"=>$quantity = $quantity,
+            "tax-rate"=>$salesTaxRate,
+            "unit-price"=>$unitPrice,
+            "state"=>$state,
+            "shipping-rate"=>$shippingMethod->rate,
+            "discount"=>$discount,
+        ]);
+        return $orderTotal;
+    }
+
+    private function getStateTaxMethods()
+    {
+        if (Cache::has("state-tax-methods")) {
+            return Cache::get("state-tax-methods");
+        }
+        $stateTaxMethods = Tax::all();
+        Cache::put("state-tax-methods", $stateTaxMethods, 1440);
+        return $stateTaxMethods;
     }
 }

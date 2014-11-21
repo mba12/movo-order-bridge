@@ -9,7 +9,7 @@ class SalesTax {
 
     public setLocation(zipcode:string, state:string, callback?:any) {
         if (zipcode == this.zipcode && state == this.state) {
-            if (callback) callback({});
+            if (callback) callback({rate:this.rate});
             return;
         }
         this.zipcode = zipcode;
@@ -21,6 +21,7 @@ class SalesTax {
                     return;
                 }
                 this.rate = response.rate;
+                console.log("tax rate", response.rate);
                 if (callback) callback(response);
             }, error: (response)=> {
                 if (callback) callback({error: "There was an error retrieving sales tax"});
@@ -28,9 +29,36 @@ class SalesTax {
         });
     }
 
-    public total(quantity:number, unitPrice:number, discount:number, state?:string):number {
-        var totalTax:number = (quantity * unitPrice - discount) * this.rate;
+    public total(quantity:number, unitPrice:number, discount:number, shippingRate:number, state:string):number {
+        if(!state||state=="") {
+            return;
+        }
+        var method:number = this.getTaxMethod(state);
+        var totalTax:number;
+        switch (method) {
+            case 0:
+                totalTax = ((quantity * unitPrice) - discount) * this.rate;
+                break;
+            case 1:
+                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
+                break;
+        }
+        console.log(totalTax);
         return totalTax;
     }
 
+    private getTaxMethod(state:string):number {
+        console.log("getTaxMethod");
+        for (var i = 0; i < TAX_TABLE.length; i++) {
+            var taxObj=TAX_TABLE[i];
+            if (taxObj.state.trim() == state.trim()){
+                return taxObj.method;
+            } 
+        }
+
+        throw new Error("state not found in list");
+    }
+
 }
+
+declare var TAX_TABLE;

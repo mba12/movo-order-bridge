@@ -183,6 +183,7 @@ class ShippingInfo extends ScreenBase {
                 this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
             }
+            this.fixedRightModule.setTotal();
             validation.resetErrors();
             this.pagination.next();
             this.pagination.showCurrentPage();

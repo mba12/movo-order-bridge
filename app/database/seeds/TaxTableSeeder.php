@@ -154,7 +154,7 @@ class TaxTableSeeder extends Seeder
             "rate" => '0'
         ));
         Tax::create(array(
-            "state" => " OR ",
+            "state" => "OR",
             "rate" => '0'
         ));
         Tax::create(array(

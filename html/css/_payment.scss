@@ -20,17 +20,14 @@
       font-size: em(13);
     }
   }
-  #coupon-error-messages{
-    margin-bottom: 22px;
-
-  }
-  #shipping-confirmation {
-    font-size: em(15);
-    line-height: 1.2em;
-    margin-bottom: 15px;
-    h5 {
-      @include fw-bold;
-      margin-bottom: 4px;
+  #submit-coupon-code {
+    margin-left: 5px;
+    display: inline-block;
+    font-size: em(13);
+    cursor:           pointer;
+    text-rendering:   optimizeLegibility;
+    @include transition(0.3s all);
+    &:hover {
     }
     .cityStateZip {
       margin-bottom: 6px;
@@ -39,6 +36,12 @@
   #submit-coupon-code {
     margin-left: 3px;
   }
-
+  #coupon-success {
+    margin-top: 15px;
+    display: none;
+    color: $success;
+    font-size: em(14);
+    font-weight: bold;
+  }
 }
 

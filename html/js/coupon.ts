@@ -53,7 +53,7 @@ class Coupon {
                     this.callback(result);
 
                 }, error: (result)=> {
-                    //this.errorCallback(result);
+                    this.callback(result);
                 }
             });
             e.preventDefault();
