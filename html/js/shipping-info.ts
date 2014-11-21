@@ -30,8 +30,8 @@ class ShippingInfo extends ScreenBase {
         super($pagination);
         this.setSelectors();
         this.initEvents();
-        this.initPriceSelect();
         this.setCountryToUnitedStates();
+        this.initPriceSelect();
         this.showStateSelectOrInput();
     }
 
@@ -68,7 +68,6 @@ class ShippingInfo extends ScreenBase {
     public initEvents() {
         this.$quantityInputField.on('change blur', ()=>this.onQuantityChange());
         this.$useBillingAddressCheckbox.on('change', ()=>this.onUseBillingAddressCheckboxChange());
-        //this.$billingPage.find('input, select').on('change', ()=>this.onBillingInputChange());
         this.$shippingCountry.on('change', ()=>this.onCountryChange());
         super.initEvents();
     }
@@ -85,8 +84,8 @@ class ShippingInfo extends ScreenBase {
             startingIndex = shippingTypes.length-1;
             endIndex = shippingRates.length;
         }
+        this.emptyShippingSelect();
 
-        this.$shippingSelect.empty();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
         for (var i = startingIndex; i < endIndex; i++) {
             var price = shippingRates[i];
@@ -115,11 +114,6 @@ class ShippingInfo extends ScreenBase {
             this.resetAllFields();
         }
     }
-
-    /*private onBillingInputChange():void {
-        this.copyInBillingFieldValues();
-        this.initPriceSelect();
-    }*/
 
     private copyInBillingFieldValues():void {
         this.$shippingFirstName.val(this.$billingFirstName.val());
@@ -194,5 +188,6 @@ class ShippingInfo extends ScreenBase {
             this.pagination.showCurrentPage();
         });
     }
+
 
 }

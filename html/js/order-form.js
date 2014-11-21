@@ -55,7 +55,7 @@ var Validation = (function () {
             $el.addClass("error");
         }
         if ($el.data("error-selector")) {
-            $($el.data("error-selector")).show();
+            $($el.data("error-selector"), $el.closest('section')).show();
             if ($el.data("error-message")) {
                 $($el.data("error-selector")).html($el.data("error-message"));
             }
@@ -230,6 +230,8 @@ var ScreenBase = (function () {
         this.pagination.pageChanged.add(function (pageIndex) { return _this.onPageChanged(pageIndex); });
     };
     ScreenBase.prototype.onPrevClick = function () {
+        var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        validation.resetErrors();
         this.pagination.previous();
         this.pagination.showCurrentPage();
     };
@@ -530,8 +532,8 @@ var ShippingInfo = (function (_super) {
         this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
-        this.initPriceSelect();
         this.setCountryToUnitedStates();
+        this.initPriceSelect();
         this.showStateSelectOrInput();
     }
     ShippingInfo.prototype.setSelectors = function () {
@@ -580,7 +582,7 @@ var ShippingInfo = (function (_super) {
             startingIndex = shippingTypes.length - 1;
             endIndex = shippingRates.length;
         }
-        this.$shippingSelect.empty();
+        this.emptyShippingSelect();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
         for (var i = startingIndex; i < endIndex; i++) {
             var price = shippingRates[i];
@@ -704,6 +706,7 @@ var Payment = (function (_super) {
         if (this.validation.isValidForm()) {
             console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', true);
+            this.showSpinner();
             this.createStripeToken();
         }
         else {
@@ -718,6 +721,7 @@ var Payment = (function (_super) {
     Payment.prototype.stripResponseHandler = function (status, response) {
         if (response.error) {
             this.$submitBtn.val(this.submitButtonDefaultValue).attr('disabled', false);
+            this.hideSpinner();
             return this.$form.find('.payment-errors').show().text(response.error.message);
         }
         this.createHiddenInput(response);
@@ -734,8 +738,6 @@ var Payment = (function (_super) {
         if (this.ajaxCallPending) {
             return;
         }
-        this.ajaxCallPending = true;
-        this.showSpinner();
         this.sendDataToServer();
     };
     Payment.prototype.showSpinner = function () {
@@ -748,6 +750,7 @@ var Payment = (function (_super) {
     };
     Payment.prototype.sendDataToServer = function () {
         var _this = this;
+        this.ajaxCallPending = true;
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();

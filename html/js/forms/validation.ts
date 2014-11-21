@@ -69,7 +69,7 @@ class Validation {
         }
 
         if ($el.data("error-selector")) {
-            $($el.data("error-selector")).show();
+            $($el.data("error-selector"), $el.closest('section')).show();
             if ($el.data("error-message")) {
                 $($el.data("error-selector")).html($el.data("error-message"));
             }

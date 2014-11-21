@@ -1,5 +1,4 @@
 <section id="products">
-
     <h3 class="section-title">Products</h3>
     <div class="products"></div>
     <a href="img/product-sizing-guide.jpg" target="_blank" id="product-sizing-btn">
@@ -15,7 +14,6 @@
     <div class="prev-next">
         <div class="button next">Next</div>
     </div>
-
 </section>
 
 <script type="text/template" id="product-select-tpl">

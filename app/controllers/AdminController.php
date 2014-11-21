@@ -3,12 +3,17 @@
 class AdminController extends \BaseController
 {
 
-
     public function index()
+    {
+        return View::make("admin.index", [
+        ]);
+    }
+
+    public function coupons()
     {
         $coupons = Coupon::all();
 
-        return View::make("admin.index", [
+        return View::make("admin.coupons", [
             "coupons" => $coupons,
         ]);
     }
@@ -63,4 +68,6 @@ class AdminController extends \BaseController
     {
         return Order::orderBy("created_at", "DESC")->paginate(15);
     }
+
+
 }

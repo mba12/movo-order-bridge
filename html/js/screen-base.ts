@@ -20,6 +20,8 @@ class ScreenBase {
     }
 
     public onPrevClick():void {
+        var validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
+        validation.resetErrors();
         this.pagination.previous();
         this.pagination.showCurrentPage();
     }
