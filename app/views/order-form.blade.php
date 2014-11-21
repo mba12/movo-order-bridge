@@ -54,8 +54,6 @@
                {{Form::close()}}
            </div>
 
-       <div class="payment-errors"></div>
-
        <script src="js/vendor/jquery/jquery.js"></script>
        <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
        <script src="js/vendor/greensock/TweenMax.min.js"></script>

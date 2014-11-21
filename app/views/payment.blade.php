@@ -58,6 +58,8 @@
         <li class="month">Please enter an expiration month!</li>
         <li class="year">Please enter an expiration year!</li>
         <li class="cvc">Please enter the CVC!</li>
+        <li class="card-error">There was a problem processing your order. Please try again or contact <a href="mailto:info@getmovo.com">info@getmovo.com</a> for assistance.</li>
+        <li class="custom-error"></li>
     </ul>
 
     <div class="prev-next">

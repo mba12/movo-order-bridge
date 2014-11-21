@@ -28,14 +28,17 @@
     <div id="content-wrap" style="background-color: #efeeee;border-top: 1px solid #cecece;border-bottom: 1px solid #cecece;margin-bottom: 30px;color:#333333;">
         <div class="inner" style="max-width: 700px;margin: 0 auto;padding: 40px 0;width: 80%;">
             <p style="line-height: 1.4em;margin: 18px 0;">This email is to confirm your order on <span class="bold" style="font-weight: 700;">{{date('m-d-Y')}}</span></p>
-             @foreach($data['items'] as $item)
-                 <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">{{$item->quantity}} x {{$item->title}}</span></p>
-             @endforeach-
-            <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
-                {{$data['name']}}<br>
-                {{$data['address1']}}<br>
-                {{$data['address2']}}
+            <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">1 x Movo Wave (M)</span></p>
 
+            {{-- @foreach($data['items'] as $item)
+                                        <p style="line-height: 1.4em;margin: 18px 0;"><span class="quantity">{{$item->quantity}} </span><span class="title">{{$item->title}}: </span> <span class="price">{{$item->price}}</span></p>
+                                    @endforeach--}}
+
+
+            <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
+            {{$data['shippingName']}}<br>
+            {{$data['shippingAddress']}}<br>
+            {{$data['shippingCity']}}, {{$data['shippingState']}} {{$data['shippingZip']}}<br>
             </p>
             <div class="total"><span class="bold" style="font-weight: 700;">Order Total: <span class="red" style="color: #f6303e;">{{$data['total']}}</span></span></div>
 

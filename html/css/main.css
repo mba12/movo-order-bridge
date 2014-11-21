@@ -708,13 +708,6 @@ body {
       #form-content-box #payment #secure h5 {
         display: inline-block;
         font-size: 0.8125em; }
-    #form-content-box #payment #submit-order {
-      background-color: #666666;
-      -webkit-transition: 0.3s all;
-      -moz-transition: 0.3s all;
-      transition: 0.3s all; }
-      #form-content-box #payment #submit-order:hover {
-        background-color: #555555; }
     #form-content-box #payment #submit-coupon-code {
       margin-left: 5px;
       display: inline-block;

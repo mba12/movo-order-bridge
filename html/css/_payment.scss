@@ -20,13 +20,6 @@
       font-size: em(13);
     }
   }
-  #submit-order {
-    background-color: #666;
-    @include transition(0.3s all);
-    &:hover {
-      background-color: #555;
-    }
-  }
   #submit-coupon-code {
     margin-left: 5px;
     display: inline-block;
