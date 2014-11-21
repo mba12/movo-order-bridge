@@ -52,7 +52,7 @@ class CouponController extends \BaseController
         $coupon->time_constraint = Input::get("time_constraint");
         $coupon->active = Input::get("active");
         $coupon->save();
-        return Redirect::to('/admin');;
+        return Redirect::to('/admin/coupons');;
     }
 
     /**
