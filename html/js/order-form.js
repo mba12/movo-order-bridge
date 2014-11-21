@@ -251,8 +251,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        this.pagination = pagination;
         var _this = this;
+        this.pagination = pagination;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";

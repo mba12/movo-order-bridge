@@ -1,5 +1,7 @@
 <?php
 
+use Movo\SalesTax\SalesTax;
+
 class Order extends \Eloquent
 {
     protected $fillable = [
@@ -75,5 +77,17 @@ class Order extends \Eloquent
 
 
         $this->save();
+    }
+
+    public static function calculateTotal($data)
+    {
+        $quantity = $data['quantity'];
+        $discount = $data['discount'];
+        $subtotal = $data['unit-price'] * $quantity - $discount;
+        $shippingRate=$data['shipping-rate'];
+        $salesTax=new SalesTax();
+        $totalSalesTax=$salesTax->calculateTotalTax($subtotal,$shippingRate,$data['tax-rate'],$data['state']);
+        $amount = $subtotal+$totalSalesTax+$shippingRate;
+        return $amount;
     }
 }

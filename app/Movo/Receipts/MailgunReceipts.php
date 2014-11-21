@@ -4,6 +4,7 @@ namespace Movo\Receipts;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
+use Movo\Helpers\Format;
 
 class MailgunReceipts extends Receipt implements ReceiptsInterface
 {

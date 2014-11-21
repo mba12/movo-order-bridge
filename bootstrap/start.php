@@ -39,7 +39,7 @@ if(isset($_SERVER['HTTP_HOST'])) {
     });
 } else{
     $env = $app->detectEnvironment(array(
-        'local' => array('homestead'),
+       // 'local' => array('homestead'),
     ));;
 }
 
