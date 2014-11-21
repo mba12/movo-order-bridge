@@ -29,18 +29,17 @@
         <div class="inner" style="max-width: 700px;margin: 0 auto;padding: 40px 0;width: 80%;">
             <p style="line-height: 1.4em;margin: 18px 0;">This email is to confirm your order on <span class="bold" style="font-weight: 700;">{{date('m-d-Y')}}</span></p>
             <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">1 x Movo Wave (M)</span></p>
-            <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
-                Ryan Hovland<br>
-                1651 Ash St.<br>
-                Lake Oswego, OR 97034
-                {{--{{$data['shippingAddress']}}--}}
-            </p>
-            
-            {{-- @foreach($data['items'] as $item)
-                            <p style="line-height: 1.4em;margin: 18px 0;"><span class="quantity">{{$item->quantity}} </span><span class="title">{{$item->title}}: </span> <span class="price">{{$item->price}}</span></p>
-                        @endforeach--}}
 
-      
+            {{-- @foreach($data['items'] as $item)
+                                        <p style="line-height: 1.4em;margin: 18px 0;"><span class="quantity">{{$item->quantity}} </span><span class="title">{{$item->title}}: </span> <span class="price">{{$item->price}}</span></p>
+                                    @endforeach--}}
+
+
+            <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
+            {{$data['shippingName']}}<br>
+            {{$data['shippingAddress']}}<br>
+            {{$data['shippingCity']}}, {{$data['shippingState']}} {{$data['shippingZip']}}<br>
+            </p>
             <div class="total"><span class="bold" style="font-weight: 700;">Order Total: <span class="red" style="color: #f6303e;">{{$data['total']}}</span></span></div>
 
             <p style="line-height: 1.4em;margin: 18px 0;">Thank you for your order! If you have any questions, please get in touch: <a href="mailto:info@getmovo.com" style="color: #f6303e;text-decoration: underline;">info@getmovo.com</a></p>

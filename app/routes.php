@@ -88,7 +88,11 @@ Route::get('/info', function () {
 
 Route::get("/email-test", function () {
     $tmpData['quantity'] = 1;
-    $tmpData['shippingAddress'] = '123 Oak, Anytown USA';
+    $tmpData['shippingName'] = 'Ryan Hovland';
+    $tmpData['shippingAddress'] = '1651 Ash St';
+    $tmpData['shippingCity'] = 'Lake Oswego';
+    $tmpData['shippingState'] = 'OR';
+    $tmpData['shippingZip'] = '97034';
     $tmpData['total'] = '$120.00';
     $tmpData['items']=[];
     for ($i = 0; $i < 3; $i++) {
