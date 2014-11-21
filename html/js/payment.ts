@@ -41,6 +41,7 @@ class Payment extends ScreenBase {
         if (this.validation.isValidForm()) {
             console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', <any>true);
+            this.showSpinner();
             this.createStripeToken();
         } else {
             console.log("not valid");
@@ -56,6 +57,7 @@ class Payment extends ScreenBase {
     private stripResponseHandler(status, response) {
         if (response.error) {
             this.$submitBtn.val(this.submitButtonDefaultValue).attr('disabled', <any>false);
+            this.hideSpinner();
             return this.$form.find('.payment-errors').show().text(response.error.message);
         }
         this.createHiddenInput(response);
@@ -72,7 +74,6 @@ class Payment extends ScreenBase {
         if (this.ajaxCallPending) {
             return;
         }
-        this.showSpinner();
         this.sendDataToServer();
     }
 

@@ -706,6 +706,7 @@ var Payment = (function (_super) {
         if (this.validation.isValidForm()) {
             console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', true);
+            this.showSpinner();
             this.createStripeToken();
         }
         else {
@@ -720,6 +721,7 @@ var Payment = (function (_super) {
     Payment.prototype.stripResponseHandler = function (status, response) {
         if (response.error) {
             this.$submitBtn.val(this.submitButtonDefaultValue).attr('disabled', false);
+            this.hideSpinner();
             return this.$form.find('.payment-errors').show().text(response.error.message);
         }
         this.createHiddenInput(response);
@@ -736,7 +738,6 @@ var Payment = (function (_super) {
         if (this.ajaxCallPending) {
             return;
         }
-        this.showSpinner();
         this.sendDataToServer();
     };
     Payment.prototype.showSpinner = function () {
