@@ -33,19 +33,6 @@ class AdminController extends \BaseController
         return Redirect::route("admin-orders");
     }
 
-
-    public function updateCoupon($id){
-        $coupon=Coupon::find($id);
-        $coupon->name=Input::get("name");
-        $coupon->code=Input::get("code");
-        $coupon->amount=Input::get("amount");
-        $coupon->method=Input::get("method");
-        $coupon->limit=Input::get("limit");
-        $coupon->min_units=Input::get("min_units");
-        $coupon->save();
-        return Redirect::to('/admin');;
-    }
-
     public function getStats()
     {
         $orderCount = DB::table('orders')->count();

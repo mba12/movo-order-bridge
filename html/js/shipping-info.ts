@@ -87,6 +87,7 @@ class ShippingInfo extends ScreenBase {
             startingIndex = shippingTypes.length-1;
             endIndex = shippingRates.length;
         }
+
         this.$shippingSelect.empty();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
         for (var i = startingIndex; i < endIndex; i++) {

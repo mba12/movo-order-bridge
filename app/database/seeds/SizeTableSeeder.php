@@ -14,27 +14,27 @@ class SizeTableSeeder extends Seeder
         Eloquent::unguard();
         DB::table('sizes')->delete();
         Size::create(array(
-            "name"=>"Extra Small (14.5 cm - Small Female Wrist)",
+            "name"=>" Extra small (5.7\" -- Youth / Young Adult)",
             "sku"=>'11111'
         ));
 
         Size::create(array(
-            "name"=>"Small (16 cm - Average Female Wrist)",
+            "name"=>"Small (6.3\" -- Small Female Wrist) ",
             "sku"=>'22222'
         ));
 
         Size::create(array(
-            "name"=>"Medium (17.5 cm - Avg. Male Wrist / Large Female Wrist)",
+            "name"=>"Medium (6.9\" -- Average Male Wrist)",
             "sku"=>'33333'
         ));
 
         Size::create(array(
-            "name"=>"Large (19 cm - Large Male Wrist)",
+            "name"=>"Large (7.5\" -- Large Male Wrist)",
             "sku"=>'44444'
         ));
 
         Size::create(array(
-            "name"=>"Extra Large (21.5 cm - Very Large Male Wrist)",
+            "name"=>"Extra Large (8.5\" -- NFL Player / Body Builder)",
             "sku"=>'55555'
         ));
     }

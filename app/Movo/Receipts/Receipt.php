@@ -19,8 +19,8 @@ class Receipt {
         for ($i = 0; $i < Input::get("quantity"); $i++) {
             array_push($emailData['items'], new Item(Input::get("unit" . ($i + 1)."Name"), 1, Format::FormatUSD($data['unit-price'])));
         }
-        if($data['couponData']){
-            $discount = $data['couponData'] ? $data['couponData']->calculateDiscount($data['unit-price'], Input::get("quantity")) : 0;
+        if($data['couponInstance']){
+            $discount = $data['couponInstance'] ? $data['couponInstance']->calculateCouponDiscount($data['unit-price'], Input::get("quantity")) : 0;
             $emailData['discount'] = Format::FormatUSD($discount);
         }
         $emailData['shippingAddress'] = Input::get("shipping-address"). " ". Input::get("shipping-city").", ".Input::get("shipping-state")." ".Input::get("shipping-zip");

@@ -20,7 +20,11 @@ class CouponTableSeeder extends Seeder
         $coupon->amount=20;
         $coupon->method="%";
         $coupon->limit=100;
-        $coupon->min_units=3;
+        $coupon->min_units=1;
+        $coupon->active=1;
+        $coupon->start_time='2014-11-20';
+        $coupon->end_time='2014-12-20';
+        $coupon->time_constraint=0;
         $coupon->save();
 
 
@@ -31,6 +35,23 @@ class CouponTableSeeder extends Seeder
         $coupon->method="$";
         $coupon->limit=10;
         $coupon->min_units=1;
+        $coupon->active=0;
+        $coupon->start_time='2014-11-20';
+        $coupon->end_time='2014-12-20';
+        $coupon->time_constraint=0;
+        $coupon->save();
+
+        $coupon=new Coupon();
+        $coupon->name="dummy";
+        $coupon->code="dummy";
+        $coupon->amount=10.00;
+        $coupon->method="$";
+        $coupon->limit=10;
+        $coupon->min_units=1;
+        $coupon->active=0;
+        $coupon->start_time='2014-11-10';
+        $coupon->end_time='2014-11-11';
+        $coupon->time_constraint=1;
         $coupon->save();
     }
 }

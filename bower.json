@@ -16,12 +16,13 @@
     "jquery": "~2.1.1",
     "pusher": "~2.2.3",
     "Stepper": "https://github.com/Formstone/Stepper.git#~3.0.8",
-    "placeholder": "https://github.com/danbentley/placeholder.git"
+    "placeholder": "https://github.com/danbentley/placeholder.git",
+    "datetimepicker": "~2.4.1"
   },
   "install": {
     "path": "html/js/vendor",
-    "sources" : {
-      "placeholder" : "bower_components/placeholder/js/jquery.placeholder.js"
+    "sources": {
+      "placeholder": "bower_components/placeholder/js/jquery.placeholder.js"
     }
   }
 }

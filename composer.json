@@ -13,7 +13,9 @@
 		"indatus/dispatcher" :"~1.4"
 	},
 	"require-dev": {
-	  "way/generators": "~2.0"
+	  "way/generators": "~2.0",
+	  "phpunit/phpunit":"~4.0",
+	  "mockery/mockery":"dev-master"
 	},
 	"autoload": {
 		"classmap": [

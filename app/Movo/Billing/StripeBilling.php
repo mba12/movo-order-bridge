@@ -21,7 +21,7 @@ class StripeBilling implements BillingInterface
     {
         try {
             $quantity = Input::get("quantity");
-            $discount = $data['couponData'] ? $data['couponData']->calculateDiscount($data['unit-price'], Input::get("quantity")) : 0;
+            $discount = $data['couponInstance'] ? $data['couponInstance']->calculateCouponDiscount($data['unit-price'], Input::get("quantity")) : 0;
             $amount = $data['unit-price'] * $quantity - $discount;
             $amount += $data['shipping-rate'];
             $amount *= 100;

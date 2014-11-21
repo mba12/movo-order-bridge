@@ -15,7 +15,7 @@
     <meta property="og:type" content="website"/>
     {{ HTML::style('//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.7/css/foundation.css') }}
     {{ HTML::style('css/admin.css') }}
-
+    @yield('page-css')
 </head>
 
 

@@ -11,8 +11,9 @@ namespace Movo\SalesTax;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Movo\SalesTax\SalesTax;
 
-class ZipTax implements SalesTaxInterface
+class ZipTax extends SalesTax implements SalesTaxInterface
 {
 
     public function getRate($zipcode, $state)
@@ -35,4 +36,6 @@ class ZipTax implements SalesTaxInterface
 
         return $jsonObject['results'][0]['taxSales'];
     }
+
+
 }
