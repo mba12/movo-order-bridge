@@ -1,6 +1,10 @@
 <?php
 
 
+use Movo\Helpers\Format;
+use Movo\Receipts\Item;
+use Movo\Receipts\Receipt;
+
 App::bind("Pusher", function ($app) {
     $keys = $app['config']->get('services.pusher');
     return new Pusher($keys['public'], $keys['secret'], $keys['app-id']);
@@ -81,4 +85,17 @@ Route::get('/info', function () {
         return '';
     }
 );
+
+Route::get("/email-test", function () {
+    $tmpData['quantity'] = 1;
+    $tmpData['shippingAddress'] = '123 Oak, Anytown USA';
+    $tmpData['total'] = '$120.00';
+    $tmpData['items']=[];
+    for ($i = 0; $i < 3; $i++) {
+        array_push($tmpData['items'], new Item("Item". ($i + 1), 1, Format::FormatUSD('29.99')));
+    }
+    return View::make("emails.receipt", [
+        'data' => $tmpData
+    ]);
+});
 
