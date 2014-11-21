@@ -53,6 +53,7 @@
         <ul id="coupon-error-messages" class="error-messages">
             <li class="coupon-blank">Please enter a coupon code!</li>
             <li class="coupon-invalid">Coupon code has expired or is invalid!</li>
+            <li class="coupon-error"></li>
         </ul>
         <div id="coupon-success" >Coupon applied: <span class="code"></span></div>
     </div>

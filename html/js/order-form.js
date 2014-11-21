@@ -255,8 +255,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        var _this = this;
         this.pagination = pagination;
+        var _this = this;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";
@@ -307,14 +307,14 @@ var FixedRightModule = (function () {
             this.calculatePrice();
         }
         else {
-            $(".error-messages").find(".coupon-invalid").show();
+            $("#coupon-error-messages").find(".coupon-invalid").show();
         }
     };
     FixedRightModule.prototype.showCouponSuccessText = function (code) {
         this.$couponInput.hide();
         this.$couponButton.hide();
         this.$couponSuccess.show().find(".code").html(code);
-        $(".error-messages").find(".coupon-invalid").hide();
+        $("#coupon-error-messages").find(".coupon-invalid").hide();
     };
     FixedRightModule.prototype.updateFormWithCouponData = function (token) {
         this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
@@ -979,6 +979,7 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
         new Summary(pagination);
+        pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

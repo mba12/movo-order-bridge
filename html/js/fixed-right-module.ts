@@ -74,7 +74,7 @@ class FixedRightModule {
             this.updateFormWithCouponData(result.token);
             this.calculatePrice();
         } else {
-            $(".error-messages").find(".coupon-invalid").show();
+            $("#coupon-error-messages").find(".coupon-invalid").show();
         }
     }
 
@@ -82,7 +82,7 @@ class FixedRightModule {
         this.$couponInput.hide();
         this.$couponButton.hide();
         this.$couponSuccess.show().find(".code").html(code);
-        $(".error-messages").find(".coupon-invalid").hide();
+        $("#coupon-error-messages").find(".coupon-invalid").hide();
     }
 
     private updateFormWithCouponData(token:string):void {
