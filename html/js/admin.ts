@@ -1,4 +1,4 @@
-/// <reference path="jquery.d.ts" />
+/// <reference path="definitions/jquery.d.ts" />
 
 class Admin {
 

@@ -62,6 +62,9 @@
 
     <div class="prev-next">
         <div class="button next" id="submit-order">Submit Order</div>
+        <div class="spinner">
+            <img src="img/spinner.gif" />
+        </div>
         <div class="button prev">Previous</div>
     </div>
 

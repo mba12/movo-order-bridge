@@ -6,8 +6,7 @@ class ShippingInfo extends ScreenBase {
     private $addressFields:JQuery;
     private $billingPage:JQuery;
     private $shippingPage:JQuery;
-
-
+    private $spinner:JQuery;
 
     private $shippingFirstName:JQuery;
     private $shippingLastName:JQuery;
@@ -26,8 +25,6 @@ class ShippingInfo extends ScreenBase {
     private $billingCity:JQuery;
     private $billingState:JQuery;
     private $billingZip:JQuery;
-
-
 
     constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
@@ -65,6 +62,7 @@ class ShippingInfo extends ScreenBase {
         this.$billingZip = this.$billingPage.find('#billing-zip');
         this.$currentPage = this.$shippingPage;
         super.setSelectors();
+        this.$spinner = this.$currentPage.find('.spinner');
     }
 
     public initEvents() {
@@ -179,9 +177,14 @@ class ShippingInfo extends ScreenBase {
             return;
         }
         this.ajaxCallPending = true;
+        this.$spinner.fadeIn();
+        this.$nextBtn.css({opacity:0.6, cursor:'default'});
+
 
         this.fixedRightModule.setSalesTax((result)=>{
             this.ajaxCallPending = false;
+            this.$spinner.fadeOut();
+            this.$nextBtn.css({opacity: 1, cursor:'pointer'});
             if(result.error){
                 this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;

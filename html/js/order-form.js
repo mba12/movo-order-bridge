@@ -249,8 +249,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        var _this = this;
         this.pagination = pagination;
+        var _this = this;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";
@@ -559,6 +559,7 @@ var ShippingInfo = (function (_super) {
         this.$billingZip = this.$billingPage.find('#billing-zip');
         this.$currentPage = this.$shippingPage;
         _super.prototype.setSelectors.call(this);
+        this.$spinner = this.$currentPage.find('.spinner');
     };
     ShippingInfo.prototype.initEvents = function () {
         var _this = this;
@@ -656,8 +657,12 @@ var ShippingInfo = (function (_super) {
             return;
         }
         this.ajaxCallPending = true;
+        this.$spinner.fadeIn();
+        this.$nextBtn.css({ opacity: 0.6, cursor: 'default' });
         this.fixedRightModule.setSalesTax(function (result) {
             _this.ajaxCallPending = false;
+            _this.$spinner.fadeOut();
+            _this.$nextBtn.css({ opacity: 1, cursor: 'pointer' });
             if (result.error) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
@@ -683,6 +688,7 @@ var Payment = (function (_super) {
         this.submitButtonDefaultValue = this.$submitBtn.val();
         this.$currentPage = $('#payment');
         _super.prototype.setSelectors.call(this);
+        this.$spinner = this.$currentPage.find('.spinner');
     };
     Payment.prototype.initEvents = function () {
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
@@ -725,11 +731,23 @@ var Payment = (function (_super) {
         }).appendTo(this.$form);
     };
     Payment.prototype.submitForm = function () {
-        var _this = this;
         if (this.ajaxCallPending) {
             return;
         }
         this.ajaxCallPending = true;
+        this.showSpinner();
+        this.sendDataToServer();
+    };
+    Payment.prototype.showSpinner = function () {
+        this.$spinner.fadeIn();
+        this.$nextBtn.css({ opacity: 0.6, cursor: 'default' });
+    };
+    Payment.prototype.hideSpinner = function () {
+        this.$spinner.fadeOut();
+        this.$nextBtn.css({ opacity: 1, cursor: 'pointer' });
+    };
+    Payment.prototype.sendDataToServer = function () {
+        var _this = this;
         var formURL = this.$form.attr("action");
         var data = this.$form.serializeArray();
         var quantity = $('#quantity').val();
@@ -744,7 +762,9 @@ var Payment = (function (_super) {
             data: data,
             success: function (response) {
                 _this.ajaxCallPending = false;
+                _this.hideSpinner();
                 if (response.status == 200) {
+                    $('#credit-card-number, #cvc').val('');
                     _this.pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
@@ -756,9 +776,6 @@ var Payment = (function (_super) {
             }
         });
     };
-    Payment.prototype.onPrevClick = function () {
-        _super.prototype.onPrevClick.call(this);
-    };
     Payment.prototype.onNextClick = function () {
         var validation = new Validation($('[data-validate]', this.$currentPage));
         if (!validation.isValidForm()) {
@@ -768,6 +785,27 @@ var Payment = (function (_super) {
         validation.resetErrors();
     };
     return Payment;
+})(ScreenBase);
+var Summary = (function (_super) {
+    __extends(Summary, _super);
+    function Summary($pagination) {
+        _super.call(this, $pagination);
+        this.setSelectors();
+        this.initEvents();
+    }
+    Summary.prototype.setSelectors = function () {
+        _super.prototype.setSelectors.call(this);
+        this.$createNewOrderBtn = $('#create-new-order');
+    };
+    Summary.prototype.initEvents = function () {
+        var _this = this;
+        this.$createNewOrderBtn.on('click', function (e) { return _this.onCreateNewOrderBtnClick(e); });
+    };
+    Summary.prototype.onCreateNewOrderBtnClick = function (e) {
+        e.preventDefault();
+        this.pagination.gotoProductsPage();
+    };
+    return Summary;
 })(ScreenBase);
 var Coupon = (function () {
     function Coupon(callback) {
@@ -879,6 +917,7 @@ var OrderForm = (function () {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
+        new Summary(pagination);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

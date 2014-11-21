@@ -1,5 +1,5 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="greensock.d.ts" />
+/// <reference path="definitions/jquery.d.ts" />
+/// <reference path="definitions/greensock.d.ts" />
 /// <reference path="forms/form-error.ts" />
 /// <reference path="forms/validation.ts" />
 /// <reference path="pagination.ts" />
@@ -9,9 +9,11 @@
 /// <reference path="billing-info.ts" />
 /// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
+/// <reference path="summary.ts" />
 /// <reference path="coupon.ts" />
 /// <reference path="sales-tax.ts" />
 /// <reference path="coupon-data.ts" />
+
 class OrderForm {
 
     private $closeBtn:JQuery;
@@ -25,8 +27,8 @@ class OrderForm {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination);
-        //pagination.gotoPage(3);
-
+        new Summary(pagination);
+        //pagination.gotoPage(4);
     }
 
     private setSelectors():void {
