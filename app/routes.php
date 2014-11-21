@@ -19,7 +19,7 @@ Route::group(array('before' => 'csrf'), function () {
         'uses' => 'CouponController@check',
     ));
 });
-Route::get('coupons/{code}', array(
+Route::any('coupons/{code}/{quantity}', array(
     'as' => 'check-coupon',
     'uses' => 'CouponController@check',
 ));
@@ -50,7 +50,7 @@ Route::group(array('before' => 'admin'), function () {
     Route::group(array('before' => 'csrf'), function () {
         Route::put('/admin/coupon/{id}', [
             'as' => 'update-coupon',
-            'uses' => 'AdminController@updateCoupon'
+            'uses' => 'CouponController@updateCoupon'
         ]);
     });
 
