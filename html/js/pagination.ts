@@ -59,6 +59,11 @@ class Pagination {
         this.showCurrentPage();
     }
 
+    public gotoShippingPage():void {
+        this.currentIndex = 2;
+        this.showCurrentPage();
+    }
+
     public gotoPage(page):void {
         this.currentIndex = page;
         this.showCurrentPage();

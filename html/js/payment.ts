@@ -10,6 +10,7 @@ class Payment extends ScreenBase {
     private $spinner:JQuery;
     private $customError:JQuery;
     private $cardError:JQuery;
+    private $editShipping:JQuery;
 
     constructor($pagination:Pagination) {
         super($pagination);
@@ -27,10 +28,12 @@ class Payment extends ScreenBase {
         this.$spinner = this.$currentPage.find('.spinner');
         this.$customError = this.$form.find('.custom-error');
         this.$cardError = this.$currentPage.find('.card-error');
+        this.$editShipping = $('#edit-shipping');
     }
 
     public initEvents() {
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
+        this.$editShipping.on('click', ()=>this.onEditShippingClick());
         super.initEvents();
     }
 
@@ -120,6 +123,10 @@ class Payment extends ScreenBase {
                 this.$cardError.show();
             }
         });
+    }
+
+    private onEditShippingClick():void {
+        this.pagination.gotoShippingPage();
     }
 
     onNextClick():void {

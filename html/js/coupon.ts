@@ -4,7 +4,9 @@ class Coupon {
     private $form:JQuery;
     private $couponButton:JQuery;
     private $couponInput:JQuery;
-    private $couponResponse:JQuery;
+    private $couponBlankMsg:JQuery;
+    private $couponInvalidMsg:JQuery;
+    private $couponAppliedMsg:JQuery;
 
     constructor(public callback) {
         this.setSelectors();
@@ -16,7 +18,9 @@ class Coupon {
         this.$form = $("#order-form");
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
-        this.$couponResponse = $('.error-messages .coupon');
+        this.$couponBlankMsg = $('#coupon-error-messages').find('.coupon-blank');
+        this.$couponInvalidMsg = $('#coupon-error-messages').find('.coupon-invalid');
+        this.$couponAppliedMsg = $('#coupon-error-messages').find('.coupon-applied');
     }
 
     private initEvents():void {
@@ -29,9 +33,11 @@ class Coupon {
         event.stopPropagation();
 
         var code:string = this.$couponInput.val();
-        this.$couponResponse.hide();
+        this.$couponBlankMsg.hide();
+        this.$couponAppliedMsg.hide();
+        this.$couponAppliedMsg.hide();
         if (code.length < 1) {
-            this.$couponResponse.show();
+            this.$couponBlankMsg.show();
             return;
         }
         var $myForm = $("<form></form>");

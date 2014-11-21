@@ -208,6 +208,10 @@ var Pagination = (function () {
         this.currentIndex = 4;
         this.showCurrentPage();
     };
+    Pagination.prototype.gotoShippingPage = function () {
+        this.currentIndex = 2;
+        this.showCurrentPage();
+    };
     Pagination.prototype.gotoPage = function (page) {
         this.currentIndex = page;
         this.showCurrentPage();
@@ -693,9 +697,12 @@ var Payment = (function (_super) {
         this.$spinner = this.$currentPage.find('.spinner');
         this.$customError = this.$form.find('.custom-error');
         this.$cardError = this.$currentPage.find('.card-error');
+        this.$editShipping = $('#edit-shipping');
     };
     Payment.prototype.initEvents = function () {
+        var _this = this;
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
+        this.$editShipping.on('click', function () { return _this.onEditShippingClick(); });
         _super.prototype.initEvents.call(this);
     };
     Payment.prototype.initStripe = function () {
@@ -783,6 +790,9 @@ var Payment = (function (_super) {
             }
         });
     };
+    Payment.prototype.onEditShippingClick = function () {
+        this.pagination.gotoShippingPage();
+    };
     Payment.prototype.onNextClick = function () {
         var validation = new Validation($('[data-validate]', this.$currentPage));
         if (!validation.isValidForm()) {
@@ -825,7 +835,9 @@ var Coupon = (function () {
         this.$form = $("#order-form");
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
-        this.$couponResponse = $('.error-messages .coupon');
+        this.$couponBlankMsg = $('#coupon-error-messages').find('.coupon-blank');
+        this.$couponInvalidMsg = $('#coupon-error-messages').find('.coupon-invalid');
+        this.$couponAppliedMsg = $('#coupon-error-messages').find('.coupon-applied');
     };
     Coupon.prototype.initEvents = function () {
         var _this = this;
@@ -836,9 +848,11 @@ var Coupon = (function () {
         event.preventDefault();
         event.stopPropagation();
         var code = this.$couponInput.val();
-        this.$couponResponse.hide();
+        this.$couponBlankMsg.hide();
+        this.$couponAppliedMsg.hide();
+        this.$couponAppliedMsg.hide();
         if (code.length < 1) {
-            this.$couponResponse.show();
+            this.$couponBlankMsg.show();
             return;
         }
         var $myForm = $("<form></form>");

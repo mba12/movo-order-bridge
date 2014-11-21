@@ -49,10 +49,21 @@
     </div>
     <div class="coupon-container">
         <input type="text"  placeholder="Enter coupon code" id="coupon-code" value=""/>
-        <div class="apply" id="submit-coupon-code">Apply</div>
+        <div class="apply small-gray-button" id="submit-coupon-code">APPLY</div>
+        <ul id="coupon-error-messages" class="error-messages">
+            <li class="coupon-blank">Please enter a coupon code!</li>
+            <li class="coupon-invalid">Coupon code has expired or is invalid!</li>
+            <li class="coupon-applied">Your coupon has been applied!</li>
+        </ul>
+    </div>
+    <div id="shipping-confirmation">
+        <h5>Ship to:</h5>
+        <div class="name">Ryan Hovland</div>
+        <div class="street">1651 Ash St</div>
+        <div class="cityStateZip">Lake Oswego, OR 97034</div>
+        <div id="edit-shipping" class="small-gray-button">EDIT</div>
     </div>
     <ul class="error-messages">
-        <li class="coupon">Please enter a coupon code!</li>
         <li class="coupon-invalid">That code is not a valid code</li>
         <li class="credit-card">Please enter a credit card number!</li>
         <li class="month">Please enter an expiration month!</li>

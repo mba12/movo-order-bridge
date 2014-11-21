@@ -105,7 +105,7 @@ class FixedRightModule {
         return Math.min(parseInt(this.$quantityInputField.val()), FixedRightModule.MAX_UNITS)
     }
 
-    public  calculatePrice():void {
+    public calculatePrice():void {
         this.setUnitPrice();
         this.applyCoupon();
         this.setSubtotal();
@@ -127,7 +127,6 @@ class FixedRightModule {
                     this.discount = this.coupon.amount;
                 } else {
                     this.discount = (this.coupon.amount / 100) * this.getQuantity() * this.unitPriceAmt;
-
                 }
             }
         }
@@ -160,7 +159,6 @@ class FixedRightModule {
     }
 
     private setShipping():void {
-
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
             this.shippingAmt = 0;
             this.$shipping = this.$shipping.html('--');
