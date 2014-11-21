@@ -990,7 +990,6 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
         new Summary(pagination);
-        pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');
