@@ -15,6 +15,7 @@ class OrderController extends BaseController
         $shippingInfo = $this->getShippingInfo();
         $shippingDropdownData = Shipping::createShippingDropdownData($shippingInfo);
         $sizeInfo = $this->getUnitSizes();
+        $stateTaxMethods=$this->getStateTaxMethods();
         $coupon = null;
         $code = Input::get("code");
         if ($code) {
@@ -25,6 +26,7 @@ class OrderController extends BaseController
             'unitPrice' => $unitPrice,
             'sizeInfo' => $sizeInfo,
             'coupon' => $coupon,
+            'stateTaxMethods'=>$stateTaxMethods
         ]);
     }
 
@@ -48,7 +50,7 @@ class OrderController extends BaseController
 
         $result = $billing->charge([
             'token' => Input::get("token"),
-            'amount' => $this->getOrderTotal($unitPrice,Input::get("quantity"),$discount,$shippingMethod,$salesTaxRate,Input::get("shipping_state")),
+            'amount' => $this->getOrderTotal($unitPrice,Input::get("quantity"),$discount,$shippingMethod,$salesTaxRate,Input::get("shipping-state")),
             'email'=>Input::get("email")
         ]);
 
@@ -96,7 +98,11 @@ class OrderController extends BaseController
 
     private function getShippingMethod()
     {
+        if (Cache::has("shipping-method-".Input::get("shipping-type"))) {
+            return Cache::get("shipping-method-".Input::get("shipping-type"));
+        }
         $shipping = Shipping::find(Input::get("shipping-type"));
+        Cache::put("shipping-method-".Input::get("shipping-type"), $shipping, 1440);
         return $shipping;
     }
 
@@ -132,5 +138,15 @@ class OrderController extends BaseController
             "discount"=>$discount,
         ]);
         return $orderTotal;
+    }
+
+    private function getStateTaxMethods()
+    {
+        if (Cache::has("state-tax-methods")) {
+            return Cache::get("state-tax-methods");
+        }
+        $stateTaxMethods = Tax::all();
+        Cache::put("state-tax-methods", $stateTaxMethods, 1440);
+        return $stateTaxMethods;
     }
 }

@@ -131,6 +131,7 @@ class FixedRightModule {
                 }
             }
         }
+        this.discount=Math.round(this.discount);
     }
 
     private setSubtotal():void {
@@ -156,7 +157,7 @@ class FixedRightModule {
     }
 
     private getSalesTax():number {
-        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.shippingAmt,this.$shippingStateSelect.val());
     }
 
     private setShipping():void {
@@ -170,7 +171,8 @@ class FixedRightModule {
         }
     }
 
-    private setTotal():void {
+    public setTotal():void {
+        console.log(this.subtotalAmt, this.discount, this.shippingAmt, this.getSalesTax());
         var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     }

@@ -349,6 +349,7 @@ var FixedRightModule = (function () {
                 }
             }
         }
+        this.discount = Math.round(this.discount);
     };
     FixedRightModule.prototype.setSubtotal = function () {
         this.subtotalAmt = this.getQuantity() * this.unitPriceAmt - this.discount;
@@ -372,7 +373,7 @@ var FixedRightModule = (function () {
         });
     };
     FixedRightModule.prototype.getSalesTax = function () {
-        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.shippingAmt, this.$shippingStateSelect.val());
     };
     FixedRightModule.prototype.setShipping = function () {
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
@@ -385,6 +386,7 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.setTotal = function () {
+        console.log(this.subtotalAmt, this.discount, this.shippingAmt, this.getSalesTax());
         var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     };
@@ -669,6 +671,7 @@ var ShippingInfo = (function (_super) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
             }
+            _this.fixedRightModule.setTotal();
             validation.resetErrors();
             _this.pagination.next();
             _this.pagination.showCurrentPage();
@@ -877,7 +880,7 @@ var SalesTax = (function () {
         var _this = this;
         if (zipcode == this.zipcode && state == this.state) {
             if (callback)
-                callback({});
+                callback({ rate: this.rate });
             return;
         }
         this.zipcode = zipcode;
@@ -890,6 +893,7 @@ var SalesTax = (function () {
                     return;
                 }
                 _this.rate = response.rate;
+                console.log("tax rate", response.rate);
                 if (callback)
                     callback(response);
             },
@@ -899,9 +903,32 @@ var SalesTax = (function () {
             }
         });
     };
-    SalesTax.prototype.total = function (quantity, unitPrice, discount, state) {
-        var totalTax = (quantity * unitPrice - discount) * this.rate;
+    SalesTax.prototype.total = function (quantity, unitPrice, discount, shippingRate, state) {
+        if (!state || state == "") {
+            return;
+        }
+        var method = this.getTaxMethod(state);
+        var totalTax;
+        switch (method) {
+            case 0:
+                totalTax = ((quantity * unitPrice) - discount) * this.rate;
+                break;
+            case 1:
+                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
+                break;
+        }
+        console.log(totalTax);
         return totalTax;
+    };
+    SalesTax.prototype.getTaxMethod = function (state) {
+        console.log("getTaxMethod");
+        for (var i = 0; i < TAX_TABLE.length; i++) {
+            var taxObj = TAX_TABLE[i];
+            if (taxObj.state.trim() == state.trim()) {
+                return taxObj.method;
+            }
+        }
+        throw new Error("state not found in list");
     };
     return SalesTax;
 })();

@@ -10,6 +10,13 @@
 
     </head>
 <body>
+        <script type="text/javascript">
+            var TAX_TABLE=[];
+            @foreach($stateTaxMethods as $method)
+                TAX_TABLE.push({"state":"{{$method->state}}", "method":{{round($method->rate)}}});
+            @endforeach
+
+         </script>
        @if($coupon)
          <script type="text/javascript">
             var COUPON={
@@ -20,6 +27,7 @@
                 min_units: {{$coupon->min_units}},
                 limit: {{$coupon->limit}}
             };
+         </script>
        @endif
 
            <div id="form-content-box">

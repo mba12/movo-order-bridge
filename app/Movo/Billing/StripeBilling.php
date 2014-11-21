@@ -20,8 +20,7 @@ class StripeBilling implements BillingInterface
     public function charge(array $data)
     {
         try {
-
-            $amount = round($data['amount']*100);
+            $amount = StripeBilling::convertAmountToCents($data['amount']);
             $result = Stripe_Charge::create([
                 'amount' => $amount,
                 'currency' => 'usd',
@@ -40,5 +39,8 @@ class StripeBilling implements BillingInterface
         }
     }
 
+    public static function convertAmountToCents($amount){
+        return  round($amount*100);
+    }
 
 }
