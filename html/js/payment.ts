@@ -8,6 +8,8 @@ class Payment extends ScreenBase {
     private stripeKey:string;
     private validation:Validation;
     private $spinner:JQuery;
+    private $customError:JQuery;
+    private $cardError:JQuery;
 
     constructor($pagination:Pagination) {
         super($pagination);
@@ -23,6 +25,8 @@ class Payment extends ScreenBase {
         this.$currentPage = $('#payment');
         super.setSelectors();
         this.$spinner = this.$currentPage.find('.spinner');
+        this.$customError = this.$form.find('.custom-error');
+        this.$cardError = this.$currentPage.find('.card-error');
     }
 
     public initEvents() {
@@ -58,7 +62,7 @@ class Payment extends ScreenBase {
         if (response.error) {
             this.$submitBtn.val(this.submitButtonDefaultValue).attr('disabled', <any>false);
             this.hideSpinner();
-            return this.$form.find('.payment-errors').show().text(response.error.message);
+            return this.$customError.show().text(response.error.message);
         }
         this.createHiddenInput(response);
         this.submitForm();
@@ -98,19 +102,22 @@ class Payment extends ScreenBase {
             data.push({"name": itemName + "Name", "value": unitText});
         }
         $.ajax({
-            type: 'POST', url: formURL, data: data, success: (response)=> {
+            type: 'POST', url: formURL,
+            data: data,
+            success: (response)=> {
                 this.ajaxCallPending = false;
                 this.hideSpinner();
                 if (response.status == 200) {
                     $('#credit-card-number, #cvc').val('');
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
-                    // TODO: display message on screen
-                    console.log("card couldn't be charged");
+                    this.$cardError.show();
                 }
-            }, error: (response)=> {
+            },
+            error: (response)=> {
                 this.ajaxCallPending = false;
-                // TODO: display something
+                this.hideSpinner();
+                this.$cardError.show();
             }
         });
     }

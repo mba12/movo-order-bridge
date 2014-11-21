@@ -691,6 +691,8 @@ var Payment = (function (_super) {
         this.$currentPage = $('#payment');
         _super.prototype.setSelectors.call(this);
         this.$spinner = this.$currentPage.find('.spinner');
+        this.$customError = this.$form.find('.custom-error');
+        this.$cardError = this.$currentPage.find('.card-error');
     };
     Payment.prototype.initEvents = function () {
         this.$submitBtn.on("click", $.proxy(this.onFormSubmit, this));
@@ -722,7 +724,7 @@ var Payment = (function (_super) {
         if (response.error) {
             this.$submitBtn.val(this.submitButtonDefaultValue).attr('disabled', false);
             this.hideSpinner();
-            return this.$form.find('.payment-errors').show().text(response.error.message);
+            return this.$customError.show().text(response.error.message);
         }
         this.createHiddenInput(response);
         this.submitForm();
@@ -771,11 +773,13 @@ var Payment = (function (_super) {
                     _this.pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
-                    console.log("card couldn't be charged");
+                    _this.$cardError.show();
                 }
             },
             error: function (response) {
                 _this.ajaxCallPending = false;
+                _this.hideSpinner();
+                _this.$cardError.show();
             }
         });
     };
@@ -921,6 +925,7 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
         new Summary(pagination);
+        pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');
