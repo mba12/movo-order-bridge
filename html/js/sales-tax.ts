@@ -31,7 +31,7 @@ class SalesTax {
 
     public total(quantity:number, unitPrice:number, discount:number, shippingRate:number, state:string):number {
         if(!state||state=="") {
-            return;
+            return 0;
         }
         var method:number = this.getTaxMethod(state);
         var totalTax:number;

@@ -947,7 +947,7 @@ var SalesTax = (function () {
     };
     SalesTax.prototype.total = function (quantity, unitPrice, discount, shippingRate, state) {
         if (!state || state == "") {
-            return;
+            return 0;
         }
         var method = this.getTaxMethod(state);
         var totalTax;
