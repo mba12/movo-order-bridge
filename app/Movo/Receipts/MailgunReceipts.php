@@ -11,7 +11,9 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
     public function send(array $data)
     {
         $data['quantity']=Input::get("quantity");
-        $data['shippingAddress']=Input::get("shipping-address"). " ". Input::get("shipping-city").", ".Input::get("shipping-state")." ".Input::get("shipping-zip");
+        $data['name']=Input::get("shipping-first-name")." ".Input::get("shipping-last-name");
+        $data['address1']=Input::get("shipping-address");
+        $data['address2']=Input::get("shipping-city").", ".Input::get("shipping-state")." ".Input::get("shipping-zip");
         $data['quantity']=Input::get("quantity");
         $data['items'] = [];
         for ($i = 0; $i < $data['quantity']; $i++) {
