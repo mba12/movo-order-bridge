@@ -8,39 +8,23 @@
 * v0.7.2
 * Docs at http://davidtheclark.github.io/scut
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, menu, nav, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, menu, nav, section, summary,
+time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -50,7 +34,8 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline; }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
   display: block; }
 
 body {
@@ -62,7 +47,8 @@ ol, ul {
 blockquote, q {
   quotes: none; }
 
-blockquote:before, blockquote:after, q:before, q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
   content: ' ';
   content: none; }
 
@@ -108,16 +94,16 @@ a {
 .screen-size-check {
   display: none;
   width: 1px; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .screen-size-check {
       width: 2px; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .screen-size-check {
       width: 3px; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .screen-size-check {
       width: 4px; } }
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: min-width 1300px 12) {
     .screen-size-check {
       width: 5px; } }
 
@@ -146,83 +132,83 @@ a {
 
 .hide-for-mobile {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .hide-for-mobile {
       display: block !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-up {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-only {
     display: none !important; } }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-tablet-only {
     display: block !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-up {
     display: none !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-only {
     display: none !important; } }
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-desktop-only {
     display: block !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-up {
     display: none !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-only {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .show-for-mobile-only {
     display: none !important; } }
 
 .show-for-tablet-up {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-up {
       display: block !important; } }
 
 .show-for-tablet-only {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-only {
       display: block !important; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-tablet-only {
       display: none !important; } }
 
 .show-for-ipad-portrait-up {
   display: none !important; }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: min-width 768px 12) {
     .show-for-ipad-portrait-up {
       display: block !important; } }
 
 .show-for-desktop-up {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-up {
       display: block !important; } }
 
 .show-for-desktop-only {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-only {
       display: block !important; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-desktop-only {
       display: none !important; } }
 
 .show-for-large-up {
   display: none !important; }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-large-up {
       display: block !important; } }
 
@@ -294,7 +280,7 @@ a {
       width: auto;
       height: 40px;
       margin-left: 5px;
-      color: white;
+      color: #fff;
       white-space: nowrap;
       padding: 10px 18px; }
     .youtube-player .close-btn .x {
@@ -325,7 +311,8 @@ a {
   background-position: 50%;
   background-repeat: no-repeat; }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
@@ -357,13 +344,14 @@ USAGE:
   overflow: hidden;
   -moz-appearance: textfield; }
 
-.stepper .stepper-input::-webkit-inner-spin-button, .stepper .stepper-input::-webkit-outer-spin-button {
+.stepper .stepper-input::-webkit-inner-spin-button,
+.stepper .stepper-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
 .stepper .stepper-arrow {
   background: #eeeeee url(../img/jquery.fs.stepper-arrows.png) no-repeat;
-  border-left: 1px solid #cccccc;
+  border-left: 1px solid #ccc;
   cursor: pointer !important;
   display: block;
   height: 50%;
@@ -438,7 +426,7 @@ body {
       font-weight: 700;
       margin-bottom: 25px; }
   #form-content-box .error-messages {
-    color: #e60b21;
+    color: #e60b1f;
     font-size: 0.8125em;
     margin: 10px 0 10px;
     line-height: 1.3em; }
@@ -462,7 +450,7 @@ body {
     margin: 5px 10px 0 0;
     display: none; }
   #form-content-box a {
-    color: #e60b21;
+    color: #e60b1f;
     text-decoration: underline;
     -webkit-transition: 0.3s color;
     -moz-transition: 0.3s color;
@@ -538,7 +526,7 @@ body {
     right: -15px;
     width: 36px;
     height: 36px;
-    background-image: url('../img/close.png');
+    background-image: url("../img/close.png");
     background-size: 36px 36px;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -547,7 +535,7 @@ body {
     transition: 0.3s all; }
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
       #form-content-box #close {
-        background-image: url('../img/close@2x.png');
+        background-image: url("../img/close@2x.png");
         background-size: 36px 36px; } }
     #form-content-box #close:hover {
       -webkit-transform: rotate(90deg);
@@ -575,7 +563,7 @@ body {
         -moz-transition: 0.3s all;
         transition: 0.3s all; }
         #form-content-box #nav ul li.active {
-          color: white; }
+          color: #fff; }
   #form-content-box #fixed-right-module {
     float: right;
     width: 260px;
@@ -620,8 +608,8 @@ body {
           #form-content-box #fixed-right-module .top .right .quantity label {
             display: block; }
     #form-content-box #fixed-right-module #subtotal-fields {
-      border-top: 1px solid #cccccc;
-      border-bottom: 1px solid #cccccc; }
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc; }
     #form-content-box #fixed-right-module #total {
       font-size: 1em; }
     #form-content-box #fixed-right-module .pricing {
@@ -653,7 +641,7 @@ body {
       font-size: 0.8125rem;
       margin-bottom: 15px !important; }
       #form-content-box #products #too-many-units a, #form-content-box #products #too-many-units a:visited, #form-content-box #products #too-many-units a:active {
-        color: #e60b21; }
+        color: #e60b1f; }
     #form-content-box #products #product-sizing-btn {
       color: #333333;
       font-size: 0.875em;
@@ -679,14 +667,14 @@ body {
     #form-content-box #payment .credit-cards {
       width: 159px;
       height: 26px;
-      background-image: url('../img/credit-cards.png');
+      background-image: url("../img/credit-cards.png");
       background-size: 159px 26px;
       background-repeat: no-repeat;
       margin-bottom: 10px;
       float: left; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
         #form-content-box #payment .credit-cards {
-          background-image: url('../img/credit-cards@2x.png');
+          background-image: url("../img/credit-cards@2x.png");
           background-size: 159px 26px; } }
     #form-content-box #payment #secure {
       width: 100px;
@@ -696,14 +684,14 @@ body {
       #form-content-box #payment #secure #lock-icon {
         width: 13px;
         height: 17px;
-        background-image: url('../img/lock.png');
+        background-image: url("../img/lock.png");
         background-size: 13px 17px;
         background-repeat: no-repeat;
         display: inline-block;
         opacity: 0.8; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
           #form-content-box #payment #secure #lock-icon {
-            background-image: url('../img/lock@2x.png');
+            background-image: url("../img/lock@2x.png");
             background-size: 13px 17px; } }
       #form-content-box #payment #secure h5 {
         display: inline-block;
@@ -717,6 +705,12 @@ body {
       -webkit-transition: 0.3s all;
       -moz-transition: 0.3s all;
       transition: 0.3s all; }
+    #form-content-box #payment #coupon-success {
+      margin-top: 15px;
+      display: none;
+      color: #0e8016;
+      font-size: 0.875em;
+      font-weight: bold; }
   #form-content-box #summary {
     display: none; }
     #form-content-box #summary h1 {
@@ -743,4 +737,4 @@ body {
   -moz-transition: 0.2s all;
   transition: 0.2s all; }
   .button:hover {
-    background-color: #f00c22; }
+    background-color: #f00c20; }

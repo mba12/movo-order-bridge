@@ -24,12 +24,18 @@
     margin-left: 5px;
     display: inline-block;
     font-size: em(13);
-    cursor:           pointer;
-    text-rendering:   optimizeLegibility;
+    cursor: pointer;
+    text-rendering: optimizeLegibility;
     @include transition(0.3s all);
     &:hover {
     }
   }
-
+  #coupon-success {
+    margin-top: 15px;
+    display: none;
+    color: $success;
+    font-size: em(14);
+    font-weight: bold;
+  }
 }
 

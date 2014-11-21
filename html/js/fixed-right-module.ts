@@ -17,6 +17,7 @@ class FixedRightModule {
     private $shippingZipCode:JQuery;
     private $couponButton:JQuery;
     private $couponInput:JQuery;
+    private $couponSuccess:JQuery;
     public static MAX_UNITS:number = 8;
     private coupon:CouponData;
     private discount:number = 0;
@@ -49,6 +50,7 @@ class FixedRightModule {
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
+        this.$couponSuccess = $("#coupon-success");
     }
 
     private initEvents() {
@@ -67,14 +69,25 @@ class FixedRightModule {
 
     private onCouponSuccess(result):void {
         if (result) {
-            this.$couponInput.fadeOut();
-            this.$couponButton.fadeOut();
             this.coupon = result.coupon;
-            this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>')
-            $("#coupon-code").attr("name", "code");
+            this.showCouponSuccessText(result.coupon.code);
+            this.updateFormWithCouponData(result.token);
             this.calculatePrice();
+        } else {
+            $(".error-messages").find(".coupon-invalid").show();
         }
-        //TODO make not input
+    }
+
+    private showCouponSuccessText(code):void {
+        this.$couponInput.hide();
+        this.$couponButton.hide();
+        this.$couponSuccess.show().find(".code").html(code);
+        $(".error-messages").find(".coupon-invalid").hide();
+    }
+
+    private updateFormWithCouponData(token:string):void {
+        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>')
+        $("#coupon-code").attr("name", "code");
     }
 
     private onQuantityChange():void {
@@ -131,7 +144,7 @@ class FixedRightModule {
                 }
             }
         }
-        this.discount=Math.round(this.discount);
+        this.discount = Math.round(this.discount);
     }
 
     private setSubtotal():void {
@@ -157,7 +170,7 @@ class FixedRightModule {
     }
 
     private getSalesTax():number {
-        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.shippingAmt,this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getQuantity(), this.unitPriceAmt, this.discount, this.shippingAmt, this.$shippingStateSelect.val());
     }
 
     private setShipping():void {

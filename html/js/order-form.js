@@ -280,6 +280,7 @@ var FixedRightModule = (function () {
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
+        this.$couponSuccess = $("#coupon-success");
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -296,13 +297,24 @@ var FixedRightModule = (function () {
     };
     FixedRightModule.prototype.onCouponSuccess = function (result) {
         if (result) {
-            this.$couponInput.fadeOut();
-            this.$couponButton.fadeOut();
             this.coupon = result.coupon;
-            this.$form.append('<input type="hidden" name="coupon_instance" value="' + result.token + '"/>');
-            $("#coupon-code").attr("name", "code");
+            this.showCouponSuccessText(result.coupon.code);
+            this.updateFormWithCouponData(result.token);
             this.calculatePrice();
         }
+        else {
+            $(".error-messages").find(".coupon-invalid").show();
+        }
+    };
+    FixedRightModule.prototype.showCouponSuccessText = function (code) {
+        this.$couponInput.hide();
+        this.$couponButton.hide();
+        this.$couponSuccess.show().find(".code").html(code);
+        $(".error-messages").find(".coupon-invalid").hide();
+    };
+    FixedRightModule.prototype.updateFormWithCouponData = function (token) {
+        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
+        $("#coupon-code").attr("name", "code");
     };
     FixedRightModule.prototype.onQuantityChange = function () {
         this.calculatePrice();
@@ -860,6 +872,7 @@ var Coupon = (function () {
                     _this.callback(result);
                 },
                 error: function (result) {
+                    _this.callback(result);
                 }
             });
             e.preventDefault();
@@ -952,7 +965,6 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination);
         new Summary(pagination);
-        pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

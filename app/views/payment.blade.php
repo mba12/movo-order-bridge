@@ -50,6 +50,7 @@
     <div class="coupon-container">
         <input type="text"  placeholder="Enter coupon code" id="coupon-code" value=""/>
         <div class="apply" id="submit-coupon-code">Apply</div>
+        <div id="coupon-success" >Coupon applied: <span class="code"></span></div>
     </div>
     <ul class="error-messages">
         <li class="coupon">Please enter a coupon code!</li>
