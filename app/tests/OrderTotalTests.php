@@ -67,4 +67,11 @@ class OrderTotalTests extends TestCase
 
         $this->assertEquals($result, 3918);
     }
+
+    public function test_it_should_round_result_up()
+    {
+        $result= StripeBilling::convertAmountToCents(39.185112403467);
+
+        $this->assertEquals($result, 3919);
+    }
 }

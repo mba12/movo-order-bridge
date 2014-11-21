@@ -10,28 +10,43 @@ class CouponController extends \BaseController
      */
     public function check($code, $quantity)
     {
-        ;
+        $result = [];
         $coupon = Coupon::where("code", "=", $code)->where("active", "=", 1)->first();
         if ($coupon) {
             if ($this->outsideTimeRange($coupon, time())) {
-                return null;
+                $result['error'] = [
+                    "message" => "This coupon has expired."
+                ];
             }
             $instanceCount = $instanceCount = CouponInstance::where("code", "=", $code)->count();
             if ($this->couponLimitReached($coupon, $code, $quantity, $instanceCount)) {
-                return null;
+                $result['error'] = [
+                    "message" => "This coupon code is no longer valid."
+                ];
             }
 
-            $token = str_random(40);
-            CouponInstance::create([
-                "code" => $code,
-                "token" => $token,
-                "used" => 0
-            ]);
-            $result['token'] = $token;
-            $result['coupon'] = $coupon;
-            return $result;
-        }
+            if ($this->tooFewUnits($coupon, $quantity)) {
+                $result['error'] = [
+                    "message" => "You must order at least " . $coupon->min_units . " to use this coupon."
+                ];
+            }
 
+            if (!isset($result['error'])) {
+                $token = str_random(40);
+                CouponInstance::create([
+                    "code" => $code,
+                    "token" => $token,
+                    "used" => 0
+                ]);
+                $result['token'] = $token;
+                $result['coupon'] = $coupon;
+            }
+        }else{
+            $result['error'] = [
+                "message" => "That coupon code is invalid."
+            ];
+        }
+        return $result;
     }
 
     /**
@@ -77,15 +92,24 @@ class CouponController extends \BaseController
      * @param $time
      * @return bool
      */
-    public function outsideTimeRange($coupon,$time)
+    public function outsideTimeRange($coupon, $time)
     {
 
         if ($coupon->time_constraint) {
-              $startTime=strtotime($coupon->start_time);
-              $endTime=strtotime($coupon->end_time);
-              return !($time>=$startTime && $time<=$endTime);
+            $startTime = strtotime($coupon->start_time);
+            $endTime = strtotime($coupon->end_time);
+            return !($time >= $startTime && $time <= $endTime);
         }
         return false;
+    }
+
+    /**
+     * @param $coupon
+     * @param $quantity
+     */
+    private function tooFewUnits($coupon, $quantity)
+    {
+        return $coupon->min_units>$quantity;
     }
 
 }

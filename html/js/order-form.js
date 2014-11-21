@@ -255,8 +255,8 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        this.pagination = pagination;
         var _this = this;
+        this.pagination = pagination;
         this.discount = 0;
         this.currentState = "";
         this.currentZipcode = "";
@@ -300,21 +300,20 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.onCouponSuccess = function (result) {
-        if (result) {
+        if (result.coupon) {
             this.coupon = result.coupon;
             this.showCouponSuccessText(result.coupon.code);
             this.updateFormWithCouponData(result.token);
             this.calculatePrice();
         }
         else {
-            $("#coupon-error-messages").find(".coupon-invalid").show();
+            $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
         }
     };
     FixedRightModule.prototype.showCouponSuccessText = function (code) {
-        this.$couponInput.hide();
-        this.$couponButton.hide();
         this.$couponSuccess.show().find(".code").html(code);
         $("#coupon-error-messages").find(".coupon-invalid").hide();
+        $("#coupon-error-messages").find(".coupon-error").hide();
     };
     FixedRightModule.prototype.updateFormWithCouponData = function (token) {
         this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
@@ -713,6 +712,9 @@ var Payment = (function (_super) {
         this.$customError = this.$form.find('.custom-error');
         this.$cardError = this.$currentPage.find('.card-error');
         this.$editShipping = $('#edit-shipping');
+        this.$shippingName = $('#shipping-confirmation').find(".name");
+        this.$shippingStreet = $('#shipping-confirmation').find(".street");
+        this.$shippingCityStateZip = $('#shipping-confirmation').find(".cityStateZip");
     };
     Payment.prototype.initEvents = function () {
         var _this = this;
@@ -805,6 +807,11 @@ var Payment = (function (_super) {
             }
         });
     };
+    Payment.prototype.displayShippingAddress = function () {
+        this.$shippingName.html($("#shipping-first-name").val() + " " + $("#shipping-last-name").val());
+        this.$shippingStreet.html($("#shipping-address").val());
+        this.$shippingCityStateZip.html($("#shipping-city").val() + ", " + $("#shipping-state-select").val() + " " + $("#shipping-zip").val());
+    };
     Payment.prototype.onEditShippingClick = function () {
         this.pagination.gotoShippingPage();
     };
@@ -815,6 +822,10 @@ var Payment = (function (_super) {
             return;
         }
         validation.resetErrors();
+    };
+    Payment.prototype.onPageChanged = function (pageIndex) {
+        this.displayShippingAddress();
+        _super.prototype.onPageChanged.call(this, pageIndex);
     };
     return Payment;
 })(ScreenBase);

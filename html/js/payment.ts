@@ -11,6 +11,9 @@ class Payment extends ScreenBase {
     private $customError:JQuery;
     private $cardError:JQuery;
     private $editShipping:JQuery;
+    private $shippingName:JQuery;
+    private $shippingStreet:JQuery;
+    private $shippingCityStateZip:JQuery;
 
     constructor($pagination:Pagination) {
         super($pagination);
@@ -29,6 +32,9 @@ class Payment extends ScreenBase {
         this.$customError = this.$form.find('.custom-error');
         this.$cardError = this.$currentPage.find('.card-error');
         this.$editShipping = $('#edit-shipping');
+        this.$shippingName = $('#shipping-confirmation').find(".name");
+        this.$shippingStreet = $('#shipping-confirmation').find(".street");
+        this.$shippingCityStateZip = $('#shipping-confirmation').find(".cityStateZip");
     }
 
     public initEvents() {
@@ -55,6 +61,7 @@ class Payment extends ScreenBase {
             this.validation.showErrors();
         }
     }
+
 
     private createStripeToken() {
         var data = this.$form.serialize();
@@ -125,6 +132,12 @@ class Payment extends ScreenBase {
         });
     }
 
+    private displayShippingAddress():void {
+        this.$shippingName.html($("#shipping-first-name").val() + " " + $("#shipping-last-name").val());
+        this.$shippingStreet.html($("#shipping-address").val());
+        this.$shippingCityStateZip.html($("#shipping-city").val() + ", " + $("#shipping-state-select").val() + " " + $("#shipping-zip").val());
+    }
+
     private onEditShippingClick():void {
         this.pagination.gotoShippingPage();
     }
@@ -136,6 +149,11 @@ class Payment extends ScreenBase {
             return;
         }
         validation.resetErrors();
+    }
+
+    public onPageChanged(pageIndex:number):void{
+        this.displayShippingAddress();
+        super.onPageChanged(pageIndex);
     }
 
 }

@@ -21,6 +21,7 @@ class OrderController extends BaseController
         if ($code) {
             $coupon = Coupon::where("code", "=", $code)->first();
         }
+
         return View::make('order-form', [
             'shippingDropdownData' => $shippingDropdownData,
             'unitPrice' => $unitPrice,
@@ -38,7 +39,6 @@ class OrderController extends BaseController
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
 
         $couponInstance = Coupon::getValidCouponInstance();
-
         $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), Input::get("shipping-state"));
         if (!isset($salesTaxRate)) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Your state and zip code do not match'));

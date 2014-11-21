@@ -14,7 +14,7 @@ class CouponTests extends TestCase
         $couponController->shouldReceive("outsideTimeRange")->once()->andReturn(false);
         $couponController->shouldReceive("couponLimitReached")->once()->andReturn(false);
         $result = $couponController->check("friends20", 1);
-        $this->assertNotEmpty($result);
+        $this->assertNotEmpty($result['coupon']);
     }
 
     public function test_it_should_return_null_if_limit_is_reached()
@@ -23,7 +23,7 @@ class CouponTests extends TestCase
         $couponController->shouldReceive("outsideTimeRange")->once()->andReturn(false);
         $couponController->shouldReceive("couponLimitReached")->once()->andReturn(true);
         $result = $couponController->check("friends20", 1);
-        $this->assertEmpty($result);
+        $this->assertNotEmpty($result['error']);
     }
 
     public function test_it_should_return_true_if_instance_count_too_high()
@@ -84,7 +84,7 @@ class CouponTests extends TestCase
         $couponController = Mockery::mock("CouponController")->makePartial();
         $couponController->shouldReceive("outsideTimeRange")->once()->andReturn(true);
         $result = $couponController->check("friends20", 1);
-        $this->assertEmpty($result);
+        $this->assertNotEmpty($result['error']);
     }
 
     public function test_it_should_be_empty_if_coupon_is_inactive()
@@ -108,6 +108,6 @@ class CouponTests extends TestCase
     {
         $couponController = new CouponController();
         $result = $couponController->check("friends20", 1);
-        $this->assertEmpty($result);
+        $this->assertNotEmpty($result['error']);
     }
 }

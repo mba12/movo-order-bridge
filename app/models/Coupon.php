@@ -25,7 +25,9 @@ class Coupon extends \Eloquent
                 ->where("token", "=", Input::get("coupon_instance"))
                 ->where("used", "=", 0)->first();
              if ($validCoupon) {
-                $couponInstance = Coupon::where("code", "=", Input::get("code"))->first();
+                $couponInstance = Coupon::where("code", "=", Input::get("code"))
+                    ->where("active","=",1)
+                    ->first();
                 if ($couponInstance) {
                     if ($couponInstance->min_units == 0 || $couponInstance->min_units <= Input::get("quantity")) {
                         $validCoupon->used=1;

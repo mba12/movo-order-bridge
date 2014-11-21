@@ -29,6 +29,7 @@ class OrderForm {
         new Payment(pagination);
         new Summary(pagination);
         pagination.gotoPage(3);
+
     }
 
     private setSelectors():void {

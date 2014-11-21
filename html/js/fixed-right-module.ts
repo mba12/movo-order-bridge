@@ -68,21 +68,23 @@ class FixedRightModule {
     }
 
     private onCouponSuccess(result):void {
-        if (result) {
+        if (result.coupon) {
             this.coupon = result.coupon;
             this.showCouponSuccessText(result.coupon.code);
             this.updateFormWithCouponData(result.token);
             this.calculatePrice();
         } else {
-            $("#coupon-error-messages").find(".coupon-invalid").show();
+            $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
+           // $("#coupon-error-messages").find(".coupon-invalid").show();
         }
     }
 
     private showCouponSuccessText(code):void {
-        this.$couponInput.hide();
-        this.$couponButton.hide();
+       // this.$couponInput.hide();
+        //this.$couponButton.hide();
         this.$couponSuccess.show().find(".code").html(code);
         $("#coupon-error-messages").find(".coupon-invalid").hide();
+        $("#coupon-error-messages").find(".coupon-error").hide();
     }
 
     private updateFormWithCouponData(token:string):void {
