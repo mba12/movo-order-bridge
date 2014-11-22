@@ -26,9 +26,9 @@ class OrderForm {
         new ShippingInfo(pagination,fixedRightModule);
         new Products(pagination);
         new BillingInfo(pagination);
-        new Payment(pagination);
+        new Payment(pagination,fixedRightModule);
         new Summary(pagination);
-       // pagination.gotoPage(3);
+        //pagination.gotoPage(3);
 
     }
 

@@ -7,8 +7,9 @@ class Coupon {
     private $couponBlankMsg:JQuery;
     private $couponInvalidMsg:JQuery;
     private $couponAppliedMsg:JQuery;
+    private $couponSuccess:JQuery;
 
-    constructor(public callback) {
+    constructor(public fixedRightModule:FixedRightModule) {
         this.setSelectors();
         this.initEvents();
     }
@@ -18,13 +19,13 @@ class Coupon {
         this.$form = $("#order-form");
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
+        this.$couponSuccess = $("#coupon-success");
         this.$couponBlankMsg = $('#coupon-error-messages').find('.coupon-blank');
         this.$couponInvalidMsg = $('#coupon-error-messages').find('.coupon-invalid');
         this.$couponAppliedMsg = $('#coupon-error-messages').find('.coupon-applied');
     }
 
     private initEvents():void {
-        // this.$coupon.keypress((event)=>this.onKeyPress(event));
         this.$couponButton.click((e)=>this.onCouponApply(e))
     }
 
@@ -49,11 +50,9 @@ class Coupon {
             var url = $myForm.prop("action");
             $.ajax({
                 type: method, url: url, data: $myForm.serialize(), success: (result)=> {
-                    this.$couponInput.attr("name", "code");
-                    this.callback(result);
-
+                    this.onCouponResult(result);
                 }, error: (result)=> {
-                    this.callback(result);
+                    this.onCouponResult(result);
                 }
             });
             e.preventDefault();
@@ -62,12 +61,27 @@ class Coupon {
 
     }
 
-    private onSuccess(result):void {
-        console.log(result);
+    private onCouponResult(result):void {
+        if (result.coupon) {
+            this.$couponInput.attr("name", "code");
+            this.fixedRightModule.coupon = result.coupon;
+            this.showCouponSuccessText(result.coupon.code);
+            this.updateFormWithCouponData(result.token);
+            this.fixedRightModule.calculatePrice();
+        } else {
+            $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
+        }
     }
 
-    private onError(result):void {
-        console.log(result);
+    private showCouponSuccessText(code):void {
+        this.$couponSuccess.show().find(".code").html(code);
+        $("#coupon-error-messages").find(".coupon-invalid").hide();
+        $("#coupon-error-messages").find(".coupon-error").hide();
+    }
+
+    private updateFormWithCouponData(token:string):void {
+        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>')
+        $("#coupon-code").attr("name", "code");
     }
 
 }

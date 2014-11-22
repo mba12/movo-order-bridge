@@ -255,7 +255,6 @@ var ScreenBase = (function () {
 })();
 var FixedRightModule = (function () {
     function FixedRightModule(pagination) {
-        var _this = this;
         this.pagination = pagination;
         this.discount = 0;
         this.currentState = "";
@@ -267,7 +266,6 @@ var FixedRightModule = (function () {
         this.initQuantityStepper();
         this.setQuantityFieldIfPassedIn();
         this.calculatePrice();
-        new Coupon(function (result) { return _this.onCouponSuccess(result); });
     }
     FixedRightModule.prototype.setSelectors = function () {
         this.$quantityInputField = $('#quantity');
@@ -282,9 +280,6 @@ var FixedRightModule = (function () {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
-        this.$couponButton = $("#submit-coupon-code");
-        this.$couponInput = $("#coupon-code");
-        this.$couponSuccess = $("#coupon-success");
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -298,26 +293,6 @@ var FixedRightModule = (function () {
         if (passedInQuantity > 0) {
             this.$quantityInputField.val(passedInQuantity.toString());
         }
-    };
-    FixedRightModule.prototype.onCouponSuccess = function (result) {
-        if (result.coupon) {
-            this.coupon = result.coupon;
-            this.showCouponSuccessText(result.coupon.code);
-            this.updateFormWithCouponData(result.token);
-            this.calculatePrice();
-        }
-        else {
-            $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
-        }
-    };
-    FixedRightModule.prototype.showCouponSuccessText = function (code) {
-        this.$couponSuccess.show().find(".code").html(code);
-        $("#coupon-error-messages").find(".coupon-invalid").hide();
-        $("#coupon-error-messages").find(".coupon-error").hide();
-    };
-    FixedRightModule.prototype.updateFormWithCouponData = function (token) {
-        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
-        $("#coupon-code").attr("name", "code");
     };
     FixedRightModule.prototype.onQuantityChange = function () {
         this.calculatePrice();
@@ -401,7 +376,6 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.setTotal = function () {
-        console.log(this.subtotalAmt, this.discount, this.shippingAmt, this.getSalesTax());
         var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     };
@@ -696,11 +670,13 @@ var ShippingInfo = (function (_super) {
 })(ScreenBase);
 var Payment = (function (_super) {
     __extends(Payment, _super);
-    function Payment($pagination) {
+    function Payment($pagination, fixedRightModule) {
         _super.call(this, $pagination);
+        this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
         this.initStripe();
+        new Coupon(this.fixedRightModule);
     }
     Payment.prototype.setSelectors = function () {
         this.$form = $('#order-form');
@@ -852,8 +828,8 @@ var Summary = (function (_super) {
     return Summary;
 })(ScreenBase);
 var Coupon = (function () {
-    function Coupon(callback) {
-        this.callback = callback;
+    function Coupon(fixedRightModule) {
+        this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
     }
@@ -862,6 +838,7 @@ var Coupon = (function () {
         this.$form = $("#order-form");
         this.$couponButton = $("#submit-coupon-code");
         this.$couponInput = $("#coupon-code");
+        this.$couponSuccess = $("#coupon-success");
         this.$couponBlankMsg = $('#coupon-error-messages').find('.coupon-blank');
         this.$couponInvalidMsg = $('#coupon-error-messages').find('.coupon-invalid');
         this.$couponAppliedMsg = $('#coupon-error-messages').find('.coupon-applied');
@@ -894,22 +871,36 @@ var Coupon = (function () {
                 url: url,
                 data: $myForm.serialize(),
                 success: function (result) {
-                    _this.$couponInput.attr("name", "code");
-                    _this.callback(result);
+                    _this.onCouponResult(result);
                 },
                 error: function (result) {
-                    _this.callback(result);
+                    _this.onCouponResult(result);
                 }
             });
             e.preventDefault();
         });
         $myForm.submit();
     };
-    Coupon.prototype.onSuccess = function (result) {
-        console.log(result);
+    Coupon.prototype.onCouponResult = function (result) {
+        if (result.coupon) {
+            this.$couponInput.attr("name", "code");
+            this.fixedRightModule.coupon = result.coupon;
+            this.showCouponSuccessText(result.coupon.code);
+            this.updateFormWithCouponData(result.token);
+            this.fixedRightModule.calculatePrice();
+        }
+        else {
+            $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
+        }
     };
-    Coupon.prototype.onError = function (result) {
-        console.log(result);
+    Coupon.prototype.showCouponSuccessText = function (code) {
+        this.$couponSuccess.show().find(".code").html(code);
+        $("#coupon-error-messages").find(".coupon-invalid").hide();
+        $("#coupon-error-messages").find(".coupon-error").hide();
+    };
+    Coupon.prototype.updateFormWithCouponData = function (token) {
+        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
+        $("#coupon-code").attr("name", "code");
     };
     return Coupon;
 })();
@@ -989,7 +980,7 @@ var OrderForm = (function () {
         new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
         new BillingInfo(pagination);
-        new Payment(pagination);
+        new Payment(pagination, fixedRightModule);
         new Summary(pagination);
     }
     OrderForm.prototype.setSelectors = function () {

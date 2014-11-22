@@ -15,11 +15,9 @@ class FixedRightModule {
     private $shippingCountrySelect:JQuery;
     private $shippingStateSelect:JQuery;
     private $shippingZipCode:JQuery;
-    private $couponButton:JQuery;
-    private $couponInput:JQuery;
-    private $couponSuccess:JQuery;
+
     public static MAX_UNITS:number = 8;
-    private coupon:CouponData;
+    public coupon:CouponData;
     private discount:number = 0;
     private currentState:string = "";
     private currentZipcode:string = "";
@@ -32,7 +30,7 @@ class FixedRightModule {
         this.initQuantityStepper();
         this.setQuantityFieldIfPassedIn();
         this.calculatePrice();
-        new Coupon((result)=>this.onCouponSuccess(result));
+
     }
 
     private setSelectors() {
@@ -48,9 +46,7 @@ class FixedRightModule {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
-        this.$couponButton = $("#submit-coupon-code");
-        this.$couponInput = $("#coupon-code");
-        this.$couponSuccess = $("#coupon-success");
+
     }
 
     private initEvents() {
@@ -67,30 +63,7 @@ class FixedRightModule {
         }
     }
 
-    private onCouponSuccess(result):void {
-        if (result.coupon) {
-            this.coupon = result.coupon;
-            this.showCouponSuccessText(result.coupon.code);
-            this.updateFormWithCouponData(result.token);
-            this.calculatePrice();
-        } else {
-            $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
-           // $("#coupon-error-messages").find(".coupon-invalid").show();
-        }
-    }
 
-    private showCouponSuccessText(code):void {
-       // this.$couponInput.hide();
-        //this.$couponButton.hide();
-        this.$couponSuccess.show().find(".code").html(code);
-        $("#coupon-error-messages").find(".coupon-invalid").hide();
-        $("#coupon-error-messages").find(".coupon-error").hide();
-    }
-
-    private updateFormWithCouponData(token:string):void {
-        this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>')
-        $("#coupon-code").attr("name", "code");
-    }
 
     private onQuantityChange():void {
         this.calculatePrice();
@@ -185,7 +158,6 @@ class FixedRightModule {
     }
 
     public setTotal():void {
-        console.log(this.subtotalAmt, this.discount, this.shippingAmt, this.getSalesTax());
         var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     }

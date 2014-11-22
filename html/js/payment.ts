@@ -15,11 +15,12 @@ class Payment extends ScreenBase {
     private $shippingStreet:JQuery;
     private $shippingCityStateZip:JQuery;
 
-    constructor($pagination:Pagination) {
+    constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
         this.setSelectors();
         this.initEvents();
         this.initStripe();
+        new Coupon(this.fixedRightModule);
     }
 
     public setSelectors() {
@@ -35,6 +36,7 @@ class Payment extends ScreenBase {
         this.$shippingName = $('#shipping-confirmation').find(".name");
         this.$shippingStreet = $('#shipping-confirmation').find(".street");
         this.$shippingCityStateZip = $('#shipping-confirmation').find(".cityStateZip");
+
     }
 
     public initEvents() {
