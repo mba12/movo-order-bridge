@@ -154,6 +154,7 @@ class Payment extends ScreenBase {
     public onPageChanged(pageIndex:number):void{
         this.displayShippingAddress();
         super.onPageChanged(pageIndex);
+        this.$cardError.hide();
     }
 
 }

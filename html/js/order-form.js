@@ -826,6 +826,7 @@ var Payment = (function (_super) {
     Payment.prototype.onPageChanged = function (pageIndex) {
         this.displayShippingAddress();
         _super.prototype.onPageChanged.call(this, pageIndex);
+        this.$cardError.hide();
     };
     return Payment;
 })(ScreenBase);

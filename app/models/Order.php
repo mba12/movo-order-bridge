@@ -29,6 +29,7 @@ class Order extends \Eloquent
         'email',
 
         'stripe_charge_id',
+        'coupon',
         'ingram_order_id',
         'status',
         'tracking_code',
@@ -74,6 +75,7 @@ class Order extends \Eloquent
         $this->status = 1;
         $this->tracking_code = "";
         $this->error_flag = "";
+        $this->coupon = Input::has("code")?Input::get("code"):"";
 
 
         $this->save();
