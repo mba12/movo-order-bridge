@@ -93,7 +93,7 @@ class CouponTests extends TestCase
 
         $couponController = new CouponController();
         $result = $couponController->check("dummy", 1);
-        $this->assertEmpty($result);
+        $this->assertNotEmpty($result['error']);
 
     }
 
@@ -108,6 +108,6 @@ class CouponTests extends TestCase
     {
         $couponController = new CouponController();
         $result = $couponController->check("friends20", 1);
-        $this->assertNotEmpty($result['error']);
+        $this->assertNotEmpty($result['coupon']);
     }
 }
