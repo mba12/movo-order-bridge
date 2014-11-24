@@ -18,10 +18,11 @@ class FixedRightModule {
 
     public static MAX_UNITS:number = 8;
     public coupon:CouponData;
-    private discount:number = 0;
+    public discount:number = 0;
     private currentState:string = "";
     private currentZipcode:string = "";
     private salesTax:SalesTax = new SalesTax();
+    private $discount:JQuery;
 
     constructor(public pagination:Pagination) {
         this.setSelectors();
@@ -45,6 +46,7 @@ class FixedRightModule {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
+        this.$discount = $('#subtotal-fields').find('.discount');
     }
 
     private initEvents() {
@@ -112,12 +114,22 @@ class FixedRightModule {
                     this.discount = (this.coupon.amount / 100) * this.getQuantity() * this.unitPriceAmt;
                 }
             }
+            this.$discount.fadeIn();
+            var discountStr:string = "-" + parseFloat(<any>(Math.round(this.discount * 100) / 100)).toFixed(2);
+            $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
+        } else {
+            this.$discount.fadeOut();
+            this.discount = 0;
         }
         this.discount = Math.round(this.discount);
     }
 
+    public hideDiscountFields():void {
+        this.$discount.hide();
+    }
+
     private setSubtotal():void {
-        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt - this.discount;
+        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt;
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
     }
 
@@ -153,7 +165,7 @@ class FixedRightModule {
     }
 
     public setTotal():void {
-        var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
+        var totalStr:string = '$' + (this.subtotalAmt + this.shippingAmt - this.discount + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     }
 

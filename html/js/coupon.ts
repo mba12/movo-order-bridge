@@ -70,6 +70,11 @@ class Coupon {
             this.fixedRightModule.calculatePrice();
         } else {
             $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
+            //this.fixedRightModule.discount = 0;
+            this.fixedRightModule.coupon = null;
+            this.fixedRightModule.calculatePrice();
+            this.fixedRightModule.hideDiscountFields();
+            this.hideCouponSuccessText();
         }
     }
 
@@ -77,6 +82,10 @@ class Coupon {
         this.$couponSuccess.show().find(".code").html(code);
         $("#coupon-error-messages").find(".coupon-invalid").hide();
         $("#coupon-error-messages").find(".coupon-error").hide();
+    }
+
+    private hideCouponSuccessText():void {
+        this.$couponSuccess.hide();
     }
 
     private updateFormWithCouponData(token:string):void {

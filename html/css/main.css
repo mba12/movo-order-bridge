@@ -395,6 +395,9 @@ USAGE:
   .black a {
     color: black; }
 
+.green {
+  color: #0e8016; }
+
 body {
   color: #333333;
   font-family: 'Open Sans', sans-serif;
@@ -643,6 +646,8 @@ body {
       #form-content-box #fixed-right-module .pricing .text {
         float: right;
         font-weight: 600; }
+    #form-content-box #fixed-right-module .discount {
+      display: none; }
   #form-content-box #products {
     display: none; }
     #form-content-box #products select {

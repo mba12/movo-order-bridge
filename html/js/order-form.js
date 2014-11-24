@@ -280,6 +280,7 @@ var FixedRightModule = (function () {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
+        this.$discount = $('#subtotal-fields').find('.discount');
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -338,11 +339,21 @@ var FixedRightModule = (function () {
                     this.discount = (this.coupon.amount / 100) * this.getQuantity() * this.unitPriceAmt;
                 }
             }
+            this.$discount.fadeIn();
+            var discountStr = "-" + parseFloat((Math.round(this.discount * 100) / 100)).toFixed(2);
+            $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
+        }
+        else {
+            this.$discount.fadeOut();
+            this.discount = 0;
         }
         this.discount = Math.round(this.discount);
     };
+    FixedRightModule.prototype.hideDiscountFields = function () {
+        this.$discount.hide();
+    };
     FixedRightModule.prototype.setSubtotal = function () {
-        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt - this.discount;
+        this.subtotalAmt = this.getQuantity() * this.unitPriceAmt;
         this.$subtotal.html('$' + this.subtotalAmt.toFixed(2));
     };
     FixedRightModule.prototype.setSalesTax = function (callback) {
@@ -376,7 +387,7 @@ var FixedRightModule = (function () {
         }
     };
     FixedRightModule.prototype.setTotal = function () {
-        var totalStr = '$' + (this.subtotalAmt + this.shippingAmt + this.getSalesTax()).toFixed(2);
+        var totalStr = '$' + (this.subtotalAmt + this.shippingAmt - this.discount + this.getSalesTax()).toFixed(2);
         this.$total.html(totalStr);
     };
     FixedRightModule.prototype.onKeyPress = function (e) {
@@ -891,12 +902,19 @@ var Coupon = (function () {
         }
         else {
             $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
+            this.fixedRightModule.coupon = null;
+            this.fixedRightModule.calculatePrice();
+            this.fixedRightModule.hideDiscountFields();
+            this.hideCouponSuccessText();
         }
     };
     Coupon.prototype.showCouponSuccessText = function (code) {
         this.$couponSuccess.show().find(".code").html(code);
         $("#coupon-error-messages").find(".coupon-invalid").hide();
         $("#coupon-error-messages").find(".coupon-error").hide();
+    };
+    Coupon.prototype.hideCouponSuccessText = function () {
+        this.$couponSuccess.hide();
     };
     Coupon.prototype.updateFormWithCouponData = function (token) {
         this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>');
