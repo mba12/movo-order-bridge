@@ -340,11 +340,11 @@ var FixedRightModule = (function () {
                 }
             }
             this.$discount.fadeIn();
-            var discountStr = "-" + parseFloat((Math.round(this.discount * 100) / 100)).toFixed(2);
+            var discountStr = "$" + parseFloat((Math.round(this.discount * 100) / 100)).toFixed(2);
             $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
         }
         else {
-            this.$discount.fadeOut();
+            this.hideDiscountFields();
             this.discount = 0;
         }
         this.discount = Math.round(this.discount);
@@ -780,7 +780,7 @@ var Payment = (function (_super) {
                 _this.ajaxCallPending = false;
                 _this.hideSpinner();
                 if (response.status == 200) {
-                    $('#credit-card-number, #cvc').val('');
+                    _this.resetPage();
                     _this.pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
@@ -815,12 +815,18 @@ var Payment = (function (_super) {
         _super.prototype.onPageChanged.call(this, pageIndex);
         this.$cardError.hide();
     };
+    Payment.prototype.resetPage = function () {
+        $('#credit-card-number, #cvc, #coupon-code').val('');
+        this.fixedRightModule.discount = null;
+        $('.error-messages, #coupon-success').hide();
+    };
     return Payment;
 })(ScreenBase);
 var Summary = (function (_super) {
     __extends(Summary, _super);
-    function Summary($pagination) {
+    function Summary($pagination, fixedRightModule) {
         _super.call(this, $pagination);
+        this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
     }
@@ -835,6 +841,8 @@ var Summary = (function (_super) {
     Summary.prototype.onCreateNewOrderBtnClick = function (e) {
         e.preventDefault();
         this.pagination.gotoProductsPage();
+        this.fixedRightModule.calculatePrice();
+        this.fixedRightModule.hideDiscountFields();
     };
     return Summary;
 })(ScreenBase);
@@ -999,8 +1007,7 @@ var OrderForm = (function () {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination, fixedRightModule);
-        new Summary(pagination);
-        pagination.gotoPage(3);
+        new Summary(pagination, fixedRightModule);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

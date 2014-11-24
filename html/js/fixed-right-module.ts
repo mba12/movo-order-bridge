@@ -115,10 +115,10 @@ class FixedRightModule {
                 }
             }
             this.$discount.fadeIn();
-            var discountStr:string = "-" + parseFloat(<any>(Math.round(this.discount * 100) / 100)).toFixed(2);
+            var discountStr:string = "$" + parseFloat(<any>(Math.round(this.discount * 100) / 100)).toFixed(2);
             $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
         } else {
-            this.$discount.fadeOut();
+            this.hideDiscountFields()
             this.discount = 0;
         }
         this.discount = Math.round(this.discount);

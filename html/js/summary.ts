@@ -2,7 +2,7 @@ class Summary extends ScreenBase {
 
     private $createNewOrderBtn:JQuery;
 
-    constructor($pagination:Pagination) {
+    constructor($pagination:Pagination, private fixedRightModule:FixedRightModule) {
         super($pagination);
         this.setSelectors();
         this.initEvents();
@@ -21,6 +21,8 @@ class Summary extends ScreenBase {
     private onCreateNewOrderBtnClick(e):void {
         e.preventDefault();
         this.pagination.gotoProductsPage();
+        this.fixedRightModule.calculatePrice();
+        this.fixedRightModule.hideDiscountFields();
     }
 
 }
