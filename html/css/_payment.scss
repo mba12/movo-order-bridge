@@ -20,28 +20,42 @@
       font-size: em(13);
     }
   }
-  #submit-coupon-code {
-    margin-left: 5px;
-    display: inline-block;
-    font-size: em(13);
-    cursor:           pointer;
-    text-rendering:   optimizeLegibility;
-    @include transition(0.3s all);
-    &:hover {
+  #coupon-container {
+    margin-bottom: 13px;
+    #submit-coupon-code {
+      margin-left: 2px;
+      display: inline-block;
+      font-size: em(13);
+      cursor:           pointer;
+      text-rendering:   optimizeLegibility;
+      @include transition(0.3s all);
+      &:hover {
+      }
+      .cityStateZip {
+        margin-bottom: 6px;
+      }
+    }
+    #coupon-error-messages {
+      margin-bottom: 0px;
+    }
+    #coupon-success {
+      margin-top: 15px;
+      display: none;
+      color: $success;
+      font-size: em(14);
+      @include fw-medium;
+    }
+  }
+  #shipping-confirmation {
+    font-size:     em(15);
+    line-height:   1.2em;
+    margin-bottom: 15px;
+    h5 {
+      @include fw-bold;
+      margin-bottom: 2px;
     }
     .cityStateZip {
       margin-bottom: 6px;
     }
   }
-  #submit-coupon-code {
-    margin-left: 3px;
-  }
-  #coupon-success {
-    margin-top: 15px;
-    display: none;
-    color: $success;
-    font-size: em(14);
-    font-weight: bold;
-  }
 }
-

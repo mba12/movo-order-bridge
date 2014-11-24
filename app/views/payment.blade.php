@@ -47,7 +47,7 @@
         </div>
 
     </div>
-    <div class="coupon-container">
+    <div id="coupon-container">
         <input type="text"  placeholder="Enter coupon code" id="coupon-code" value=""/>
         <div class="apply small-gray-button" id="submit-coupon-code">APPLY</div>
         <ul id="coupon-error-messages" class="error-messages">
@@ -72,7 +72,6 @@
         <li class="card-error">There was a problem processing your order. Please try again or contact <a href="mailto:info@getmovo.com">info@getmovo.com</a> for assistance.</li>
         <li class="custom-error"></li>
     </ul>
-
     <div class="prev-next">
         <div class="button next" id="submit-order">Submit Order</div>
         <div class="spinner">

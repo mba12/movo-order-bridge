@@ -30,7 +30,6 @@ class FixedRightModule {
         this.initQuantityStepper();
         this.setQuantityFieldIfPassedIn();
         this.calculatePrice();
-
     }
 
     private setSelectors() {
@@ -46,7 +45,6 @@ class FixedRightModule {
         this.$shippingCountrySelect = $('#shipping-country');
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
-
     }
 
     private initEvents() {
@@ -62,8 +60,6 @@ class FixedRightModule {
             this.$quantityInputField.val(passedInQuantity.toString());
         }
     }
-
-
 
     private onQuantityChange():void {
         this.calculatePrice();
@@ -87,7 +83,6 @@ class FixedRightModule {
     private onShippingCountrySelectChange():void {
         this.calculatePrice();
     }
-
 
     private getQuantity():number {
         return Math.min(parseInt(this.$quantityInputField.val()), FixedRightModule.MAX_UNITS)

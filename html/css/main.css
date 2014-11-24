@@ -708,25 +708,36 @@ body {
       #form-content-box #payment #secure h5 {
         display: inline-block;
         font-size: 0.8125em; }
-    #form-content-box #payment #submit-coupon-code {
-      margin-left: 5px;
-      display: inline-block;
-      font-size: 0.8125em;
-      cursor: pointer;
-      text-rendering: optimizeLegibility;
-      -webkit-transition: 0.3s all;
-      -moz-transition: 0.3s all;
-      transition: 0.3s all; }
-      #form-content-box #payment #submit-coupon-code .cityStateZip {
+    #form-content-box #payment #coupon-container {
+      margin-bottom: 13px; }
+      #form-content-box #payment #coupon-container #submit-coupon-code {
+        margin-left: 2px;
+        display: inline-block;
+        font-size: 0.8125em;
+        cursor: pointer;
+        text-rendering: optimizeLegibility;
+        -webkit-transition: 0.3s all;
+        -moz-transition: 0.3s all;
+        transition: 0.3s all; }
+        #form-content-box #payment #coupon-container #submit-coupon-code .cityStateZip {
+          margin-bottom: 6px; }
+      #form-content-box #payment #coupon-container #coupon-error-messages {
+        margin-bottom: 0px; }
+      #form-content-box #payment #coupon-container #coupon-success {
+        margin-top: 15px;
+        display: none;
+        color: #0e8016;
+        font-size: 0.875em;
+        font-weight: 600; }
+    #form-content-box #payment #shipping-confirmation {
+      font-size: 0.9375em;
+      line-height: 1.2em;
+      margin-bottom: 15px; }
+      #form-content-box #payment #shipping-confirmation h5 {
+        font-weight: 700;
+        margin-bottom: 2px; }
+      #form-content-box #payment #shipping-confirmation .cityStateZip {
         margin-bottom: 6px; }
-    #form-content-box #payment #submit-coupon-code {
-      margin-left: 3px; }
-    #form-content-box #payment #coupon-success {
-      margin-top: 15px;
-      display: none;
-      color: #0e8016;
-      font-size: 0.875em;
-      font-weight: bold; }
   #form-content-box #summary {
     display: none; }
     #form-content-box #summary h1 {
