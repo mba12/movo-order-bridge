@@ -13,6 +13,7 @@
 /// <reference path="coupon.ts" />
 /// <reference path="sales-tax.ts" />
 /// <reference path="coupon-data.ts" />
+/// <reference path="orders/order.ts" />
 
 class OrderForm {
 
@@ -27,8 +28,8 @@ class OrderForm {
         new Products(pagination);
         new BillingInfo(pagination);
         new Payment(pagination,fixedRightModule);
-        new Summary(pagination);
-        pagination.gotoPage(3);
+        new Summary(pagination,fixedRightModule);
+        //pagination.gotoPage(3);
 
     }
 

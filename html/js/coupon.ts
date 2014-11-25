@@ -8,6 +8,7 @@ class Coupon {
     private $couponInvalidMsg:JQuery;
     private $couponAppliedMsg:JQuery;
     private $couponSuccess:JQuery;
+    private order:Order = Order.getInstance();
 
     constructor(public fixedRightModule:FixedRightModule) {
         this.setSelectors();
@@ -42,7 +43,7 @@ class Coupon {
             return;
         }
         var $myForm = $("<form></form>");
-        $myForm.attr("action", "coupons/" + this.$couponInput.val()+"/"+$('#quantity').val());
+        $myForm.attr("action", "coupons/" + this.$couponInput.val() + "/" + $('#quantity').val());
         $myForm.append('<input type="hidden" name="_token" value="' + $('input[name=_token]').val() + '"/>');
         $myForm.serialize();
         $myForm.on("submit", (e)=> {
@@ -64,14 +65,16 @@ class Coupon {
     private onCouponResult(result):void {
         if (result.coupon) {
             this.$couponInput.attr("name", "code");
-            this.fixedRightModule.coupon = result.coupon;
+            this.order.coupon = result.coupon;
             this.showCouponSuccessText(result.coupon.code);
             this.updateFormWithCouponData(result.token);
             this.fixedRightModule.calculatePrice();
         } else {
             $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
             //this.fixedRightModule.discount = 0;
-            this.fixedRightModule.coupon = null;
+            // if(!this.order.coupon){
+            //  this.order.coupon = null;
+            //  }
             this.fixedRightModule.calculatePrice();
             this.fixedRightModule.hideDiscountFields();
             this.hideCouponSuccessText();
@@ -91,6 +94,11 @@ class Coupon {
     private updateFormWithCouponData(token:string):void {
         this.$form.append('<input type="hidden" name="coupon_instance" value="' + token + '"/>')
         $("#coupon-code").attr("name", "code");
+    }
+
+    public static reset() {
+        $("#coupon-code").val("");
+        $("#coupon-success").hide();
     }
 
 }
