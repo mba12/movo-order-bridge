@@ -14,12 +14,12 @@ class SizeTableSeeder extends Seeder
         Eloquent::unguard();
         DB::table('sizes')->delete();
         Size::create(array(
-            "name"=>" Extra small (5.7\" -- Youth / Young Adult)",
+            "name"=>"Extra small (5.7\" -- Youth / Young Adult)",
             "sku"=>'11111'
         ));
 
         Size::create(array(
-            "name"=>"Small (6.3\" -- Small Female Wrist) ",
+            "name"=>"Small (6.3\" -- Small Female Wrist)",
             "sku"=>'22222'
         ));
 
