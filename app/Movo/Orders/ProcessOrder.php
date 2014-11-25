@@ -12,6 +12,7 @@ use Movo\Handlers\ShippingHandler;
 use Movo\Observer\Subject;
 use Order;
 use Product;
+use SebastianBergmann\Exporter\Exception;
 use Shipping;
 
 class ProcessOrder implements Subject
@@ -23,22 +24,31 @@ class ProcessOrder implements Subject
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
         $couponInstance = Coupon::getValidCouponInstance();
 
-
-        $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), Input::get("shipping-state"));
+        try {
+            $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), Input::get("shipping-state"));
+        } catch (Exception $e) {
+            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+        }
         if (!isset($salesTaxRate)) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Your state and zip code do not match'));
         }
 
-
-        $unitPrice = Product::getUnitPrice();
-        $shippingMethod = Shipping::getShippingMethod(Input::get("shipping-type"));
-        $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
-
-        $result = $billing->charge([
-            'token' => Input::get("token"),
-            'amount' => $this->getOrderTotal($unitPrice, Input::get("quantity"), $discount, $shippingMethod, $salesTaxRate, Input::get("shipping-state")),
-            'email' => Input::get("email")
-        ]);
+        try {
+            $unitPrice = Product::getUnitPrice();
+            $shippingMethod = Shipping::getShippingMethod(Input::get("shipping-type"));
+            $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
+        } catch (Exception $e) {
+            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+        }
+        try {
+            $result = $billing->charge([
+                'token' => Input::get("token"),
+                'amount' => $this->getOrderTotal($unitPrice, Input::get("quantity"), $discount, $shippingMethod, $salesTaxRate, Input::get("shipping-state")),
+                'email' => Input::get("email")
+            ]);
+        } catch (Exception $e) {
+            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+        }
 
         if ($result) {
             $this->attach([
@@ -54,7 +64,11 @@ class ProcessOrder implements Subject
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
             ];
-            $this->notify($data);
+            try {
+                $this->notify($data);
+            } catch (Exception $e) {
+                return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+            }
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!'));
 
         } else {

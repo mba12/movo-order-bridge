@@ -772,7 +772,7 @@ var Payment = (function (_super) {
                 _this.ajaxCallPending = false;
                 _this.hideSpinner();
                 if (response.status == 200) {
-                    $('#credit-card-number, #cvc').val('');
+                    _this.resetPage();
                     _this.pagination.gotoSummaryPage();
                 }
                 else if (response.status == 400) {
@@ -806,6 +806,11 @@ var Payment = (function (_super) {
         this.displayShippingAddress();
         _super.prototype.onPageChanged.call(this, pageIndex);
         this.$cardError.hide();
+    };
+    Payment.prototype.resetPage = function () {
+        $('#credit-card-number, #cvc, #coupon-code').val('');
+        this.fixedRightModule.discount = null;
+        $('.error-messages, #coupon-success').hide();
     };
     return Payment;
 })(ScreenBase);
