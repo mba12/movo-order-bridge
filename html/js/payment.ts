@@ -120,7 +120,7 @@ class Payment extends ScreenBase {
                 this.ajaxCallPending = false;
                 this.hideSpinner();
                 if (response.status == 200) {
-                    $('#credit-card-number, #cvc').val('');
+                    this.resetPage();
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
                     this.$cardError.show();
@@ -157,6 +157,13 @@ class Payment extends ScreenBase {
         this.displayShippingAddress();
         super.onPageChanged(pageIndex);
         this.$cardError.hide();
+    }
+
+    private resetPage():void {
+        $('#credit-card-number, #cvc, #coupon-code').val('');
+        this.fixedRightModule.discount = null;
+        $('.error-messages, #coupon-success').hide();
+
     }
 
 }
