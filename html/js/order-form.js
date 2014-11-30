@@ -328,7 +328,7 @@ var FixedRightModule = (function () {
     FixedRightModule.prototype.applyCoupon = function () {
         if (this.order.getDiscount() > 0) {
             this.$discount.fadeIn();
-            var discountStr = "-" + parseFloat((Math.round(this.order.getDiscount() * 100) / 100)).toFixed(2);
+            var discountStr = "-$" + parseFloat((Math.round(this.order.getDiscount() * 100) / 100)).toFixed(2);
             $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
         }
         else {
@@ -809,7 +809,6 @@ var Payment = (function (_super) {
     };
     Payment.prototype.resetPage = function () {
         $('#credit-card-number, #cvc, #coupon-code').val('');
-        this.fixedRightModule.discount = null;
         $('.error-messages, #coupon-success').hide();
     };
     return Payment;

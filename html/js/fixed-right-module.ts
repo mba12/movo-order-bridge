@@ -101,7 +101,7 @@ class FixedRightModule {
         if (this.order.getDiscount()>0) {
 
             this.$discount.fadeIn();
-            var discountStr:string = "-" + parseFloat(<any>(Math.round(this.order.getDiscount() * 100) / 100)).toFixed(2);
+            var discountStr:string = "-$" + parseFloat(<any>(Math.round(this.order.getDiscount() * 100) / 100)).toFixed(2);
             $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
         } else {
             this.$discount.fadeOut();

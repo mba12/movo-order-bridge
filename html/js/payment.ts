@@ -126,6 +126,7 @@ class Payment extends ScreenBase {
                     this.$cardError.show();
                 }
             },
+
             error: (response)=> {
                 this.ajaxCallPending = false;
                 this.hideSpinner();
@@ -161,7 +162,7 @@ class Payment extends ScreenBase {
 
     private resetPage():void {
         $('#credit-card-number, #cvc, #coupon-code').val('');
-        this.fixedRightModule.discount = null;
+        //this.fixedRightModule.discount = null;
         $('.error-messages, #coupon-success').hide();
 
     }
