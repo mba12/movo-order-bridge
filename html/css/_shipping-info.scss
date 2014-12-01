@@ -5,10 +5,17 @@
     font-size:     em(13);
     label {
       display: block;
+      .ua-ios & {
+        //margin-top: -10px;
+      }
+      
     }
     input {
       height:       12px;
       margin-right: 5px;
+      .ua-ios & {
+        height: 16px;
+      }
     }
   }
 }
