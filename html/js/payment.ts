@@ -120,7 +120,6 @@ class Payment extends ScreenBase {
                 this.ajaxCallPending = false;
                 this.hideSpinner();
                 if (response.status == 200) {
-                    return;
                     this.resetPage();
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
