@@ -163,8 +163,8 @@ class Payment extends ScreenBase {
     private resetPage():void {
         $('#credit-card-number, #cvc, #coupon-code').val('');
         //this.fixedRightModule.discount = null;
-        $('.error-messages, #coupon-success').hide();
-
+        $('#coupon-success').hide();
+        $('.error-messages').find("li").hide();
     }
 
 }

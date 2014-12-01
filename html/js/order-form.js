@@ -809,7 +809,8 @@ var Payment = (function (_super) {
     };
     Payment.prototype.resetPage = function () {
         $('#credit-card-number, #cvc, #coupon-code').val('');
-        $('.error-messages, #coupon-success').hide();
+        $('#coupon-success').hide();
+        $('.error-messages').find("li").hide();
     };
     return Payment;
 })(ScreenBase);
