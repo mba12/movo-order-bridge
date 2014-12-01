@@ -55,6 +55,7 @@
 
        <script src="js/vendor/jquery/jquery.js"></script>
        <script src="js/vendor/cssua/cssua.js"></script>
+       <script src="js/vendor/fastclick/fastclick.js"></script>
        <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
        <script src="js/vendor/greensock/TweenMax.min.js"></script>
        <script src="js/vendor/placeholder/jquery.placeholder.js"></script>
