@@ -772,6 +772,7 @@ var Payment = (function (_super) {
                 _this.ajaxCallPending = false;
                 _this.hideSpinner();
                 if (response.status == 200) {
+                    return;
                     _this.resetPage();
                     _this.pagination.gotoSummaryPage();
                 }

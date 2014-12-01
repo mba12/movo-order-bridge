@@ -10,52 +10,41 @@ namespace Movo\Orders;
 
 
 use Illuminate\Support\Facades\Input;
+use Movo\Errors\OrderException;
 use Order;
 
 class SaveOrderDetails
 {
-    public static function save(Order $order, $amount, $chargeID)
+    public static function save(Order $order, $data)
     {
-        $order->amount = $amount;
-        $order->quantity = Input::get("quantity");
-        $order->shipping_type = Input::get("shipping-type");
-        $strSizes = "";
-        for ($i = 0; $i < Input::get("quantity"); $i++) {
-            if ($i > 0) {
-                $strSizes .= "|";
-            }
-            $strSizes .= Input::get("unit" . ($i + 1));
 
-        }
-        $order->sizes = $strSizes;
-
-        $order->shipping_first_name = Input::get("shipping-first-name");
-        $order->shipping_last_name = Input::get("shipping-last-name");
-        $order->shipping_address = Input::get("shipping-address");
-        $order->shipping_city = Input::get("shipping-city");
-        $order->shipping_state = Input::get("shipping-state");
-        $order->shipping_zip = Input::get("shipping-zip");
-        $order->shipping_country = Input::get("shipping-country");
-        $order->shipping_phone = Input::get("shipping-phone");
-
-        $order->billing_first_name = Input::get("billing-first-name");
-        $order->billing_last_name = Input::get("billing-last-name");
-        $order->billing_address = Input::get("billing-address");
-        $order->billing_city = Input::get("billing-city");
-        $order->billing_state = Input::get("billing-state");
-        $order->billing_zip = Input::get("billing-zip");
-        $order->billing_country = Input::get("billing-country");
-        $order->billing_phone = Input::get("billing-phone");
-
-        $order->email = Input::get("email");
-        $order->stripe_charge_id = $chargeID;
+        $order->amount = $data['result']['amount'];
+        $order->quantity = $data['quantity'];
+        $order->shipping_type = $data['shipping-type'];
+        $order->sizes = $data['sizes'];
+        $order->shipping_first_name = $data['shipping-first-name'];
+        $order->shipping_last_name = $data['shipping-last-name'];
+        $order->shipping_address = $data['shipping-address'];
+        $order->shipping_city = $data['shipping-city'];
+        $order->shipping_state = $data['shipping-state'];
+        $order->shipping_zip = $data['shipping-zip'];
+        $order->shipping_country = $data['shipping-country'];
+        $order->shipping_phone = $data['shipping-phone'];
+        $order->billing_first_name = $data['billing-first-name'];
+        $order->billing_last_name = $data['billing-last-name'];
+        $order->billing_address = $data['billing-address'];
+        $order->billing_city = $data['billing-city'];
+        $order->billing_state = $data['billing-state'];
+        $order->billing_zip = $data['billing-zip'];
+        $order->billing_country = $data['billing-country'];
+        $order->billing_phone = $data['billing-phone'];
+        $order->email = $data['email'];
+        $order->stripe_charge_id = $data['result']['id'];
         $order->ingram_order_id = "";
         $order->status = 1;
         $order->tracking_code = "";
         $order->error_flag = "";
-        $order->coupon = Input::has("code") ? Input::get("code") : "";
-
-
+        $order->coupon = $data['coupon'];
         $order->save();
     }
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
+use Movo\Errors\OrderException;
 use SoapBox\Formatter\Formatter;
 
 class IngramShipping implements ShippingInterface
@@ -23,20 +24,20 @@ class IngramShipping implements ShippingInterface
                     'header' => [
                         'customer-id' => Config::get('services.ingram.customer-id'),
                         'business-name' => 'movo',
-                        'carrier-name' => '2-day',
+                        'carrier-name' => $data['shipping-code'],
                         'shipment-information' => [
-                            'ship-first-name' => 'Joe',
-                            'ship-last-name' => 'Public',
-                            'ship-address1' => '871 Main Street Drive',
-                            'ship-address2' => 'Suite 200',
-                            'ship-address3' => 'My Company Solutions',
-                            'ship-city' => 'Anytown',
-                            'ship-state' => 'NY',
-                            'ship-post-code' => '97219',
-                            'ship-country-code' => 'US',
-                            'ship-phone1' => '555-555-5555',
-                            'ship-email' => 'myemail@gmail.com',
-                            'ship-via' => '2-day',
+                            'ship-first-name' => $data['shipping-first-name'],
+                            'ship-last-name' => $data['shipping-last-name'],
+                            'ship-address1' => $data['shipping-address'],
+                            'ship-address2' => '',
+                            'ship-address3' => '',
+                            'ship-city' => $data['shipping-city'],
+                            'ship-state' => $data['shipping-state'],
+                            'ship-post-code' => $data['shipping-zip'],
+                            'ship-country-code' => $data['shipping-country'],
+                            'ship-phone1' => $data['shipping-phone'],
+                            'ship-email' => $data['email'],
+                            'ship-via' => $data['shipping-code'],
                             'ship-request-date' => $date->getTimestamp(),
                             'ship-no-later' => '',
                             'no-ship-before' => '',
@@ -46,7 +47,7 @@ class IngramShipping implements ShippingInterface
                             'comments' => '',
                         ],
                         'order-header' => [
-                            'customer-order-number' => 'SO82553',
+                            'customer-order-number' => $data['result']['id'],
                             'customer-order-date' => $date->getTimestamp(),
                             'order-type' => 'WEB-SALES',
                         ]
@@ -56,6 +57,7 @@ class IngramShipping implements ShippingInterface
             ],
         ];
         $xml = $this->convertToXML($array);
+        $xml = $this->replaceItemNodeNames($xml);
         $this->sendToFulfillment($xml);
 
     }
@@ -84,12 +86,8 @@ class IngramShipping implements ShippingInterface
 
     private function sendToFulfillment($xml)
     {
-        $xml = str_replace("<xml>", "", $xml);
-        $xml = str_replace("</xml>", "", $xml);
-        $xml = str_replace("<item>", "<line-item>", $xml);
-        $xml = str_replace("</item>", "</line-item>", $xml);
-        //echo($xml);
-        //dd("");
+
+
 
         $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";
 
@@ -116,6 +114,19 @@ class IngramShipping implements ShippingInterface
 
 
         //echo($data);
+    }
+
+    /**
+     * @param $xml
+     * @return mixed
+     */
+    private function replaceItemNodeNames($xml)
+    {
+        $xml = str_replace("<xml>", "", $xml);
+        $xml = str_replace("</xml>", "", $xml);
+        $xml = str_replace("<item>", "<line-item>", $xml);
+        $xml = str_replace("</item>", "</line-item>", $xml);
+        return $xml;
     }
 
 

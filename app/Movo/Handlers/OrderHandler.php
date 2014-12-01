@@ -1,6 +1,7 @@
 <?php
 namespace Movo\Handlers;
 use Movo\Observer\Observer;
+use Movo\Orders\OrderInput;
 use Movo\Orders\SaveOrderDetails;
 use Order;
 
@@ -12,7 +13,6 @@ class OrderHandler implements Observer {
      */
     public function handleNotification($data)
     {
-        $order = new Order();
-        SaveOrderDetails::save($order,$data['result']['amount'], $data['result']['id']);
+         SaveOrderDetails::save((new Order),$data);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Input;
+use Movo\Shipping\ShippingDropdown;
 
 class OrderController extends BaseController
 {
@@ -8,7 +9,7 @@ class OrderController extends BaseController
     {
         $unitPrice = Product::getUnitPrice();
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
-        $shippingDropdownData = Shipping::createShippingDropdownData($shippingInfo);
+        $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
         $sizeInfo = Size::getUnitSizes();
         $stateTaxMethods = Tax::getStateTaxMethods();
         $coupon = null;
@@ -31,8 +32,4 @@ class OrderController extends BaseController
         $processor=new Movo\Orders\ProcessOrder();
         return $processor->process();
     }
-
-
-
-
 }

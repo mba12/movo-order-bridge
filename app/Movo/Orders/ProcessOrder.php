@@ -5,6 +5,7 @@ use Coupon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use Movo\Errors\OrderException;
 use Movo\Handlers\OrderHandler;
 use Movo\Handlers\PusherHandler;
 use Movo\Handlers\ReceiptHandler;
@@ -15,7 +16,7 @@ use Product;
 use SebastianBergmann\Exporter\Exception;
 use Shipping;
 
-class ProcessOrder implements Subject
+class ProcessOrder
 {
 
     public function process()
@@ -51,24 +52,19 @@ class ProcessOrder implements Subject
         }
 
         if ($result) {
-            $this->attach([
-                new ReceiptHandler(),
-                new ShippingHandler(),
-                new PusherHandler(),
-                new OrderHandler()
-            ]);
             $data = [
                 'result' => $result,
                 'unit-price' => $unitPrice,
                 'couponInstance' => $couponInstance,
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
+                'shipping-code' => $shippingMethod->scac_code,
             ];
-            try {
-                $this->notify($data);
-            } catch (Exception $e) {
-                return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
-            }
+            $data=OrderInput::convertInputToData($data);
+            (new ShippingHandler)->handleNotification($data);
+            (new ReceiptHandler)->handleNotification($data);
+            (new OrderHandler)->handleNotification($data);
+            (new PusherHandler)->handleNotification($data);
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!'));
 
         } else {
@@ -76,6 +72,7 @@ class ProcessOrder implements Subject
 
         }
     }
+
 
     private function getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $state)
     {
@@ -90,28 +87,9 @@ class ProcessOrder implements Subject
         return $orderTotal;
     }
 
-    protected $observers = [];
-
-    public function attach($observable)
-    {
-        if (is_array($observable)) {
-            foreach ($observable as $observer) {
-                $this->attach($observer);
-                return;
-            }
-        }
-        $this->observers[] = $observable;
-    }
-
-    public function detach($index)
-    {
-        unset($this->observers[$index]);
-    }
-
-    public function notify($data)
-    {
-        foreach ($this->observers as $observer) {
-            $observer->handleNotification($data);
-        }
-    }
 }
+
+
+
+
+
