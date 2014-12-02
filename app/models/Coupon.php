@@ -5,7 +5,7 @@ use Movo\Helpers\Format;
 class Coupon extends \Eloquent
 {
     protected $fillable = [
-        //	'name','code','amount','method','limit','min_units'
+        	'name','code','amount','method','limit','min_units','start_time', 'end_time', 'time_constraint', 'active'
     ];
 
     public function calculateCouponDiscount($unitPrice, $quantity)

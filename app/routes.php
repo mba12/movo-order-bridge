@@ -57,7 +57,19 @@ Route::group(array('before' => 'admin'), function () {
             'uses' => 'CouponController@updateCoupon'
         ]);
     });
+    Route::group(array('before' => 'csrf'), function () {
+        Route::delete('/admin/coupon/{id}', [
+            'as' => 'delete-coupon',
+            'uses' => 'CouponController@deleteCoupon'
+        ]);
+    });
 
+    Route::group(array('before' => 'csrf'), function () {
+        Route::post('/admin/coupon/', [
+            'as' => 'add-coupon',
+            'uses' => 'CouponController@addCoupon'
+        ]);
+    });
     Route::group(array('before' => 'csrf'), function () {
         Route::post('/admin/orders', [
             'as' => 'order-search',
