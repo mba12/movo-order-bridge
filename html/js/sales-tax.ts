@@ -1,12 +1,12 @@
 class SalesTax {
     public rate:number = 0;
+
     public state:string = "";
     public zipcode:string = "";
 
     constructor() {
 
     }
-
     public setLocation(zipcode:string, state:string, callback?:any) {
         if (zipcode == this.zipcode && state == this.state) {
             if (callback) callback({rate:this.rate});
@@ -16,12 +16,11 @@ class SalesTax {
         this.state = state;
         $.ajax({
             type: 'GET', url: "/tax/" + zipcode + "/" + state, success: (response)=> {
-
                 if (response.error) {
+                    if (callback) callback(response);
                     return;
                 }
                 this.rate = response.rate;
-                console.log("tax rate", response.rate);
                 if (callback) callback(response);
             }, error: (response)=> {
                 if (callback) callback({error: "There was an error retrieving sales tax"});
@@ -43,12 +42,10 @@ class SalesTax {
                 totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
                 break;
         }
-        console.log(totalTax);
         return totalTax;
     }
 
     private getTaxMethod(state:string):number {
-        console.log("getTaxMethod");
         for (var i = 0; i < TAX_TABLE.length; i++) {
             var taxObj=TAX_TABLE[i];
             if (taxObj.state.trim() == state.trim()){

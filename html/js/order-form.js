@@ -553,6 +553,7 @@ var ShippingInfo = (function (_super) {
         this.$billingCity = this.$billingPage.find('#billing-city');
         this.$billingState = this.$billingPage.find('#billing-state-select');
         this.$billingZip = this.$billingPage.find('#billing-zip');
+        this.$salesTaxError = this.$shippingPage.find(".error-messages").find(".sales-tax");
         this.$currentPage = this.$shippingPage;
         _super.prototype.setSelectors.call(this);
         this.$spinner = this.$currentPage.find('.spinner');
@@ -659,12 +660,13 @@ var ShippingInfo = (function (_super) {
             _this.ajaxCallPending = false;
             _this.$spinner.fadeOut();
             _this.$nextBtn.css({ opacity: 1, cursor: 'pointer' });
-            if (result.error) {
+            if (!result || result.error) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
             }
             _this.fixedRightModule.setTotal();
             validation.resetErrors();
+            _this.$salesTaxError.hide();
             _this.pagination.next();
             _this.pagination.showCurrentPage();
         });
@@ -772,7 +774,6 @@ var Payment = (function (_super) {
                 _this.ajaxCallPending = false;
                 _this.hideSpinner();
                 if (response.status == 200) {
-                    return;
                     _this.resetPage();
                     _this.pagination.gotoSummaryPage();
                 }
@@ -946,10 +947,11 @@ var SalesTax = (function () {
             url: "/tax/" + zipcode + "/" + state,
             success: function (response) {
                 if (response.error) {
+                    if (callback)
+                        callback(response);
                     return;
                 }
                 _this.rate = response.rate;
-                console.log("tax rate", response.rate);
                 if (callback)
                     callback(response);
             },
@@ -973,11 +975,9 @@ var SalesTax = (function () {
                 totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
                 break;
         }
-        console.log(totalTax);
         return totalTax;
     };
     SalesTax.prototype.getTaxMethod = function (state) {
-        console.log("getTaxMethod");
         for (var i = 0; i < TAX_TABLE.length; i++) {
             var taxObj = TAX_TABLE[i];
             if (taxObj.state.trim() == state.trim()) {
