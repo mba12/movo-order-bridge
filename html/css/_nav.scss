@@ -1,10 +1,14 @@
 #nav {
-  height: 50px;
   background-color: #4d4d4d;
   position: relative;
   z-index: 1;
+  display: none;
+  @include media($tablet) {
+    display: block;
+  }
   ul {
-    padding: 19px 10px 0 25px;
+    padding: 19px 10px 18px 25px;
+    @include clearfix;
     li {
       color: rgba(255,255,255, 0.5);
       float: left;
@@ -12,6 +16,7 @@
       font-size: em(13);
       text-rendering:         optimizeLegibility;
       cursor: default;
+      line-height: 2em;
       @include fw-bold;
       @include transition(0.3s all);
       &.active {

@@ -10,7 +10,7 @@
             <div class="right">
                 <div class="quantity">
                     <h5>Quantity</h5>
-                    <label> <input id="quantity" name="quantity" type="number" value="1" maxlength="1"/> </label>
+                    <label> <input id="quantity" name="quantity" type="number" value="1" maxlength="1" pattern="\d*"/> </label>
                 </div>
             </div>
         </div>

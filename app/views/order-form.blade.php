@@ -4,10 +4,9 @@
         <meta charset="UTF-8">
         <meta name="publishable-key" content="{{{Config::get("services.stripe.publishable")}}}"/>
         <title>Movo - Order Form</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css"/>
-
-
     </head>
 <body>
         <script type="text/javascript">
@@ -55,6 +54,8 @@
            </div>
 
        <script src="js/vendor/jquery/jquery.js"></script>
+       <script src="js/vendor/cssua/cssua.js"></script>
+       <script src="js/vendor/fastclick/fastclick.js"></script>
        <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
        <script src="js/vendor/greensock/TweenMax.min.js"></script>
        <script src="js/vendor/placeholder/jquery.placeholder.js"></script>

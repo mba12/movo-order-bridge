@@ -1,11 +1,17 @@
 #fixed-right-module {
-  float: right;
-  width: 260px;
   background-color: $white;
-  padding: 30px 17px 0;
-  //margin-top: 15px;
+  padding: 20px 15px 0;
+  width: 100%;
+  @include media($tablet) {
+    float: right;
+    padding: 30px 17px 0;
+    width: 40%;
+  }
   .top {
-    margin-bottom: 25px;
+    margin-bottom: 12px;
+    @include media($tablet) {
+      margin-bottom: 25px;
+    }
     .left {
       display: table-cell;
       vertical-align: top;
