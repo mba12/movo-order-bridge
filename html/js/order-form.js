@@ -932,6 +932,7 @@ var SalesTax = (function () {
         this.rate = 0;
         this.state = "";
         this.zipcode = "";
+        this.taxMethods = [new ExcludeShippingMethod(), new IncludeShippingMethod()];
     }
     SalesTax.prototype.setLocation = function (zipcode, state, callback) {
         var _this = this;
@@ -965,28 +966,35 @@ var SalesTax = (function () {
         if (!state || state == "") {
             return 0;
         }
-        var method = this.getTaxMethod(state);
-        var totalTax;
-        switch (method) {
-            case 0:
-                totalTax = ((quantity * unitPrice) - discount) * this.rate;
-                break;
-            case 1:
-                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
-                break;
-        }
-        return totalTax;
+        return this.getTaxMethod(state).calculate(quantity, unitPrice, discount, shippingRate, this.rate);
     };
     SalesTax.prototype.getTaxMethod = function (state) {
+        state = state.trim();
         for (var i = 0; i < TAX_TABLE.length; i++) {
             var taxObj = TAX_TABLE[i];
-            if (taxObj.state.trim() == state.trim()) {
-                return taxObj.method;
+            if (taxObj.state.trim() == state) {
+                return this.taxMethods[taxObj.method];
             }
         }
         throw new Error("state not found in list");
     };
     return SalesTax;
+})();
+var IncludeShippingMethod = (function () {
+    function IncludeShippingMethod() {
+    }
+    IncludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
+        return ((quantity * unitPrice) - discount + shippingRate) * rate;
+    };
+    return IncludeShippingMethod;
+})();
+var ExcludeShippingMethod = (function () {
+    function ExcludeShippingMethod() {
+    }
+    ExcludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
+        return ((quantity * unitPrice) - discount) * rate;
+    };
+    return ExcludeShippingMethod;
 })();
 var CouponData = (function () {
     function CouponData() {

@@ -4,6 +4,7 @@ class SalesTax {
     public state:string = "";
     public zipcode:string = "";
 
+    private taxMethods=[new ExcludeShippingMethod(),new IncludeShippingMethod()]
     constructor() {
 
     }
@@ -32,24 +33,15 @@ class SalesTax {
         if(!state||state=="") {
             return 0;
         }
-        var method:number = this.getTaxMethod(state);
-        var totalTax:number;
-        switch (method) {
-            case 0:
-                totalTax = ((quantity * unitPrice) - discount) * this.rate;
-                break;
-            case 1:
-                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
-                break;
-        }
-        return totalTax;
-    }
+        return this.getTaxMethod(state).calculate(quantity,unitPrice,discount,shippingRate,this.rate);
+      }
 
-    private getTaxMethod(state:string):number {
+    private getTaxMethod(state:string):SalesTaxMethod {
+        state=state.trim();
         for (var i = 0; i < TAX_TABLE.length; i++) {
             var taxObj=TAX_TABLE[i];
-            if (taxObj.state.trim() == state.trim()){
-                return taxObj.method;
+            if (taxObj.state.trim() == state){
+                return this.taxMethods[taxObj.method];
             } 
         }
 
