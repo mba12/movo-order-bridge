@@ -73,7 +73,7 @@
         <li class="custom-error"></li>
     </ul>
     <div class="prev-next">
-        <div class="button next" id="submit-order">Submit Order</div>
+        <div class="button next" id="submit-order">Submit<span class="order"> Order</span></div>
         <div class="spinner">
             <img src="img/spinner.gif" />
         </div>

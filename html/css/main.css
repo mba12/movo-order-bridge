@@ -718,21 +718,32 @@ body {
   #form-content-box #payment {
     display: none; }
     #form-content-box #payment .credit-cards {
-      width: 159px;
-      height: 26px;
+      width: 143px;
+      height: 23px;
       background-image: url('../img/credit-cards.png');
-      background-size: 159px 26px;
+      background-size: 143px 23px;
       background-repeat: no-repeat;
       margin-bottom: 10px;
       float: left; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
         #form-content-box #payment .credit-cards {
           background-image: url('../img/credit-cards@2x.png');
-          background-size: 159px 26px; } }
+          background-size: 143px 23px; } }
+      @media screen and (min-width: 601px) {
+        #form-content-box #payment .credit-cards {
+          width: 159px;
+          height: 26px;
+          background-image: url('../img/credit-cards.png');
+          background-size: 159px 26px;
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+            #form-content-box #payment .credit-cards {
+              background-image: url('../img/credit-cards@2x.png');
+              background-size: 159px 26px; } } }
     #form-content-box #payment #secure {
       width: 100px;
       text-align: right;
-      margin-top: 9px;
+      margin-top: 7px;
       float: right; }
       #form-content-box #payment #secure #lock-icon {
         width: 13px;
@@ -779,6 +790,11 @@ body {
         margin-bottom: 2px; }
       #form-content-box #payment #shipping-confirmation .cityStateZip {
         margin-bottom: 6px; }
+    #form-content-box #payment #submit-order .order {
+      display: none; }
+      @media screen and (min-width: 655px) {
+        #form-content-box #payment #submit-order .order {
+          display: inline-block; } }
   #form-content-box #summary {
     display: none; }
     #form-content-box #summary h1 {
