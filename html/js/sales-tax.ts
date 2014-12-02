@@ -1,12 +1,13 @@
 class SalesTax {
     public rate:number = 0;
+
     public state:string = "";
     public zipcode:string = "";
 
+    private taxMethods=[new ExcludeShippingMethod(),new IncludeShippingMethod()]
     constructor() {
 
     }
-
     public setLocation(zipcode:string, state:string, callback?:any) {
         if (zipcode == this.zipcode && state == this.state) {
             if (callback) callback({rate:this.rate});
@@ -16,12 +17,11 @@ class SalesTax {
         this.state = state;
         $.ajax({
             type: 'GET', url: "/tax/" + zipcode + "/" + state, success: (response)=> {
-
                 if (response.error) {
+                    if (callback) callback(response);
                     return;
                 }
                 this.rate = response.rate;
-                console.log("tax rate", response.rate);
                 if (callback) callback(response);
             }, error: (response)=> {
                 if (callback) callback({error: "There was an error retrieving sales tax"});
@@ -33,26 +33,15 @@ class SalesTax {
         if(!state||state=="") {
             return 0;
         }
-        var method:number = this.getTaxMethod(state);
-        var totalTax:number;
-        switch (method) {
-            case 0:
-                totalTax = ((quantity * unitPrice) - discount) * this.rate;
-                break;
-            case 1:
-                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
-                break;
-        }
-        console.log(totalTax);
-        return totalTax;
-    }
+        return this.getTaxMethod(state).calculate(quantity,unitPrice,discount,shippingRate,this.rate);
+      }
 
-    private getTaxMethod(state:string):number {
-        console.log("getTaxMethod");
+    private getTaxMethod(state:string):SalesTaxMethod {
+        state=state.trim();
         for (var i = 0; i < TAX_TABLE.length; i++) {
             var taxObj=TAX_TABLE[i];
-            if (taxObj.state.trim() == state.trim()){
-                return taxObj.method;
+            if (taxObj.state.trim() == state){
+                return this.taxMethods[taxObj.method];
             } 
         }
 

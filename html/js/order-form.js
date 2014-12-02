@@ -553,6 +553,7 @@ var ShippingInfo = (function (_super) {
         this.$billingCity = this.$billingPage.find('#billing-city');
         this.$billingState = this.$billingPage.find('#billing-state-select');
         this.$billingZip = this.$billingPage.find('#billing-zip');
+        this.$salesTaxError = this.$shippingPage.find(".error-messages").find(".sales-tax");
         this.$currentPage = this.$shippingPage;
         _super.prototype.setSelectors.call(this);
         this.$spinner = this.$currentPage.find('.spinner');
@@ -659,12 +660,13 @@ var ShippingInfo = (function (_super) {
             _this.ajaxCallPending = false;
             _this.$spinner.fadeOut();
             _this.$nextBtn.css({ opacity: 1, cursor: 'pointer' });
-            if (result.error) {
+            if (!result || result.error) {
                 _this.$currentPage.find('.error-messages').find('.sales-tax').show();
                 return;
             }
             _this.fixedRightModule.setTotal();
             validation.resetErrors();
+            _this.$salesTaxError.hide();
             _this.pagination.next();
             _this.pagination.showCurrentPage();
         });
@@ -930,6 +932,7 @@ var SalesTax = (function () {
         this.rate = 0;
         this.state = "";
         this.zipcode = "";
+        this.taxMethods = [new ExcludeShippingMethod(), new IncludeShippingMethod()];
     }
     SalesTax.prototype.setLocation = function (zipcode, state, callback) {
         var _this = this;
@@ -945,10 +948,11 @@ var SalesTax = (function () {
             url: "/tax/" + zipcode + "/" + state,
             success: function (response) {
                 if (response.error) {
+                    if (callback)
+                        callback(response);
                     return;
                 }
                 _this.rate = response.rate;
-                console.log("tax rate", response.rate);
                 if (callback)
                     callback(response);
             },
@@ -962,30 +966,35 @@ var SalesTax = (function () {
         if (!state || state == "") {
             return 0;
         }
-        var method = this.getTaxMethod(state);
-        var totalTax;
-        switch (method) {
-            case 0:
-                totalTax = ((quantity * unitPrice) - discount) * this.rate;
-                break;
-            case 1:
-                totalTax = ((quantity * unitPrice) - discount + shippingRate) * this.rate;
-                break;
-        }
-        console.log(totalTax);
-        return totalTax;
+        return this.getTaxMethod(state).calculate(quantity, unitPrice, discount, shippingRate, this.rate);
     };
     SalesTax.prototype.getTaxMethod = function (state) {
-        console.log("getTaxMethod");
+        state = state.trim();
         for (var i = 0; i < TAX_TABLE.length; i++) {
             var taxObj = TAX_TABLE[i];
-            if (taxObj.state.trim() == state.trim()) {
-                return taxObj.method;
+            if (taxObj.state.trim() == state) {
+                return this.taxMethods[taxObj.method];
             }
         }
         throw new Error("state not found in list");
     };
     return SalesTax;
+})();
+var IncludeShippingMethod = (function () {
+    function IncludeShippingMethod() {
+    }
+    IncludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
+        return ((quantity * unitPrice) - discount + shippingRate) * rate;
+    };
+    return IncludeShippingMethod;
+})();
+var ExcludeShippingMethod = (function () {
+    function ExcludeShippingMethod() {
+    }
+    ExcludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
+        return ((quantity * unitPrice) - discount) * rate;
+    };
+    return ExcludeShippingMethod;
 })();
 var CouponData = (function () {
     function CouponData() {

@@ -12,6 +12,9 @@
 /// <reference path="summary.ts" />
 /// <reference path="coupon.ts" />
 /// <reference path="sales-tax.ts" />
+/// <reference path="sales-tax/sales-tax-method.ts" />
+/// <reference path="sales-tax/include-shipping.ts" />
+/// <reference path="sales-tax/exclude-shipping.ts" />
 /// <reference path="coupon-data.ts" />
 /// <reference path="orders/order.ts" />
 
