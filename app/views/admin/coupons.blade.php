@@ -42,7 +42,29 @@
 
              </div>
              {{Form::close()}}
+                   {{Form::open([
+                        "route"=>["delete-coupon",$coupon->id],
+                        "method"=>"DELETE",
+                   ])}}
+                    <div class="coupon-row">
+                         <span>{{Form::submit("Delete coupon",["class"=>"button"])}}</span>
+                    </div>
+                                {{Form::close()}}
          @endforeach
+           </div>
+           <div class="coupon-row">
+                 {{Form::open([
+                       "route"=>["add-coupon"],
+                       "method"=>"create",
+                 ])}}
+                 <div class="coupon-row">
+                       @if (Session::has("add-coupon-message"))
+                            {{Session::get("add-coupon-message")}}
+                       @endif
+                      <span>{{Form::text("name", null,["placeholder"=>"Enter a name for your coupon"])}}</span>
+                      <span>{{Form::submit("Add a new coupon",["class"=>"button"])}}</span>
+                 </div>
+                 {{Form::close()}}
            </div>
      </div>
 @stop
@@ -50,7 +72,10 @@
    <script src="/js/vendor/pusher/pusher.js" type="text/javascript"></script>
    <script src="/js/vendor/jquery/jquery.js"></script>
    <script src="/js/vendor/jquery/jquery.datetimepicker.js"></script>
-   <script src="js/admin.js"></script>
+   <script src="js/admin/admin.js"></script>
+   <script type="text/javascript">
+   $('.datetimepicker').datetimepicker();
+   </script>
 @stop
 
 

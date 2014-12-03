@@ -70,6 +70,39 @@ class CouponController extends \BaseController
         return Redirect::to('/admin/coupons');;
     }
 
+
+    public function deleteCoupon($id){
+        $coupon=Coupon::find($id);
+        if(isset($coupon)){
+            $coupon->delete();
+        }
+        return Redirect::to('/admin/coupons');;
+    }
+
+    public function addCoupon(){
+
+        $rules=["name"=>"required"];
+        $validator = Validator::make(Input::all(), $rules);
+        if ($validator->fails())
+        {
+            return Redirect::to('/admin/coupons')->with("add-coupon-message","Please include a name for your coupon");
+        }
+
+        Coupon::create([
+            "name"=>Input::get("name"),
+            "code"=>Input::get("name"),
+            "amount"=>0,
+            "method"=>"%",
+            "limit"=>0,
+            "min_units"=>1,
+            "start_time"=>date("Y-m-m"),
+            "end_time"=>date("Y-m-m"),
+            "min_units"=>1,
+            "time_constraint"=>0,
+            "active"=>0,
+        ]);
+        return Redirect::to('/admin/coupons')->with("add-coupon-message","Your coupon was added");
+    }
     /**
      * @param $coupon
      * @param $code

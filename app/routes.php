@@ -40,6 +40,11 @@ Route::group(array('before' => 'admin'), function () {
         'uses' => 'AdminController@orders',
     ));
 
+    Route::get('/admin/orders/{id}', array(
+        'as' => 'admin-order-details',
+        'uses' => 'AdminController@orderDetails',
+    ));
+
     Route::get('/admin/coupons', array(
         'as' => 'admin-coupons',
         'uses' => 'AdminController@coupons',
@@ -57,13 +62,25 @@ Route::group(array('before' => 'admin'), function () {
             'uses' => 'CouponController@updateCoupon'
         ]);
     });
-
     Route::group(array('before' => 'csrf'), function () {
-        Route::post('/admin/orders', [
-            'as' => 'order-search',
-            'uses' => 'AdminController@orderSearch'
+        Route::delete('/admin/coupon/{id}', [
+            'as' => 'delete-coupon',
+            'uses' => 'CouponController@deleteCoupon'
         ]);
     });
+
+    Route::group(array('before' => 'csrf'), function () {
+        Route::post('/admin/coupon/', [
+            'as' => 'add-coupon',
+            'uses' => 'CouponController@addCoupon'
+        ]);
+    });
+
+    Route::any('/admin/orders/search/', [
+        'as' => 'order-search',
+        'uses' => 'AdminController@orderSearch'
+    ]);
+
 
 });
 
@@ -97,9 +114,9 @@ Route::get("/email-test", function () {
     $tmpData['address2'] = 'Anytown, USA 90000';
     $tmpData['name'] = 'John Doe';
     $tmpData['total'] = '$120.00';
-    $tmpData['items']=[];
+    $tmpData['items'] = [];
     for ($i = 0; $i < 3; $i++) {
-        array_push($tmpData['items'], new Item("Item". ($i + 1), 1, Format::FormatUSD('29.99')));
+        array_push($tmpData['items'], new Item("Item" . ($i + 1), 1, Format::FormatUSD('29.99')));
     }
     return View::make("emails.receipt", [
         'data' => $tmpData

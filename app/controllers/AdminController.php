@@ -18,6 +18,8 @@ class AdminController extends \BaseController
         ]);
     }
 
+
+
     public function orders()
     {
         return View::make("admin.orders", [
@@ -25,13 +27,33 @@ class AdminController extends \BaseController
         ]);
     }
 
+    public function orderDetails($id)
+    {
+        $order=Order::find($id);
+        $skus= explode("|",$order->sizes);
+        $sizes=Size::getUnitSizes();
+        $items=[];
+        foreach($skus as $sku){
+            foreach($sizes as $size){
+               if($size->sku==$sku){
+                   $items[]=$size->name;
+               }
+            }
+        }
+
+        return View::make("admin.order-details", [
+            'order' => $order,
+            'items' =>$items,
+            'shipping'=>Shipping::find($order->shipping_type)
+        ]);
+    }
+
     public function orderSearch()
     {
         if(Input::get("search")!=""){
-            $searchResults=Order::where(Input::get("criteria"),"LIKE", "%".Input::get("search")."%")->get();
-            return View::make("admin.orders", [
-                'orders' => $this->getOrderPagination(),
-                'searchResults'=>$searchResults
+            $searchResults=Order::where(Input::get("criteria"),"LIKE", "%".Input::get("search")."%")->paginate(15);
+            return View::make("admin.search-results", [
+                'orders'=>$searchResults
             ]);
         }
 
