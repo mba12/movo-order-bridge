@@ -16,6 +16,6 @@ return [
         'app-id' => '95776',
     ),
     'zip-tax' => array(
-        'key' => 'T92W84L',
+        'key' => '8NK3PPD',
     )
 ];
