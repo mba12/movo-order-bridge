@@ -3,9 +3,28 @@
 class AdminController extends \BaseController
 {
 
+    private $order;
+
+    function __construct(Order $order)
+    {
+        $this->order = $order;
+    }
+
     public function index()
     {
+        $coupons = Coupon::all();
+        $lastHour=$this->order->lastHour()->count();
+        $lastDay=$this->order->lastDay()->count();
+        $lastWeek=$this->order->lastWeek()->count();
+        $lastMonth=$this->order->lastMonth()->count();
+        $errors=$this->order->errors()->count();
         return View::make("admin.index", [
+            "coupons" => $coupons,
+            "lastHour" => $lastHour,
+            "lastDay" => $lastDay,
+            "lastWeek" => $lastWeek,
+            "lastMonth" => $lastMonth,
+            "errors" => $errors,
         ]);
     }
 
@@ -67,6 +86,7 @@ class AdminController extends \BaseController
         $errorCount = DB::table('orders')->where('error_flag', '>=', 1)->count();
         $stats['orderCount'] = $orderCount;
         $stats['errorCount'] = $errorCount;
+        $coupons = Coupon::where("active", "=", 1);
         return $stats;
     }
 

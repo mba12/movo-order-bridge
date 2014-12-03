@@ -123,3 +123,8 @@ Route::get("/email-test", function () {
     ]);
 });
 
+
+Route::get("/test", function(){
+     $c=Coupon::find(4);
+    dd($c->instances()->where("used","=", 0)->count());
+})  ;

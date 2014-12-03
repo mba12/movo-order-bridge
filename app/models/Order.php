@@ -35,4 +35,29 @@ class Order extends \Eloquent
         'tracking_code',
         'error_flag',
     ];
+
+    public function lastHour()
+    {
+        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 hour")));
+    }
+
+    public function lastDay()
+    {
+        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 day")));
+    }
+
+    public function lastWeek()
+    {
+        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 week")));
+    }
+
+    public function lastMonth()
+    {
+        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 month")));
+    }
+
+    public function errors()
+    {
+        return $this->where("error_flag",">",0);
+    }
 }

@@ -8,6 +8,14 @@ class Coupon extends \Eloquent
         	'name','code','amount','method','limit','min_units','start_time', 'end_time', 'time_constraint', 'active'
     ];
 
+    public function instances(){
+        return $this->hasMany('CouponInstance', "code", "code");
+    }
+
+    public function usedCoupons(){
+        return $this->instances()->where("used", "=", 1);
+    }
+
     public function calculateCouponDiscount($unitPrice, $quantity)
     {
         if ($this->method == "%") {

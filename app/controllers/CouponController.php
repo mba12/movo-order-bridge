@@ -6,6 +6,7 @@ class CouponController extends \BaseController
 
     /**
      * @param $code
+     * @param $quantity
      * @return null
      */
     public function check($code, $quantity)
@@ -19,7 +20,7 @@ class CouponController extends \BaseController
                 ];
             }
             $instanceCount = $instanceCount = CouponInstance::where("code", "=", $code)->count();
-            if ($this->couponLimitReached($coupon, $code, $quantity, $instanceCount)) {
+            if ($this->couponLimitReached($coupon, $quantity, $instanceCount)) {
                 $result['error'] = [
                     "message" => "This coupon code is no longer valid."
                 ];
@@ -103,14 +104,15 @@ class CouponController extends \BaseController
         ]);
         return Redirect::to('/admin/coupons')->with("add-coupon-message","Your coupon was added");
     }
+
     /**
      * @param $coupon
-     * @param $code
      * @param $quantity
      * @param $instanceCount
      * @return bool
+     * @internal param $code
      */
-    public function couponLimitReached($coupon, $code, $quantity, $instanceCount)
+    public function couponLimitReached($coupon, $quantity, $instanceCount)
     {
 
         if (($instanceCount <= $coupon->limit || $coupon->limit == 0) && $coupon->min_units <= $quantity) {
@@ -139,6 +141,7 @@ class CouponController extends \BaseController
     /**
      * @param $coupon
      * @param $quantity
+     * @return bool
      */
     private function tooFewUnits($coupon, $quantity)
     {
