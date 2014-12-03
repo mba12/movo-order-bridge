@@ -72,13 +72,18 @@ Route::get('admin/login', array(
     'uses' => 'AdminController@login',
 ));
 
+Route::get('admin/logout', function(){
+    Auth::logout();
+    Session::flush();
+    return Redirect::to('/admin');
+});
+
 Route::group(array('before' => 'csrf'), function () {
     Route::post('/admin/login', array(
         'as' => 'post-admin-login',
         'uses' => 'AdminController@attemptLogin'
     ));
 });
-
 
 Route::get('/info', function () {
         echo phpinfo();

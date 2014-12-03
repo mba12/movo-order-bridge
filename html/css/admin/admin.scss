@@ -1,0 +1,100 @@
+@import "../variables";
+@import "../vendor/bourbon/bourbon";
+@import "../vendor/neat/neat";
+@import "../vendor/scut/scut";
+@import "../grid-settings";
+@import "../vendor/neat/neat";
+@import "../vendor/jumpkick/boilerplate";
+@import "../vendor/jumpkick/jumpkick";
+@import "../mixins";
+@import "../colors";
+
+
+body {
+  font-family: Roboto, sans-serif;  // 300, 400, 500, 700
+  color: $darkGray;
+}
+
+section {
+  padding: 55px 0;
+  &.gray {
+    background-color: #f1f1f1;
+    border-top:       1px solid #d0d0d0;
+    border-bottom:    1px solid #d0d0d0;
+  }
+}
+
+.inner {
+  width: 80%;
+  max-width: 830px;
+  margin: 0 auto;
+}
+
+a {
+  color: $darkGray;
+  @include transition(0.3s all);
+  &:hover {
+    color: $movoRed;
+  }
+}
+input, select {
+  outline:       none;
+  border:        1px solid #cccccc;
+  border-radius: 4px;
+  height:        28px;
+  padding:       0 5px 0 10px;
+  color:         $darkGray;
+  font-size:     em(12);
+  &.error {
+    border: 1px solid $movoRed;
+  }
+}
+input[type='text'] {
+  -webkit-appearance: none;
+}
+input[type='submit'] {
+  background-color: #555;
+  color: $white;
+  padding: 0 9px;
+  border: none;
+  height: 31px !important;
+}
+
+h2 {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: em(22);
+  margin-bottom: 30px;
+}
+
+
+.row {
+  width: 100%;
+}
+.coupon {
+  //display: table;
+  .coupon-row {
+    //display: table-row;
+    width: 100%;
+    span {
+      display: inline-block;
+      padding-right: 20px;
+      width: 150px;
+      margin-right: 20px;
+    }
+    input {
+      width: 150px;
+    }
+    select {
+      width: 150px;
+    }
+
+    .button {
+      width: 150px;
+    }
+  }
+}
+
+@import "header";
+@import "login";
+@import "stats";

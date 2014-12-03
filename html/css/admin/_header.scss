@@ -1,0 +1,40 @@
+#header {
+  .bar {
+    background-color: $movoRed;
+    height: 11px;
+  }
+  .inner {
+    display: table;
+    padding: 47px 0;
+    a {
+      display: inline-block;
+      vertical-align: top;
+      .logo {
+        @include retina-div('../../img/admin/movo-logo', 'png', 231, 44);
+        display: table-cell;
+      }
+    }
+    #nav-links {
+      display: table-cell;
+      vertical-align: top;
+      @include clearfix;
+      li {
+        margin-top: 14px;
+        float: right;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-left: 7%;
+        font-size: em(17);
+        &:last-child {
+          margin-left: 0;
+        }
+        a {
+          &.active {
+            color: $movoRed;
+            text-rendering: optimizeLegibility;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-<section id="footer">footer goes here</section>
+{{--<section id="footer">footer goes here</section>--}}
