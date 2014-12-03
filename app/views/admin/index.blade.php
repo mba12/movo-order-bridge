@@ -13,8 +13,8 @@
    <script src="/js/vendor/pusher/pusher.js" type="text/javascript"></script>
    <script src="/js/vendor/jquery/jquery.js"></script>
    <script src="/js/vendor/jquery/jquery.datetimepicker.js"></script>
-   <script src="js/admin.js"></script>
-   <script src="js/stats.js"></script>
+   <script src="js/admin/admin.js"></script>
+   <script src="js/admin/stats.js"></script>
 @stop
 
 

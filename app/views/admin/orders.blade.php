@@ -12,11 +12,14 @@
                 "placeholder"=>"Search term"
             ])}}
             {{Form::select("criteria",[
-                "shipping_last_name"=>"Shipping Last name",
-                "stripe_charge_id"=>"Stripe Charge ID",
-                "billing_last_name"=>"Billing Last name",
+                "shipping_first_name"=>"Shipping First Name",
+                "shipping_last_name"=>"Shipping Last Name",
                 "shipping_address"=>"Shipping Address",
+                "billing_first_name"=>"Billing First Name",
+                "billing_last_name"=>"Billing Last Name",
                 "billing_address"=>"Billing Address",
+                "stripe_charge_id"=>"Stripe Charge ID",
+
             ])}}
             {{Form::submit("Search",[
                 "class"=>"button"
@@ -25,23 +28,11 @@
         </div>
     </div>
 
-    @if(isset($searchResults))
-           <h4>Search results</h4>
-           <ul class="orders">
-           @foreach($searchResults as $result)
-                <li>
-                     Order ID: {{$result->id}} -- Last name: {{ $result->billing_last_name}} -- Stripe Charge ID:  {{ $result->stripe_charge_id}}
-                </li>
-           @endforeach
-           </ul>
-    @endif
     <div class="container">
       <h4>Latest orders</h4>
       <ul class="orders">
         @foreach($orders as $order)
-             <li>
-                Order ID: {{$order->id}} -- Last name: {{ $order->billing_last_name}}
-             </li>
+               @include('admin.order-link')
           @endforeach
       </ul>
     {{ $orders->links()}}
@@ -50,7 +41,7 @@
 @section('inline-scripts')
    <script src="js/vendor/pusher/pusher.js" type="text/javascript"></script>
    <script src="js/vendor/jquery/jquery.js"></script>
-   <script src="js/admin.js"></script>
+   <script src="js/admin/admin.js"></script>
 @stop
 
 

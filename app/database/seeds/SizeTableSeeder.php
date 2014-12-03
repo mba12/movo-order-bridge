@@ -15,27 +15,27 @@ class SizeTableSeeder extends Seeder
         DB::table('sizes')->delete();
         Size::create(array(
             "name"=>"Extra small (5.7\" -- Youth / Young Adult)",
-            "sku"=>'11111'
+            "sku"=>'857458005008'
         ));
 
         Size::create(array(
             "name"=>"Small (6.3\" -- Small Female Wrist)",
-            "sku"=>'22222'
+            "sku"=>'857458005015'
         ));
 
         Size::create(array(
             "name"=>"Medium (6.9\" -- Average Male Wrist)",
-            "sku"=>'33333'
+            "sku"=>'857458005022'
         ));
 
         Size::create(array(
             "name"=>"Large (7.5\" -- Large Male Wrist)",
-            "sku"=>'44444'
+            "sku"=>'857458005039'
         ));
 
         Size::create(array(
             "name"=>"Extra Large (8.5\" -- NFL Player / Body Builder)",
-            "sku"=>'55555'
+            "sku"=>'857458005046 '
         ));
     }
 }
