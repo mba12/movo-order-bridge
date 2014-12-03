@@ -1,6 +1,6 @@
-/// <reference path="definitions/jquery.d.ts" />
-/// <reference path="definitions/chart.d.ts" />
-/// <reference path="definitions/greensock.d.ts" />
+/// <reference path="../definitions/jquery.d.ts" />
+/// <reference path="../definitions/chart.d.ts" />
+/// <reference path="../definitions/greensock.d.ts" />
 
 class Admin {
 
