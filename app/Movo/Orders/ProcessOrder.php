@@ -11,6 +11,7 @@ use Movo\Handlers\PusherHandler;
 use Movo\Handlers\ReceiptHandler;
 use Movo\Handlers\ShippingHandler;
 use Movo\Observer\Subject;
+use Movo\SalesTax\SalesTax;
 use Order;
 use Product;
 use SebastianBergmann\Exporter\Exception;
@@ -24,9 +25,10 @@ class ProcessOrder
         $billing = App::make('Movo\Billing\BillingInterface');
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
         $couponInstance = Coupon::getValidCouponInstance();
-
+        $quantity=Input::get("quantity");
+        $shippingState = Input::get("shipping-state");
         try {
-            $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), Input::get("shipping-state"));
+            $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), $shippingState);
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
         }
@@ -44,7 +46,7 @@ class ProcessOrder
         try {
             $result = $billing->charge([
                 'token' => Input::get("token"),
-                'amount' => $this->getOrderTotal($unitPrice, Input::get("quantity"), $discount, $shippingMethod, $salesTaxRate, Input::get("shipping-state")),
+                'amount' => $this->getOrderTotal($unitPrice, Input::get("quantity"), $discount, $shippingMethod, $salesTaxRate, $shippingState),
                 'email' => Input::get("email")
             ]);
         } catch (Exception $e) {
@@ -55,6 +57,8 @@ class ProcessOrder
             $data = [
                 'result' => $result,
                 'unit-price' => $unitPrice,
+                'tax' => SalesTax::calculateTotalTax($unitPrice * $quantity - $discount,$shippingMethod->rate,$salesTaxRate,$shippingState),
+                'discount' => $discount,
                 'couponInstance' => $couponInstance,
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,

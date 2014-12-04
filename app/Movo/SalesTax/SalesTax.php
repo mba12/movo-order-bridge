@@ -12,17 +12,16 @@ namespace Movo\SalesTax;
 class SalesTax
 {
 
-    private $statesWhichTaxShipping = ["NY", "IN"];
-
     /**
      * @param $subtotal
      * @param $shipping
      * @param $rate
      * @param $state
      */
-    public function calculateTotalTax($subtotal, $shipping, $rate, $state)
+    public static function calculateTotalTax($subtotal, $shipping, $rate, $state)
     {
-        if (in_array($state, $this->statesWhichTaxShipping)) {
+        $statesWhichTaxShipping = ["NY", "IN"];
+        if (in_array($state, $statesWhichTaxShipping)) {
             return ($subtotal + $shipping) * $rate;
         }
         return $subtotal * $rate;

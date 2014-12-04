@@ -37,15 +37,14 @@ class OrderInput
         $data['billing-phone'] = Input::get("billing-phone");
         $data['email'] = Input::get("email");
         $data['coupon'] = Input::has("code") ? Input::get("code") : "";
-        $strSizes = "";
+        $items=[];
         for ($i = 0; $i < Input::get("quantity"); $i++) {
-            if ($i > 0) {
-                $strSizes .= "|";
-            }
-            $strSizes .= Input::get("unit" . ($i + 1));
-
+            $items[]=[
+                "sku"=>Input::get("unit" . ($i + 1)) ,
+                "description"=>Input::get("unit" . ($i + 1)."Name"),
+            ];
         }
-        $data['sizes']= $strSizes;
+        $data['items']= $items;
         return $data;
     }
 }

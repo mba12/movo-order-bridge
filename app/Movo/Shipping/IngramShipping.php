@@ -2,11 +2,18 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use Movo\Errors\OrderException;
 use SoapBox\Formatter\Formatter;
 
 class IngramShipping implements ShippingInterface
 {
+    public static function retryFailedOrders()
+    {
+        //TODO retry Ingram SOAP and mark order as complete
+        Log::info("attempting to retry orders");
+    }
+
     public function ship(array $data)
     {
         $date = new \DateTime;
@@ -86,7 +93,6 @@ class IngramShipping implements ShippingInterface
 
     private function sendToFulfillment($xml)
     {
-
 
 
         $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";

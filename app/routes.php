@@ -9,10 +9,10 @@ App::bind("Pusher", function ($app) {
     $keys = $app['config']->get('services.pusher');
     return new Pusher($keys['public'], $keys['secret'], $keys['app-id']);
 });
-Route::post('stripe/webhook', 'WebhookController@handleWebhook');
+
 
 Route::get('/', 'OrderController@showForm');
-Route::get('/', 'OrderController@showForm');
+
 Route::post('buy', array(
     'as' => 'buy',
     'uses' => 'OrderController@buy',
@@ -124,7 +124,10 @@ Route::get("/email-test", function () {
 });
 
 
-Route::get("/test", function(){
-     $c=Coupon::find(4);
-    dd($c->instances()->where("used","=", 0)->count());
+/*Route::get("/test", function(){
+     $order=Order::find(34);
+    dd($order->items()->get()[0]['description']);
+
 })  ;
+
+Event::listen('illuminate.query', function($sql) { echo '<h4>' . $sql . '</h4>' ;});*/

@@ -6,8 +6,10 @@ class Order extends \Eloquent
 {
     protected $fillable = [
         'amount',
+        'tax',
+        'discount',
+        'unit_price',
         'quantity',
-        'sizes',
         'shipping_type',
         'shipping_first_name',
         'shipping_last_name',
@@ -36,6 +38,9 @@ class Order extends \Eloquent
         'error_flag',
     ];
 
+    public function items(){
+        return $this->hasMany("Item");
+    }
     public function lastHour()
     {
         return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 hour")));

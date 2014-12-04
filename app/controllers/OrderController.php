@@ -7,6 +7,7 @@ class OrderController extends BaseController
 {
     public function showForm()
     {
+
         $unitPrice = Product::getUnitPrice();
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $shippingDropdownData = ShippingDropdown::createData($shippingInfo);

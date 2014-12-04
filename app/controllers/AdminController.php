@@ -49,20 +49,10 @@ class AdminController extends \BaseController
     public function orderDetails($id)
     {
         $order=Order::find($id);
-        $skus= explode("|",$order->sizes);
-        $sizes=Size::getUnitSizes();
-        $items=[];
-        foreach($skus as $sku){
-            foreach($sizes as $size){
-               if($size->sku==$sku){
-                   $items[]=$size->name;
-               }
-            }
-        }
+
 
         return View::make("admin.order-details", [
             'order' => $order,
-            'items' =>$items,
             'shipping'=>Shipping::find($order->shipping_type)
         ]);
     }

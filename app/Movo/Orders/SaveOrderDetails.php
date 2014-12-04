@@ -19,9 +19,11 @@ class SaveOrderDetails
     {
 
         $order->amount = $data['result']['amount'];
+        $order->tax = $data['tax'];
+        $order->discount = $data['discount'];
+        $order->unit_price = $data['unit-price'];
         $order->quantity = $data['quantity'];
         $order->shipping_type = $data['shipping-type'];
-        $order->sizes = $data['sizes'];
         $order->shipping_first_name = $data['shipping-first-name'];
         $order->shipping_last_name = $data['shipping-last-name'];
         $order->shipping_address = $data['shipping-address'];
@@ -46,6 +48,17 @@ class SaveOrderDetails
         $order->error_flag = "";
         $order->coupon = $data['coupon'];
         $order->save();
+
+        foreach($data['items'] as $item){
+            $orderItem=new \Item(
+                [
+                    "sku"=>$item['sku'],
+                    "description"=>$item['description'],
+                ]
+            );
+
+            $order->items()->save($orderItem);
+        }
     }
 
 }

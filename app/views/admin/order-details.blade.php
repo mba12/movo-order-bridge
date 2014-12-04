@@ -28,9 +28,9 @@
              {{\Movo\Helpers\Format::FormatStripeMoney($order->amount)}}
           </div>
           <h3>Items</h3>
-          @foreach($items as $item)
+          @foreach($order->items as $item)
                <div class="text-row">
-                   1 x {{$item}}
+                   1 x {{$item->description}}
                </div>
           @endforeach
            <h3>Shipping</h3>
