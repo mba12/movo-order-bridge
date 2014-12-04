@@ -85,12 +85,13 @@
           top: 0;
           left: 0;
           width: 100%;
-          padding-top: 47px;
+          padding: 47px 24px 0;
           font-size: em(43);
           font-weight: 300;
           margin-left: 5px;
           &.no-limit {
             margin-left: 0;
+            padding-top: 45px;
           }
           sup {
             font-size: em(8.5);
@@ -107,7 +108,7 @@
           text-transform: uppercase;
         }
         .detail {
-          color: #a6a6a6;
+          color: #9c9c9c;
           font-size: em(15);
         }
       }

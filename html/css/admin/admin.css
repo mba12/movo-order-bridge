@@ -546,12 +546,13 @@ h2 {
         top: 0;
         left: 0;
         width: 100%;
-        padding-top: 47px;
+        padding: 47px 24px 0;
         font-size: 2.6875em;
         font-weight: 300;
         margin-left: 5px; }
         #coupons ul li .circle .percent.no-limit {
-          margin-left: 0; }
+          margin-left: 0;
+          padding-top: 45px; }
         #coupons ul li .circle .percent sup {
           font-size: 0.53125em;
           position: relative;
@@ -562,5 +563,5 @@ h2 {
       margin-bottom: 4px;
       text-transform: uppercase; }
     #coupons ul li .bottom .detail {
-      color: #a6a6a6;
+      color: #9c9c9c;
       font-size: 0.9375em; }

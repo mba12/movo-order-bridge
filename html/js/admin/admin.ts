@@ -7,7 +7,7 @@ class Admin {
     constructor() {
         var $pickers:JQuery= $('.datetimepicker');
         $pickers.datetimepicker();
-        textFit($('.number'));
+        textFit($('.number, .no-limit'));
         this.initCouponDoughnuts();
     }
 

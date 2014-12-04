@@ -5,7 +5,7 @@ var Admin = (function () {
     function Admin() {
         var $pickers = $('.datetimepicker');
         $pickers.datetimepicker();
-        textFit($('.number'));
+        textFit($('.number, .no-limit'));
         this.initCouponDoughnuts();
     }
     Admin.prototype.initCouponDoughnuts = function () {
