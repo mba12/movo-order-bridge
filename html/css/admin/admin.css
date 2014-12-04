@@ -462,7 +462,13 @@ h2 {
       font-size: 1.0625em; }
       #header .inner #nav-links li:last-child {
         margin-left: 0; }
-      #header .inner #nav-links li a.active {
+      .stats #header .inner #nav-links li a.stats {
+        color: #f52f41;
+        text-rendering: optimizeLegibility; }
+      .orders #header .inner #nav-links li a.orders {
+        color: #f52f41;
+        text-rendering: optimizeLegibility; }
+      .coupons #header .inner #nav-links li a.coupons {
         color: #f52f41;
         text-rendering: optimizeLegibility; }
 

@@ -1,4 +1,5 @@
 @extends('admin.main')
+@section('page-id')login @stop
 @section('content')
     <section id="login" class="gray">
         <div class="inner">

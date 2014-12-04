@@ -12,7 +12,7 @@
     @yield('page-css')
 </head>
 
-<body>
+<body class="@yield('page-id')">
 
 <div id="page-wrap">
     @include ('admin.header')

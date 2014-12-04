@@ -1,4 +1,6 @@
 @extends('admin.main')
+@section('page-id')stats @stop
+
 @section('page-css')
       {{ HTML::style('css/vendor/jquery/jquery.datetimepicker.css') }}
 @stop

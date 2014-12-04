@@ -29,12 +29,27 @@
           margin-left: 0;
         }
         a {
-          &.active {
-            color: $movoRed;
-            text-rendering: optimizeLegibility;
+          &.stats {
+            .stats & {
+              color:          $movoRed;
+              text-rendering: optimizeLegibility;
+            }
+          }
+          &.orders {
+            .orders & {
+              color:          $movoRed;
+              text-rendering: optimizeLegibility;
+            }
+          }
+          &.coupons {
+            .coupons & {
+              color:          $movoRed;
+              text-rendering: optimizeLegibility;
+            }
           }
         }
       }
     }
   }
 }
+

@@ -1,4 +1,5 @@
 @extends('admin.main')
+@section('page-id')orders @stop
 @section('content')
 
     <div class="container">
