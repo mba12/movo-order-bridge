@@ -64,7 +64,6 @@ class Payment extends ScreenBase {
         }
     }
 
-
     private createStripeToken() {
         var data = this.$form.serialize();
         Stripe.createToken(this.$form, $.proxy(this.stripResponseHandler, this));
@@ -121,6 +120,7 @@ class Payment extends ScreenBase {
                 this.hideSpinner();
                 if (response.status == 200) {
                     this.resetPage();
+                    new TrackOrder().track(response);
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
                     this.$cardError.show();
