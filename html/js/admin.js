@@ -1,12 +1,10 @@
-/// <reference path="../definitions/jquery.d.ts" />
-/// <reference path="../definitions/chart.d.ts" />
-/// <reference path="../definitions/greensock.d.ts" />
 var Admin = (function () {
     function Admin() {
         var $pickers = $('.datetimepicker');
         $pickers.datetimepicker();
         textFit($('.number'));
         this.initCouponDoughnuts();
+        alert('hi');
     }
     Admin.prototype.initCouponDoughnuts = function () {
         $('.doughnut').each(function (i, el) {

@@ -1,4 +1,3 @@
-/// <reference path="../definitions/jquery.d.ts" />
 var Stats = (function () {
     function Stats() {
         this.initPusherEvents();

@@ -25,7 +25,8 @@ class Admin {
                 new Chart(ctx).Doughnut(data, {
                     tooltipTemplate: "<%= label %>",
                     percentageInnerCutout: 77,
-                    animationEasing: "easeInOutQuint"
+                    animationEasing: "easeInOutQuint",
+                    showTooltips: false
                 });
             }, 325 * i);
         });
@@ -39,3 +40,4 @@ interface JQuery{
 }
 
 declare var textFit;
+

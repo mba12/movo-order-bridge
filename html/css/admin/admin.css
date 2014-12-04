@@ -498,15 +498,10 @@ h2 {
       border-radius: 200px;
       margin-bottom: 12px;
       position: relative;
-      -webkit-transition: 0.2s all;
-      -moz-transition: 0.2s all;
-      transition: 0.2s all; }
-      #orders ul li .circle:hover {
-        -webkit-transform: scale(1.06, 1.06);
-        -moz-transform: scale(1.06, 1.06);
-        -ms-transform: scale(1.06, 1.06);
-        -o-transform: scale(1.06, 1.06);
-        transform: scale(1.06, 1.06); }
+      /*@include transition(0.2s all);
+        &:hover {
+          @include transform(scale(1.06, 1.06));
+        }*/ }
       #orders ul li .circle .number {
         color: white;
         font-size: 2.9375em;
@@ -555,10 +550,17 @@ h2 {
         font-size: 2.6875em;
         font-weight: 300;
         margin-left: 5px; }
+        #coupons ul li .circle .percent.no-limit {
+          margin-left: 0; }
         #coupons ul li .circle .percent sup {
           font-size: 0.53125em;
           position: relative;
           top: 3px; }
     #coupons ul li .bottom .coupon {
       font-weight: 500;
-      font-size: 1.0625em; }
+      font-size: 1.0625em;
+      margin-bottom: 4px;
+      text-transform: uppercase; }
+    #coupons ul li .bottom .detail {
+      color: #a6a6a6;
+      font-size: 0.9375em; }

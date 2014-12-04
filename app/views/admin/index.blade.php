@@ -9,44 +9,34 @@
                 <h2>Orders</h2>
                 <ul>
                     <li class="hour">
-                        <a href="/admin/orders">
                             <div class="circle">
                                 <div class="number">{{$lastHour}}</div>
                             </div>
                             <div class="period">last hour</div>
-                        </a>
                     </li>
                     <li class="day">
-                        <a href="/admin/orders">
                             <div class="circle">
                                 <div class="number">{{$lastDay}}</div>
                             </div>
                             <div class="period">last day</div>
-                        </a>
                     </li>
                     <li class="week">
-                        <a href="/admin/orders">
                             <div class="circle">
                                 <div class="number">{{$lastWeek}}</div>
                             </div>
                             <div class="period">last week</div>
-                        </a>
                     </li>
                     <li class="month">
-                        <a href="/admin/orders">
                             <div class="circle">
                                 <div class="number">{{$lastMonth}}</div>
                             </div>
                             <div class="period">last month</div>
-                        </a>
                     </li>
                     <li class="errors">
-                        <a href="/admin/orders">
                             <div class="circle">
                                 <div class="number">{{$errors}}</div>
                             </div>
                             <div class="period">errors</div>
-                        </a>
                     </li>
                 </ul>
 
@@ -66,16 +56,18 @@
                                 </div>
                            <div class="bottom">
                                 <div class="coupon">{{$coupon->name}}</div>
+                                <div class="detail">{{$coupon->usedCoupons()->count()}} of {{$coupon->usedCoupons()->count() + $coupon->limit-$coupon->usedCoupons()->count()}} used</div>
                            </div>
                       </li>
                     @else
                        <li>
                            <div class="circle">
-                                <div class="percent" data-used="{{$coupon->usedCoupons()->count()}}" data-left="{{$coupon->usedCoupons()->count()}}"><span class="used">{{$coupon->usedCoupons()->count()}}</span><sup></sup></div>
+                                <div class="percent no-limit" data-used="0" data-left="10">{{$coupon->usedCoupons()->count()}}</div>
                                     <canvas class="doughnut" width="135" height="135"></canvas>
                                 </div>
                            <div class="bottom">
                                 <div class="coupon">{{$coupon->name}}</div>
+                                <div class="detail">no limit</div>
                            </div>
                       </li>
                     @endif

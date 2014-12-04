@@ -9,7 +9,6 @@ class Summary extends ScreenBase {
     }
 
     public setSelectors() {
-        super.setSelectors();
         this.$createNewOrderBtn = $('#create-new-order');
     }
 

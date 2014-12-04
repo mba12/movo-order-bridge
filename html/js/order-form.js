@@ -825,7 +825,6 @@ var Summary = (function (_super) {
         this.initEvents();
     }
     Summary.prototype.setSelectors = function () {
-        _super.prototype.setSelectors.call(this);
         this.$createNewOrderBtn = $('#create-new-order');
     };
     Summary.prototype.initEvents = function () {
