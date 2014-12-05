@@ -1,0 +1,64 @@
+.coupons {
+  #coupon-list {
+    background-color: #f1f1f1;
+    border-top:       1px solid #d0d0d0;
+    border-bottom:    1px solid #d0d0d0;
+    padding: 65px 0 30px;
+    .coupon {
+      margin-bottom: 45px;
+      .fields {
+        @include clearfix;
+        .field {
+          float:        left;
+          margin-right: 1%;
+          height:       55px;
+          label {
+            display:       block;
+            font-size:     em(13);
+            margin-bottom: 4px;
+            margin-left:   3px;
+          }
+          input[type=text] {
+            width: 90px;
+            &.amount {
+              width: 38px;
+            }
+            &.limit {
+              width: 65px;
+            }
+            &.min-units {
+              width: 65px;
+            }
+            &.datetimepicker {
+              width: 140px;
+            }
+          }
+          input[type=checkbox] {
+            position: relative;
+            top:      -4px;
+          }
+          .date {
+            width: 136px;
+          }
+        }
+        #time-fields {
+          //        display: none;
+        }
+      }
+      .buttons {
+        .update-button {
+          display: inline-block;
+        }
+        .delete-button {
+          display: inline-block;
+        }
+        .button {
+
+        }
+      }
+    }
+  }
+  #add {
+    padding: 50px 0;
+  }
+}

@@ -5,7 +5,7 @@
         <div class="inner">
             <h3>Log in to the admin section</h3>
             @if(Session::has("global"))
-                <p class="errors">{{ Session::get("global") }}</p>
+                <div class="errors">{{ Session::get("global") }}</div>
             @endif
             {{Form::open(array('route' => array('post-admin-login'), 'autocomplete'=>'off'))}}
             <div>

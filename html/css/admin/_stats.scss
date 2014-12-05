@@ -1,115 +1,117 @@
-#orders {
-  ul {
-    @include clearfix;
-    li {
-      margin-bottom: 30px;
-      margin-right: 3%;
-      float:      left;
-      text-align: center;
-      a {
-        &:hover {
-          color: $darkGray;
-        }
-      }
-      .circle {
-        width:         130px;
-        height:        130px;
-        border-radius: 200px;
-        margin-bottom: 12px;
-        position: relative;
-        /*@include transition(0.2s all);
-        &:hover {
-          @include transform(scale(1.06, 1.06));
-        }*/
-        .number {
-          color: $white;
-          font-size:   em(47);
-          font-weight: 300;
-          padding: 40px 22px 0;
-        }
-      }
-      &.hour {
-        .circle {
-          background-color: #555;
-        }
-      }
-      &.day {
-        .circle {
-          background-color: #939393;
-        }
-      }
-      &.week {
-        .circle {
-          background-color: #cccccc;
-          .number {
+.stats {
+  #orders {
+    ul {
+      @include clearfix;
+      li {
+        margin-bottom: 30px;
+        margin-right:  3%;
+        float:         left;
+        text-align:    center;
+        a {
+          &:hover {
             color: $darkGray;
           }
         }
-      }
-      &.month {
         .circle {
-          background-color: $white;
+          width:         130px;
+          height:        130px;
+          border-radius: 200px;
+          margin-bottom: 12px;
+          position:      relative;
+          /*@include transition(0.2s all);
+          &:hover {
+            @include transform(scale(1.06, 1.06));
+          }*/
           .number {
-            color: $darkGray;
+            color:       $white;
+            font-size:   em(47);
+            font-weight: 300;
+            padding:     40px 22px 0;
           }
         }
-      }
-      &.errors {
-        .circle {
-          background-color: $movoRed;
-        }
-      }
-      .period {
-        font-weight: 500;
-        font-size: em(17);
-      }
-    }
-
-  }
-}
-
-#coupons {
-  ul {
-    @include clearfix;
-    li {
-      margin-bottom: 30px;
-      margin-right:  3%;
-      float:         left;
-      text-align:    center;
-      .circle {
-        position: relative;
-        margin-bottom: 12px;
-        .percent {
-          z-index: -1;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          padding: 47px 24px 0;
-          font-size: em(43);
-          font-weight: 300;
-          margin-left: 5px;
-          &.no-limit {
-            margin-left: 0;
-            padding-top: 45px;
-          }
-          sup {
-            font-size: em(8.5);
-            position: relative;
-            top: 3px;
+        &.hour {
+          .circle {
+            background-color: #555;
           }
         }
-      }
-      .bottom {
-        .coupon {
+        &.day {
+          .circle {
+            background-color: #939393;
+          }
+        }
+        &.week {
+          .circle {
+            background-color: #cccccc;
+            .number {
+              color: $darkGray;
+            }
+          }
+        }
+        &.month {
+          .circle {
+            background-color: $white;
+            .number {
+              color: $darkGray;
+            }
+          }
+        }
+        &.errors {
+          .circle {
+            background-color: $movoRed;
+          }
+        }
+        .period {
           font-weight: 500;
           font-size:   em(17);
-          margin-bottom: 4px;
-          text-transform: uppercase;
         }
-        .detail {
-          color: #9c9c9c;
-          font-size: em(15);
+      }
+
+    }
+  }
+
+  #coupons {
+    ul {
+      @include clearfix;
+      li {
+        margin-bottom: 30px;
+        margin-right:  3%;
+        float:         left;
+        text-align:    center;
+        .circle {
+          position:      relative;
+          margin-bottom: 12px;
+          .percent {
+            z-index:     -1;
+            position:    absolute;
+            top:         0;
+            left:        0;
+            width:       100%;
+            padding:     47px 24px 0;
+            font-size:   em(43);
+            font-weight: 300;
+            margin-left: 5px;
+            &.no-limit {
+              margin-left: 0;
+              padding-top: 45px;
+            }
+            sup {
+              font-size: em(8.5);
+              position:  relative;
+              top:       3px;
+            }
+          }
+        }
+        .bottom {
+          .coupon {
+            font-weight:    500;
+            font-size:      em(17);
+            margin-bottom:  4px;
+            text-transform: uppercase;
+          }
+          .detail {
+            color:     #9c9c9c;
+            font-size: em(15);
+          }
         }
       }
     }

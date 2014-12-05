@@ -26,8 +26,13 @@ section {
 
 .inner {
   width: 80%;
-  max-width: 830px;
+  max-width: 860px;
   margin: 0 auto;
+}
+.errors {
+  margin-bottom: 12px;
+  font-size:     em(15);
+  color:         $movoRed;
 }
 
 a {
@@ -41,7 +46,7 @@ input, select {
   outline:       none;
   border:        1px solid #cccccc;
   border-radius: 4px;
-  height:        28px;
+  height:        30px;
   padding:       0 5px 0 10px;
   color:         $darkGray;
   font-size:     em(12);
@@ -55,9 +60,10 @@ input[type='text'] {
 input[type='submit'] {
   background-color: #555;
   color: $white;
-  padding: 0 9px;
+  //padding: 0 9px;
   border: none;
   height: 31px !important;
+  padding: 3px 16px;
 }
 
 h2 {
@@ -69,33 +75,8 @@ h2 {
 
 
 
-.row {
-  width: 100%;
-}
-.coupon {
-  //display: table;
-  .coupon-row {
-    //display: table-row;
-    width: 100%;
-    span {
-      display: inline-block;
-      padding-right: 20px;
-      width: 150px;
-      margin-right: 20px;
-    }
-    input {
-      width: 150px;
-    }
-    select {
-      width: 150px;
-    }
-
-    .button {
-      width: 150px;
-    }
-  }
-}
-
 @import "header";
 @import "login";
 @import "stats";
+@import "coupons";
+@import "orders";

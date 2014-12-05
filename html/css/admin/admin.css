@@ -369,8 +369,13 @@ section {
 
 .inner {
   width: 80%;
-  max-width: 830px;
+  max-width: 860px;
   margin: 0 auto; }
+
+.errors {
+  margin-bottom: 12px;
+  font-size: 0.9375em;
+  color: #f52f41; }
 
 a {
   color: #333333;
@@ -384,7 +389,7 @@ input, select {
   outline: none;
   border: 1px solid #cccccc;
   border-radius: 4px;
-  height: 28px;
+  height: 30px;
   padding: 0 5px 0 10px;
   color: #333333;
   font-size: 0.75em; }
@@ -397,32 +402,15 @@ input[type='text'] {
 input[type='submit'] {
   background-color: #555555;
   color: white;
-  padding: 0 9px;
   border: none;
-  height: 31px !important; }
+  height: 31px !important;
+  padding: 3px 16px; }
 
 h2 {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 1.375em;
   margin-bottom: 30px; }
-
-.row {
-  width: 100%; }
-
-.coupon .coupon-row {
-  width: 100%; }
-  .coupon .coupon-row span {
-    display: inline-block;
-    padding-right: 20px;
-    width: 150px;
-    margin-right: 20px; }
-  .coupon .coupon-row input {
-    width: 150px; }
-  .coupon .coupon-row select {
-    width: 150px; }
-  .coupon .coupon-row .button {
-    width: 150px; }
 
 #header .bar {
   background-color: #f52f41;
@@ -476,77 +464,72 @@ h2 {
   font-weight: 900;
   margin-bottom: 20px;
   font-size: 1.25em; }
-#login .errors {
-  margin-bottom: 12px;
-  font-size: 0.9375em;
-  color: #f52f41; }
 #login input {
   margin-bottom: 7px;
   height: 33px; }
 
-#orders ul {
+.stats #orders ul {
   *zoom: 1; }
-  #orders ul:before, #orders ul:after {
+  .stats #orders ul:before, .stats #orders ul:after {
     content: " ";
     display: table; }
-  #orders ul:after {
+  .stats #orders ul:after {
     clear: both; }
-  #orders ul li {
+  .stats #orders ul li {
     margin-bottom: 30px;
     margin-right: 3%;
     float: left;
     text-align: center; }
-    #orders ul li a:hover {
+    .stats #orders ul li a:hover {
       color: #333333; }
-    #orders ul li .circle {
+    .stats #orders ul li .circle {
       width: 130px;
       height: 130px;
       border-radius: 200px;
       margin-bottom: 12px;
       position: relative;
       /*@include transition(0.2s all);
-        &:hover {
-          @include transform(scale(1.06, 1.06));
-        }*/ }
-      #orders ul li .circle .number {
+          &:hover {
+            @include transform(scale(1.06, 1.06));
+          }*/ }
+      .stats #orders ul li .circle .number {
         color: white;
         font-size: 2.9375em;
         font-weight: 300;
         padding: 40px 22px 0; }
-    #orders ul li.hour .circle {
+    .stats #orders ul li.hour .circle {
       background-color: #555555; }
-    #orders ul li.day .circle {
+    .stats #orders ul li.day .circle {
       background-color: #939393; }
-    #orders ul li.week .circle {
+    .stats #orders ul li.week .circle {
       background-color: #cccccc; }
-      #orders ul li.week .circle .number {
+      .stats #orders ul li.week .circle .number {
         color: #333333; }
-    #orders ul li.month .circle {
+    .stats #orders ul li.month .circle {
       background-color: white; }
-      #orders ul li.month .circle .number {
+      .stats #orders ul li.month .circle .number {
         color: #333333; }
-    #orders ul li.errors .circle {
+    .stats #orders ul li.errors .circle {
       background-color: #f52f41; }
-    #orders ul li .period {
+    .stats #orders ul li .period {
       font-weight: 500;
       font-size: 1.0625em; }
-
-#coupons ul {
+.stats #coupons ul {
   *zoom: 1; }
-  #coupons ul:before, #coupons ul:after {
+  .stats #coupons ul:before, .stats #coupons ul:after {
     content: " ";
     display: table; }
-  #coupons ul:after {
+  .stats #coupons ul:after {
     clear: both; }
-  #coupons ul li {
+  .stats #coupons ul li {
     margin-bottom: 30px;
     margin-right: 3%;
     float: left;
     text-align: center; }
-    #coupons ul li .circle {
+    .stats #coupons ul li .circle {
       position: relative;
       margin-bottom: 12px; }
-      #coupons ul li .circle .percent {
+      .stats #coupons ul li .circle .percent {
         z-index: -1;
         position: absolute;
         top: 0;
@@ -556,18 +539,64 @@ h2 {
         font-size: 2.6875em;
         font-weight: 300;
         margin-left: 5px; }
-        #coupons ul li .circle .percent.no-limit {
+        .stats #coupons ul li .circle .percent.no-limit {
           margin-left: 0;
           padding-top: 45px; }
-        #coupons ul li .circle .percent sup {
+        .stats #coupons ul li .circle .percent sup {
           font-size: 0.53125em;
           position: relative;
           top: 3px; }
-    #coupons ul li .bottom .coupon {
+    .stats #coupons ul li .bottom .coupon {
       font-weight: 500;
       font-size: 1.0625em;
       margin-bottom: 4px;
       text-transform: uppercase; }
-    #coupons ul li .bottom .detail {
+    .stats #coupons ul li .bottom .detail {
       color: #9c9c9c;
       font-size: 0.9375em; }
+
+.coupons #coupon-list {
+  background-color: #f1f1f1;
+  border-top: 1px solid #d0d0d0;
+  border-bottom: 1px solid #d0d0d0;
+  padding: 65px 0 30px; }
+  .coupons #coupon-list .coupon {
+    margin-bottom: 45px; }
+    .coupons #coupon-list .coupon .fields {
+      *zoom: 1; }
+      .coupons #coupon-list .coupon .fields:before, .coupons #coupon-list .coupon .fields:after {
+        content: " ";
+        display: table; }
+      .coupons #coupon-list .coupon .fields:after {
+        clear: both; }
+      .coupons #coupon-list .coupon .fields .field {
+        float: left;
+        margin-right: 1%;
+        height: 55px; }
+        .coupons #coupon-list .coupon .fields .field label {
+          display: block;
+          font-size: 0.8125em;
+          margin-bottom: 4px;
+          margin-left: 3px; }
+        .coupons #coupon-list .coupon .fields .field input[type=text] {
+          width: 90px; }
+          .coupons #coupon-list .coupon .fields .field input[type=text].amount {
+            width: 38px; }
+          .coupons #coupon-list .coupon .fields .field input[type=text].limit {
+            width: 65px; }
+          .coupons #coupon-list .coupon .fields .field input[type=text].min-units {
+            width: 65px; }
+          .coupons #coupon-list .coupon .fields .field input[type=text].datetimepicker {
+            width: 140px; }
+        .coupons #coupon-list .coupon .fields .field input[type=checkbox] {
+          position: relative;
+          top: -4px; }
+        .coupons #coupon-list .coupon .fields .field .date {
+          width: 136px; }
+    .coupons #coupon-list .coupon .buttons .update-button {
+      display: inline-block; }
+    .coupons #coupon-list .coupon .buttons .delete-button {
+      display: inline-block; }
+.coupons #add {
+  padding: 50px 0; }
+
