@@ -108,26 +108,15 @@ Route::get('/info', function () {
     }
 );
 
-Route::get("/email-test", function () {
-    $tmpData['quantity'] = 1;
-    $tmpData['address1'] = '123 Oak';
-    $tmpData['address2'] = 'Anytown, USA 90000';
-    $tmpData['name'] = 'John Doe';
-    $tmpData['total'] = '$120.00';
-    $tmpData['items'] = [];
-    for ($i = 0; $i < 3; $i++) {
-        array_push($tmpData['items'], new Item("Item" . ($i + 1), 1, Format::FormatUSD('29.99')));
-    }
-    return View::make("emails.receipt", [
-        'data' => $tmpData
-    ]);
-});
 
 
-/*Route::get("/test", function(){
-     $order=Order::find(34);
-    dd($order->items()->get()[0]['description']);
+
+Route::get("/test", function(){
+
+    $o=(new Order)->lastHour();
+    echo (date('Y-m-d H:i:s',strtotime("-60 minute"))) ;
+    dd($o);
 
 })  ;
 
-Event::listen('illuminate.query', function($sql) { echo '<h4>' . $sql . '</h4>' ;});*/
+//Event::listen('illuminate.query', function($sql) { echo '<h4>' . $sql . '</h4>' ;});

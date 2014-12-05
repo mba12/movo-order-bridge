@@ -43,22 +43,22 @@ class Order extends \Eloquent
     }
     public function lastHour()
     {
-        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 hour")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-60 minute")));
     }
 
     public function lastDay()
     {
-        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 day")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-1 day")));
     }
 
     public function lastWeek()
     {
-        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 week")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-1 week")));
     }
 
     public function lastMonth()
     {
-        return $this->where("created_at", ">=", date('Y-m-d h:m:s',strtotime("-1 month")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-1 month")));
     }
 
     public function errors()
