@@ -57,7 +57,7 @@
                                     <canvas class="doughnut" width="135" height="135"></canvas>
                                 </div>
                            <div class="bottom">
-                                <div class="coupon">{{$coupon->name}}</div>
+                                <div class="coupon">{{$coupon->code}}</div>
                                 <div class="detail">{{$coupon->usedCoupons()->count()}} of {{$coupon->usedCoupons()->count() + $coupon->limit-$coupon->usedCoupons()->count()}} used</div>
                            </div>
                       </li>
@@ -68,7 +68,7 @@
                                     <canvas class="doughnut" width="135" height="135"></canvas>
                                 </div>
                            <div class="bottom">
-                                <div class="coupon">{{$coupon->name}}</div>
+                                <div class="coupon">{{$coupon->code}}</div>
                                 <div class="detail">no limit</div>
                            </div>
                       </li>
@@ -80,13 +80,6 @@
      </section>
 @stop
 @section('inline-scripts')
-   <script src="/js/vendor/pusher/pusher.js" type="text/javascript"></script>
-   <script src="/js/vendor/jquery/jquery.js"></script>
-   <script src="/js/vendor/jquery/jquery.datetimepicker.js"></script>
-   <script src="/js/vendor/textfit/textFit.min.js"></script>
-   <script src="/js/vendor/chartjs/Chart.min.js"></script>
-   <script src="/js/vendor/greensock/TweenMax.min.js"></script>
-   <script src="js/admin/admin.js"></script>
    <script src="js/admin/stats.js"></script>
 @stop
 

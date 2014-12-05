@@ -1,10 +1,12 @@
 /// <reference path="../definitions/jquery.d.ts" />
+/// <reference path="../definitions/chart.d.ts" />
 
 class Stats {
 
     constructor() {
         this.initPusherEvents();
-        console.log("logging...");
+        this.initTextFit();
+        this.initCouponDoughnuts();
         this.reloadStats();
     }
 
@@ -15,8 +17,7 @@ class Stats {
         channel.bind("completedOrder", (data)=> {
             this.reloadStats();
             console.log("order completed");
-        })
-
+        });
     }
 
     private reloadStats():void {
@@ -30,8 +31,36 @@ class Stats {
             }
         });
     }
+
+    private initTextFit():void {
+        textFit($('.number, .no-limit'));
+    }
+
+    private initCouponDoughnuts():void {
+        $('.doughnut').each((i, el)=> {
+            var $item:any = $(el);
+            var ctx:any = $item[0].getContext("2d");
+            var used:number = parseInt($($item.parent()).find('.percent').data('used'));
+            var left:number = parseInt($($item.parent()).find('.percent').data('left'));
+            var data:any = [{value: used, color: "#f6303e", label: used + " Used"}, {
+                value: left,
+                color: "#e1e1e1",
+                label: left + " Left"
+            }];
+            setTimeout(function () {
+                new Chart(ctx).Doughnut(data, {
+                    tooltipTemplate: "<%= label %>",
+                    percentageInnerCutout: 77,
+                    animationEasing: "easeInOutQuint",
+                    showTooltips: false
+                });
+            }, 325 * i);
+        });
+    }
 }
 
 new Stats();
 
 declare var Pusher:any;
+declare var textFit;
+

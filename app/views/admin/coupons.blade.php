@@ -98,13 +98,7 @@
 @stop
 
 @section('inline-scripts')
-    <script src="/js/vendor/pusher/pusher.js" type="text/javascript"></script>
-    <script src="/js/vendor/jquery/jquery.js"></script>
-    <script src="/js/vendor/jquery/jquery.datetimepicker.js"></script>
-    <script src="js/admin/admin.js"></script>
-    <script type="text/javascript">
-        $('.datetimepicker').datetimepicker();
-    </script>
+    <script src="/js/admin/coupons.js"></script>
 @stop
 
 

@@ -14,12 +14,19 @@
 
 <body class="@yield('page-id')">
 
-<div id="page-wrap">
-    @include ('admin.header')
-    @yield('content')
-    @include ('admin.footer')
-</div>
+@include ('admin.header')
+@yield('content')
+@include ('admin.footer')
 
+
+<script src="/js/vendor/jquery/jquery.js"></script>
+<script src="/js/vendor/greensock/TweenMax.min.js"></script>
+<script src="/js/vendor/pusher/pusher.js" type="text/javascript"></script>
+<script src="/js/vendor/textfit/textFit.min.js"></script>
+<script src="/js/vendor/chartjs/Chart.min.js"></script>
+<script src="/js/vendor/greensock/TweenMax.min.js"></script>
+<script src="/js/vendor/jquery/jquery.datetimepicker.js"></script>
 @yield('inline-scripts')
+
 </body>
 </html>
