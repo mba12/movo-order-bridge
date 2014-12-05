@@ -1,5 +1,3 @@
-/// <reference path="../definitions/jquery.d.ts" />
-/// <reference path="../definitions/chart.d.ts" />
 var Coupons = (function () {
     function Coupons() {
         this.initEvents();

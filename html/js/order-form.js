@@ -1092,12 +1092,25 @@ var GoogleTrackOrder = (function () {
     function GoogleTrackOrder() {
     }
     GoogleTrackOrder.prototype.track = function (data) {
-        _gaq.push(['_addTrans', data['charge-id'], 'movo', data['order-total'], data['tax'], data['shipping-rate'], data['shipping-city'], data['shipping-state'], data['shipping-country']]);
+        ga('ecommerce:addTransaction', {
+            'id': data['charge-id'],
+            'affiliation': 'movo',
+            'revenue': data['order-total'],
+            'shipping': data['shipping-rate'],
+            'tax': data['tax']
+        });
         for (var i = 0; i < data.items.length; i++) {
             var item = data.items[i];
-            _gaq.push(['_addItem', data['charge-id'], item.sku, item.description, '', data['unit-price'], data['quantity']]);
+            ga('ecommerce:addItem', {
+                'id': data['charge-id'],
+                'name': item.description,
+                'sku': item.sku,
+                'category': item.description,
+                'price': data['unit-price'],
+                'quantity': '1'
+            });
         }
-        _gaq.push(['_trackTrans']);
+        ga('ecommerce:send');
     };
     return GoogleTrackOrder;
 })();
