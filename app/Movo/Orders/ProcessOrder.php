@@ -43,10 +43,11 @@ class ProcessOrder
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
         }
+        $orderTotal=$this->getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState);
         try {
             $result = $billing->charge([
                 'token' => Input::get("token"),
-                'amount' => $this->getOrderTotal($unitPrice, Input::get("quantity"), $discount, $shippingMethod, $salesTaxRate, $shippingState),
+                'amount' => $orderTotal,
                 'email' => Input::get("email")
             ]);
         } catch (Exception $e) {
@@ -63,13 +64,15 @@ class ProcessOrder
                 'shipping-rate' => $shippingMethod->rate,
                 'shipping-type' => $shippingMethod->type,
                 'shipping-code' => $shippingMethod->scac_code,
+                'charge-id'=>$result['id'],
+                'order-total'=>$orderTotal
             ];
             $data=OrderInput::convertInputToData($data);
             (new ShippingHandler)->handleNotification($data);
             (new ReceiptHandler)->handleNotification($data);
             (new OrderHandler)->handleNotification($data);
             (new PusherHandler)->handleNotification($data);
-            return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!'));
+            return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data'=>$data));
 
         } else {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order'));

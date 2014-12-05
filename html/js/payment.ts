@@ -120,7 +120,7 @@ class Payment extends ScreenBase {
                 this.hideSpinner();
                 if (response.status == 200) {
                     this.resetPage();
-                    new TrackOrder().track(response);
+                    this.trackOrder(response.data)
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 400) {
                     this.$cardError.show();
@@ -133,6 +133,12 @@ class Payment extends ScreenBase {
                 this.$cardError.show();
             }
         });
+    }
+
+
+    private trackOrder(data):void {
+        var tracker:Trackable = new GoogleTrackOrder();
+        tracker.track(data);
     }
 
     private displayShippingAddress():void {
@@ -154,7 +160,7 @@ class Payment extends ScreenBase {
         validation.resetErrors();
     }
 
-    public onPageChanged(pageIndex:number):void{
+    public onPageChanged(pageIndex:number):void {
         this.displayShippingAddress();
         super.onPageChanged(pageIndex);
         this.$cardError.hide();

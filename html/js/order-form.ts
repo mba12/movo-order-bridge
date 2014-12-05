@@ -18,7 +18,7 @@
 /// <reference path="coupon-data.ts" />
 /// <reference path="orders/order.ts" />
 /// <reference path="orders/tracking-interface.ts" />
-/// <reference path="orders/track-order.ts" />
+/// <reference path="orders/google-track-order.ts" />
 
 class OrderForm {
 
