@@ -37,5 +37,7 @@ class SizeTableSeeder extends Seeder
             "name"=>"Extra Large (8.5\" -- NFL Player / Body Builder)",
             "sku"=>'857458005046 '
         ));
+
+
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 
-use Illuminate\Support\Facades\Log;
 use Movo\Helpers\Format;
 use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
@@ -113,9 +112,7 @@ Route::get('/info', function () {
 
 
 Route::get("/test", function(){
-//    $keys = Config::get('services.pusher');
-//    dd($keys);
-//    Log::info($app['config']->get('services.pusher'););
+
     $pusher = App::make("Pusher");
     $pusher->trigger("orderChannel", "completedOrder", []);
 
