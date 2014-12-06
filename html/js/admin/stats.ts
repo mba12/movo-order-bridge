@@ -42,16 +42,15 @@ class Stats {
             url: "/admin/stats",
             success: (response)=> {
                this.onStatsLoaded(response);
+                console.log(response);
             }
         });
     }
-
 
     private onStatsLoaded(response):void{
         this.updateOrderStats(response);
         this.updateCouponStats(response);
     }
-
 
     private updateOrderStats(response):void{
         $('.hour').find('.textFitted').html(response.lastHour);
@@ -71,8 +70,6 @@ class Stats {
                 $li.find(".detail").html(response.couponCounts[i]+" of "+response.coupons[i].limit+" used")
                 this.initCouponDoughnuts();
             }
-
-
         }
     }
 

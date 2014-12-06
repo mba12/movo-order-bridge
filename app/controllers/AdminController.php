@@ -105,7 +105,7 @@ class AdminController extends \BaseController
 
     private function getOrderPagination()
     {
-        return Order::orderBy("created_at", "DESC")->paginate(15);
+        return Order::orderBy("created_at", "DESC")->paginate(36);
     }
 
 

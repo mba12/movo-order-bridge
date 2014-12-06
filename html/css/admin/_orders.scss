@@ -1,3 +1,121 @@
 .orders {
+  #search-header {
+    @include clearfix;
+    h2 {
+      @include media($tablet) {
+        float: left;
+      }
+    }
+    #search {
+      margin-bottom: 20px;
+      @include media($tablet) {
+        float: right;
+      }
+      input {
+        margin-bottom: 5px;
+      }
+    }
+    margin-bottom: 15px;
+  }
+  #search-results-title {
+    margin-bottom: 30px;
+    font-weight: 500;
+    //color: $movoRed;
+    margin-top: -10px;
+  }
+  #orders {
+    @include clearfix;
+    margin-bottom: 20px;
+    @include media(breakpoint(650)) {
+      @include column-count(2);
+    }
+    @include media(breakpoint(900)) {
+      @include column-count(3);
+    }
 
+    li {
+      padding-right: 15px;
+      break-inside: avoid-column;
+      -webkit-column-break-inside: avoid;
+      page-break-inside: avoid;
+      a {
+        display: table;
+        width: 100%;
+        padding-bottom: 7px;
+        @include media($tablet) {
+          padding-bottom: 13px;
+        }
+        .left {
+          display:          table-cell;
+          width: 74px;
+          vertical-align: top;
+          .date {
+            text-align: center;
+            margin-right:     8px;
+            color:            #d4d4d4;
+            background-color: #595959;
+            border-radius:    3px;
+            padding:          3px 6px;
+            font-size:        em(13.5);
+          }
+        }
+        .right {
+          display:      table-cell;
+          vertical-align: middle;
+          .name {
+            margin-right: 8px;
+            line-height: 1.2em;
+          }
+        }
+      }
+    }
+  }
+  .pagination {
+    @include clearfix;
+    li {
+      float: left;
+      padding: 0 4px;
+      &.active {
+        color: $movoRed;
+      }
+      &.disabled, &:last-of-type {
+        color: #ccc;
+        font-size: em(22);
+        position: relative;
+        top: -4px;
+      }
+      &.disabled {
+//        display: none;
+      }
+    }
+  }
+  &.order-details {
+    .inner {
+      .details {
+        @include media(breakpoint(700)) {
+          @include column-count(2);
+        }
+        .row {
+          break-inside:                avoid-column;
+          -webkit-column-break-inside: avoid;
+          page-break-inside:           avoid;
+          margin-bottom: 19px;
+          line-height: 1.15em;
+          color: #535353;
+          .items {
+            li {
+              margin-bottom: 4px;
+            }
+          }
+
+          h3 {
+            font-weight: 700;
+            font-size: em(16);
+            margin-bottom: 5px;
+            color: $darkGray;
+          }
+        }
+      }
+    }
+  }
 }

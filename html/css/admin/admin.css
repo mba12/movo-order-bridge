@@ -389,7 +389,7 @@ input, select {
   outline: none;
   border: 1px solid #cccccc;
   border-radius: 4px;
-  height: 30px;
+  height: 31px;
   padding: 0 5px 0 10px;
   color: #333333;
   font-size: 0.75em; }
@@ -404,7 +404,13 @@ input[type='submit'] {
   color: white;
   border: none;
   height: 31px !important;
-  padding: 3px 16px; }
+  padding: 3px 16px;
+  cursor: pointer;
+  -webkit-transition: 0.3s all;
+  -moz-transition: 0.3s all;
+  transition: 0.3s all; }
+  input[type='submit']:hover {
+    background-color: #666666; }
 
 h2 {
   text-transform: uppercase;
@@ -416,39 +422,46 @@ h2 {
   background-color: #f52f41;
   height: 11px; }
 #header .inner {
-  display: table;
-  padding: 47px 0; }
-  #header .inner a {
-    display: inline-block;
-    vertical-align: top; }
-    #header .inner a .logo {
-      width: 231px;
-      height: 44px;
-      background-image: url('../../img/admin/movo-logo.png');
-      background-size: 231px 44px;
-      background-repeat: no-repeat;
-      display: table-cell; }
-      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
-        #header .inner a .logo {
-          background-image: url('../../img/admin/movo-logo@2x.png');
-          background-size: 231px 44px; } }
+  padding: 30px 0;
+  position: relative; }
+  @media screen and (min-width: 800px) {
+    #header .inner {
+      padding: 56px 0; } }
+  #header .inner a .logo {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    width: 231px;
+    height: 44px;
+    background-image: url('../../img/admin/movo-logo.png');
+    background-size: 231px 44px;
+    background-repeat: no-repeat; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+      #header .inner a .logo {
+        background-image: url('../../img/admin/movo-logo@2x.png');
+        background-size: 231px 44px; } }
+    @media screen and (min-width: 800px) {
+      #header .inner a .logo {
+        top: 49px; } }
   #header .inner #nav-links {
-    display: table-cell;
-    vertical-align: top;
-    *zoom: 1; }
-    #header .inner #nav-links:before, #header .inner #nav-links:after {
-      content: " ";
-      display: table; }
-    #header .inner #nav-links:after {
-      clear: both; }
+    white-space: nowrap;
+    margin-top: 60px; }
+    @media screen and (min-width: 800px) {
+      #header .inner #nav-links {
+        width: 100%;
+        text-align: right;
+        margin-top: 0; } }
     #header .inner #nav-links li {
-      margin-top: 14px;
-      float: right;
+      margin-top: 10px;
       text-transform: uppercase;
       font-weight: 700;
-      margin-left: 7%;
-      font-size: 1.0625em; }
-      #header .inner #nav-links li:last-child {
+      margin-left: 3.5%;
+      font-size: 1em;
+      display: inline-block; }
+      @media screen and (min-width: 800px) {
+        #header .inner #nav-links li {
+          font-size: 1.0625em; } }
+      #header .inner #nav-links li:first-child {
         margin-left: 0; }
       .stats #header .inner #nav-links li a.stats {
         color: #f52f41;
@@ -511,7 +524,7 @@ h2 {
       font-weight: 500;
       color: #333333;
       margin-bottom: 0px;
-      font-size: 1.0625em; }
+      font-size: 1.0625rem; }
 .stats #coupons ul {
   *zoom: 1; }
   .stats #coupons ul:before, .stats #coupons ul:after {
@@ -598,3 +611,109 @@ h2 {
 .coupons #add {
   padding: 50px 0; }
 
+.orders #search-header {
+  *zoom: 1;
+  margin-bottom: 15px; }
+  .orders #search-header:before, .orders #search-header:after {
+    content: " ";
+    display: table; }
+  .orders #search-header:after {
+    clear: both; }
+  @media screen and (min-width: 601px) {
+    .orders #search-header h2 {
+      float: left; } }
+  .orders #search-header #search {
+    margin-bottom: 20px; }
+    @media screen and (min-width: 601px) {
+      .orders #search-header #search {
+        float: right; } }
+    .orders #search-header #search input {
+      margin-bottom: 5px; }
+.orders #search-results-title {
+  margin-bottom: 30px;
+  font-weight: 500;
+  margin-top: -10px; }
+.orders #orders {
+  *zoom: 1;
+  margin-bottom: 20px; }
+  .orders #orders:before, .orders #orders:after {
+    content: " ";
+    display: table; }
+  .orders #orders:after {
+    clear: both; }
+  @media screen and (min-width: 650px) {
+    .orders #orders {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2; } }
+  @media screen and (min-width: 900px) {
+    .orders #orders {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3; } }
+  .orders #orders li {
+    padding-right: 15px;
+    break-inside: avoid-column;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid; }
+    .orders #orders li a {
+      display: table;
+      width: 100%;
+      padding-bottom: 7px; }
+      @media screen and (min-width: 601px) {
+        .orders #orders li a {
+          padding-bottom: 13px; } }
+      .orders #orders li a .left {
+        display: table-cell;
+        width: 74px;
+        vertical-align: top; }
+        .orders #orders li a .left .date {
+          text-align: center;
+          margin-right: 8px;
+          color: #d4d4d4;
+          background-color: #595959;
+          border-radius: 3px;
+          padding: 3px 6px;
+          font-size: 0.84375em; }
+      .orders #orders li a .right {
+        display: table-cell;
+        vertical-align: middle; }
+        .orders #orders li a .right .name {
+          margin-right: 8px;
+          line-height: 1.2em; }
+.orders .pagination {
+  *zoom: 1; }
+  .orders .pagination:before, .orders .pagination:after {
+    content: " ";
+    display: table; }
+  .orders .pagination:after {
+    clear: both; }
+  .orders .pagination li {
+    float: left;
+    padding: 0 4px; }
+    .orders .pagination li.active {
+      color: #f52f41; }
+    .orders .pagination li.disabled, .orders .pagination li:last-of-type {
+      color: #cccccc;
+      font-size: 1.375em;
+      position: relative;
+      top: -4px; }
+@media screen and (min-width: 700px) {
+  .orders.order-details .inner .details {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2; } }
+.orders.order-details .inner .details .row {
+  break-inside: avoid-column;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 19px;
+  line-height: 1.15em;
+  color: #535353; }
+  .orders.order-details .inner .details .row .items li {
+    margin-bottom: 4px; }
+  .orders.order-details .inner .details .row h3 {
+    font-weight: 700;
+    font-size: 1em;
+    margin-bottom: 5px;
+    color: #333333; }

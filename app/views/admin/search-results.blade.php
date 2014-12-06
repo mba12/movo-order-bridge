@@ -1,25 +1,25 @@
 @extends('admin.main')
-
+@section('page-id')orders @stop
 @section('content')
-
-    <div class="container">
-      @if ($orders->count()==0)
-             <h4>There are no results for this search</h4>
-      @else
-      <h4>Search results</h4>
-          <ul class="orders">
-            @foreach($orders as $order)
-                @include('admin.order-link')
-            @endforeach
-          </ul>
-          {{ $orders->appends(array('search' => Input::get("search"), 'criteria'=>Input::get("criteria")))->links()}}
-     @endif
-     </div>
+    <section class="gray">
+        <div class="inner">
+            <div id="search-header">
+                @include('admin.search-header')
+            </div>
+            <div class="results">
+                @if ($orders->count()==0)
+                    <h4>There are no results for this search</h4>
+                @else
+                    <h3 id="search-results-title">Search Results ({{$orders->count()}})</h3>
+                    @include('admin.order-results')
+                @endif
+                {{ $orders->appends(array('search' => Input::get("search"), 'criteria'=>Input::get("criteria")))->links()}}
+            </div>
+        </div>
+    </section>
 @stop
 @section('inline-scripts')
-   <script src="js/vendor/pusher/pusher.js" type="text/javascript"></script>
-   <script src="js/vendor/jquery/jquery.js"></script>
-   <script src="js/admin/admin.js"></script>
+   <script src="/js/admin/orders.js"></script>
 @stop
 
 

@@ -63,12 +63,12 @@
 @stop
 @section('inline-scripts')
     <script src="/js/admin/stats.js"></script>
-    <script type="text/template" id="coupon-limited-tpl">
-         @include("admin.coupon-limited")
-    </script>
-    <script type="text/template" id="coupon-unlimited-tpl">
-         @include("admin.coupon-limited")
-    </script>
+    {{--<script type="text/template" id="coupon-limited-tpl">--}}
+         {{--@include("admin.coupon-limited")--}}
+    {{--</script>--}}
+    {{--<script type="text/template" id="coupon-unlimited-tpl">--}}
+         {{--@include("admin.coupon-limited")--}}
+    {{--</script>--}}
 @stop
 
 

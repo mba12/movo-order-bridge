@@ -2,51 +2,75 @@
 @section('page-css')
       {{ HTML::style('css/vendor/jquery/jquery.datetimepicker.css') }}
 @stop
+@section('page-id')orders order-details @stop
 @section('content')
-     <div class="container">
-         <h2>Order Details</h2>
-         <h3>Created</h3>
-         <div class="text-row">
-               {{date("m-d-Y", strtotime($order->created_at))}}
-         </div>
-         <h3>Billing to</h3>
-         <div class="text-row">
-               {{$order->billing_first_name}} {{$order->billing_last_name}}
-         </div>
-         <div class="text-row">
-               {{$order->billing_address}} {{$order->billing_city}}, {{$order->billing_state}} {{$order->billing_zip}}
-         </div>
-         <h3>Shipping to</h3>
-         <div class="text-row">
-           {{$order->shipping_first_name}} {{$order->shipping_last_name}}
-         </div>
-         <div class="text-row">
-           {{$order->shipping_address}} {{$order->shipping_city}}, {{$order->shipping_state}} {{$order->billing_zip}}
-         </div>
-         <h3>Total</h3>
-         <div class="text-row">
-             {{\Movo\Helpers\Format::FormatStripeMoney($order->amount)}}
-          </div>
-          <h3>Items</h3>
-          @foreach($order->items as $item)
-               <div class="text-row">
-                   1 x {{$item->description}}
-               </div>
-          @endforeach
-           <h3>Shipping</h3>
-           <div class="text-row">
-                 {{$shipping->type}} ({{$shipping->scac_code}})
+    <section class="gray">
+        <div class="inner">
+            <h2>Order Details</h2>
+            <div class="details">
+                <div class="row">
+                    <h3>Order ID:</h3>
+                   {{$order->id}}
+                </div>
+                <div class="row">
+                    <h3>Created:</h3>
+                   {{$order->created_at}}
+                </div>
+                <div class="row">
+                    <h3>Email:</h3>
+                     {{$order->email}}
+                </div>
+                <div class="row">
+                    <h3>Billing:</h3>
+                    {{$order->billing_first_name}} {{$order->billing_last_name}}<br>
+                    {{$order->billing_address}}<br>
+                    {{$order->billing_city}}, {{$order->billing_state}} {{$order->billing_zip}}<br>
+                    {{$order->billing_country}}<br>
+                    {{$order->billing_phone}}
+                </div>
+                <div class="row">
+                    <h3>Shipping:</h3>
+                   {{$order->shipping_first_name}} {{$order->shipping_last_name}}<br>
+                   {{$order->shipping_address}} <br>
+                   {{$order->shipping_city}}, {{$order->shipping_state}} {{$order->billing_zip}}<br>
+                   {{$order->shipping_country}}<br>
+                   {{$order->shipping_phone}}
+                </div>
+                <div class="row">
+                    <h3>Items:</h3>
+                    <ul class="items">
+                        @foreach($order->items as $item)
+                            <li>
+                                1 x {{$item->description}}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="row">
+                    <h3>Shipping:</h3>
+                    <div class="row">
+                        {{$shipping->type}} ({{$shipping->scac_code}})
+                    </div>
+                </div>
+                <div class="row">
+                    <h3>Coupon:</h3>
+                     {{$order->coupon == '' ? '(none)' : $order->coupon}}
+                </div>
+                <div class="row">
+                    <h3>Total:</h3>
+                     {{\Movo\Helpers\Format::FormatStripeMoney($order->amount)}}
+                </div>
+                <div class="row">
+                    <h3>Stripe Token:</h3>
+                     {{$order->stripe_charge_id}}
+                </div>
             </div>
-     </div>
+        </div>
+
+    </section>
 @stop
 @section('inline-scripts')
-   <script src="/js/vendor/pusher/pusher.js" type="text/javascript"></script>
-   <script src="/js/vendor/jquery/jquery.js"></script>
-   <script src="/js/vendor/jquery/jquery.datetimepicker.js"></script>
-   <script src="js/admin/admin.js"></script>
-   <script type="text/javascript">
-   $('.datetimepicker').datetimepicker();
-   </script>
+
 @stop
 
 

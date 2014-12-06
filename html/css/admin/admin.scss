@@ -47,7 +47,7 @@ input, select {
   outline:       none;
   border:        1px solid #cccccc;
   border-radius: 4px;
-  height:        30px;
+  height:        31px;
   padding:       0 5px 0 10px;
   color:         $darkGray;
   font-size:     em(12);
@@ -65,6 +65,11 @@ input[type='submit'] {
   border: none;
   height: 31px !important;
   padding: 3px 16px;
+  cursor: pointer;
+  @include transition(0.3s all);
+  &:hover {
+    background-color: #666;
+  }
 }
 
 h2 {

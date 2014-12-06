@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Support\Facades\Log;
 use Movo\Helpers\Format;
 use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
@@ -112,10 +113,11 @@ Route::get('/info', function () {
 
 
 Route::get("/test", function(){
-
-    $o=(new Order)->lastHour();
-    echo (date('Y-m-d H:i:s',strtotime("-60 minute"))) ;
-    dd($o);
+//    $keys = Config::get('services.pusher');
+//    dd($keys);
+//    Log::info($app['config']->get('services.pusher'););
+    $pusher = App::make("Pusher");
+    $pusher->trigger("orderChannel", "completedOrder", []);
 
 })  ;
 

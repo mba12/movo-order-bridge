@@ -1,3 +1,5 @@
+/// <reference path="../definitions/jquery.d.ts" />
+/// <reference path="../definitions/chart.d.ts" />
 var Stats = (function () {
     function Stats() {
         this.setSelectors();
@@ -31,6 +33,7 @@ var Stats = (function () {
             url: "/admin/stats",
             success: function (response) {
                 _this.onStatsLoaded(response);
+                console.log(response);
             }
         });
     };

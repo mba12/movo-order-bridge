@@ -5,6 +5,22 @@ var FormError = (function () {
     }
     return FormError;
 })();
+/*
+ Example usage:
+ data-error-selector=".error-messages .month"
+ <input type="text" name="month" placeholder="01" maxlength="2" data-validate="number|minValue:1|maxValue:12" />
+
+ this.$submitBtn.on('click', ()=> {
+     var validation:Validation = new Validation($('[data-validate]', "#age-gate"));
+     if (validation.isValidForm()) {
+         validation.resetErrors();
+         this.submitForm();
+     } else {
+        validation.showErrors();
+     }
+ });
+
+ */
 var Validation = (function () {
     function Validation($formInputs) {
         this.$formInputs = $formInputs;
@@ -66,6 +82,9 @@ var Validation = (function () {
             if (!$el.data("validate")) {
                 return true;
             }
+            /*if (this.fieldContainsPlaceholderText($el)) {
+             return false;
+             }*/
             var isValid = true;
             var value = $el.val();
             var data = $el.data("validate");
@@ -157,6 +176,7 @@ var Validation = (function () {
     };
     return Validation;
 })();
+/// <reference path="definitions/js-signals.d.ts" />
 var Pagination = (function () {
     function Pagination() {
         this.currentIndex = 0;
@@ -673,6 +693,7 @@ var ShippingInfo = (function (_super) {
     };
     return ShippingInfo;
 })(ScreenBase);
+/// <reference path="definitions/stripe.d.ts" />
 var Payment = (function (_super) {
     __extends(Payment, _super);
     function Payment($pagination, fixedRightModule) {
@@ -816,6 +837,7 @@ var Payment = (function (_super) {
     };
     Payment.prototype.resetPage = function () {
         $('#credit-card-number, #cvc, #coupon-code').val('');
+        //this.fixedRightModule.discount = null;
         $('#coupon-success').hide();
         $('.error-messages').find("li").hide();
     };
@@ -834,6 +856,7 @@ var Summary = (function (_super) {
     };
     Summary.prototype.initEvents = function () {
         var _this = this;
+        //super.initEvents();
         this.$createNewOrderBtn.on('click', function (e) { return _this.onCreateNewOrderBtnClick(e); });
     };
     Summary.prototype.onCreateNewOrderBtnClick = function (e) {
@@ -908,6 +931,10 @@ var Coupon = (function () {
         }
         else {
             $("#coupon-error-messages").find(".coupon-error").show().html(result.error.message);
+            //this.fixedRightModule.discount = 0;
+            // if(!this.order.coupon){
+            //  this.order.coupon = null;
+            //  }
             this.fixedRightModule.calculatePrice();
             this.fixedRightModule.hideDiscountFields();
             this.hideCouponSuccessText();
@@ -1097,7 +1124,7 @@ var GoogleTrackOrder = (function () {
             'affiliation': 'movo',
             'revenue': data['order-total'],
             'shipping': data['shipping-rate'],
-            'tax': data['tax']
+            'tax': data['tax'] // Tax
         });
         for (var i = 0; i < data.items.length; i++) {
             var item = data.items[i];
@@ -1107,13 +1134,34 @@ var GoogleTrackOrder = (function () {
                 'sku': item.sku,
                 'category': item.description,
                 'price': data['unit-price'],
-                'quantity': '1'
+                'quantity': '1' // Quantity
             });
         }
         ga('ecommerce:send');
     };
     return GoogleTrackOrder;
 })();
+/// <reference path="definitions/jquery.d.ts" />
+/// <reference path="definitions/greensock.d.ts" />
+/// <reference path="forms/form-error.ts" />
+/// <reference path="forms/validation.ts" />
+/// <reference path="pagination.ts" />
+/// <reference path="screen-base.ts" />
+/// <reference path="fixed-right-module.ts" />
+/// <reference path="products.ts" />
+/// <reference path="billing-info.ts" />
+/// <reference path="shipping-info.ts" />
+/// <reference path="payment.ts" />
+/// <reference path="summary.ts" />
+/// <reference path="coupon.ts" />
+/// <reference path="sales-tax.ts" />
+/// <reference path="sales-tax/sales-tax-method.ts" />
+/// <reference path="sales-tax/include-shipping.ts" />
+/// <reference path="sales-tax/exclude-shipping.ts" />
+/// <reference path="coupon-data.ts" />
+/// <reference path="orders/order.ts" />
+/// <reference path="orders/tracking-interface.ts" />
+/// <reference path="orders/google-track-order.ts" />
 var OrderForm = (function () {
     function OrderForm() {
         this.setSelectors();
@@ -1125,6 +1173,7 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination, fixedRightModule);
         new Summary(pagination, fixedRightModule);
+        //pagination.gotoPage(3);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

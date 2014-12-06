@@ -4,9 +4,10 @@
 class Orders {
 
     constructor() {
-
+        //textFit($('.name'));
     }
 
 }
 
 new Orders();
+declare var textFit;
