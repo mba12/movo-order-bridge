@@ -540,6 +540,9 @@ h2 {
     .stats #coupons ul li .circle {
       position: relative;
       margin-bottom: 12px; }
+      .stats #coupons ul li .circle .doughnut {
+        width: 135px !important;
+        height: 135px !important; }
       .stats #coupons ul li .circle .percent {
         z-index: -1;
         position: absolute;
