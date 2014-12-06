@@ -3,13 +3,17 @@
 @section('content')
 
     <div class="container">
+      @if ($orders->count()==0)
+             <h4>There are no results for this search</h4>
+      @else
       <h4>Search results</h4>
-      <ul class="orders">
-        @foreach($orders as $order)
-            @include('admin.order-link')
-        @endforeach
-      </ul>
-    {{ $orders->appends(array('search' => Input::get("search"), 'criteria'=>Input::get("criteria")))->links()}}
+          <ul class="orders">
+            @foreach($orders as $order)
+                @include('admin.order-link')
+            @endforeach
+          </ul>
+          {{ $orders->appends(array('search' => Input::get("search"), 'criteria'=>Input::get("criteria")))->links()}}
+     @endif
      </div>
 @stop
 @section('inline-scripts')

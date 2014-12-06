@@ -16,17 +16,18 @@ class AdminController extends \BaseController
         return View::make("admin.index", $this->getStatsArray());
     }
 
-    private function getStatsArray(){
+    private function getStatsArray()
+    {
         $coupons = Coupon::all();
-        $couponCounts=[];
-        foreach($coupons as $coupon){
-            $couponCounts[]=$coupon->usedCoupons()->count();
+        $couponCounts = [];
+        foreach ($coupons as $coupon) {
+            $couponCounts[] = $coupon->usedCoupons()->count();
         }
-        $lastHour=$this->order->lastHour()->count();
-        $lastDay=$this->order->lastDay()->count();
-        $lastWeek=$this->order->lastWeek()->count();
-        $lastMonth=$this->order->lastMonth()->count();
-        $errors=$this->order->errors()->count();
+        $lastHour = $this->order->lastHour()->count();
+        $lastDay = $this->order->lastDay()->count();
+        $lastWeek = $this->order->lastWeek()->count();
+        $lastMonth = $this->order->lastMonth()->count();
+        $errors = $this->order->errors()->count();
         return [
             "coupons" => $coupons,
             "lastHour" => $lastHour,
@@ -48,7 +49,6 @@ class AdminController extends \BaseController
     }
 
 
-
     public function orders()
     {
         return View::make("admin.orders", [
@@ -58,21 +58,24 @@ class AdminController extends \BaseController
 
     public function orderDetails($id)
     {
-        $order=Order::find($id);
+        $order = Order::find($id);
 
 
         return View::make("admin.order-details", [
             'order' => $order,
-            'shipping'=>Shipping::find($order->shipping_type)
+            'shipping' => Shipping::find($order->shipping_type)
         ]);
     }
 
     public function orderSearch()
     {
-        if(Input::get("search")!=""){
-            $searchResults=Order::where(Input::get("criteria"),"LIKE", "%".Input::get("search")."%")->paginate(15);
+        $searchField = Input::get("search");
+        $criteria = Input::get("criteria");
+        if ($searchField != "" || $criteria == "error_flag") {
+            if ($criteria == "error_flag" && $searchField == "") $searchField = 1;
+            $searchResults = Order::where($criteria, "LIKE", "%" . $searchField . "%")->paginate(15);
             return View::make("admin.search-results", [
-                'orders'=>$searchResults
+                'orders' => $searchResults
             ]);
         }
 

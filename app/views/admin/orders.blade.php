@@ -20,6 +20,7 @@
                 "billing_last_name"=>"Billing Last Name",
                 "billing_address"=>"Billing Address",
                 "stripe_charge_id"=>"Stripe Charge ID",
+                "error_flag"=>"Error Flag",
 
             ])}}
             {{Form::submit("Search",[
