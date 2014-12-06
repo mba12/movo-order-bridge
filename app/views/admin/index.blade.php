@@ -51,27 +51,9 @@
             <ul>
                 @foreach($coupons as $coupon)
                     @if($coupon->limit>0)
-                      <li>
-                           <div class="circle">
-                                <div class="percent" data-used="{{$coupon->usedCoupons()->count()}}" data-left="{{$coupon->limit-$coupon->usedCoupons()->count()}}"><span class="used">{{$coupon->usedCoupons()->count()/$coupon->limit*100}}</span><sup>%</sup></div>
-                                    <canvas class="doughnut" width="135" height="135"></canvas>
-                                </div>
-                           <div class="bottom">
-                                <div class="coupon">{{$coupon->code}}</div>
-                                <div class="detail">{{$coupon->usedCoupons()->count()}} of {{$coupon->usedCoupons()->count() + $coupon->limit-$coupon->usedCoupons()->count()}} used</div>
-                           </div>
-                      </li>
+                      @include("admin.coupon-limited")
                     @else
-                       <li>
-                           <div class="circle">
-                                <div class="percent no-limit" data-used="0" data-left="10">{{$coupon->usedCoupons()->count()}}</div>
-                                    <canvas class="doughnut" width="135" height="135"></canvas>
-                                </div>
-                           <div class="bottom">
-                                <div class="coupon">{{$coupon->code}}</div>
-                                <div class="detail">no limit</div>
-                           </div>
-                      </li>
+                       @include("admin.coupon-unlimited")
                     @endif
                 @endforeach
 
@@ -80,7 +62,13 @@
      </section>
 @stop
 @section('inline-scripts')
-   <script src="js/admin/stats.js"></script>
+    <script src="/js/admin/stats.js"></script>
+    <script type="text/template" id="coupon-limited-tpl">
+         @include("admin.coupon-limited")
+    </script>
+    <script type="text/template" id="coupon-unlimited-tpl">
+         @include("admin.coupon-limited")
+    </script>
 @stop
 
 

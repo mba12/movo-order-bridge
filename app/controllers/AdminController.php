@@ -12,20 +12,30 @@ class AdminController extends \BaseController
 
     public function index()
     {
+
+        return View::make("admin.index", $this->getStatsArray());
+    }
+
+    private function getStatsArray(){
         $coupons = Coupon::all();
+        $couponCounts=[];
+        foreach($coupons as $coupon){
+            $couponCounts[]=$coupon->usedCoupons()->count();
+        }
         $lastHour=$this->order->lastHour()->count();
         $lastDay=$this->order->lastDay()->count();
         $lastWeek=$this->order->lastWeek()->count();
         $lastMonth=$this->order->lastMonth()->count();
         $errors=$this->order->errors()->count();
-        return View::make("admin.index", [
+        return [
             "coupons" => $coupons,
             "lastHour" => $lastHour,
             "lastDay" => $lastDay,
             "lastWeek" => $lastWeek,
             "lastMonth" => $lastMonth,
             "errors" => $errors,
-        ]);
+            "couponCounts" => $couponCounts,
+        ];
     }
 
     public function coupons()
@@ -71,13 +81,7 @@ class AdminController extends \BaseController
 
     public function getStats()
     {
-        $orderCount = DB::table('orders')->count();
-        $stats['orderCount'] = $orderCount;
-        $errorCount = DB::table('orders')->where('error_flag', '>=', 1)->count();
-        $stats['orderCount'] = $orderCount;
-        $stats['errorCount'] = $errorCount;
-        $coupons = Coupon::where("active", "=", 1);
-        return $stats;
+        return $this->getStatsArray();
     }
 
     public function login()

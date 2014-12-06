@@ -5,15 +5,22 @@ use Movo\Helpers\Format;
 class Coupon extends \Eloquent
 {
     protected $fillable = [
-        	'name','code','amount','method','limit','min_units','start_time', 'end_time', 'time_constraint', 'active'
+        'name', 'code', 'amount', 'method', 'limit', 'min_units', 'start_time', 'end_time', 'time_constraint', 'active'
     ];
 
-    public function instances(){
+    public function instances()
+    {
         return $this->hasMany('CouponInstance', "code", "code");
     }
 
-    public function usedCoupons(){
+    public function usedCoupons()
+    {
         return $this->instances()->where("used", "=", 1);
+    }
+
+    public function usedCouponCount()
+    {
+        return $this->instances()->where("used", "=", 1)->count();
     }
 
     public function calculateCouponDiscount($unitPrice, $quantity)
@@ -28,17 +35,17 @@ class Coupon extends \Eloquent
 
     public static function getValidCouponInstance()
     {
-        if (Input::has("code")&& Input::has("coupon_instance")) {
+        if (Input::has("code") && Input::has("coupon_instance")) {
             $validCoupon = CouponInstance::where("code", "=", Input::get("code"))
                 ->where("token", "=", Input::get("coupon_instance"))
                 ->where("used", "=", 0)->first();
-             if ($validCoupon) {
+            if ($validCoupon) {
                 $couponInstance = Coupon::where("code", "=", Input::get("code"))
-                    ->where("active","=",1)
+                    ->where("active", "=", 1)
                     ->first();
                 if ($couponInstance) {
                     if ($couponInstance->min_units == 0 || $couponInstance->min_units <= Input::get("quantity")) {
-                        $validCoupon->used=1;
+                        $validCoupon->used = 1;
                         $validCoupon->save();
                         return $couponInstance;
                     }

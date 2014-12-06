@@ -50,7 +50,7 @@ Route::group(array('before' => 'admin'), function () {
         'uses' => 'AdminController@coupons',
     ));
 
-    Route::post('/admin/stats', array(
+    Route::any('/admin/stats', array(
         'as' => 'post-admin-stats',
         'uses' => 'AdminController@getStats',
     ));

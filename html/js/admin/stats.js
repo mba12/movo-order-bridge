@@ -1,5 +1,6 @@
 var Stats = (function () {
     function Stats() {
+        this.setSelectors();
         this.initPusherEvents();
         this.initTextFit();
         this.initCouponDoughnuts();
@@ -12,19 +13,49 @@ var Stats = (function () {
         var channel = pusher.subscribe("orderChannel");
         channel.bind("completedOrder", function (data) {
             _this.reloadStats();
-            console.log("order completed");
         });
     };
+    Stats.prototype.setSelectors = function () {
+        this.$lastHour = $('.hour').find('.textFitted');
+        this.$lastDay = $('.day').find('.textFitted');
+        this.$lastWeek = $('.week').find('.textFitted');
+        this.$lastMonth = $('.month').find('.textFitted');
+        this.$errors = $('.errors').find('.textFitted');
+        this.$coupons = $("#coupons");
+        this.$couponLis = $("#coupons").find("li");
+    };
     Stats.prototype.reloadStats = function () {
+        var _this = this;
         $.ajax({
             type: 'POST',
             url: "/admin/stats",
             success: function (response) {
-                console.log(response.orderCount);
-                $('.order-count').find('.count').html(response.orderCount);
-                $('.error-count').find('.count').html(response.errorCount);
+                _this.onStatsLoaded(response);
             }
         });
+    };
+    Stats.prototype.onStatsLoaded = function (response) {
+        this.updateOrderStats(response);
+        this.updateCouponStats(response);
+    };
+    Stats.prototype.updateOrderStats = function (response) {
+        $('.hour').find('.textFitted').html(response.lastHour);
+        $('.day').find('.textFitted').html(response.lastDay);
+        $('.week').find('.textFitted').html(response.lastWeek);
+        $('.month').find('.textFitted').html(response.lastMonth);
+        $('.errors').find('.textFitted').html(response.errors);
+    };
+    Stats.prototype.updateCouponStats = function (response) {
+        for (var i = 0; i < response.coupons.length; i++) {
+            var $li = $(this.$couponLis[i]);
+            $li.find(".percent").attr('data-used', response.couponCounts[i]);
+            $li.find(".percent").attr("data-left", response.coupons[i].limit - response.couponCounts[i]);
+            $li.find(".used").html(response.couponCounts[i]);
+            if (response.coupons[i].limit > 0) {
+                $li.find(".detail").html(response.couponCounts[i] + " of " + response.coupons[i].limit + " used");
+                this.initCouponDoughnuts();
+            }
+        }
     };
     Stats.prototype.initTextFit = function () {
         textFit($('.number, .no-limit'));
