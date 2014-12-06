@@ -677,7 +677,8 @@ h2 {
           background-color: #595959;
           border-radius: 3px;
           padding: 3px 6px;
-          font-size: 0.84375em; }
+          font-size: 0.84375em;
+          white-space: nowrap; }
       .orders #orders li a .right {
         display: table-cell;
         vertical-align: middle; }
