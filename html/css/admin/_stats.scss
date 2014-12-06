@@ -18,10 +18,6 @@
           border-radius: 200px;
           margin-bottom: 12px;
           position:      relative;
-          /*@include transition(0.2s all);
-          &:hover {
-            @include transform(scale(1.06, 1.06));
-          }*/
           .number {
             color:       $white;
             font-size:   em(47);
@@ -62,7 +58,9 @@
         }
         .period {
           font-weight: 500;
-          font-size:   em(17);
+          color: $darkGray;
+          margin-bottom: 0px;
+          font-size:     em(17);
         }
       }
 
