@@ -113,9 +113,8 @@ Route::get('/info', function () {
 
 Route::get("/test", function(){
 
-    $o=(new Order)->lastHour();
-    echo (date('Y-m-d H:i:s',strtotime("-60 minute"))) ;
-    dd($o);
+    $pusher = App::make("Pusher");
+    $pusher->trigger("orderChannel", "completedOrder", []);
 
 })  ;
 
