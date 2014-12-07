@@ -26,7 +26,7 @@
                     {{$order->billing_address}}<br>
                     {{$order->billing_city}}, {{$order->billing_state}} {{$order->billing_zip}}<br>
                     {{$order->billing_country}}<br>
-                    {{$order->billing_phone}}
+                    {{\Movo\Helpers\Format::FormatPhoneNumber($order->billing_phone)}}
                 </div>
                 <div class="row">
                     <h3>Shipping:</h3>
@@ -34,7 +34,7 @@
                    {{$order->shipping_address}} <br>
                    {{$order->shipping_city}}, {{$order->shipping_state}} {{$order->billing_zip}}<br>
                    {{$order->shipping_country}}<br>
-                   {{$order->shipping_phone}}
+                   {{\Movo\Helpers\Format::FormatPhoneNumber($order->shipping_phone)}}
                 </div>
                 <div class="row">
                     <h3>Items:</h3>
