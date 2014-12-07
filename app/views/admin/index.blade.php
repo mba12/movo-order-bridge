@@ -50,10 +50,12 @@
             <h2>Coupons</h2>
             <ul>
                 @foreach($coupons as $coupon)
-                    @if($coupon->limit>0)
-                      @include("admin.coupon-limited")
-                    @else
-                       @include("admin.coupon-unlimited")
+                    @if($coupon->active)
+                        @if($coupon->limit>0)
+                          @include("admin.coupon-limited")
+                        @else
+                           @include("admin.coupon-unlimited")
+                        @endif
                     @endif
                 @endforeach
 
