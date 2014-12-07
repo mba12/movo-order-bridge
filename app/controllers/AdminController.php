@@ -57,6 +57,7 @@ class AdminController extends \BaseController
 
     public function orderDetails($id)
     {
+
         $order = Order::find($id);
 
 
@@ -68,6 +69,7 @@ class AdminController extends \BaseController
 
     public function orderSearch()
     {
+
         $searchField = Input::get("search");
         $criteria = Input::get("criteria");
         if ($searchField != "" || $criteria == "error_flag") {

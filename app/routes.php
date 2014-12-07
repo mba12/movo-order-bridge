@@ -76,7 +76,7 @@ Route::group(array('before' => 'admin'), function () {
         ]);
     });
 
-    Route::any('/admin/orders/search/', [
+    Route::any('/admin/order/search/', [
         'as' => 'order-search',
         'uses' => 'AdminController@orderSearch'
     ]);
