@@ -22,17 +22,17 @@
                 </div>
                 <div class="row">
                     <h3>Billing:</h3>
-                    {{$order->billing_first_name}} {{$order->billing_last_name}}<br>
-                    {{$order->billing_address}}<br>
-                    {{$order->billing_city}}, {{$order->billing_state}} {{$order->billing_zip}}<br>
+                    {{ucwords(strtolower($order->billing_first_name))}} {{ucwords(strtolower($order->billing_last_name))}}<br>
+                    {{ucwords(strtolower($order->billing_address))}}<br>
+                    {{ucwords(strtolower($order->billing_city))}}, {{$order->billing_state}} {{$order->billing_zip}}<br>
                     {{$order->billing_country}}<br>
                     {{$order->billing_phone}}
                 </div>
                 <div class="row">
                     <h3>Shipping:</h3>
-                   {{$order->shipping_first_name}} {{$order->shipping_last_name}}<br>
-                   {{$order->shipping_address}} <br>
-                   {{$order->shipping_city}}, {{$order->shipping_state}} {{$order->billing_zip}}<br>
+                   {{ucwords(strtolower($order->shipping_first_name))}} {{ucwords(strtolower($order->shipping_last_name))}}<br>
+                   {{ucwords(strtolower($order->shipping_address))}} <br>
+                   {{ucwords(strtolower($order->shipping_city))}}, {{$order->shipping_state}} {{$order->billing_zip}}<br>
                    {{$order->shipping_country}}<br>
                    {{$order->shipping_phone}}
                 </div>
