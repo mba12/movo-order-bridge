@@ -1,5 +1,3 @@
-/// <reference path="../definitions/jquery.d.ts" />
-/// <reference path="../definitions/chart.d.ts" />
 var Stats = (function () {
     function Stats() {
         this.setSelectors();
@@ -56,6 +54,7 @@ var Stats = (function () {
             $li.find(".used").html(response.couponCounts[i]);
             if (response.coupons[i].limit > 0) {
                 $li.find(".detail").html(response.couponCounts[i] + " of " + response.coupons[i].limit + " used");
+                $li.find(".used").html(((response.couponCounts[i] / response.coupons[i].limit) * 100).toFixed(0));
                 this.initCouponDoughnuts();
             }
         }

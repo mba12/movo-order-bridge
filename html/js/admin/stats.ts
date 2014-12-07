@@ -68,6 +68,7 @@ class Stats {
             $li.find(".used").html(response.couponCounts[i]);
             if(response.coupons[i].limit>0){
                 $li.find(".detail").html(response.couponCounts[i]+" of "+response.coupons[i].limit+" used")
+                $li.find(".used").html(((response.couponCounts[i]/response.coupons[i].limit)*100).toFixed(0));
                 this.initCouponDoughnuts();
             }
         }
