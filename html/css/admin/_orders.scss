@@ -49,6 +49,12 @@
           display:          table-cell;
           width: 74px;
           vertical-align: top;
+          &.error {
+            .date {
+              background-color: $movoRed;
+              color: $white;
+            }
+          }
           .date {
             text-align: center;
             margin-right:     8px;
@@ -103,6 +109,9 @@
           margin-bottom: 19px;
           line-height: 1.15em;
           color: #535353;
+          &.error {
+            color: $movoRed;
+          }
           .items {
             li {
               margin-bottom: 4px;

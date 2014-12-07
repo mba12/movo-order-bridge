@@ -2,7 +2,7 @@
                     @foreach($orders as $order)
                         <li>
                             <a href="{{'/admin/orders/'.$order->id}}">
-                                <div class="left">
+                                <div class="left {{$order->error_flag ? 'error':''}}">
                                     <div class="date">{{ date("m-d-y", strtotime( $order->created_at)) }}</div>
                                 </div>
                                 <div class="right">

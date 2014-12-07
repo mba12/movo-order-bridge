@@ -48,9 +48,7 @@
                 </div>
                 <div class="row">
                     <h3>Shipping:</h3>
-                    <div class="row">
                         {{$shipping->type}} ({{$shipping->scac_code}})
-                    </div>
                 </div>
                 <div class="row">
                     <h3>Coupon:</h3>
@@ -63,6 +61,10 @@
                 <div class="row">
                     <h3>Stripe Token:</h3>
                      {{$order->stripe_charge_id}}
+                </div>
+                <div class="row {{$order->error_flag ? 'error' : ''}}">
+                    <h3>Error:</h3>
+                    {{$order->error_flag ? 'true' : 'false'}}
                 </div>
             </div>
         </div>

@@ -670,6 +670,9 @@ h2 {
         display: table-cell;
         width: 74px;
         vertical-align: top; }
+        .orders #orders li a .left.error .date {
+          background-color: #f52f41;
+          color: white; }
         .orders #orders li a .left .date {
           text-align: center;
           margin-right: 8px;
@@ -714,6 +717,8 @@ h2 {
   margin-bottom: 19px;
   line-height: 1.15em;
   color: #535353; }
+  .orders.order-details .inner .details .row.error {
+    color: #f52f41; }
   .orders.order-details .inner .details .row .items li {
     margin-bottom: 4px; }
   .orders.order-details .inner .details .row h3 {
