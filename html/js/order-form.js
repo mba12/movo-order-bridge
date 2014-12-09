@@ -688,6 +688,7 @@ var Payment = (function (_super) {
     function Payment($pagination, fixedRightModule) {
         _super.call(this, $pagination);
         this.fixedRightModule = fixedRightModule;
+        this.trackables = [];
         this.setSelectors();
         this.initEvents();
         this.initStripe();
@@ -734,6 +735,9 @@ var Payment = (function (_super) {
     Payment.prototype.createStripeToken = function () {
         var data = this.$form.serialize();
         Stripe.createToken(this.$form, $.proxy(this.stripResponseHandler, this));
+    };
+    Payment.prototype.addTracker = function (tracker) {
+        this.trackables.push(tracker);
     };
     Payment.prototype.stripResponseHandler = function (status, response) {
         if (response.error) {
@@ -800,8 +804,9 @@ var Payment = (function (_super) {
         });
     };
     Payment.prototype.trackOrder = function (data) {
-        var tracker = new GoogleTrackOrder();
-        tracker.track(data);
+        for (var i = 0; i < this.trackables.length; i++) {
+            this.trackables[i].track(data);
+        }
     };
     Payment.prototype.displayShippingAddress = function () {
         this.$shippingName.html($("#shipping-first-name").val() + " " + $("#shipping-last-name").val());
@@ -1124,6 +1129,14 @@ var GoogleTrackOrder = (function () {
     };
     return GoogleTrackOrder;
 })();
+var FacebookTrackOrder = (function () {
+    function FacebookTrackOrder() {
+    }
+    FacebookTrackOrder.prototype.track = function (data) {
+        window['_fbq'].push(['track', '6021218673084', { 'value': data['order-total'], 'currency': 'USD' }]);
+    };
+    return FacebookTrackOrder;
+})();
 var OrderForm = (function () {
     function OrderForm() {
         this.setSelectors();
@@ -1133,7 +1146,9 @@ var OrderForm = (function () {
         new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
         new BillingInfo(pagination);
-        new Payment(pagination, fixedRightModule);
+        var payment = new Payment(pagination, fixedRightModule);
+        payment.addTracker(new GoogleTrackOrder());
+        payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination, fixedRightModule);
     }
     OrderForm.prototype.setSelectors = function () {

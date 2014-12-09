@@ -14,6 +14,7 @@ class Payment extends ScreenBase {
     private $shippingName:JQuery;
     private $shippingStreet:JQuery;
     private $shippingCityStateZip:JQuery;
+    private trackables:Trackable[]=[];
 
     constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
@@ -67,6 +68,11 @@ class Payment extends ScreenBase {
     private createStripeToken() {
         var data = this.$form.serialize();
         Stripe.createToken(this.$form, $.proxy(this.stripResponseHandler, this));
+    }
+
+
+    public addTracker(tracker:Trackable):void{
+        this.trackables.push(tracker);
     }
 
     private stripResponseHandler(status, response) {
@@ -137,8 +143,9 @@ class Payment extends ScreenBase {
 
 
     private trackOrder(data):void {
-        var tracker:Trackable = new GoogleTrackOrder();
-        tracker.track(data);
+        for (var i = 0; i < this.trackables.length; i++) {
+            this.trackables[i].track(data);
+        }
     }
 
     private displayShippingAddress():void {

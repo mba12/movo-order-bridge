@@ -19,6 +19,7 @@
 /// <reference path="orders/order.ts" />
 /// <reference path="orders/tracking-interface.ts" />
 /// <reference path="orders/google-track-order.ts" />
+/// <reference path="orders/facebook-track-order.ts" />
 
 class OrderForm {
 
@@ -32,9 +33,11 @@ class OrderForm {
         new ShippingInfo(pagination,fixedRightModule);
         new Products(pagination);
         new BillingInfo(pagination);
-        new Payment(pagination,fixedRightModule);
+        var payment:Payment=new Payment(pagination,fixedRightModule);
+        payment.addTracker(new GoogleTrackOrder());
+        payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination,fixedRightModule);
-        //pagination.gotoPage(2);
+
 
     }
 
