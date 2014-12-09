@@ -112,9 +112,12 @@ Route::get('/info', function () {
 
 
 Route::get("/test", function(){
-
+   /* $order=Order::find(10);
+    $items=$order->items->all();
+    $result= $order->combineAndCountItems($items,"description");
+    dd($result) ;
     $pusher = App::make("Pusher");
-    $pusher->trigger("orderChannel", "completedOrder", []);
+    $pusher->trigger("orderChannel", "completedOrder", []);*/
 
 })  ;
 

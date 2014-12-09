@@ -38,31 +38,50 @@ class Order extends \Eloquent
         'error_flag',
     ];
 
-    public function items(){
+    public function items()
+    {
         return $this->hasMany("Item");
     }
+
+    public function combineAndCountItems($items, $key)
+    {
+        $combinedItems=[];
+
+        foreach ($items as $item) {
+            if(!isset($combinedItems[$item[$key]])){
+                $combinedItems[$item[$key]]=[
+                    $key=>$item[$key],
+                    "count"=>1
+                ];
+            }else{
+                $combinedItems[$item[$key]]['count']++;
+            }
+        }
+        return $combinedItems;
+    }
+
     public function lastHour()
     {
-        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-60 minute")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-60 minute")));
     }
 
     public function lastDay()
     {
-        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-1 day")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 day")));
     }
 
     public function lastWeek()
     {
-        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-1 week")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 week")));
     }
 
     public function lastMonth()
     {
-        return $this->where("created_at", ">=", date('Y-m-d H:i:s',strtotime("-1 month")));
+        return $this->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 month")));
     }
 
     public function errors()
     {
-        return $this->where("error_flag",">",0);
+        return $this->where("error_flag", ">", 0);
     }
 }
