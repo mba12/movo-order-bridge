@@ -27,6 +27,8 @@ class ShippingInfo extends ScreenBase {
     private $billingState:JQuery;
     private $billingZip:JQuery;
 
+    private $after3pm:JQuery;
+
     constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
         this.setSelectors();
@@ -34,6 +36,7 @@ class ShippingInfo extends ScreenBase {
         this.setCountryToUnitedStates();
         this.initPriceSelect();
         this.showStateSelectOrInput();
+        this.show3pmMessageIfNecessary();
     }
 
     public setSelectors() {
@@ -65,6 +68,7 @@ class ShippingInfo extends ScreenBase {
         this.$currentPage = this.$shippingPage;
         super.setSelectors();
         this.$spinner = this.$currentPage.find('.spinner');
+        this.$after3pm = $('#after-3pm');
     }
 
     public initEvents() {
@@ -191,6 +195,14 @@ class ShippingInfo extends ScreenBase {
             this.pagination.next();
             this.pagination.showCurrentPage();
         });
+    }
+
+    private show3pmMessageIfNecessary():void {
+        if($('body').hasClass('after3pm')) {
+            this.$after3pm.show();
+        } else {
+            this.$after3pm.hide();
+        }
     }
 
 

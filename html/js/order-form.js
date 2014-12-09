@@ -549,6 +549,7 @@ var ShippingInfo = (function (_super) {
         this.setCountryToUnitedStates();
         this.initPriceSelect();
         this.showStateSelectOrInput();
+        this.show3pmMessageIfNecessary();
     }
     ShippingInfo.prototype.setSelectors = function () {
         this.$shippingSelect = $('#shipping-type');
@@ -577,6 +578,7 @@ var ShippingInfo = (function (_super) {
         this.$currentPage = this.$shippingPage;
         _super.prototype.setSelectors.call(this);
         this.$spinner = this.$currentPage.find('.spinner');
+        this.$after3pm = $('#after-3pm');
     };
     ShippingInfo.prototype.initEvents = function () {
         var _this = this;
@@ -690,6 +692,14 @@ var ShippingInfo = (function (_super) {
             _this.pagination.next();
             _this.pagination.showCurrentPage();
         });
+    };
+    ShippingInfo.prototype.show3pmMessageIfNecessary = function () {
+        if ($('body').hasClass('after3pm')) {
+            this.$after3pm.show();
+        }
+        else {
+            this.$after3pm.hide();
+        }
     };
     return ShippingInfo;
 })(ScreenBase);
@@ -1173,7 +1183,7 @@ var OrderForm = (function () {
         new BillingInfo(pagination);
         new Payment(pagination, fixedRightModule);
         new Summary(pagination, fixedRightModule);
-        //pagination.gotoPage(3);
+        //pagination.gotoPage(2);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

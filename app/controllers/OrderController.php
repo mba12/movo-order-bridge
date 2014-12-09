@@ -7,7 +7,6 @@ class OrderController extends BaseController
 {
     public function showForm()
     {
-
         $unitPrice = Product::getUnitPrice();
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
@@ -24,7 +23,8 @@ class OrderController extends BaseController
             'unitPrice' => $unitPrice,
             'sizeInfo' => $sizeInfo,
             'coupon' => $coupon,
-            'stateTaxMethods' => $stateTaxMethods
+            'stateTaxMethods' => $stateTaxMethods,
+            'after3pm' => strtotime("03:00 pm") - time() < 0
         ]);
     }
 

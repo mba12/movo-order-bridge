@@ -713,6 +713,11 @@ body {
       margin-right: 5px; }
       .ua-ios #form-content-box #shipping-info #use-billing-address input {
         height: 16px; }
+  #form-content-box #shipping-info #after-3pm {
+    font-size: 0.84375em;
+    font-weight: 600;
+    line-height: 1.2em;
+    margin-top: 10px; }
   #form-content-box #billing-info {
     display: none; }
   #form-content-box #payment {

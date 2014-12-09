@@ -5,10 +5,6 @@
     font-size:     em(13);
     label {
       display: block;
-      .ua-ios & {
-        //margin-top: -10px;
-      }
-      
     }
     input {
       height:       12px;
@@ -17,5 +13,12 @@
         height: 16px;
       }
     }
+  }
+  #after-3pm {
+    font-size: em(13.5);
+    font-weight: 600;
+    line-height: 1.2em;
+    margin-top: 10px;
+
   }
 }
