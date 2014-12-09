@@ -8,7 +8,7 @@
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css"/>
     </head>
-<body>
+<body class="{{ $after3pm ? 'after3pm' : '' }}">
         <script type="text/javascript">
             var TAX_TABLE=[];
             @foreach($stateTaxMethods as $method)

@@ -48,29 +48,16 @@
      <section id="coupons">
         <div class="inner">
             <h2>Coupons</h2>
-            <ul>
-                @foreach($coupons as $coupon)
-                    @if($coupon->active)
-                        @if($coupon->limit>0)
-                          @include("admin.coupon-limited")
-                        @else
-                           @include("admin.coupon-unlimited")
-                        @endif
-                    @endif
-                @endforeach
-
-            </ul>
+            <ul></ul>
         </div>
      </section>
 @stop
 @section('inline-scripts')
+    <script type="text/template" id="coupon-limited-tpl">
+         @include("admin.coupon-limited")
+    </script>
+    <script type="text/template" id="coupon-unlimited-tpl">
+         @include("admin.coupon-unlimited")
+    </script>
     <script src="/js/admin/stats.js"></script>
-    {{--<script type="text/template" id="coupon-limited-tpl">--}}
-         {{--@include("admin.coupon-limited")--}}
-    {{--</script>--}}
-    {{--<script type="text/template" id="coupon-unlimited-tpl">--}}
-         {{--@include("admin.coupon-limited")--}}
-    {{--</script>--}}
 @stop
-
-

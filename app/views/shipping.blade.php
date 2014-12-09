@@ -358,6 +358,7 @@
             <select name="shipping-type" id="shipping-type" data-validate="min:1" data-error-selector=".error-messages .shipping-type"></select>
         </div>
     </div>
+    <div id="after-3pm">Please note: Orders placed after 3pm EST will be processed for shipment the following business day.</div>
     <ul class="error-messages">
         <li class="first-name">Please enter a first name!</li>
         <li class="last-name">Please enter a last name!</li>

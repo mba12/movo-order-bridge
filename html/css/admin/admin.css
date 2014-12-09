@@ -541,21 +541,23 @@ h2 {
       position: relative;
       margin-bottom: 12px; }
       .stats #coupons ul li .circle .doughnut {
-        width: 135px !important;
-        height: 135px !important; }
+        width: 140px !important;
+        height: 140px !important; }
       .stats #coupons ul li .circle .percent {
         z-index: -1;
         position: absolute;
         top: 0;
-        left: 0;
-        width: 100%;
-        padding: 47px 24px 0;
-        font-size: 2.6875em;
+        left: 2px;
+        width: 135px;
+        height: 135px;
+        padding: 49px 0 0;
+        font-size: 2.625em;
         font-weight: 300;
-        margin-left: 5px; }
+        margin-left: 5px;
+        text-align: center; }
         .stats #coupons ul li .circle .percent.no-limit {
           margin-left: 0;
-          padding-top: 45px; }
+          padding: 47px 25px 40px; }
         .stats #coupons ul li .circle .percent sup {
           font-size: 0.53125em;
           position: relative;

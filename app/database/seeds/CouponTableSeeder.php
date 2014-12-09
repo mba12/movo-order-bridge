@@ -13,6 +13,7 @@ class CouponTableSeeder extends Seeder
 
         Eloquent::unguard();
         DB::table('coupons')->delete();
+        DB::table('coupon_instances')->delete();
 
         $coupon=new Coupon();
         $coupon->name="friends20";
