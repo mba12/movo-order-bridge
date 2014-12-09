@@ -11,6 +11,7 @@
 @import "fonts";
 @import "colors";
 
+
 body {
   color:            $darkGray;
   font-family:      'Open Sans', sans-serif;
@@ -156,7 +157,7 @@ body {
     position: absolute;
     top:      -15px;
     right:    -15px;
-    @include retina-div('../img/close', 'png', 36, 36);
+    @include retina-div('/img/close', 'png', 36, 36);
     cursor:   pointer;
     @include transition(0.3s all);
     &:hover {

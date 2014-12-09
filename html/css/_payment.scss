@@ -1,11 +1,11 @@
 #payment {
   display: none;
   .credit-cards {
-    @include retina-div('../img/credit-cards', 'png', 143, 23);
+    @include retina-div('/img/credit-cards', 'png', 143, 23);
     margin-bottom: 10px;
     float: left;
     @include media($tablet) {
-      @include retina-div('../img/credit-cards', 'png', 159, 26);
+      @include retina-div('/img/credit-cards', 'png', 159, 26);
     }
   }
   #secure {
@@ -14,7 +14,7 @@
     margin-top: 7px;
     float: right;
     #lock-icon {
-      @include retina-div('../img/lock', 'png', 13, 17);
+      @include retina-div('/img/lock', 'png', 13, 17);
       display: inline-block;
       opacity: 0.8;
     }

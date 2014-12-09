@@ -10,7 +10,8 @@
 		"guzzlehttp/guzzle": "~4.0",
 		"pusher/pusher-php-server": "~2.0",
 		"nategood/httpful": "*",
-		"indatus/dispatcher" :"~1.4"
+		"indatus/dispatcher" :"~1.4",
+		"stolz/assets": "dev-master"
 	},
 	"require-dev": {
 	  "way/generators": "~2.0",

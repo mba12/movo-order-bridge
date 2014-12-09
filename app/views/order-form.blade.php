@@ -6,7 +6,7 @@
         <title>Movo - Order Form</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/main.css"/>
+        {{Assets::css()}}
     </head>
 <body class="{{ $after3pm ? 'after3pm' : '' }}">
         <script type="text/javascript">
@@ -53,15 +53,10 @@
                {{Form::close()}}
            </div>
 
-       <script src="js/vendor/jquery/jquery.js"></script>
-       <script src="js/vendor/cssua/cssua.js"></script>
-       <script src="js/vendor/fastclick/fastclick.js"></script>
-       <script src="js/vendor/Stepper/jquery.fs.stepper.js"></script>
-       <script src="js/vendor/greensock/TweenMax.min.js"></script>
-       <script src="js/vendor/placeholder/jquery.placeholder.js"></script>
-       <script src="js/vendor/js-signals/signals.js"></script>
-       <script src="https://js.stripe.com/v2/"></script>
-       <script src="/js/order-form.js"></script>
+
+
+            <script src="https://js.stripe.com/v2/"></script>
+            {{Assets::js()}}
 
        <script type="text/javascript">
 
