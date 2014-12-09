@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
         User::create(array(
             "id"=>"1",
             "name"=>"admin",
-            "password"=>Hash::make("movoadmin"),
+            "password"=>Hash::make("HrKwO4ApDutpwSLzMY7A"),
             "role"=>'admin',
         ));
     }
