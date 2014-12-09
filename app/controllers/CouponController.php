@@ -115,7 +115,7 @@ class CouponController extends \BaseController
     public function couponLimitReached($coupon, $quantity, $instanceCount)
     {
 
-        if (($instanceCount <= $coupon->limit || $coupon->limit == 0) && $coupon->min_units <= $quantity) {
+        if (($instanceCount < $coupon->limit || $coupon->limit == 0) && $coupon->min_units <= $quantity) {
             return false;
         }
         return true;

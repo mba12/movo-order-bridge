@@ -1,10 +1,10 @@
 <li>
     <div class="circle">
-        <div class="percent" data-used="{{$coupon->usedCoupons()->count()}}" data-left="{{$coupon->limit-$coupon->usedCoupons()->count()}}"><span class="used">{{round($coupon->usedCoupons()->count()/$coupon->limit*100)}}</span><sup>%</sup></div>
-        <canvas class="doughnut" width="135" height="135"></canvas>
+        <div class="percent" data-used="" data-left=""><span class="used">0</span><sup>%</sup></div>
+        <canvas class="doughnut" width="140" height="140"></canvas>
     </div>
     <div class="bottom">
-        <div class="coupon">{{$coupon->code}}</div>
-        <div class="detail">{{$coupon->usedCoupons()->count()}} of {{$coupon->usedCoupons()->count() + $coupon->limit-$coupon->usedCoupons()->count()}} used</div>
+        <div class="coupon"></div>
+        <div class="detail"></div>
     </div>
 </li>

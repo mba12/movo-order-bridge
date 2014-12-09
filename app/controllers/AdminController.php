@@ -17,7 +17,7 @@ class AdminController extends \BaseController
 
     private function getStatsArray()
     {
-        $coupons = Coupon::all();
+        $coupons = Coupon::where('active', '=', 1)->get();
         $couponCounts = [];
         foreach ($coupons as $coupon) {
             $couponCounts[] = $coupon->usedCoupons()->count();
@@ -74,7 +74,7 @@ class AdminController extends \BaseController
         $criteria = Input::get("criteria");
         if ($searchField != "" || $criteria == "error_flag") {
             if ($criteria == "error_flag" && $searchField == "") $searchField = 1;
-            $searchResults = Order::where($criteria, "LIKE", "%" . $searchField . "%")->paginate(15);
+            $searchResults = Order::where($criteria, "LIKE", "%" . $searchField . "%")->paginate(36);
             return View::make("admin.search-results", [
                 'orders' => $searchResults
             ]);

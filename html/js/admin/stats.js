@@ -1,3 +1,5 @@
+/// <reference path="../definitions/jquery.d.ts" />
+/// <reference path="../definitions/chart.d.ts" />
 var Stats = (function () {
     function Stats() {
         this.setSelectors();
@@ -22,7 +24,8 @@ var Stats = (function () {
         this.$lastMonth = $('.month').find('.textFitted');
         this.$errors = $('.errors').find('.textFitted');
         this.$coupons = $("#coupons");
-        this.$couponLis = $("#coupons").find("li");
+        this.$couponsUl = $("#coupons").find('ul');
+        this.$couponLis = this.$couponsUl.find("li");
     };
     Stats.prototype.reloadStats = function () {
         var _this = this;
@@ -37,7 +40,10 @@ var Stats = (function () {
     };
     Stats.prototype.onStatsLoaded = function (response) {
         this.updateOrderStats(response);
+        this.drawCouponLis(response);
         this.updateCouponStats(response);
+        this.removeUnusedCouponLis(response);
+        this.initTextFit();
     };
     Stats.prototype.updateOrderStats = function (response) {
         $('.hour').find('.textFitted').html(response.lastHour);
@@ -46,16 +52,51 @@ var Stats = (function () {
         $('.month').find('.textFitted').html(response.lastMonth);
         $('.errors').find('.textFitted').html(response.errors);
     };
-    Stats.prototype.updateCouponStats = function (response) {
+    Stats.prototype.drawCouponLis = function (response) {
+        var $lis = this.$couponsUl.find('li');
         for (var i = 0; i < response.coupons.length; i++) {
-            var $li = $(this.$couponLis[i]);
-            $li.find(".percent").attr('data-used', response.couponCounts[i]);
-            $li.find(".percent").attr("data-left", response.coupons[i].limit - response.couponCounts[i]);
-            $li.find(".used").html(response.couponCounts[i]);
+            var $li;
             if (response.coupons[i].limit > 0) {
+                $li = $($('#coupon-limited-tpl').html());
+            }
+            else {
+                $li = $($('#coupon-unlimited-tpl').html());
+            }
+            if ($lis[i]) {
+                if ($($lis[i]).find('.coupon').html() != response.coupons[i].code) {
+                    $(this.$couponLis[i]).html($li.html());
+                }
+            }
+            else {
+                this.$couponsUl.append($li);
+            }
+        }
+    };
+    Stats.prototype.updateCouponStats = function (response) {
+        var $lis = this.$couponsUl.find('li');
+        for (var i = 0; i < response.coupons.length; i++) {
+            var $li = $($lis[i]);
+            $li.find(".coupon").html(response.coupons[i].code);
+            if (response.coupons[i].limit > 0) {
+                $li.find(".percent").attr('data-used', response.couponCounts[i]);
+                $li.find(".percent").attr("data-left", response.coupons[i].limit - response.couponCounts[i]);
                 $li.find(".detail").html(response.couponCounts[i] + " of " + response.coupons[i].limit + " used");
                 $li.find(".used").html(((response.couponCounts[i] / response.coupons[i].limit) * 100).toFixed(0));
-                this.initCouponDoughnuts();
+            }
+            else {
+                $li.find(".detail").html("no limit");
+                $li.find(".percent").attr('data-used', 0);
+                $li.find(".percent").attr("data-left", 1);
+                $li.find(".percent").html(response.couponCounts[i]);
+            }
+        }
+        this.initCouponDoughnuts();
+    };
+    Stats.prototype.removeUnusedCouponLis = function (response) {
+        var $lis = this.$couponsUl.find('li');
+        for (var i = 0; i < $lis.length; i++) {
+            if (!response.coupons[i]) {
+                $($lis[i]).remove();
             }
         }
     };
@@ -80,7 +121,7 @@ var Stats = (function () {
                     animationEasing: "easeInOutQuint",
                     showTooltips: false
                 });
-            }, 325 * i);
+            }, 310 * i);
         });
     };
     return Stats;

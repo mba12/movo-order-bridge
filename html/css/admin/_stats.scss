@@ -79,22 +79,27 @@
           position:      relative;
           margin-bottom: 12px;
           .doughnut {
-            width: 135px !important;
-            height: 135px !important;
+            width: 140px !important;
+            height: 140px !important;
           }
           .percent {
             z-index:     -1;
             position:    absolute;
             top:         0;
-            left:        0;
-            width:       100%;
-            padding:     47px 24px 0;
-            font-size:   em(43);
+            left:        2px;
+            width:       135px;
+            height: 135px;
+            padding:     49px 0 0;
+            font-size:   em(42);
             font-weight: 300;
             margin-left: 5px;
+            text-align: center;
             &.no-limit {
               margin-left: 0;
-              padding-top: 45px;
+              padding: 47px 25px 40px;
+            }
+            .used {
+
             }
             sup {
               font-size: em(8.5);

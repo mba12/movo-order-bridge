@@ -9,6 +9,7 @@ class Stats {
     private $lastMonth:JQuery;
     private $errors:JQuery;
     private $coupons:JQuery;
+    private $couponsUl:JQuery;
     private $couponLis:JQuery;
 
     constructor() {
@@ -35,7 +36,8 @@ class Stats {
         this.$lastMonth = $('.month').find('.textFitted');
         this.$errors = $('.errors').find('.textFitted');
         this.$coupons = $("#coupons");
-        this.$couponLis = $("#coupons").find("li");
+        this.$couponsUl = $("#coupons").find('ul');
+        this.$couponLis = this.$couponsUl.find("li");
     }
 
     private reloadStats():void {
@@ -49,7 +51,10 @@ class Stats {
 
     private onStatsLoaded(response):void {
         this.updateOrderStats(response);
+        this.drawCouponLis(response);
         this.updateCouponStats(response);
+        this.removeUnusedCouponLis(response);
+        this.initTextFit();
     }
 
     private updateOrderStats(response):void {
@@ -60,16 +65,51 @@ class Stats {
         $('.errors').find('.textFitted').html(response.errors);
     }
 
-    private updateCouponStats(response):void {
+    private drawCouponLis(response):void {
+        var $lis:JQuery = this.$couponsUl.find('li');
+
         for (var i = 0; i < response.coupons.length; i++) {
-            var $li = $(this.$couponLis[i]);
-            $li.find(".percent").attr('data-used', response.couponCounts[i]);
-            $li.find(".percent").attr("data-left", response.coupons[i].limit - response.couponCounts[i]);
-            $li.find(".used").html(response.couponCounts[i]);
+            var $li:JQuery;
             if (response.coupons[i].limit > 0) {
-                $li.find(".detail").html(response.couponCounts[i] + " of " + response.coupons[i].limit + " used")
+                $li = $($('#coupon-limited-tpl').html());
+            } else {
+                $li = $($('#coupon-unlimited-tpl').html());
+            }
+            if ($lis[i]) {
+                if ($($lis[i]).find('.coupon').html() != response.coupons[i].code) {
+                    $(this.$couponLis[i]).html($li.html());
+                }
+            } else {
+                this.$couponsUl.append($li);
+            }
+        }
+    }
+
+    private updateCouponStats(response):void {
+        var $lis:JQuery = this.$couponsUl.find('li');
+        for (var i = 0; i < response.coupons.length; i++) {
+            var $li:JQuery = $($lis[i]);
+            $li.find(".coupon").html(response.coupons[i].code);
+            if (response.coupons[i].limit > 0) {
+                $li.find(".percent").attr('data-used', response.couponCounts[i]);
+                $li.find(".percent").attr("data-left", response.coupons[i].limit - response.couponCounts[i]);
+                $li.find(".detail").html(response.couponCounts[i] + " of " + response.coupons[i].limit + " used");
                 $li.find(".used").html(((response.couponCounts[i] / response.coupons[i].limit) * 100).toFixed(0));
-                this.initCouponDoughnuts();
+            } else {
+                $li.find(".detail").html("no limit");
+                $li.find(".percent").attr('data-used', 0);
+                $li.find(".percent").attr("data-left", 1);
+                $li.find(".percent").html(response.couponCounts[i]);
+            }
+        }
+        this.initCouponDoughnuts();
+    }
+
+    private removeUnusedCouponLis(response):void {
+        var $lis:JQuery = this.$couponsUl.find('li');
+        for (var i = 0; i < $lis.length; i++) {
+            if(!response.coupons[i]) {
+                $($lis[i]).remove();
             }
         }
     }
@@ -94,7 +134,7 @@ class Stats {
                     animationEasing: "easeInOutQuint",
                     showTooltips: false
                 });
-            }, 325 * i);
+            }, 310 * i);
         });
     }
 }
