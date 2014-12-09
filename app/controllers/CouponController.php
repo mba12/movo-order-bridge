@@ -75,7 +75,12 @@ class CouponController extends \BaseController
     public function deleteCoupon($id){
         $coupon=Coupon::find($id);
         if(isset($coupon)){
+            $code=$coupon->code;
+            $instances=CouponInstance::where("code", "=", $code);
+            $instances->delete();
             $coupon->delete();
+
+
         }
         return Redirect::to('/admin/coupons');;
     }
