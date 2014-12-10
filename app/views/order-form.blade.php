@@ -9,6 +9,7 @@
         {{Assets::css()}}
     </head>
 <body class="{{ $after3pm ? 'after3pm' : '' }}">
+test
         <script type="text/javascript">
             var TAX_TABLE=[];
             @foreach($stateTaxMethods as $method)
