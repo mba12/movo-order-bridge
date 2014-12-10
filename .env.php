@@ -2,8 +2,8 @@
 
 return [
     'stripeKeys' => array(
-        'secret' => 'sk_test_6k4usddYrqLuqbUk1Whjv9Rk',
-        'publishable' => 'pk_test_OuHlTHKOg57i4bZVmP7oShFy',
+        'secret' => 'sk_live_HRwsmGs8rrarrkMR3RuS3l1Q',
+        'publishable' => 'pk_live_k7POkoxvKrlibLuAOevWjqna',
     ),
     'ingram' => array(
         'partner-name' => 'movo',
