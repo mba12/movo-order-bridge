@@ -37,7 +37,6 @@ class Payment extends ScreenBase {
         this.$shippingName = $('#shipping-confirmation').find(".name");
         this.$shippingStreet = $('#shipping-confirmation').find(".street");
         this.$shippingCityStateZip = $('#shipping-confirmation').find(".cityStateZip");
-
     }
 
     public initEvents() {

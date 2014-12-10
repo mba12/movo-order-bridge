@@ -49,6 +49,7 @@ class Products extends ScreenBase {
     }
 
     private showHideTooManyUnitsMessage():void {
+
         if (parseInt(this.$quantityInputField.val()) >= FixedRightModule.MAX_UNITS) {
             this.$quantityInputField.val(FixedRightModule.MAX_UNITS.toString());
             this.$tooManyUnitsMsg.show();

@@ -37,8 +37,6 @@ class OrderForm {
         payment.addTracker(new GoogleTrackOrder());
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination,fixedRightModule);
-
-
     }
 
     private setSelectors():void {
