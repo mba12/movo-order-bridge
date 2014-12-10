@@ -14,9 +14,9 @@ class Stats {
 
     constructor() {
         this.setSelectors();
-        this.initPusherEvents();
+        //this.initPusherEvents();
+        this.initStatsRefresh();
         this.initTextFit();
-        this.initCouponDoughnuts();
         this.reloadStats();
     }
 
@@ -27,6 +27,12 @@ class Stats {
         channel.bind("completedOrder", (data)=> {
             this.reloadStats();
         });
+    }
+
+    private initStatsRefresh():void {
+        setInterval(()=> {
+            this.reloadStats();
+        }, 1000);
     }
 
     private setSelectors():void {
@@ -44,7 +50,6 @@ class Stats {
         $.ajax({
             type: 'POST', url: "/admin/stats", success: (response)=> {
                 this.onStatsLoaded(response);
-                console.log(response);
             }
         });
     }
@@ -89,6 +94,9 @@ class Stats {
         var $lis:JQuery = this.$couponsUl.find('li');
         for (var i = 0; i < response.coupons.length; i++) {
             var $li:JQuery = $($lis[i]);
+
+            if (this.couponIsUnchanged($li, response, i)) continue;
+
             $li.find(".coupon").html(response.coupons[i].code);
             if (response.coupons[i].limit > 0) {
                 $li.find(".percent").attr('data-used', response.couponCounts[i]);
@@ -101,41 +109,59 @@ class Stats {
                 $li.find(".percent").attr("data-left", 1);
                 $li.find(".percent").html(response.couponCounts[i]);
             }
+            this.initCouponDoughnuts($li, i)
+
         }
-        this.initCouponDoughnuts();
+        //this.initCouponDoughnuts();
+    }
+
+    private couponIsUnchanged($li:JQuery, response, i:number):boolean {
+        var numberIsUnchanged:boolean;
+        if (response.coupons[i].limit > 0) {
+            numberIsUnchanged = $li.find(".percent").attr('data-used') == response.couponCounts[i]
+        } else {
+            numberIsUnchanged = $li.find(".percent").find("span").html() == response.couponCounts[i]
+        }
+        return $li.find(".coupon").html() == response.coupons[i].code && numberIsUnchanged;
     }
 
     private removeUnusedCouponLis(response):void {
         var $lis:JQuery = this.$couponsUl.find('li');
         for (var i = 0; i < $lis.length; i++) {
-            if(!response.coupons[i]) {
+            if (!response.coupons[i]) {
                 $($lis[i]).remove();
             }
         }
     }
 
+
     private initTextFit():void {
         textFit($('.number, .no-limit'));
     }
 
-    private initCouponDoughnuts():void {
-        $('.doughnut').each((i, el)=> {
-            var $item:any = $(el);
-            var ctx:any = $item[0].getContext("2d");
-            var used:number = parseInt($($item.parent()).find('.percent').data('used'));
-            var left:number = parseInt($($item.parent()).find('.percent').data('left'));
+    private initCouponDoughnuts($item:any, delay:number):void {
+
+        $item.find(".doughnut").remove();
+        $item.find(".circle").append('<canvas class="doughnut" width="140" height="140"></canvas>');
+        var ctx:any = (<any>$($item.find(".doughnut"))[0]).getContext("2d");
+        ctx.clearRect(0, 0, 140, 140);
+
+
+        setTimeout(function () {
+            var used:number = parseInt($($item).find('.percent').data('used'));
+            var left:number = parseInt($($item).find('.percent').data('left'));
             var data:any = [{value: used, color: "#f6303e", label: used + " Used"}, {
                 value: left, color: "#e1e1e1", label: left + " Left"
             }];
-            setTimeout(function () {
-                new Chart(ctx).Doughnut(data, {
-                    tooltipTemplate: "<%= label %>",
-                    percentageInnerCutout: 77,
-                    animationEasing: "easeInOutQuint",
-                    showTooltips: false
-                });
-            }, 310 * i);
-        });
+            console.log(data[0].value);
+            new Chart(ctx).Doughnut(data, {
+                tooltipTemplate: "<%= label %>",
+                percentageInnerCutout: 77,
+                animationEasing: "easeInOutQuint",
+                showTooltips: false
+            });
+        }, 310 * delay);
+
     }
 }
 

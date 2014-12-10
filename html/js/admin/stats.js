@@ -1,9 +1,8 @@
 var Stats = (function () {
     function Stats() {
         this.setSelectors();
-        this.initPusherEvents();
+        this.initStatsRefresh();
         this.initTextFit();
-        this.initCouponDoughnuts();
         this.reloadStats();
     }
     Stats.prototype.initPusherEvents = function () {
@@ -14,6 +13,12 @@ var Stats = (function () {
         channel.bind("completedOrder", function (data) {
             _this.reloadStats();
         });
+    };
+    Stats.prototype.initStatsRefresh = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.reloadStats();
+        }, 1000);
     };
     Stats.prototype.setSelectors = function () {
         this.$lastHour = $('.hour').find('.textFitted');
@@ -32,7 +37,6 @@ var Stats = (function () {
             url: "/admin/stats",
             success: function (response) {
                 _this.onStatsLoaded(response);
-                console.log(response);
             }
         });
     };
@@ -74,6 +78,8 @@ var Stats = (function () {
         var $lis = this.$couponsUl.find('li');
         for (var i = 0; i < response.coupons.length; i++) {
             var $li = $($lis[i]);
+            if (this.couponIsUnchanged($li, response, i))
+                continue;
             $li.find(".coupon").html(response.coupons[i].code);
             if (response.coupons[i].limit > 0) {
                 $li.find(".percent").attr('data-used', response.couponCounts[i]);
@@ -87,8 +93,18 @@ var Stats = (function () {
                 $li.find(".percent").attr("data-left", 1);
                 $li.find(".percent").html(response.couponCounts[i]);
             }
+            this.initCouponDoughnuts($li, i);
         }
-        this.initCouponDoughnuts();
+    };
+    Stats.prototype.couponIsUnchanged = function ($li, response, i) {
+        var numberIsUnchanged;
+        if (response.coupons[i].limit > 0) {
+            numberIsUnchanged = $li.find(".percent").attr('data-used') == response.couponCounts[i];
+        }
+        else {
+            numberIsUnchanged = $li.find(".percent").find("span").html() == response.couponCounts[i];
+        }
+        return $li.find(".coupon").html() == response.coupons[i].code && numberIsUnchanged;
     };
     Stats.prototype.removeUnusedCouponLis = function (response) {
         var $lis = this.$couponsUl.find('li');
@@ -101,26 +117,27 @@ var Stats = (function () {
     Stats.prototype.initTextFit = function () {
         textFit($('.number, .no-limit'));
     };
-    Stats.prototype.initCouponDoughnuts = function () {
-        $('.doughnut').each(function (i, el) {
-            var $item = $(el);
-            var ctx = $item[0].getContext("2d");
-            var used = parseInt($($item.parent()).find('.percent').data('used'));
-            var left = parseInt($($item.parent()).find('.percent').data('left'));
+    Stats.prototype.initCouponDoughnuts = function ($item, delay) {
+        $item.find(".doughnut").remove();
+        $item.find(".circle").append('<canvas class="doughnut" width="140" height="140"></canvas>');
+        var ctx = $($item.find(".doughnut"))[0].getContext("2d");
+        ctx.clearRect(0, 0, 140, 140);
+        setTimeout(function () {
+            var used = parseInt($($item).find('.percent').data('used'));
+            var left = parseInt($($item).find('.percent').data('left'));
             var data = [{ value: used, color: "#f6303e", label: used + " Used" }, {
                 value: left,
                 color: "#e1e1e1",
                 label: left + " Left"
             }];
-            setTimeout(function () {
-                new Chart(ctx).Doughnut(data, {
-                    tooltipTemplate: "<%= label %>",
-                    percentageInnerCutout: 77,
-                    animationEasing: "easeInOutQuint",
-                    showTooltips: false
-                });
-            }, 310 * i);
-        });
+            console.log(data[0].value);
+            new Chart(ctx).Doughnut(data, {
+                tooltipTemplate: "<%= label %>",
+                percentageInnerCutout: 77,
+                animationEasing: "easeInOutQuint",
+                showTooltips: false
+            });
+        }, 310 * delay);
     };
     return Stats;
 })();
