@@ -12,9 +12,11 @@
 @import "colors";
 
 html {
-  height: 100%;
-  -webkit-overflow-scrolling: touch !important;
-  overflow: scroll !important;
+  .ua-ios & {
+    height: 100%;
+    -webkit-overflow-scrolling: touch !important;
+    overflow: scroll !important;
+  }
 }
 
 body {
@@ -23,9 +25,11 @@ body {
   @include fw-regular;
   background-color: rgba(0, 0, 0, 0.7);
   margin-bottom:    40px;
-  height: 100%;
-  -webkit-overflow-scrolling: touch !important;
-  overflow: scroll !important;
+  .ua-ios & {
+    height: 100%;
+    -webkit-overflow-scrolling: touch !important;
+    overflow: scroll !important;
+  }
 }
 
 #form-content-box {
