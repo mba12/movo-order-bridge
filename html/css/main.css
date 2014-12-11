@@ -795,6 +795,9 @@ body {
         margin-bottom: 2px; }
       #form-content-box #payment #shipping-confirmation .cityStateZip {
         margin-bottom: 6px; }
+    #form-content-box #payment #shipping-message {
+      font-size: 0.8125em;
+      line-height: 1.3em; }
     #form-content-box #payment #submit-order .order {
       display: none; }
       @media screen and (min-width: 655px) {

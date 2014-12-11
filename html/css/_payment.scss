@@ -61,6 +61,10 @@
       margin-bottom: 6px;
     }
   }
+  #shipping-message {
+    font-size: em(13);
+    line-height: 1.3em;
+  }
   #submit-order {
     .order {
       display: none;

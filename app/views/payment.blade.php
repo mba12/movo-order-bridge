@@ -64,6 +64,9 @@
         <div class="cityStateZip">Lake Oswego, OR 97034</div>
         <div id="edit-shipping" class="small-gray-button">EDIT</div>
     </div>
+    <p id="shipping-message">
+    Orders will begin shipping on Monday, December 15. Please note that due to increased holiday shipping demand, we cannot guarantee delivery by December 25th.
+    </p>
     <ul class="error-messages">
         <li class="credit-card">Please enter a credit card number!</li>
         <li class="month">Please enter an expiration month!</li>
