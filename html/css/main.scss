@@ -11,14 +11,6 @@
 @import "fonts";
 @import "colors";
 
-html {
-  .ua-ios & {
-    height: 100%;
-    -webkit-overflow-scrolling: touch !important;
-    overflow: scroll !important;
-  }
-}
-
 body {
   color:            $darkGray;
   font-family:      'Open Sans', sans-serif;
@@ -28,7 +20,7 @@ body {
   .ua-ios & {
     height: 100%;
     -webkit-overflow-scrolling: touch !important;
-    overflow: scroll !important;
+    overflow: auto !important;
   }
 }
 

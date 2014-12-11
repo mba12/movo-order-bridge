@@ -398,11 +398,6 @@ USAGE:
 .green {
   color: #0e8016; }
 
-.ua-ios html {
-  height: 100%;
-  -webkit-overflow-scrolling: touch !important;
-  overflow: scroll !important; }
-
 body {
   color: #333333;
   font-family: 'Open Sans', sans-serif;
@@ -412,7 +407,7 @@ body {
   .ua-ios body {
     height: 100%;
     -webkit-overflow-scrolling: touch !important;
-    overflow: scroll !important; }
+    overflow: auto !important; }
 
 #form-content-box {
   width: 90%;
