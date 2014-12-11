@@ -18,6 +18,13 @@ class ZipTax extends SalesTax implements SalesTaxInterface
 
     public function getRate($zipcode, $state)
     {
+        //TODO make this scalable
+        $statesWhichTax = ["NY", "IN"];
+        if (!in_array($state, $statesWhichTax)) {
+            return 0;
+        }
+
+
 
         if(Cache::has("zip-code-".$zipcode.$state)){
             return Cache::get("zip-code-".$zipcode.$state);
