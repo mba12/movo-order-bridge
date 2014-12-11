@@ -38,7 +38,11 @@ class OrderForm {
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination,fixedRightModule);
         //pagination.gotoPage(3);
-        $('body').addClass('ios-scroll-fix');
+
+        setInterval(function(){
+            $('body').removeClass('ios-scroll-fix');
+            $('body').addClass('ios-scroll-fix');
+        }, 5000);
     }
 
     private setSelectors():void {

@@ -100,7 +100,7 @@ return array(
     | Default: false
     */
 
-    'pipeline' => App::environment() == 'local' ? 0 : 19,
+    'pipeline' => App::environment() == 'local' ? 0 : 20,
 
     /*
     |--------------------------------------------------------------------------
