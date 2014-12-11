@@ -54,12 +54,12 @@ class Payment extends ScreenBase {
         e.preventDefault();
         this.validation = new Validation($('[data-validate]', this.$currentPage).filter(':visible'));
         if (this.validation.isValidForm()) {
-            console.log("valid form");
+            //console.log("valid form");
             this.$submitBtn.val("One moment...").attr('disabled', <any>true);
             this.showSpinner();
             this.createStripeToken();
         } else {
-            console.log("not valid");
+            //console.log("not valid");
             this.validation.showErrors();
         }
     }
