@@ -21,7 +21,7 @@ class Shipping extends \Eloquent {
 		if (Cache::has("shipping-info")) {
 			return Cache::get("shipping-info");
 		}
-		$shippingInfo = Shipping::all();
+		$shippingInfo = Shipping::where("active", "=", 1)->get();
 		Cache::put("shipping-info", $shippingInfo, 1440);
 		return $shippingInfo;
 	}
