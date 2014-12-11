@@ -10,9 +10,7 @@ App::bind("Pusher", function ($app) {
     return new Pusher($keys['public'], $keys['secret'], $keys['app-id']);
 });
 
-Route::group(array('before' => 'no-cache'), function () {
-    Route::get('/', 'OrderController@showForm');
-});
+Route::get('/', 'OrderController@showForm');
 
 Route::post('buy', array(
     'as' => 'buy',
@@ -102,25 +100,3 @@ Route::group(array('before' => 'csrf'), function () {
         'uses' => 'AdminController@attemptLogin'
     ));
 });
-
-Route::get('/info', function () {
-        echo phpinfo();
-
-        return '';
-    }
-);
-
-
-
-
-Route::get("/test", function(){
-   /* $order=Order::find(10);
-    $items=$order->items->all();
-    $result= $order->combineAndCountItems($items,"description");
-    dd($result) ;
-    $pusher = App::make("Pusher");
-    $pusher->trigger("orderChannel", "completedOrder", []);*/
-
-})  ;
-
-//Event::listen('illuminate.query', function($sql) { echo '<h4>' . $sql . '</h4>' ;});
