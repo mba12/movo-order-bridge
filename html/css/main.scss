@@ -16,14 +16,16 @@ body {
   font-family:      'Open Sans', sans-serif;
   @include fw-regular;
   background-color: rgba(0, 0, 0, 0.7);
-  margin-bottom:    40px;
-  &.ios-scroll-fix {
-    .ua-ios & {
-      height: 100% !important;
-      -webkit-overflow-scrolling: touch !important;
-      overflow: auto !important;
-    }
-  }
+  margin-bottom: 40px;
+  height: 100% !important;
+  -webkit-overflow-scrolling: touch !important;
+  overflow: auto !important;
+}
+
+html {
+  height: 100% !important;
+  -webkit-overflow-scrolling: touch !important;
+  overflow: auto !important;
 }
 
 #form-content-box {

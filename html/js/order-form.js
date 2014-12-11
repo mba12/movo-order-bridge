@@ -1201,7 +1201,6 @@ var OrderForm = (function () {
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination, fixedRightModule);
         //pagination.gotoPage(3);
-        $('body').addClass('ios-scroll-fix');
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');
@@ -1217,8 +1216,15 @@ var OrderForm = (function () {
         }
     };
     OrderForm.prototype.closeForm = function () {
-        var parentUrl = (window.location != window.parent.location) ? document.referrer : document.location;
-        parent.window.postMessage('close-order-lightbox', parentUrl);
+        if (window.location !== window.parent.location) {
+            // The page is in an iframe
+            var parentUrl = (window.location != window.parent.location) ? document.referrer : document.location;
+            parent.window.postMessage('close-order-lightbox', parentUrl);
+        }
+        else {
+            // The page is not in an iframe
+            history.go(-1);
+        }
     };
     OrderForm.prototype.onCloseClick = function () {
         this.closeForm();

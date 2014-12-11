@@ -1,3 +1,4 @@
+/// <reference path="definitions/jquery.d.ts" />
 var OrderLightbox = (function () {
     function OrderLightbox() {
         this.setSelectors();
@@ -11,6 +12,7 @@ var OrderLightbox = (function () {
         var _this = this;
         $('a[href="https://orders.getmovo.com"]').on('click', function (e) { return _this.onBuyNowClick(e); });
         $(document).on('keyup', function (e) { return _this.onKeyPress(e); });
+        // used for cross-domain call from orders.getmovo.com iframe
         if (window.addEventListener) {
             addEventListener("message", function (e) { return _this.messageListener(e); }, false);
         }
@@ -26,8 +28,10 @@ var OrderLightbox = (function () {
         }
     };
     OrderLightbox.prototype.loadLightbox = function () {
-        this.$body.append('<iframe src="https://orders.getmovo.com" id="order-lightbox"></iframe>');
-        this.$orderLightbox = $('#order-lightbox');
+        if (!cssua.ua.mobile) {
+            this.$body.append('<iframe src="https://orders.getmovo.com" id="order-lightbox"></iframe>');
+            this.$orderLightbox = $('#order-lightbox');
+        }
     };
     OrderLightbox.prototype.onKeyPress = function (e) {
         if (e.which == 27) {
@@ -36,7 +40,12 @@ var OrderLightbox = (function () {
     };
     OrderLightbox.prototype.onBuyNowClick = function (e) {
         e.preventDefault();
-        this.showLightbox();
+        if (cssua.ua.mobile) {
+            window.location.href = 'https://orders.getmovo.com';
+        }
+        else {
+            this.showLightbox();
+        }
     };
     OrderLightbox.prototype.showLightbox = function () {
         this.$body.addClass('order-lightbox-open');

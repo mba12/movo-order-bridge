@@ -28,15 +28,17 @@ class OrderLightbox {
 
     private messageListener(event) {
         if (event.origin !== "https://orders.getmovo.com")
-        return;
-        if(event.data == 'close-order-lightbox') {
+            return;
+        if (event.data == 'close-order-lightbox') {
             this.hideLightbox();
         }
     }
 
     private loadLightbox():void {
-        this.$body.append('<iframe src="https://orders.getmovo.com" id="order-lightbox"></iframe>');
-        this.$orderLightbox = $('#order-lightbox');
+        if (!cssua.ua.mobile) {
+            this.$body.append('<iframe src="https://orders.getmovo.com" id="order-lightbox"></iframe>');
+            this.$orderLightbox = $('#order-lightbox');
+        }
     }
 
     private onKeyPress(e):void {
@@ -47,7 +49,11 @@ class OrderLightbox {
 
     private onBuyNowClick(e):void {
         e.preventDefault();
-        this.showLightbox();
+        if (cssua.ua.mobile) {
+            window.location.href = 'https://orders.getmovo.com';
+        } else {
+            this.showLightbox();
+        }
     }
 
     private showLightbox():void {
@@ -64,3 +70,4 @@ class OrderLightbox {
 }
 
 new OrderLightbox();
+declare var cssua;

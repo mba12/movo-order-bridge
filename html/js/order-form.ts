@@ -38,8 +38,6 @@ class OrderForm {
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination,fixedRightModule);
         //pagination.gotoPage(3);
-
-        $('body').addClass('ios-scroll-fix');
     }
 
     private setSelectors():void {
@@ -58,8 +56,14 @@ class OrderForm {
     }
 
     private closeForm():void {
-        var parentUrl:any = (window.location != window.parent.location) ? document.referrer : document.location;
-        parent.window.postMessage('close-order-lightbox', parentUrl);
+        if (window.location !== window.parent.location) {
+            // The page is in an iframe
+            var parentUrl:any = (window.location != window.parent.location) ? document.referrer : document.location;
+            parent.window.postMessage('close-order-lightbox', parentUrl);
+        } else {
+            // The page is not in an iframe
+            history.go(-1);
+        }
     }
 
     private onCloseClick():void {
