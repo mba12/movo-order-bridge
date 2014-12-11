@@ -109,7 +109,7 @@ class Stats {
                 $li.find(".percent").attr("data-left", 1);
                 $li.find(".percent").html(response.couponCounts[i]);
             }
-            this.initCouponDoughnuts($li, i)
+            this.initCouponDoughnuts($li,response, i)
 
         }
         //this.initCouponDoughnuts();
@@ -139,17 +139,23 @@ class Stats {
         textFit($('.number, .no-limit'));
     }
 
-    private initCouponDoughnuts($item:any, delay:number):void {
+    private initCouponDoughnuts($item:any, response:any,index:number):void {
 
         $item.find(".doughnut").remove();
         $item.find(".circle").append('<canvas class="doughnut" width="140" height="140"></canvas>');
         var ctx:any = (<any>$($item.find(".doughnut"))[0]).getContext("2d");
-        ctx.clearRect(0, 0, 140, 140);
-
+        var used:number;
+        var left:number;
+        if (response.coupons[index].limit > 0) {
+             used = response.couponCounts[index];
+             left = response.coupons[index].limit-response.couponCounts[index];
+        } else {
+             used = 0;
+             left = 1;
+        }
 
         setTimeout(function () {
-            var used:number = parseInt($($item).find('.percent').data('used'));
-            var left:number = parseInt($($item).find('.percent').data('left'));
+
             var data:any = [{value: used, color: "#f6303e", label: used + " Used"}, {
                 value: left, color: "#e1e1e1", label: left + " Left"
             }];
@@ -160,7 +166,7 @@ class Stats {
                 animationEasing: "easeInOutQuint",
                 showTooltips: false
             });
-        }, 310 * delay);
+        }, 310 * index);
 
     }
 }

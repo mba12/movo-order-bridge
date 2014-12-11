@@ -1,6 +1,9 @@
+/// <reference path="../definitions/jquery.d.ts" />
+/// <reference path="../definitions/chart.d.ts" />
 var Stats = (function () {
     function Stats() {
         this.setSelectors();
+        //this.initPusherEvents();
         this.initStatsRefresh();
         this.initTextFit();
         this.reloadStats();
@@ -93,8 +96,9 @@ var Stats = (function () {
                 $li.find(".percent").attr("data-left", 1);
                 $li.find(".percent").html(response.couponCounts[i]);
             }
-            this.initCouponDoughnuts($li, i);
+            this.initCouponDoughnuts($li, response, i);
         }
+        //this.initCouponDoughnuts();
     };
     Stats.prototype.couponIsUnchanged = function ($li, response, i) {
         var numberIsUnchanged;
@@ -117,14 +121,21 @@ var Stats = (function () {
     Stats.prototype.initTextFit = function () {
         textFit($('.number, .no-limit'));
     };
-    Stats.prototype.initCouponDoughnuts = function ($item, delay) {
+    Stats.prototype.initCouponDoughnuts = function ($item, response, index) {
         $item.find(".doughnut").remove();
         $item.find(".circle").append('<canvas class="doughnut" width="140" height="140"></canvas>');
         var ctx = $($item.find(".doughnut"))[0].getContext("2d");
-        ctx.clearRect(0, 0, 140, 140);
+        var used;
+        var left;
+        if (response.coupons[index].limit > 0) {
+            used = response.couponCounts[index];
+            left = response.coupons[index].limit - response.couponCounts[index];
+        }
+        else {
+            used = 0;
+            left = 1;
+        }
         setTimeout(function () {
-            var used = parseInt($($item).find('.percent').data('used'));
-            var left = parseInt($($item).find('.percent').data('left'));
             var data = [{ value: used, color: "#f6303e", label: used + " Used" }, {
                 value: left,
                 color: "#e1e1e1",
@@ -137,7 +148,7 @@ var Stats = (function () {
                 animationEasing: "easeInOutQuint",
                 showTooltips: false
             });
-        }, 310 * delay);
+        }, 310 * index);
     };
     return Stats;
 })();
