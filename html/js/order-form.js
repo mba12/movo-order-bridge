@@ -1201,6 +1201,7 @@ var OrderForm = (function () {
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination, fixedRightModule);
         //pagination.gotoPage(3);
+        $('body').addClass('ios-scroll-fix');
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

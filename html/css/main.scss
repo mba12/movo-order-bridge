@@ -17,10 +17,12 @@ body {
   @include fw-regular;
   background-color: rgba(0, 0, 0, 0.7);
   margin-bottom:    40px;
-  .ua-ios & {
-    height: 100%;
-    -webkit-overflow-scrolling: touch !important;
-    overflow: auto !important;
+  &.ios-scroll-fix {
+    .ua-ios & {
+      height: 100%;
+      -webkit-overflow-scrolling: touch !important;
+      overflow: auto !important;
+    }
   }
 }
 
