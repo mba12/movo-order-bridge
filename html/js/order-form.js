@@ -595,11 +595,11 @@ var ShippingInfo = (function (_super) {
         var shippingIds = $form.data('shipping-ids').split('|');
         var qty = parseInt(this.$quantityInputField.val());
         var startingIndex = qty > 1 ? 1 : 0;
-        var endIndex = shippingRates.length - 1;
-        if (this.$shippingCountry.val() != 'US') {
-            startingIndex = shippingTypes.length - 1;
+        var endIndex = shippingRates.length - 0;
+        /*if(this.$shippingCountry.val() != 'US') {
+            startingIndex = shippingTypes.length-1;
             endIndex = shippingRates.length;
-        }
+        }*/
         this.emptyShippingSelect();
         this.$shippingSelect.append('<option value="">-- Shipping type --</option>');
         for (var i = startingIndex; i < endIndex; i++) {

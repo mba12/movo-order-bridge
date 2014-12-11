@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;overflow: auto !important;-webkit-overflow-scrolling: touch !important;">
     <head>
         <meta charset="UTF-8">
         <meta name="publishable-key" content="{{{Config::get("services.stripe.publishable")}}}"/>
