@@ -104,6 +104,7 @@ Route::group(array('before' => 'csrf'), function () {
 
 Route::get('/info', function () {
         echo phpinfo();
+
         return '';
     }
 );
