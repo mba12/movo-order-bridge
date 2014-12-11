@@ -21,7 +21,7 @@ var Stats = (function () {
         var _this = this;
         setInterval(function () {
             _this.reloadStats();
-        }, 1000);
+        }, 60000);
     };
     Stats.prototype.setSelectors = function () {
         this.$lastHour = $('.hour').find('.textFitted');

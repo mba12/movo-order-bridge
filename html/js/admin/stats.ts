@@ -32,7 +32,7 @@ class Stats {
     private initStatsRefresh():void {
         setInterval(()=> {
             this.reloadStats();
-        }, 1000);
+        }, 60000);
     }
 
     private setSelectors():void {
