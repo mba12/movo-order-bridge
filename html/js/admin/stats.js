@@ -141,7 +141,6 @@ var Stats = (function () {
                 color: "#e1e1e1",
                 label: left + " Left"
             }];
-            console.log(data[0].value);
             new Chart(ctx).Doughnut(data, {
                 tooltipTemplate: "<%= label %>",
                 percentageInnerCutout: 77,

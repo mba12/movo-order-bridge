@@ -472,7 +472,6 @@ var Products = (function (_super) {
         if (parseInt(this.$quantityInputField.val()) >= FixedRightModule.MAX_UNITS) {
             this.$quantityInputField.val(FixedRightModule.MAX_UNITS.toString());
             this.$tooManyUnitsMsg.show();
-
         }
         else {
             this.$tooManyUnitsMsg.hide();

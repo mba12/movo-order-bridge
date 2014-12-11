@@ -159,7 +159,6 @@ class Stats {
             var data:any = [{value: used, color: "#f6303e", label: used + " Used"}, {
                 value: left, color: "#e1e1e1", label: left + " Left"
             }];
-            console.log(data[0].value);
             new Chart(ctx).Doughnut(data, {
                 tooltipTemplate: "<%= label %>",
                 percentageInnerCutout: 77,
