@@ -10,8 +10,9 @@ App::bind("Pusher", function ($app) {
     return new Pusher($keys['public'], $keys['secret'], $keys['app-id']);
 });
 
-
-Route::get('/', 'OrderController@showForm');
+Route::group(array('before' => 'no-cache'), function () {
+    Route::get('/', 'OrderController@showForm');
+});
 
 Route::post('buy', array(
     'as' => 'buy',
