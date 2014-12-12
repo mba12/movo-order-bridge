@@ -39,9 +39,10 @@
                 <div class="row">
                     <h3>Items:</h3>
                     <ul class="items">
-                        @foreach($order->items as $item)
+                        @foreach($combinedItems as $item)
                             <li>
-                                1 x {{$item->description}}
+
+                                {{$item['count']}} x {{$item['description']}}
                             </li>
                         @endforeach
                     </ul>

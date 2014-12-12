@@ -57,13 +57,12 @@ class AdminController extends \BaseController
 
     public function orderDetails($id)
     {
-
         $order = Order::find($id);
-
-
+        $combinedItems = $order->combineAndCountItems($order->items->all());
         return View::make("admin.order-details", [
             'order' => $order,
-            'shipping' => Shipping::find($order->shipping_type)
+            'shipping' => Shipping::find($order->shipping_type)  ,
+            'combinedItems' => $combinedItems,
         ]);
     }
 

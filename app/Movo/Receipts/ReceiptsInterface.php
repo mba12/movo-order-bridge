@@ -8,13 +8,15 @@ interface ReceiptsInterface {
 
 class Item extends stdClass
 {
-     public $title;
+     public $description;
+     public $sku;
      public $quantity;
      public $price;
 
-     public function  __construct($title, $quantity, $price)
+     public function  __construct($description, $sku, $quantity, $price)
      {
-          $this->title = $title;
+          $this->description = $description;
+          $this->sku = $sku;
           $this->quantity = $quantity;
           $this->price = $price;
      }

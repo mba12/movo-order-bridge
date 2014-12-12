@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Movo\Errors\OrderException;
 use Movo\Helpers\Format;
+use Order;
 
 class MailgunReceipts extends Receipt implements ReceiptsInterface
 {
@@ -17,9 +18,16 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
         $data['address2']=Input::get("shipping-city").", ".Input::get("shipping-state")." ".Input::get("shipping-zip");
         $data['quantity']=Input::get("quantity");
         $data['items'] = [];
+
         for ($i = 0; $i < $data['quantity']; $i++) {
-            array_push($data['items'], new Item(Input::get("unit" . ($i + 1)."Name"), 1, Format::FormatUSD($data['unit-price'])));
+            $data['items'][]=[
+                "description"=>Input::get("unit" . ($i + 1)."Name"),
+                "sku"=>Input::get("unit" . ($i + 1)),
+                "quantity"=>1,
+                "price"=>Format::FormatUSD($data['unit-price'])
+            ];
         }
+        $data['items']=(new Order)->combineAndCountItems($data['items']);
         $emailData = $this->createEmailData($data);
 
         Mail::send('emails.receipt', array('data' => $emailData), function ($message) {

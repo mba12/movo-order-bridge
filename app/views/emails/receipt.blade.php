@@ -29,7 +29,7 @@
         <div class="inner" style="max-width: 700px;margin: 0 auto;padding: 40px 0;width: 80%;">
             <p style="line-height: 1.4em;margin: 18px 0;">This email is to confirm your order on <span class="bold" style="font-weight: 700;">{{date('m-d-Y')}}</span></p>
              @foreach($data['items'] as $item)
-                 <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">{{$item->quantity}} x {{$item->title}}</span></p>
+                 <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">{{$item['count']}} x {{$item['description']}}</span></p>
              @endforeach
             <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
                 {{$data['name']}}<br>

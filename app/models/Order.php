@@ -43,10 +43,9 @@ class Order extends \Eloquent
         return $this->hasMany("Item");
     }
 
-    public function combineAndCountItems($items, $key)
+    public function combineAndCountItems($items, $key="description")
     {
         $combinedItems=[];
-
         foreach ($items as $item) {
             if(!isset($combinedItems[$item[$key]])){
                 $combinedItems[$item[$key]]=[
