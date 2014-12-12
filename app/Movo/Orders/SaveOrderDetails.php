@@ -11,6 +11,7 @@ namespace Movo\Orders;
 
 use Illuminate\Support\Facades\Input;
 use Movo\Errors\OrderException;
+use Movo\Helpers\Format;
 use Order;
 
 class SaveOrderDetails
@@ -31,7 +32,7 @@ class SaveOrderDetails
         $order->shipping_state = $data['shipping-state'];
         $order->shipping_zip = $data['shipping-zip'];
         $order->shipping_country = $data['shipping-country'];
-        $order->shipping_phone = $data['shipping-phone'];
+        $order->shipping_phone = Format::ReducePhoneNumberToDigits($data['shipping-phone']);
         $order->billing_first_name = $data['billing-first-name'];
         $order->billing_last_name = $data['billing-last-name'];
         $order->billing_address = $data['billing-address'];
@@ -39,7 +40,7 @@ class SaveOrderDetails
         $order->billing_state = $data['billing-state'];
         $order->billing_zip = $data['billing-zip'];
         $order->billing_country = $data['billing-country'];
-        $order->billing_phone = $data['billing-phone'];
+        $order->billing_phone = Format::ReducePhoneNumberToDigits($data['billing-phone']);
         $order->email = $data['email'];
         $order->stripe_charge_id = $data['result']['id'];
         $order->ingram_order_id = "";
