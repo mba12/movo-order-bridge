@@ -294,7 +294,7 @@ a {
       width: auto;
       height: 40px;
       margin-left: 5px;
-      color: white;
+      color: #fff;
       white-space: nowrap;
       padding: 10px 18px; }
     .youtube-player .close-btn .x {
@@ -362,8 +362,8 @@ USAGE:
   margin: 0; }
 
 .stepper .stepper-arrow {
-  background: #eeeeee url(/img/jquery.fs.stepper-arrows.png) no-repeat;
-  border-left: 1px solid #cccccc;
+  background: #eee url(/img/jquery.fs.stepper-arrows.png) no-repeat;
+  border-left: 1px solid #ccc;
   cursor: pointer !important;
   display: block;
   height: 50%;
@@ -388,18 +388,18 @@ USAGE:
     cursor: default !important; }
 
 .white {
-  color: white !important; }
+  color: #fff !important; }
 
 .black {
-  color: black; }
+  color: #000; }
   .black a {
-    color: black; }
+    color: #000; }
 
 .green {
   color: #0e8016; }
 
 body {
-  color: #333333;
+  color: #333;
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
   background-color: rgba(0, 0, 0, 0.7);
@@ -436,7 +436,7 @@ html {
     border-radius: 4px;
     height: 28px;
     padding: 0 5px 0 10px;
-    color: #333333;
+    color: #333;
     font-size: 0.75em; }
     #form-content-box input.error, #form-content-box select.error {
       border: 1px solid #f52f41; }
@@ -450,7 +450,7 @@ html {
       margin-bottom: 5px;
       margin-left: 1px; }
   #form-content-box section {
-    background-color: white;
+    background-color: #fff;
     padding: 20px;
     overflow: auto; }
     @media screen and (min-width: 601px) {
@@ -555,7 +555,7 @@ html {
       width: 100%; }
     #form-content-box .row select {
       width: 100%;
-      background-color: white; }
+      background-color: #fff; }
   #form-content-box .hide {
     display: none; }
   #form-content-box label {
@@ -613,9 +613,9 @@ html {
         -moz-transition: 0.3s all;
         transition: 0.3s all; }
         #form-content-box #nav ul li.active {
-          color: white; }
+          color: #fff; }
   #form-content-box #fixed-right-module {
-    background-color: white;
+    background-color: #fff;
     padding: 20px 15px 0;
     width: 100%; }
     @media screen and (min-width: 601px) {
@@ -635,7 +635,7 @@ html {
         #form-content-box #fixed-right-module .top .left .thumb {
           margin-bottom: 8px; }
         #form-content-box #fixed-right-module .top .left .product-title {
-          color: #333333;
+          color: #333;
           font-size: 0.875em;
           font-weight: 600;
           text-rendering: optimizeLegibility; }
@@ -665,8 +665,8 @@ html {
           #form-content-box #fixed-right-module .top .right .quantity label {
             display: block; }
     #form-content-box #fixed-right-module #subtotal-fields {
-      border-top: 1px solid #cccccc;
-      border-bottom: 1px solid #cccccc; }
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc; }
     #form-content-box #fixed-right-module #total {
       font-size: 1em; }
     #form-content-box #fixed-right-module .pricing {
@@ -702,7 +702,7 @@ html {
       #form-content-box #products #too-many-units a, #form-content-box #products #too-many-units a:visited, #form-content-box #products #too-many-units a:active {
         color: #e60b21; }
     #form-content-box #products #product-sizing-btn {
-      color: #333333;
+      color: #333;
       font-size: 0.875em;
       text-decoration: underline;
       margin-bottom: 15px;
@@ -824,7 +824,7 @@ html {
 
 .button {
   background-color: #f52f41;
-  color: white;
+  color: #fff;
   font-size: 0.90625em;
   font-weight: 600;
   padding: 10px 20px;
@@ -840,7 +840,7 @@ html {
     background-color: #f00c22; }
 
 .small-gray-button {
-  color: #666666;
+  color: #666;
   background-color: #e7e7e7;
   border-radius: 3px;
   padding: 5px 7px;
