@@ -50,5 +50,10 @@ class Format
         return $out;
     }
 
+    public static function ReducePhoneNumberToDigits($phone)
+    {
+        return  preg_replace('/\D+/', '', $phone);
+    }
+
 
 }
