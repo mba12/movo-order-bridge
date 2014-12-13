@@ -68,9 +68,9 @@ class ProcessOrder
                 'order-total'=>$orderTotal
             ];
             $data=OrderInput::convertInputToData($data);
+            (new OrderHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data);
             (new ReceiptHandler)->handleNotification($data);
-            (new OrderHandler)->handleNotification($data);
             (new PusherHandler)->handleNotification($data);
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data'=>$data));
 
