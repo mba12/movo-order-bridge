@@ -42,6 +42,10 @@ class TaxTableSeeder extends Seeder
             "rate" => '0'
         ));
         Tax::create(array(
+            "state" => "DC",
+            "rate" => '0'
+        ));
+        Tax::create(array(
             "state" => "DE",
             "rate" => '0'
         ));
