@@ -100,3 +100,34 @@ Route::group(array('before' => 'csrf'), function () {
         'uses' => 'AdminController@attemptLogin'
     ));
 });
+
+
+Route::get('/soap', array(
+    "as" => "soap",
+    "uses" => "SoapController@demo"
+));
+
+Route::get('log', array(
+    "as" => "log",
+    "uses" => "LogController@test"
+));
+
+Route::any('/ingram/track-inventory', array(
+    'as' => 'ingram-inventory',
+    'uses' => 'IngramController@trackInventory',
+));
+
+Route::any('/ingram/ship-advice', array(
+    'as' => 'ingram-ship-advice',
+    'uses' => 'IngramController@shipAdvice',
+));
+
+Route::any('/ingram/returns', array(
+    'as' => 'ingram-returns',
+    'uses' => 'IngramController@returns',
+));
+
+Route::any('/ingram/order-status', array(
+    'as' => 'ingram-order-status',
+    'uses' => 'IngramController@orderStatus',
+));
