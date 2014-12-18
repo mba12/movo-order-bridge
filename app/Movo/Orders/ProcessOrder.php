@@ -61,7 +61,7 @@ class ProcessOrder
             return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
         }
         try {
-            $result = $this->attemptCharge($billing, $orderTotal);
+            $result = $this->attemptCharge($billing, $orderTotal, $data);
         } catch (Exception $e) {
             $this->flagOrderAsCriticalError($order);
             return Response::json(array('status' => '400', 'error_code'=>2001,'message' => 'Error 2001: There was an error submitting your order.'));
@@ -114,7 +114,6 @@ class ProcessOrder
         $data['token'] = Input::get("token");
         $data['amount'] = $orderTotal;
         $data['email'] = Input::get("email");
-        $data['amount'] = $orderTotal;
         $data ['unit-price'] = $unitPrice;
         $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
         $data ['discount'] = $discount;
@@ -128,14 +127,20 @@ class ProcessOrder
     /**
      * @param $billing
      * @param $orderTotal
+     * @param $data
      * @return mixed
      */
-    private function attemptCharge($billing, $orderTotal)
+    private function attemptCharge($billing, $orderTotal,$data)
     {
         $result = $billing->charge([
             'token' => Input::get("token"),
             'amount' => $orderTotal,
-            'email' => Input::get("email")
+            'email' => Input::get("email"),
+            'metadata'=>[
+                "first_name"=>  $data['billing-first-name'],
+                "last_name"=>  $data['billing-last-name'],
+                "phone"=>  $data['billing-phone']
+            ]
         ]);
         return $result;
     }

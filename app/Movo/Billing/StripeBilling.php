@@ -25,7 +25,8 @@ class StripeBilling implements BillingInterface
                 'amount' => $amount,
                 'currency' => 'usd',
                 'description' =>  $data['email'],
-                'card' => $data['token']
+                'card' => $data['token'],
+                'metadata'=>$data['metadata']
             ]);
 
             return $result;

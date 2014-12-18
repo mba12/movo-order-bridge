@@ -19,7 +19,7 @@ class SaveOrderDetails
     public static function save(Order $order, $data)
     {
 
-        $order->amount = $data['amount'];
+        $order->amount = round($data['amount']*100);
         $order->tax = $data['tax'];
         $order->discount = $data['discount'];
         $order->unit_price = $data['unit-price'];
