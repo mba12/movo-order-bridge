@@ -127,7 +127,9 @@ class Payment extends ScreenBase {
                     this.resetPage();
                     this.trackOrder(response.data)
                     this.pagination.gotoSummaryPage();
-                } else if (response.status == 400) {
+                } else if (response.status == 503) {
+                    this.criticalError(response);
+                }else if (response.status == 400) {
                     this.$cardError.show();
                 }
             },
@@ -140,7 +142,11 @@ class Payment extends ScreenBase {
         });
     }
 
-
+      private criticalError(response){
+          this.$customError.show().text(response.message)
+          this.$submitBtn.hide();
+          this.$prevBtn.hide();
+      }
     private trackOrder(data):void {
         for (var i = 0; i < this.trackables.length; i++) {
             this.trackables[i].track(data);

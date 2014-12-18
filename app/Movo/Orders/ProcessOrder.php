@@ -1,4 +1,4 @@
-<?php        namespace Movo\Orders;
+<?php namespace Movo\Orders;
 
 
 use Coupon;
@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Movo\Errors\OrderException;
+use Movo\Handlers\InputLogHandler;
 use Movo\Handlers\OrderHandler;
+use Movo\Handlers\OrderLogHandler;
 use Movo\Handlers\PusherHandler;
 use Movo\Handlers\ReceiptHandler;
 use Movo\Handlers\ShippingHandler;
@@ -22,10 +24,15 @@ class ProcessOrder
 
     public function process()
     {
+        $data = [];
+        $data = OrderInput::convertInputToData($data);
+        if(!OrderValidate::validate($data)){
+            return Response::json(array('status' => '503', 'message' => 'There was a critical error submitting your order. Please refresh the page and try again.'));
+        }
         $billing = App::make('Movo\Billing\BillingInterface');
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
         $couponInstance = Coupon::getValidCouponInstance();
-        $quantity=Input::get("quantity");
+        $quantity = Input::get("quantity");
         $shippingState = Input::get("shipping-state");
         try {
             $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), $shippingState);
@@ -43,36 +50,35 @@ class ProcessOrder
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
         }
-        $orderTotal=$this->getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState);
+        $orderTotal = $this->getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState);
+
+        $data['token'] = Input::get("token");
+        $data['amount'] = $orderTotal;
+        $data['email'] = Input::get("email");
+        (new InputLogHandler)->handleNotification($data);
+
         try {
-            $result = $billing->charge([
-                'token' => Input::get("token"),
-                'amount' => $orderTotal,
-                'email' => Input::get("email")
-            ]);
+            $result = $billing->charge($data);
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
         }
-
         if ($result) {
-            $data = [
-                'result' => $result,
-                'unit-price' => $unitPrice,
-                'tax' => SalesTax::calculateTotalTax($unitPrice * $quantity - $discount,$shippingMethod->rate,$salesTaxRate,$shippingState),
-                'discount' => $discount,
-                'couponInstance' => $couponInstance,
-                'shipping-rate' => $shippingMethod->rate,
-                'shipping-type' => $shippingMethod->type,
-                'shipping-code' => $shippingMethod->scac_code,
-                'charge-id'=>$result['id'],
-                'order-total'=>$orderTotal
-            ];
-            $data=OrderInput::convertInputToData($data);
+            $data ['result'] = $result;
+            $data ['unit-price'] = $unitPrice;
+            $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
+            $data ['discount'] = $discount;
+            $data ['couponInstance'] = $couponInstance;
+            $data ['shipping-rate'] = $shippingMethod->rate;
+            $data ['shipping-type'] = $shippingMethod->type;
+            $data ['shipping-code'] = $shippingMethod->scac_code;
+            $data ['charge-id'] = $result['id'];
+            $data ['order-total'] = $orderTotal;
+
+            (new OrderLogHandler)->handleNotification($data);
             (new OrderHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data);
             (new ReceiptHandler)->handleNotification($data);
-            (new PusherHandler)->handleNotification($data);
-            return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data'=>$data));
+            return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 
         } else {
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order'));

@@ -814,6 +814,9 @@ var Payment = (function (_super) {
                     _this.trackOrder(response.data);
                     _this.pagination.gotoSummaryPage();
                 }
+                else if (response.status == 503) {
+                    _this.criticalError(response);
+                }
                 else if (response.status == 400) {
                     _this.$cardError.show();
                 }
@@ -824,6 +827,11 @@ var Payment = (function (_super) {
                 _this.$cardError.show();
             }
         });
+    };
+    Payment.prototype.criticalError = function (response) {
+        this.$customError.show().text(response.message);
+        this.$submitBtn.hide();
+        this.$prevBtn.hide();
     };
     Payment.prototype.trackOrder = function (data) {
         for (var i = 0; i < this.trackables.length; i++) {

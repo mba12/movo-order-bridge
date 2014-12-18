@@ -31,10 +31,12 @@ class StripeBilling implements BillingInterface
             return $result;
         } catch (\Stripe_InvalidRequestError $e) {
             //card was declined
+            dd($e);
             return null;
 
         } catch (\Stripe_CardError $e) {
             //card was declined
+            dd($e->getMessage());
             return null;
         }
     }
