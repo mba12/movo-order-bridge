@@ -30,7 +30,6 @@ class StripeBilling implements BillingInterface
 
             return $result;
         } catch (\Stripe_InvalidRequestError $e) {
-            //card was declined
             return null;
 
         } catch (\Stripe_CardError $e) {

@@ -29,7 +29,7 @@ class ProcessOrder
         $data = OrderInput::convertInputToData($data);
         if(!OrderValidate::validate($data)){
             (new OrderErrorLogHandler)->handleNotification($data);
-            return Response::json(array('status' => '503', 'error_code'=>1000,'message' => 'Error 1000: There was a critical error submitting your order. Please refresh the page and try again.'));
+            return Response::json(array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Please refresh the page and try again.'));
         }
         $billing = App::make('Movo\Billing\BillingInterface');
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
@@ -64,7 +64,7 @@ class ProcessOrder
             $result = $this->attemptCharge($billing, $orderTotal);
         } catch (Exception $e) {
             $this->flagOrderAsCriticalError($order);
-            return Response::json(array('status' => '400', 'error_code'=>2000,'message' => 'Error 2000: There was an error submitting your order.'));
+            return Response::json(array('status' => '400', 'error_code'=>2001,'message' => 'Error 2001: There was an error submitting your order.'));
         }
         if ($result) {
             $result['_apiKey']=null;
@@ -77,7 +77,7 @@ class ProcessOrder
 
         }  else {
             $this->updateOrderWithDeclinedCardErrorFlag($order);
-            return Response::json(array('status' => '400','error_code'=>1005, 'message' => 'Error 1005: There was an error submitting your order'));
+            return Response::json(array('status' => '400','error_code'=>1005, 'message' => 'Error 1005: There was a problem processing your credit card.'));
 
         }
     }
