@@ -131,6 +131,7 @@ return array(
         'Indatus\Dispatcher\ServiceProvider',
         'Stolz\Assets\ManagerServiceProvider',
         'Artisaninweb\SoapWrapper\ServiceProvider',
+        'Dinesh\Bugonemail\BugonemailServiceProvider',
     ),
 
     /*

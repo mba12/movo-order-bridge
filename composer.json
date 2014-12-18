@@ -16,7 +16,8 @@
     "indatus/dispatcher": "~1.4",
     "stolz/assets": "dev-master",
     "artisaninweb/laravel-soap": "0.2.*" ,
-    "monolog/monolog":"1.*"
+    "monolog/monolog":"1.*",
+    "dinesh/bugonemail": "dev-master"
   },
   "require-dev": {
     "way/generators": "~2.0",

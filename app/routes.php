@@ -131,3 +131,8 @@ Route::any('/ingram/order-status', array(
     'as' => 'ingram-order-status',
     'uses' => 'IngramController@orderStatus',
 ));
+
+Route::get('/bug',function(){
+    $foo=[];
+    echo $foo['bad result'];
+});
