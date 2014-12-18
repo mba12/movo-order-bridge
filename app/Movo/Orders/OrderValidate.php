@@ -16,8 +16,7 @@ class OrderValidate
 {
     public static function validate($data)
     {
-        return false;
-        $data['token']=Input::get("token");
+
         $validation = Validator::make(
             $data,
             array(
@@ -40,7 +39,7 @@ class OrderValidate
                 'quantity' => array('required', 'integer'),
                 'email' => array('required', 'email'),
                 'shipping-type' => array('required', 'integer'),
-                'token' => array('required'),
+
             )
         );
 

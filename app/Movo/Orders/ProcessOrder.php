@@ -57,11 +57,22 @@ class ProcessOrder
         $data['token'] = Input::get("token");
         $data['amount'] = $orderTotal;
         $data['email'] = Input::get("email");
+        $data['amount'] = $orderTotal;
         (new InputLogHandler)->handleNotification($data);
-
         try {
-            $result = $billing->charge($data);
+            $order = (new OrderHandler)->handleNotification($data);
+        } catch (ErrorException $e) {
+            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+        }
+        try {
+            $result = $billing->charge([
+                'token' => Input::get("token"),
+                'amount' => $orderTotal,
+                'email' => Input::get("email")
+            ]);
         } catch (Exception $e) {
+            $order->error_flag=1;
+            $order->save();
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
         }
         if ($result) {
@@ -75,18 +86,22 @@ class ProcessOrder
             $data ['shipping-code'] = $shippingMethod->scac_code;
             $data ['charge-id'] = $result['id'];
             $data ['order-total'] = $orderTotal;
-
+            $order->stripe_charge_id = $result['id'];
+            $order->save();
             (new OrderLogHandler)->handleNotification($data);
             (new OrderHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data);
             (new ReceiptHandler)->handleNotification($data);
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 
-        } else {
+        }  else {
+            $order->error_flag=2;
+            $order->save();
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order'));
 
         }
     }
+
 
 
     private function getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $state)

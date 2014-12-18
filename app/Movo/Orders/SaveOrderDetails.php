@@ -19,7 +19,7 @@ class SaveOrderDetails
     public static function save(Order $order, $data)
     {
 
-        $order->amount = $data['result']['amount'];
+        $order->amount = $data['amount'];
         $order->tax = $data['tax'];
         $order->discount = $data['discount'];
         $order->unit_price = $data['unit-price'];
@@ -42,7 +42,7 @@ class SaveOrderDetails
         $order->billing_country = $data['billing-country'];
         $order->billing_phone = Format::ReducePhoneNumberToDigits($data['billing-phone']);
         $order->email = $data['email'];
-        $order->stripe_charge_id = $data['result']['id'];
+        $order->stripe_charge_id = "";
         $order->ingram_order_id = "";
         $order->status = 1;
         $order->tracking_code = "";
