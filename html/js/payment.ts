@@ -130,12 +130,11 @@ class Payment extends ScreenBase {
                 } else if (response.status == 503) {
                     this.criticalError(response);
                 } else if (response.status == 400) {
-                    if (response.error_code > 1004) {
+                    if (response.error_code >= 2000) {
                         this.$submitBtn.hide();
                         this.$prevBtn.hide();
                     }
                     this.$cardError.show();
-
                 }
             },
 

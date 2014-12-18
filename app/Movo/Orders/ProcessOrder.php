@@ -81,7 +81,7 @@ class ProcessOrder
         } catch (Exception $e) {
             $order->error_flag=1;
             $order->save();
-            return Response::json(array('status' => '400', 'error_code'=>1005,'message' => 'Error 1005: There was an error submitting your order.'));
+            return Response::json(array('status' => '400', 'error_code'=>2000,'message' => 'Error 2000: There was an error submitting your order.'));
         }
         if ($result) {
             $result['_apiKey']=null;
@@ -97,7 +97,7 @@ class ProcessOrder
         }  else {
             $order->error_flag=2;
             $order->save();
-            return Response::json(array('status' => '400','error_code'=>1006, 'message' => 'Error 1006: There was an error submitting your order'));
+            return Response::json(array('status' => '400','error_code'=>1005, 'message' => 'Error 1005: There was an error submitting your order'));
 
         }
     }
