@@ -120,7 +120,6 @@ class ProcessOrder
         $data ['discount'] = $discount;
         $data ['couponInstance'] = $couponInstance;
         $data ['shipping-rate'] = $shippingMethod->rate;
-        $data ['shipping-type'] = $shippingMethod->type;
         $data ['shipping-code'] = $shippingMethod->scac_code;
         $data ['order-total'] = $orderTotal;
         return $data;
