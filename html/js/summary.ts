@@ -19,8 +19,9 @@ class Summary extends ScreenBase {
 
     private onCreateNewOrderBtnClick(e):void {
         e.preventDefault();
-        this.fixedRightModule.resetOrder();
-        this.pagination.gotoProductsPage();
+        //this.fixedRightModule.resetOrder();
+        //this.pagination.gotoProductsPage();
+        location.reload();
     }
 
 }

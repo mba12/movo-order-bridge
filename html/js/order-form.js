@@ -889,8 +889,9 @@ var Summary = (function (_super) {
     };
     Summary.prototype.onCreateNewOrderBtnClick = function (e) {
         e.preventDefault();
-        this.fixedRightModule.resetOrder();
-        this.pagination.gotoProductsPage();
+        //this.fixedRightModule.resetOrder();
+        //this.pagination.gotoProductsPage();
+        location.reload();
     };
     return Summary;
 })(ScreenBase);
