@@ -48,24 +48,12 @@ class ProcessOrder
         try {
             $unitPrice = Product::getUnitPrice();
             $shippingMethod = Shipping::getShippingMethod(Input::get("shipping-type"));
-            $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
+            $discount = $this->getDiscount($couponInstance, $unitPrice);
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.'));
         }
         $orderTotal = $this->getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState);
-
-        $data['token'] = Input::get("token");
-        $data['amount'] = $orderTotal;
-        $data['email'] = Input::get("email");
-        $data['amount'] = $orderTotal;
-        $data ['unit-price'] = $unitPrice;
-        $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
-        $data ['discount'] = $discount;
-        $data ['couponInstance'] = $couponInstance;
-        $data ['shipping-rate'] = $shippingMethod->rate;
-        $data ['shipping-type'] = $shippingMethod->type;
-        $data ['shipping-code'] = $shippingMethod->scac_code;
-        $data ['order-total'] = $orderTotal;
+        $data = $this->populateDataWithOrderAmounts($data, $orderTotal, $unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance);
         (new InputLogHandler)->handleNotification($data);
         try {
             $order = (new OrderHandler)->handleNotification($data);
@@ -73,30 +61,22 @@ class ProcessOrder
             return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
         }
         try {
-            $result = $billing->charge([
-                'token' => Input::get("token"),
-                'amount' => $orderTotal,
-                'email' => Input::get("email")
-            ]);
+            $result = $this->attemptCharge($billing, $orderTotal);
         } catch (Exception $e) {
-            $order->error_flag=1;
-            $order->save();
+            $this->flagOrderAsCriticalError($order);
             return Response::json(array('status' => '400', 'error_code'=>2000,'message' => 'Error 2000: There was an error submitting your order.'));
         }
         if ($result) {
             $result['_apiKey']=null;
-            $data ['result'] = $result;
-            $data ['charge-id'] = $result['id'];
-            $order->stripe_charge_id = $result['id'];
-            $order->save();
+            $data = $this->updateDataWithChargeInfo($result, $data);
+            $this->updateOrderWithChargeId($result, $order);
             (new OrderLogHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data);
             (new ReceiptHandler)->handleNotification($data);
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 
         }  else {
-            $order->error_flag=2;
-            $order->save();
+            $this->updateOrderWithDeclinedCardErrorFlag($order);
             return Response::json(array('status' => '400','error_code'=>1005, 'message' => 'Error 1005: There was an error submitting your order'));
 
         }
@@ -115,6 +95,101 @@ class ProcessOrder
             "discount" => $discount,
         ]);
         return $orderTotal;
+    }
+
+    /**
+     * @param $data
+     * @param $orderTotal
+     * @param $unitPrice
+     * @param $quantity
+     * @param $discount
+     * @param $shippingMethod
+     * @param $salesTaxRate
+     * @param $shippingState
+     * @param $couponInstance
+     * @return mixed
+     */
+    private function populateDataWithOrderAmounts($data, $orderTotal, $unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance)
+    {
+        $data['token'] = Input::get("token");
+        $data['amount'] = $orderTotal;
+        $data['email'] = Input::get("email");
+        $data['amount'] = $orderTotal;
+        $data ['unit-price'] = $unitPrice;
+        $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
+        $data ['discount'] = $discount;
+        $data ['couponInstance'] = $couponInstance;
+        $data ['shipping-rate'] = $shippingMethod->rate;
+        $data ['shipping-type'] = $shippingMethod->type;
+        $data ['shipping-code'] = $shippingMethod->scac_code;
+        $data ['order-total'] = $orderTotal;
+        return $data;
+    }
+
+    /**
+     * @param $billing
+     * @param $orderTotal
+     * @return mixed
+     */
+    private function attemptCharge($billing, $orderTotal)
+    {
+        $result = $billing->charge([
+            'token' => Input::get("token"),
+            'amount' => $orderTotal,
+            'email' => Input::get("email")
+        ]);
+        return $result;
+    }
+
+    /**
+     * @param $order
+     */
+    private function flagOrderAsCriticalError($order)
+    {
+        $order->error_flag = 1;
+        $order->save();
+    }
+
+    /**
+     * @param $result
+     * @param $order
+     */
+    private function updateOrderWithChargeId($result, $order)
+    {
+        $order->stripe_charge_id = $result['id'];
+        $order->save();
+    }
+
+    /**
+     * @param $couponInstance
+     * @param $unitPrice
+     * @return int
+     */
+    private function getDiscount($couponInstance, $unitPrice)
+    {
+        $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
+        return $discount;
+    }
+
+    /**
+     * @param $result
+     * @param $data
+     * @return mixed
+     */
+    private function updateDataWithChargeInfo($result, $data)
+    {
+        $data ['result'] = $result;
+        $data ['charge-id'] = $result['id'];
+        return $data;
+    }
+
+    /**
+     * @param $order
+     */
+    private function updateOrderWithDeclinedCardErrorFlag($order)
+    {
+        $order->error_flag = 2;
+        $order->save();
     }
 
 }
