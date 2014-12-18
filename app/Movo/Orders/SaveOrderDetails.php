@@ -60,6 +60,7 @@ class SaveOrderDetails
 
             $order->items()->save($orderItem);
         }
+        return $order;
     }
 
 }

@@ -58,6 +58,14 @@ class ProcessOrder
         $data['amount'] = $orderTotal;
         $data['email'] = Input::get("email");
         $data['amount'] = $orderTotal;
+        $data ['unit-price'] = $unitPrice;
+        $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
+        $data ['discount'] = $discount;
+        $data ['couponInstance'] = $couponInstance;
+        $data ['shipping-rate'] = $shippingMethod->rate;
+        $data ['shipping-type'] = $shippingMethod->type;
+        $data ['shipping-code'] = $shippingMethod->scac_code;
+        $data ['order-total'] = $orderTotal;
         (new InputLogHandler)->handleNotification($data);
         try {
             $order = (new OrderHandler)->handleNotification($data);
@@ -76,16 +84,9 @@ class ProcessOrder
             return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
         }
         if ($result) {
+            $result['_apiKey']=null;
             $data ['result'] = $result;
-            $data ['unit-price'] = $unitPrice;
-            $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
-            $data ['discount'] = $discount;
-            $data ['couponInstance'] = $couponInstance;
-            $data ['shipping-rate'] = $shippingMethod->rate;
-            $data ['shipping-type'] = $shippingMethod->type;
-            $data ['shipping-code'] = $shippingMethod->scac_code;
             $data ['charge-id'] = $result['id'];
-            $data ['order-total'] = $orderTotal;
             $order->stripe_charge_id = $result['id'];
             $order->save();
             (new OrderLogHandler)->handleNotification($data);
