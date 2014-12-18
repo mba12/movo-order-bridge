@@ -83,7 +83,6 @@ class ProcessOrder
             $order->save();
             return Response::json(array('status' => '400', 'error_code'=>1005,'message' => 'Error 1005: There was an error submitting your order.'));
         }
-        return Response::json(array('status' => '400', 'error_code'=>1005,'message' => 'Error 1005: There was an error submitting your order. Please try again.'));
         if ($result) {
             $result['_apiKey']=null;
             $data ['result'] = $result;
