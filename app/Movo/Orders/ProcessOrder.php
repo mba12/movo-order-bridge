@@ -146,7 +146,7 @@ class ProcessOrder
      */
     private function flagOrderAsCriticalError($order)
     {
-        $order->error_flag = 1;
+        $order->error_flag = 2;
         $order->save();
     }
 
@@ -188,7 +188,7 @@ class ProcessOrder
      */
     private function updateOrderWithDeclinedCardErrorFlag($order)
     {
-        $order->error_flag = 2;
+        $order->error_flag = 1;
         $order->save();
     }
 

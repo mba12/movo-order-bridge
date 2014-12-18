@@ -61,7 +61,12 @@
                 </div>
                 <div class="row">
                     <h3>Stripe Token:</h3>
-                     {{$order->stripe_charge_id}}
+                    @if (!is_null($order->stripe_charge_id))
+                        {{$order->stripe_charge_id}}
+                    @else
+                        {{"This order was not charged"}}
+                    @endif
+
                 </div>
                 <div class="row {{$order->error_flag ? 'error' : ''}}">
                     <h3>Error:</h3>
