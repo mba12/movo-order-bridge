@@ -29,7 +29,7 @@ class ProcessOrder
         $data = OrderInput::convertInputToData($data);
         if(!OrderValidate::validate($data)){
             (new OrderErrorLogHandler)->handleNotification($data);
-            return Response::json(array('status' => '503', 'message' => 'There was a critical error submitting your order. Please refresh the page and try again.'));
+            return Response::json(array('status' => '503', 'error_code'=>1000,'message' => 'Error 1000: There was a critical error submitting your order. Please refresh the page and try again.'));
         }
         $billing = App::make('Movo\Billing\BillingInterface');
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
@@ -39,10 +39,10 @@ class ProcessOrder
         try {
             $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), $shippingState);
         } catch (Exception $e) {
-            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+            return Response::json(array('status' => '400', 'error_code'=>1001,'message' => 'Error 1001: There was an error submitting your order. Please try again.'));
         }
         if (!isset($salesTaxRate)) {
-            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Your state and zip code do not match'));
+            return Response::json(array('status' => '400', 'error_code'=>1002,'message' => 'Error 1002: There was an error submitting your order. Your state and zip code do not match'));
         }
 
         try {
@@ -50,7 +50,7 @@ class ProcessOrder
             $shippingMethod = Shipping::getShippingMethod(Input::get("shipping-type"));
             $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
         } catch (Exception $e) {
-            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+            return Response::json(array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.'));
         }
         $orderTotal = $this->getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState);
 
@@ -70,7 +70,7 @@ class ProcessOrder
         try {
             $order = (new OrderHandler)->handleNotification($data);
         } catch (ErrorException $e) {
-            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+            return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
         }
         try {
             $result = $billing->charge([
@@ -81,8 +81,9 @@ class ProcessOrder
         } catch (Exception $e) {
             $order->error_flag=1;
             $order->save();
-            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order. Please try again.'));
+            return Response::json(array('status' => '400', 'error_code'=>1005,'message' => 'Error 1005: There was an error submitting your order.'));
         }
+        return Response::json(array('status' => '400', 'error_code'=>1005,'message' => 'Error 1005: There was an error submitting your order. Please try again.'));
         if ($result) {
             $result['_apiKey']=null;
             $data ['result'] = $result;
@@ -98,7 +99,7 @@ class ProcessOrder
         }  else {
             $order->error_flag=2;
             $order->save();
-            return Response::json(array('status' => '400', 'message' => 'There was an error submitting your order'));
+            return Response::json(array('status' => '400','error_code'=>1006, 'message' => 'Error 1006: There was an error submitting your order'));
 
         }
     }

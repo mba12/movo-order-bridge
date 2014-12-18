@@ -14,7 +14,7 @@ class Payment extends ScreenBase {
     private $shippingName:JQuery;
     private $shippingStreet:JQuery;
     private $shippingCityStateZip:JQuery;
-    private trackables:Trackable[]=[];
+    private trackables:Trackable[] = [];
 
     constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
@@ -70,7 +70,7 @@ class Payment extends ScreenBase {
     }
 
 
-    public addTracker(tracker:Trackable):void{
+    public addTracker(tracker:Trackable):void {
         this.trackables.push(tracker);
     }
 
@@ -129,8 +129,13 @@ class Payment extends ScreenBase {
                     this.pagination.gotoSummaryPage();
                 } else if (response.status == 503) {
                     this.criticalError(response);
-                }else if (response.status == 400) {
+                } else if (response.status == 400) {
+                    if (response.error_code > 1004) {
+                        this.$submitBtn.hide();
+                        this.$prevBtn.hide();
+                    }
                     this.$cardError.show();
+
                 }
             },
 
@@ -142,11 +147,12 @@ class Payment extends ScreenBase {
         });
     }
 
-      private criticalError(response){
-          this.$customError.show().text(response.message)
-          this.$submitBtn.hide();
-          this.$prevBtn.hide();
-      }
+    private criticalError(response) {
+        this.$customError.show().text(response.message)
+        this.$submitBtn.hide();
+        this.$prevBtn.hide();
+    }
+
     private trackOrder(data):void {
         for (var i = 0; i < this.trackables.length; i++) {
             this.trackables[i].track(data);

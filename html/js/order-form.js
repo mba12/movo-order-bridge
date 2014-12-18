@@ -818,6 +818,10 @@ var Payment = (function (_super) {
                     _this.criticalError(response);
                 }
                 else if (response.status == 400) {
+                    if (response.error_code > 1004) {
+                        _this.$submitBtn.hide();
+                        _this.$prevBtn.hide();
+                    }
                     _this.$cardError.show();
                 }
             },
