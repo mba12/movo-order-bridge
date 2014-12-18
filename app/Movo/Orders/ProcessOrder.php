@@ -188,7 +188,7 @@ class ProcessOrder
      */
     private function updateOrderWithDeclinedCardErrorFlag($order)
     {
-        $order->error_flag = 1;
+        $order->error_flag = 0;
         $order->save();
     }
 
