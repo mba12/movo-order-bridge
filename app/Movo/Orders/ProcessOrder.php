@@ -90,7 +90,6 @@ class ProcessOrder
             $order->stripe_charge_id = $result['id'];
             $order->save();
             (new OrderLogHandler)->handleNotification($data);
-            (new OrderHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data);
             (new ReceiptHandler)->handleNotification($data);
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));

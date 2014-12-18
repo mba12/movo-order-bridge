@@ -1,5 +1,6 @@
 <?php
 namespace Movo\Handlers;
+
 use Movo\Observer\Observer;
 use Movo\Orders\OrderInput;
 use Movo\Orders\SaveOrderDetails;
@@ -7,7 +8,8 @@ use Order;
 use Whoops\Exception\ErrorException;
 
 
-class OrderHandler implements Observer {
+class OrderHandler implements Observer
+{
 
     /**
      * @param $data
