@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Movo\Errors\OrderException;
 use Movo\Handlers\InputLogHandler;
+use Movo\Handlers\OrderErrorLogHandler;
 use Movo\Handlers\OrderHandler;
 use Movo\Handlers\OrderLogHandler;
 use Movo\Handlers\PusherHandler;
@@ -27,6 +28,7 @@ class ProcessOrder
         $data = [];
         $data = OrderInput::convertInputToData($data);
         if(!OrderValidate::validate($data)){
+            (new OrderErrorLogHandler)->handleNotification($data);
             return Response::json(array('status' => '503', 'message' => 'There was a critical error submitting your order. Please refresh the page and try again.'));
         }
         $billing = App::make('Movo\Billing\BillingInterface');

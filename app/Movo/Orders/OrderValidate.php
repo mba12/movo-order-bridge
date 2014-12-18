@@ -16,6 +16,7 @@ class OrderValidate
 {
     public static function validate($data)
     {
+        return false;
         $data['token']=Input::get("token");
         $validation = Validator::make(
             $data,
