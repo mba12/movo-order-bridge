@@ -30,6 +30,12 @@ if(isset($_SERVER['HTTP_HOST'])) {
             case 'movo.app:8000':
                 return 'local';
                 break;
+            case 'devorders.getmovo.com':
+                return 'devorders';
+                break;
+            case 'qaorders.getmovo.com':
+                return 'qaorders';
+                break;
             case 'movo.jumpkick.pro':
                 return 'jumpkick-dev';
                 break;
