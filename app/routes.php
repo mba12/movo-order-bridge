@@ -1,6 +1,8 @@
 <?php
 
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Movo\Helpers\Format;
 use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
@@ -135,4 +137,30 @@ Route::any('/ingram/order-status', array(
 Route::get('/bug',function(){
     $foo=[];
     echo $foo['bad result'];
+});
+
+Route::get('connection-test-http', function(){
+    $client = new GuzzleHttp\Client();
+    $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
+        'body' => [
+            'field_name' => 'abc',
+            'other_field' => '123'
+        ]
+    ]);
+    $log = new Logger('ingram-connection-test-http');
+    $log->pushHandler(new StreamHandler('../app/storage/logs/connection-test-http.log', Logger::INFO));
+    $log->addInfo($response);
+});
+
+Route::get('connection-test-https', function(){
+    $client = new GuzzleHttp\Client();
+    $response = $client->post('https://messagehub-dev.brightpoint.com:9443/HttpPost', [
+        'body' => [
+            'field_name' => 'abc',
+            'other_field' => '123'
+        ]
+    ]);
+    $log = new Logger('connection-test-https');
+    $log->pushHandler(new StreamHandler('../app/storage/logs/connection-test-https.log', Logger::INFO));
+    $log->addInfo($response);
 });
