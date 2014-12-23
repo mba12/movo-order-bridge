@@ -134,11 +134,6 @@ Route::any('/ingram/order-status', array(
     'uses' => 'IngramController@orderStatus',
 ));
 
-Route::get('/bug',function(){
-    $foo=[];
-    echo $foo['bad result'];
-});
-
 Route::get('connection-test-http', function(){
     $client = new GuzzleHttp\Client();
     $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
