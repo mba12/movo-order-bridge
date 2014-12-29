@@ -14,7 +14,7 @@ class ClearExpiredCouponsCommand extends ScheduledCommand
     protected $name = 'movo:clear-expired-coupons';
 
 
-    protected $description = 'Clear coupon tokens that are a week old.';
+    protected $description = 'Clear unused coupon tokens that are a week old.';
 
     public function __construct()
     {
@@ -31,7 +31,7 @@ class ClearExpiredCouponsCommand extends ScheduledCommand
     public function fire()
     {
         $oneWeekAgoDate = date("Y-m-d", strtotime("-1 week"));
-        DB::table('coupon_instances')->where('created_at', '<', $oneWeekAgoDate)->delete();
+        DB::table('coupon_instances')->where('created_at', '<', $oneWeekAgoDate)->where("used", "=", 0)->delete();
     }
 
 
