@@ -29,14 +29,21 @@ return array(
 	'connections' => array(
 
 		'production' => array(
-			'host'      => '',
-			'username'  => '',
-			'password'  => '',
+			'host'      => 'orders.getmovo.com',
+			'username'  => 'root',
+			'password'  => 'rcDZp5wMpra6JJnQufF!',
 			'key'       => '',
 			'keyphrase' => '',
-			'root'      => '/var/www',
+			'root'      => '/root',
 		),
-
+		'local' => array(
+			'host'      => 'orders.getmovo.com',
+			'username'  => 'root',
+			'password'  => 'rcDZp5wMpra6JJnQufF!',
+			'key'       => '',
+			'keyphrase' => '',
+			'root'      => '/root',
+		),
 	),
 
 	/*
