@@ -1,5 +1,4 @@
 <?php
-
 return array(
 
     /*
@@ -100,7 +99,7 @@ return array(
     | Default: false
     */
 
-    'pipeline' => App::environment() == 'local' ? 0 : 24,
+    'pipeline' => App::environment() == 'local' ? 0 : 28,
 
     /*
     |--------------------------------------------------------------------------
