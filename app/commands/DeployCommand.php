@@ -38,21 +38,21 @@ class DeployCommand extends Command
      */
     public function fire()
     {
-        echo exec("git checkout production");
-        echo exec("git pull origin production");
-        echo exec("git merge master --no-ff");
-        echo exec("git commit -am \"merging master branch into production\"");
+        echo exec("git checkout production")."\n";
+        echo exec("git pull origin production")."\n";
+        echo exec("git merge master --no-ff")."\n";
+        echo exec("git commit -am \"merging master branch into production\"")."\n";
         if ($this->option('inc')) {
             $currentBranch = exec('git symbolic-ref --short HEAD');
             if ($currentBranch != "production") {
-                echo "\nYou must be in the production branch to do this operation!";
+                echo "You must be in the production branch to do this operation!\n";
                 return;
             }
             $this->incrementJavascript();
             $this->commitAndPushConfig();
             echo "Incrementing Javascript...\n";
         }
-        if ($this->confirm('\nThis will run Git Pull on the production server and push your changes live! Do you wish to continue? [yes|no]')) {
+        if ($this->confirm('This will run Git Pull on the production server and push your changes live! Do you wish to continue? [yes|no]')) {
             echo exec("git push origin master");
             $commands = [
                 'cd /var/www/vhosts/rx7w-7k7n.accessdomain.com/',
