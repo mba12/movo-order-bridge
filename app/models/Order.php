@@ -61,22 +61,22 @@ class Order extends \Eloquent
 
     public function lastHour()
     {
-        return $this->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-60 minute")));
+        return $this->where("amount", ">", 0)->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-60 minute")));
     }
 
     public function lastDay()
     {
-        return $this->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 day")))->get();
+        return $this->where("amount", ">", 0)->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("09:00:00")))->get();
     }
 
     public function lastWeek()
     {
-        return $this->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 week")));
+        return $this->where("amount", ">", 0)->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 week")));
     }
 
     public function lastMonth()
     {
-        return $this->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 month")));
+        return $this->where("amount", ">", 0)->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 month")));
     }
 
     public function errors()

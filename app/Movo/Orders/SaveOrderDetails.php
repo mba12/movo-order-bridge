@@ -19,6 +19,10 @@ class SaveOrderDetails
     public static function save(Order $order, $data)
     {
 
+        /*$orderStatus=1;
+        if($data['quantity']>3){
+            $orderStatus=2;
+        }*/
         $order->amount = round($data['amount']*100);
         $order->tax = $data['tax'];
         $order->discount = $data['discount'];
