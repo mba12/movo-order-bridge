@@ -66,7 +66,7 @@ class Order extends \Eloquent
 
     public function lastDay()
     {
-        return $this->where("amount", ">", 0)->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("09:00:00")))->get();
+        return $this->where("amount", ">", 0)->where("error_flag", "<", 2)->where("created_at", ">=", date('Y-m-d H:i:s', strtotime("-1 day 21:00:00")))->get();
     }
 
     public function lastWeek()
