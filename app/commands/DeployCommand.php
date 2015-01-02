@@ -69,10 +69,9 @@ class DeployCommand extends Command
             SSH::into('production')->run(
                 $commands
             );
-            $this->info('All done!');
-
         }
-        echo exec("git checkout master");
+        echo exec("git checkout master")."\n";
+        $this->info('All done!');
 
     }
 
