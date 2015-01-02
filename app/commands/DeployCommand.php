@@ -38,7 +38,9 @@ class DeployCommand extends Command
      */
     public function fire()
     {
-       if ($this->option('inc')) {
+        echo exec("git checkout production");
+        echo exec("git merge master --no-ff");
+        if ($this->option('inc')) {
             $currentBranch = exec('git symbolic-ref --short HEAD');
             if ($currentBranch != "production") {
                 echo "You must be in the production branch to do this operation!";
@@ -70,6 +72,7 @@ class DeployCommand extends Command
             $this->info('All done!');
 
         }
+        echo exec("git checkout master");
 
     }
 
