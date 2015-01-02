@@ -41,7 +41,7 @@ class DeployCommand extends Command
         echo exec("git checkout production");
         echo exec("git pull origin production");
         echo exec("git merge master --no-ff");
-        echo exec("git commit -am 'merging master branch into production'");
+        echo exec("git commit -am \"merging master branch into production\"");
         if ($this->option('inc')) {
             $currentBranch = exec('git symbolic-ref --short HEAD');
             if ($currentBranch != "production") {
