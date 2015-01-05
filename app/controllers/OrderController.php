@@ -7,10 +7,11 @@ class OrderController extends BaseController
 {
     public function showForm()
     {
-        $unitPrice = Product::getUnitPrice();
+        $waves=Product::waves();
+        $unitPrice = $waves[0]->price;
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
-        $sizeInfo = Size::getUnitSizes();
+        $sizeInfo = $waves;
         $stateTaxMethods = Tax::getStateTaxMethods();
         $coupon = null;
         $code = Input::get("code");
