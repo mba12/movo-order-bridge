@@ -8,6 +8,7 @@ class OrderController extends BaseController
     public function showForm()
     {
         $waves=Product::waves();
+        $loops=Product::loops();
         $unitPrice = $waves[0]->price;
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
@@ -25,7 +26,9 @@ class OrderController extends BaseController
             'sizeInfo' => $sizeInfo,
             'coupon' => $coupon,
             'stateTaxMethods' => $stateTaxMethods,
-            'after3pm' => strtotime("03:00 pm") - time() < 0
+            'after3pm' => strtotime("03:00 pm") - time() < 0,
+            'loops'=>$loops,
+            'waves'=>$waves
         ]);
     }
 

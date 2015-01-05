@@ -159,3 +159,8 @@ Route::get('connection-test-https', function(){
     $log->pushHandler(new StreamHandler('../app/storage/logs/connection-test-https.log', Logger::INFO));
     $log->addInfo($response);
 });
+
+
+Route::get('/options', function(){
+      return  Product::where("category", "=", "wave")->with("options")->get();
+});

@@ -4,6 +4,9 @@ class Product extends \Eloquent
 {
     protected $fillable = [];
 
+    public function options(){
+        return $this->hasMany("ProductOption");
+    }
     public static function getUnitPrice()
     {
         if (Cache::has("unit-price")) {
@@ -18,7 +21,7 @@ class Product extends \Eloquent
         if (Cache::has("waves")) {
             return Cache::get("waves");
         }
-        $waves = Product::where("category", "=", "wave")->get();
+        $waves = Product::where("category", "=", "wave")->with("options")->get();
         Cache::put("waves", $waves, 1440);
         return $waves;
     }
@@ -27,7 +30,7 @@ class Product extends \Eloquent
         if (Cache::has("loops")) {
             return Cache::get("loops");
         }
-        $loops = Product::where("category", "=", "loop");
+        $loops = Product::where("category", "=", "loop")->with("options")->get();
         Cache::put("loops", $loops, 1440);
         return $loops;
     }

@@ -18,6 +18,7 @@ class ProductTableSeeder extends Seeder
 
 
         Product::create(array(
+            "id" => 1,
             "name" => "Extra small (5.7\" -- Youth / Young Adult)",
             "sku" => '857458005008',
             "price" => "29.99",
@@ -73,6 +74,13 @@ class ProductTableSeeder extends Seeder
             "price" => "10.00",
             "category" => "loop"
         ));
+
+        $option = new ProductOption();
+        $option->name = "color";
+        $option->description = 'red';
+        $option->price = "10.00";
+        $product=Product::find(1);
+        $product->options()->save($option);
 
     }
 }
