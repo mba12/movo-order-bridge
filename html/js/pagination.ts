@@ -19,7 +19,7 @@ class Pagination {
 
     private initPages():void {
         this.pages = [
-            $('#products'), $('#billing-info'), $('#shipping-info'), $('#payment'), $('#summary')
+            $('#products'), $('#loops'), $('#billing-info'), $('#shipping-info'), $('#payment'), $('#summary')
         ];
         this.$currentPage = this.pages[this.currentIndex];
     }
@@ -55,12 +55,12 @@ class Pagination {
     }
 
     public gotoSummaryPage():void {
-        this.currentIndex = 4;
+        this.currentIndex = 5;
         this.showCurrentPage();
     }
 
     public gotoShippingPage():void {
-        this.currentIndex = 2;
+        this.currentIndex = 3;
         this.showCurrentPage();
     }
 

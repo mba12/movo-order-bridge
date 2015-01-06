@@ -191,6 +191,7 @@ var Pagination = (function () {
     Pagination.prototype.initPages = function () {
         this.pages = [
             $('#products'),
+            $('#loops'),
             $('#billing-info'),
             $('#shipping-info'),
             $('#payment'),
@@ -225,11 +226,11 @@ var Pagination = (function () {
         this.showCurrentPage();
     };
     Pagination.prototype.gotoSummaryPage = function () {
-        this.currentIndex = 4;
+        this.currentIndex = 5;
         this.showCurrentPage();
     };
     Pagination.prototype.gotoShippingPage = function () {
-        this.currentIndex = 2;
+        this.currentIndex = 3;
         this.showCurrentPage();
     };
     Pagination.prototype.gotoPage = function (page) {
@@ -494,6 +495,22 @@ var Products = (function (_super) {
         }
     };
     return Products;
+})(ScreenBase);
+var Loops = (function (_super) {
+    __extends(Loops, _super);
+    function Loops($pagination) {
+        _super.call(this, $pagination);
+        this.setSelectors();
+        this.initEvents();
+    }
+    Loops.prototype.setSelectors = function () {
+        this.$currentPage = $('#loops');
+        _super.prototype.setSelectors.call(this);
+    };
+    Loops.prototype.initEvents = function () {
+        _super.prototype.initEvents.call(this);
+    };
+    return Loops;
 })(ScreenBase);
 var BillingInfo = (function (_super) {
     __extends(BillingInfo, _super);
@@ -1186,6 +1203,7 @@ var FacebookTrackOrder = (function () {
 /// <reference path="screen-base.ts" />
 /// <reference path="fixed-right-module.ts" />
 /// <reference path="products.ts" />
+/// <reference path="loops.ts" />
 /// <reference path="billing-info.ts" />
 /// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
@@ -1208,6 +1226,7 @@ var OrderForm = (function () {
         var fixedRightModule = new FixedRightModule(pagination);
         new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
+        new Loops(pagination);
         new BillingInfo(pagination);
         var payment = new Payment(pagination, fixedRightModule);
         payment.addTracker(new GoogleTrackOrder());
