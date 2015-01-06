@@ -130,7 +130,7 @@ class Payment extends ScreenBase {
         });
         data.push({
             "name": 'loops',
-            "value": loopsArray
+            "value": JSON.stringify(loopsArray)
         });
         $.ajax({
             type: 'POST', url: formURL,

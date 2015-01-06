@@ -38,6 +38,13 @@ class DeployCommand extends Command
      */
     public function fire()
     {
+
+        $commands[] = "ls";
+        SSH::into('local')->run(
+            $commands
+        );
+
+        return;
         echo exec("git checkout production")."\n";
         echo exec("git pull origin production")."\n";
         echo exec("git merge master --no-ff")."\n";
@@ -60,12 +67,13 @@ class DeployCommand extends Command
 
             if ($this->option('migrate'))
                 $commands[] = 'php artisan migrate --force';
+                $commands[] = 'php artisan cache:clear';
 
             if ($this->option('composer'))
                 $commands[] = 'composer install --no-dev';
 
             $commands[] = "php artisan up";
-            SSH::into('production')->run(
+            SSH::into('local')->run(
                 $commands
             );
         }
@@ -91,7 +99,7 @@ class DeployCommand extends Command
     protected function getOptions()
     {
         return array(
-            array('inc', "i", InputOption::VALUE_NONE, 'Increment javascript', null),
+            array('increment-javascript', "i", InputOption::VALUE_NONE, 'Increment javascript', null),
             array('migrate', "m", InputOption::VALUE_NONE, 'Run a migration', null),
             array('composer', "c", InputOption::VALUE_NONE, 'Run composer', null),
         );
