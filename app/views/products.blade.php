@@ -22,10 +22,10 @@
         <label for="#unitID"></label>
         <select name="#unitID" id="#unitID" data-validate="min:1" data-error-selector=".error-messages .size">
             <option value="">-- Please Select--</option>
-            @foreach($sizeInfo as $size)
-                  <option value="{{$size->sku}}">
-                        {{$size->name}}
-                  </option>
+            @foreach($waves as $wave)
+                <option value="{{$wave->sku}}" data-price="{{$wave->price}}}">
+                    {{$wave->name}}
+                </option>
             @endforeach
         </select>
     </div>

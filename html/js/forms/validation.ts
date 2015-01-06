@@ -85,7 +85,7 @@ class Validation {
              return false;
              }*/
             var isValid:boolean = true;
-            var value:string = $el.val();
+            var value:any = $el.val();
             var data = $el.data("validate");
             var validators:string[] = this.extractValidatorStrings(data);
 
@@ -163,6 +163,7 @@ class Validation {
 
     private isNumber(value:any, validator:string):boolean {
         if (validator != "number") return true;
+        if(value == '') return false;
         return !isNaN(value);
     }
 

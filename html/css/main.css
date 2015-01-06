@@ -711,8 +711,21 @@ html {
       margin-top: 0; }
   #form-content-box #loops {
     display: none; }
-    #form-content-box #loops select {
-      width: 100%; }
+    #form-content-box #loops .item {
+      margin-bottom: 20px;
+      display: table; }
+      #form-content-box #loops .item > div {
+        display: table-cell;
+        vertical-align: top; }
+      #form-content-box #loops .item .right .product-title {
+        margin-left: 10px;
+        font-size: 0.9375em;
+        margin-bottom: 5px; }
+      #form-content-box #loops .item .right .qty {
+        margin-left: 10px;
+        width: 52px; }
+        #form-content-box #loops .item .right .qty input {
+          border: 1px; }
     #form-content-box #loops .error-messages {
       margin-top: 0; }
   #form-content-box #shipping-info {

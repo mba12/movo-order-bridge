@@ -160,6 +160,8 @@ var Validation = (function () {
     Validation.prototype.isNumber = function (value, validator) {
         if (validator != "number")
             return true;
+        if (value == '')
+            return false;
         return !isNaN(value);
     };
     Validation.prototype.isMinValue = function (value, validator) {
@@ -502,13 +504,30 @@ var Loops = (function (_super) {
         _super.call(this, $pagination);
         this.setSelectors();
         this.initEvents();
+        this.initQuantitySteppers();
+        var loopsArray = [];
+        $('#loops').find('.loop-input').each(function (i, el) {
+            var $item = $(el);
+            if ($item.val() > -1) {
+                loopsArray.push({
+                    sku: $item.data('sku'),
+                    name: $item.data('name'),
+                    quantity: $item.val()
+                });
+            }
+        });
+        console.log(loopsArray);
     }
     Loops.prototype.setSelectors = function () {
         this.$currentPage = $('#loops');
+        this.$qty = this.$currentPage.find('.qty').find('input');
         _super.prototype.setSelectors.call(this);
     };
     Loops.prototype.initEvents = function () {
         _super.prototype.initEvents.call(this);
+    };
+    Loops.prototype.initQuantitySteppers = function () {
+        this.$qty.stepper({ min: 0, max: 99 });
     };
     return Loops;
 })(ScreenBase);
@@ -819,6 +838,21 @@ var Payment = (function (_super) {
             var unitText = $("#" + itemName + " option:selected").text().trim();
             data.push({ "name": itemName + "Name", "value": unitText });
         }
+        var loopsArray = [];
+        $('#loops').find('.loop-input').each(function (i, el) {
+            var $item = $(el);
+            if ($item.val() > 0) {
+                loopsArray.push({
+                    sku: $item.data('sku'),
+                    name: $item.data('name'),
+                    quantity: $item.val()
+                });
+            }
+        });
+        data.push({
+            "name": 'loops',
+            "value": loopsArray
+        });
         $.ajax({
             type: 'POST',
             url: formURL,
@@ -1232,7 +1266,7 @@ var OrderForm = (function () {
         payment.addTracker(new GoogleTrackOrder());
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination, fixedRightModule);
-        //pagination.gotoPage(3);
+        pagination.gotoPage(1);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

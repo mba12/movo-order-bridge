@@ -1,30 +1,34 @@
 <section id="loops">
     <h3 class="section-title">Loops</h3>
 
-    {{--<div class="products"></div>--}}
+    @for($i=0; $i<sizeof($loops); $i++)
+        <div class="item">
+            <div class="left">
+                <a href="/img/loop-fpo.jpg" target="_blank">
+                    <img src="/img/loop-fpo.jpg"/>
+                </a>
+            </div>
+            <div class="right">
+                <h3 class="product-title">{{$loops[$i]->name}}</h3>
+                <div class="qty">
+                    <input id="loop{{$i+1}}" class="loop-input" type="number" value="0" pattern="\d*"
+                           data-validate="minValue:0|number"
+                           data-error-selector=".error-messages .quantity"
+                           data-sku="{{$loops[$i]->sku}}"
+                           data-name="{{$loops[$i]->name}}"/>
+                </div>
+            </div>
+        </div>
+    @endfor
+
+    {{$loops}}
 
 
     <ul class="error-messages">
-        {{--<li class="size">Please select a size!</li>--}}
+        <li class="quantity">Please enter a valid quantity!</li>
     </ul>
     <div class="prev-next">
         <div class="button next">Next</div>
         <div class="button prev">Previous</div>
     </div>
 </section>
-
-{{--
-<script type="text/template" id="product-select-tpl">
-    <div class="select-group">
-        <h5>Unit #unitNum Size</h5>
-        <label for="#unitID"></label>
-        <select name="#unitID" id="#unitID" data-validate="min:1" data-error-selector=".error-messages .size">
-            <option value="">-- Please Select--</option>
-            @foreach($sizeInfo as $size)
-                <option value="{{$size->sku}}">
-                    {{$size->name}}
-                </option>
-            @endforeach
-        </select>
-    </div>
-</script>--}}

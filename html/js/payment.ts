@@ -117,6 +117,21 @@ class Payment extends ScreenBase {
             var unitText:string = $("#" + itemName + " option:selected").text().trim();
             data.push({"name": itemName + "Name", "value": unitText});
         }
+        var loopsArray = [];
+        $('#loops').find('.loop-input').each((i, el)=> {
+            var $item:JQuery = $(el);
+            if($item.val() > 0) {
+                loopsArray.push({
+                    sku: $item.data('sku'),
+                    name: $item.data('name'),
+                    quantity: $item.val()
+                });
+            }
+        });
+        data.push({
+            "name": 'loops',
+            "value": loopsArray
+        });
         $.ajax({
             type: 'POST', url: formURL,
             data: data,

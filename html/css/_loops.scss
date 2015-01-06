@@ -1,7 +1,29 @@
 #loops {
   display: none;
-  select {
-    width: 100%;
+  .item {
+    margin-bottom: 20px;
+    display: table;
+    > div {
+      display: table-cell;
+      vertical-align: top;
+    }
+    .left {
+    }
+    .right {
+      .product-title {
+        margin-left: 10px;
+        font-size: em(15);
+        margin-bottom: 5px;
+      }
+      .qty {
+        margin-left: 10px;
+        width: 52px;
+        input {
+          border: 1px;
+        }
+      }
+    }
+
   }
 
 

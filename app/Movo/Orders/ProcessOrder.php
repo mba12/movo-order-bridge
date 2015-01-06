@@ -23,8 +23,10 @@ use Shipping;
 class ProcessOrder
 {
 
+
     public function process()
     {
+        dd(Input::all());
         $data = [];
         $data = OrderInput::convertInputToData($data);
         if(!OrderValidate::validate($data)){

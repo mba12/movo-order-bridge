@@ -55,21 +55,21 @@ class ProductTableSeeder extends Seeder
         ));
 
         Product::create(array(
-            "name" => "Movo Loops - Standard",
+            "name" => "Standard Loops",
             "sku" => '857458005053',
             "price" => "10.00",
             "category" => "loop"
         ));
 
         Product::create(array(
-            "name" => "Movo Loops - Neon",
+            "name" => "Neon Loops",
             "sku" => '857458005060',
             "price" => "10.00",
             "category" => "loop"
         ));
 
         Product::create(array(
-            "name" => "Movo Loops - USC",
+            "name" => "USC Loops",
             "sku" => '857458005077',
             "price" => "10.00",
             "category" => "loop"
