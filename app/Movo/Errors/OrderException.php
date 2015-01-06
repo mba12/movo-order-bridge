@@ -24,6 +24,6 @@ App::error(function(OrderException $e, $code, $fromConsole)
         return 'Error '.$code.': '.$e->getMessage()."\n";
     }
 
-    return Response::json(array('status' => '400', 'message' => $e->getMessage()));
+    return Response::json(array('status' => '400','error_code'=>2000, 'message' => $e->getMessage()));
 
 });

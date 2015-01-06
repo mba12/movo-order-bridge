@@ -34,7 +34,6 @@ class ProcessOrder
         $billing = App::make('Movo\Billing\BillingInterface');
         $salesTax = App::make('Movo\SalesTax\SalesTaxInterface');
         $couponInstance = Coupon::getValidCouponInstance();
-        $quantity = Input::get("quantity");
         $shippingState = Input::get("shipping-state");
         try {
             $salesTaxRate = $salesTax->getRate(Input::get("shipping-zip"), $shippingState);
@@ -46,14 +45,30 @@ class ProcessOrder
         }
 
         try {
-            $unitPrice = Product::getUnitPrice();
+            $products=Product::getAll();
+            $totalUnitPrices=0;
+            $totalDiscount=0;
+
+            for ($i = 0; $i < sizeof($data['items']); $i++) {
+              foreach($products as $product){
+                    if($product->sku==$data['items'][$i]['sku']){
+                        $data['items'][$i]['price']=$product->price;
+                        $data['items'][$i]['quantity']=1;
+                        $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price);
+                        $totalUnitPrices+=$product->price;
+                        $totalDiscount+=$data['items'][$i]['discount'];
+                    }
+                }
+            }
+
             $shippingMethod = Shipping::getShippingMethod(Input::get("shipping-type"));
-            $discount = $this->getDiscount($couponInstance, $unitPrice);
+
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.'));
         }
-        $orderTotal = $this->getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState);
-        $data = $this->populateDataWithOrderAmounts($data, $orderTotal, $unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance);
+
+        $orderTotal = $this->getOrderTotal($totalUnitPrices, $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState);
+        $data = $this->populateDataWithOrderAmounts($data, $totalUnitPrices,  $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance);
         (new InputLogHandler)->handleNotification($data);
         try {
             $order = (new OrderHandler)->handleNotification($data);
@@ -84,12 +99,11 @@ class ProcessOrder
 
 
 
-    private function getOrderTotal($unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $state)
+    private function getOrderTotal($totalUnitPrices,  $discount, $shippingMethod, $salesTaxRate, $state)
     {
         $orderTotal = CalculateOrderTotal::calculateTotal([
-            "quantity" => $quantity,
             "tax-rate" => $salesTaxRate,
-            "unit-price" => $unitPrice,
+            "total-unit-prices" => $totalUnitPrices,
             "state" => $state,
             "shipping-rate" => $shippingMethod->rate,
             "discount" => $discount,
@@ -99,8 +113,7 @@ class ProcessOrder
 
     /**
      * @param $data
-     * @param $orderTotal
-     * @param $unitPrice
+     * @param $totalUnitPrices
      * @param $quantity
      * @param $discount
      * @param $shippingMethod
@@ -109,17 +122,20 @@ class ProcessOrder
      * @param $couponInstance
      * @return mixed
      */
-    private function populateDataWithOrderAmounts($data, $orderTotal, $unitPrice, $quantity, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance)
+    public function populateDataWithOrderAmounts($data,  $totalUnitPrices, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance)
     {
+
+        $tax=SalesTax::calculateTotalTax($totalUnitPrices  - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
         $data['token'] = Input::get("token");
-        $data['amount'] = $orderTotal;
+        $orderTotal=  round($totalUnitPrices  - $discount+ $shippingMethod->rate+$tax,2);
         $data['email'] = Input::get("email");
-        $data ['unit-price'] = $unitPrice;
-        $data ['tax'] = SalesTax::calculateTotalTax($unitPrice * $quantity - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);
+        $data ['total-unit-prices'] = $totalUnitPrices;
+        $data ['tax'] = $tax;
         $data ['discount'] = $discount;
         $data ['couponInstance'] = $couponInstance;
         $data ['shipping-rate'] = $shippingMethod->rate;
         $data ['shipping-code'] = $shippingMethod->scac_code;
+        $data['amount'] = $orderTotal;
         $data ['order-total'] = $orderTotal;
         return $data;
     }
@@ -169,9 +185,9 @@ class ProcessOrder
      * @param $unitPrice
      * @return int
      */
-    private function getDiscount($couponInstance, $unitPrice)
+    private function getDiscount(Coupon $couponInstance=null, $unitPrice)
     {
-        $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, Input::get("quantity")) : 0;
+        $discount = $couponInstance ? $couponInstance->calculateCouponDiscount($unitPrice, 1) : 0;
         return $discount;
     }
 

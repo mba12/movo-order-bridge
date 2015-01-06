@@ -24,7 +24,8 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
                 "description"=>Input::get("unit" . ($i + 1)."Name"),
                 "sku"=>Input::get("unit" . ($i + 1)),
                 "quantity"=>1,
-                "price"=>Format::FormatUSD($data['unit-price'])
+                "price"=>Format::FormatUSD($data['total-unit-prices'])
+                //TODO fix displayed price in email
             ];
         }
         $data['items']=(new Order)->combineAndCountItems($data['items']);

@@ -2,7 +2,7 @@
 
 class Item extends \Eloquent {
 	protected $fillable = [
-		"sku", "description"
+		"sku", "description", "amount", "tax", "discount", "quantity"
 	];
 
 	public function order(){

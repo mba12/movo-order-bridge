@@ -7,10 +7,12 @@ class OrderController extends BaseController
 {
     public function showForm()
     {
-        $unitPrice = Product::getUnitPrice();
+        $waves=Product::waves();
+        $loops=Product::loops();
+        $unitPrice = $waves[0]->price;
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
-        $sizeInfo = Size::getUnitSizes();
+        $sizeInfo = $waves;
         $stateTaxMethods = Tax::getStateTaxMethods();
         $coupon = null;
         $code = Input::get("code");
@@ -24,7 +26,9 @@ class OrderController extends BaseController
             'sizeInfo' => $sizeInfo,
             'coupon' => $coupon,
             'stateTaxMethods' => $stateTaxMethods,
-            'after3pm' => strtotime("03:00 pm") - time() < 0
+            'after3pm' => strtotime("03:00 pm") - time() < 0,
+            'loops'=>$loops,
+            'waves'=>$waves
         ]);
     }
 

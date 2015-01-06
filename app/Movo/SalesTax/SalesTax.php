@@ -21,6 +21,7 @@ class SalesTax
     public static function calculateTotalTax($subtotal, $shipping, $rate, $state)
     {
         $statesWhichTaxShipping = ["NY", "IN"];
+        //dd($subtotal."         ".$rate."              ".($subtotal + $shipping) * $rate);
         if (in_array($state, $statesWhichTaxShipping)) {
             return ($subtotal + $shipping) * $rate;
         }

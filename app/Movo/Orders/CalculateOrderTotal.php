@@ -15,9 +15,8 @@ class CalculateOrderTotal
 {
     public static function calculateTotal($data)
     {
-        $quantity = $data['quantity'];
         $discount = $data['discount'];
-        $subtotal = $data['unit-price'] * $quantity - $discount;
+        $subtotal = $data['total-unit-prices']  - $discount;
         $shippingRate = $data['shipping-rate'];
         $totalSalesTax = SalesTax::calculateTotalTax($subtotal, $shippingRate, $data['tax-rate'], $data['state']);
         $amount = $subtotal + $totalSalesTax + $shippingRate;
