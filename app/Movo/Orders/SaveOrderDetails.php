@@ -80,10 +80,10 @@ class SaveOrderDetails
                 "amount" => $item['price'] * $item['quantity'],
                 "tax" => $data['tax'] * $itemPercentageOfTotal * $item['quantity'],
                 "quantity" => $item['quantity'],
+                "shipping" => $data ['shipping-rate']* $itemPercentageOfTotal * $item['quantity'],
                 "discount" => $data['discount'] * $itemPercentageOfTotal * $item['quantity'],
             ]
         );
-
         return $orderItem;
     }
 }

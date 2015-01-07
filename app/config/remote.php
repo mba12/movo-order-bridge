@@ -37,12 +37,12 @@ return array(
 			'root'      => '/root',
 		),
 		'local' => array(
-			'host'      => 'orders.getmovo.com',
-			'username'  => 'root',
-			'password'  => 'rcDZp5wMpra6JJnQufF!',
+			'host'      => '127.0.0.1',
+			'username'  => 'vagrant',
+			'password'  => '',
 			'key'       => '',
 			'keyphrase' => '',
-			'root'      => '/root',
+			'root'      => '/home/vagrant'
 		),
 	),
 

@@ -856,7 +856,7 @@ var Payment = (function (_super) {
         });
         data.push({
             "name": 'loops',
-            "value": loopsArray
+            "value": JSON.stringify(loopsArray)
         });
         $.ajax({
             type: 'POST',

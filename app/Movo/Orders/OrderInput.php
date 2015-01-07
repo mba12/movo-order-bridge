@@ -10,7 +10,7 @@ namespace Movo\Orders;
 
 
 use Illuminate\Support\Facades\Input;
-
+ use GuzzleHttp;
 class OrderInput
 {
 
@@ -44,7 +44,18 @@ class OrderInput
                 "description"=>Input::get("unit" . ($i + 1)."Name"),
             ];
         }
+        $loops=json_decode(Input::get("loops"));
+
+        for ($i = 0; $i < sizeof($loops); $i++) {
+            $item=$loops[$i];
+            $items[]=[
+                "sku"=>$item->sku ,
+                "description"=>$item->name,
+                "quantity"=>$item->quantity,
+            ];
+        }
         $data['items']= $items;
+
         return $data;
     }
 }

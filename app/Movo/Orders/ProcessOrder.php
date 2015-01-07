@@ -26,9 +26,10 @@ class ProcessOrder
 
     public function process()
     {
-        dd(Input::all());
+
         $data = [];
         $data = OrderInput::convertInputToData($data);
+
         if(!OrderValidate::validate($data)){
             (new OrderErrorLogHandler)->handleNotification($data);
             return Response::json(array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Please refresh the page and try again.'));
@@ -55,7 +56,9 @@ class ProcessOrder
               foreach($products as $product){
                     if($product->sku==$data['items'][$i]['sku']){
                         $data['items'][$i]['price']=$product->price;
-                        $data['items'][$i]['quantity']=1;
+                        //if(!isset($data['items'][$i]['quantity'])){
+                            $data['items'][$i]['quantity']=1;
+                        //}
                         $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price);
                         $totalUnitPrices+=$product->price;
                         $totalDiscount+=$data['items'][$i]['discount'];

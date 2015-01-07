@@ -43,7 +43,7 @@ class OrderValidate
             )
         );
 
-        if (sizeof($data['items']) != $data['quantity']) {
+        if (sizeof($data['items']) != $data['quantity']+sizeof(json_decode(Input::get("loops")))) {
             return false;
         }
         for ($i = 0; $i < $data['quantity']; $i++) {
