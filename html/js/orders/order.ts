@@ -12,6 +12,7 @@ class Order{
     private $shippingCountrySelect:JQuery;
     private $shippingStateSelect:JQuery;
     private $shippingZipCode:JQuery;
+    private $loopInputFields:JQuery;
 
     constructor() {
         if(Order._instance){
@@ -37,6 +38,7 @@ class Order{
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$quantityInputField=$("#quantity");
+        this.$loopInputFields = $('#loops').find('.loop-input');
     }
     public resetOrder():void{
         this.coupon=null;
@@ -58,7 +60,6 @@ class Order{
                     discount = (this.coupon.amount / 100) * this.getQuantity() * this.getUnitPrice();
                 }
             }
-
         }
         return  Math.round(discount);
     }
@@ -68,7 +69,16 @@ class Order{
     }
 
     public getSubtotal():number {
-        return this.getQuantity() * this.getUnitPrice();
+        return (this.getQuantity() * this.getUnitPrice()) + this.getLoopsSubtotal();
+    }
+
+    private getLoopsSubtotal():number {
+        var subtotal:number = 0;
+        this.$loopInputFields.each((i, el)=> {
+            var $item:JQuery = $(el);
+            subtotal += $item.val() * parseInt($item.data('price'));
+        });
+        return subtotal;
     }
 
     public setSalesTax(callback?:any):void {

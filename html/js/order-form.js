@@ -304,6 +304,7 @@ var FixedRightModule = (function () {
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$discount = $('#subtotal-fields').find('.discount');
+        this.$loopInputFields = $('#loops').find('.loop-input');
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -311,6 +312,7 @@ var FixedRightModule = (function () {
         this.$quantityInputField.on('keypress', function (e) { return _this.onKeyPress(e); });
         this.$shippingSelect.on('change', function () { return _this.onShippingSelectChange(); });
         this.$shippingCountrySelect.on('change', function () { return _this.onShippingCountrySelectChange(); });
+        this.$loopInputFields.on('change', function () { return _this.onLoopInputChange(); });
     };
     FixedRightModule.prototype.setQuantityFieldIfPassedIn = function () {
         var passedInQuantity = parseInt(this.getParameterByName('quantity'));
@@ -336,6 +338,9 @@ var FixedRightModule = (function () {
     FixedRightModule.prototype.onShippingCountrySelectChange = function () {
         this.calculatePrice();
     };
+    FixedRightModule.prototype.onLoopInputChange = function () {
+        this.calculatePrice();
+    };
     FixedRightModule.prototype.calculatePrice = function () {
         this.setUnitPrice();
         this.applyCoupon();
@@ -345,8 +350,8 @@ var FixedRightModule = (function () {
         this.setTotal();
     };
     FixedRightModule.prototype.setUnitPrice = function () {
-        var priceStr = '$' + this.order.getUnitPrice();
-        this.$unitPrice.html(priceStr);
+        //var priceStr:string = '$' + this.order.getUnitPrice();
+        //this.$unitPrice.html(priceStr);
     };
     FixedRightModule.prototype.applyCoupon = function () {
         if (this.order.getDiscount() > 0) {
@@ -1134,6 +1139,7 @@ var Order = (function () {
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$quantityInputField = $("#quantity");
+        this.$loopInputFields = $('#loops').find('.loop-input');
     };
     Order.prototype.resetOrder = function () {
         this.coupon = null;
@@ -1161,7 +1167,15 @@ var Order = (function () {
         return Math.min(parseInt(this.$quantityInputField.val()), FixedRightModule.MAX_UNITS);
     };
     Order.prototype.getSubtotal = function () {
-        return this.getQuantity() * this.getUnitPrice();
+        return (this.getQuantity() * this.getUnitPrice()) + this.getLoopsSubtotal();
+    };
+    Order.prototype.getLoopsSubtotal = function () {
+        var subtotal = 0;
+        this.$loopInputFields.each(function (i, el) {
+            var $item = $(el);
+            subtotal += $item.val() * parseInt($item.data('price'));
+        });
+        return subtotal;
     };
     Order.prototype.setSalesTax = function (callback) {
         if (this.$shippingCountrySelect.val() != "US") {
