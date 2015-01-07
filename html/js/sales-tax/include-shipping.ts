@@ -1,6 +1,6 @@
 class IncludeShippingMethod implements SalesTaxMethod{
-    calculate(quantity:number, unitPrice:number, discount:number, shippingRate:number, rate:number):number {
-        return ((quantity * unitPrice) - discount + shippingRate) * rate;
+    calculate(subtotal:number, discount:number, shippingRate:number, rate:number):number {
+        return (subtotal - discount + shippingRate) * rate;
     }
 
 }

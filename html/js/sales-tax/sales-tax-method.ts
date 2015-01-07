@@ -1,5 +1,5 @@
 interface SalesTaxMethod{
-     calculate(quantity:number, unitPrice:number, discount:number, shippingRate:number, rate:number):number;
+     calculate(subtotal:number, discount:number, shippingRate:number, rate:number):number;
 }
 
 interface SalesTaxCalculatable{

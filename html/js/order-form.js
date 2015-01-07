@@ -387,7 +387,7 @@ var FixedRightModule = (function () {
         });
     };
     FixedRightModule.prototype.getSalesTax = function () {
-        return this.salesTax.total(this.order.getQuantity(), this.order.getUnitPrice(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.order.getSubtotal(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
     };
     FixedRightModule.prototype.setShipping = function () {
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
@@ -1078,11 +1078,11 @@ var SalesTax = (function () {
             }
         });
     };
-    SalesTax.prototype.total = function (quantity, unitPrice, discount, shippingRate, state) {
+    SalesTax.prototype.total = function (subtotal, discount, shippingRate, state) {
         if (!state || state == "") {
             return 0;
         }
-        return this.getTaxMethod(state).calculate(quantity, unitPrice, discount, shippingRate, this.rate);
+        return this.getTaxMethod(state).calculate(subtotal, discount, shippingRate, this.rate);
     };
     SalesTax.prototype.getTaxMethod = function (state) {
         state = state.trim();
@@ -1099,16 +1099,16 @@ var SalesTax = (function () {
 var IncludeShippingMethod = (function () {
     function IncludeShippingMethod() {
     }
-    IncludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
-        return ((quantity * unitPrice) - discount + shippingRate) * rate;
+    IncludeShippingMethod.prototype.calculate = function (subtotal, discount, shippingRate, rate) {
+        return (subtotal - discount + shippingRate) * rate;
     };
     return IncludeShippingMethod;
 })();
 var ExcludeShippingMethod = (function () {
     function ExcludeShippingMethod() {
     }
-    ExcludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
-        return ((quantity * unitPrice) - discount) * rate;
+    ExcludeShippingMethod.prototype.calculate = function (subtotal, discount, shippingRate, rate) {
+        return (subtotal - discount) * rate;
     };
     return ExcludeShippingMethod;
 })();
@@ -1193,7 +1193,7 @@ var Order = (function () {
         });
     };
     Order.prototype.getSalesTax = function () {
-        return this.salesTax.total(this.getQuantity(), this.getUnitPrice(), this.getDiscount(), this.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getSubtotal(), this.getDiscount(), this.getShippingPrice(), this.$shippingStateSelect.val());
     };
     Order.prototype.getShippingPrice = function () {
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {

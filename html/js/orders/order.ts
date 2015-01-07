@@ -72,7 +72,7 @@ class Order{
         return (this.getQuantity() * this.getUnitPrice()) + this.getLoopsSubtotal();
     }
 
-    private getLoopsSubtotal():number {
+    public getLoopsSubtotal():number {
         var subtotal:number = 0;
         this.$loopInputFields.each((i, el)=> {
             var $item:JQuery = $(el);
@@ -98,7 +98,7 @@ class Order{
     }
 
     public getSalesTax():number {
-        return this.salesTax.total(this.getQuantity(), this.getUnitPrice(), this.getDiscount(), this.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getSubtotal(), this.getDiscount(), this.getShippingPrice(), this.$shippingStateSelect.val());
     }
 
     public getShippingPrice():number {

@@ -139,7 +139,7 @@ class FixedRightModule {
     }
 
     private getSalesTax():number {
-        return this.salesTax.total(this.order.getQuantity(), this.order.getUnitPrice(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.order.getSubtotal(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
     }
 
     private setShipping():void {
