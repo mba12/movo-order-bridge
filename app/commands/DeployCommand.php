@@ -65,7 +65,7 @@ class DeployCommand extends Command
                 $commands[] = 'composer install --no-dev';
 
             $commands[] = "php artisan up";
-            SSH::into('productions')->run(
+            SSH::into('production')->run(
                 $commands
             );
         }
