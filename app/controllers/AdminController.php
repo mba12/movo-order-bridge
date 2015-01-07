@@ -20,7 +20,7 @@ class AdminController extends \BaseController
         $coupons = Coupon::where('active', '=', 1)->get();
         $couponCounts = [];
         foreach ($coupons as $coupon) {
-            $couponCounts[] = $coupon->usedCoupons()->count();
+            $couponCounts[] = $coupon->usedCouponCount();
         }
         $lastHour = $this->order->lastHour()->count();
         $lastDay = $this->order->lastDay()->count();
