@@ -31,6 +31,24 @@ class OrderTotalTests extends TestCase
         echo json_encode($data);
     }
 
+    public function test_it_should_calculate_a_coupon_into_total_and_use_shipping_in_tax_with_loops()
+    {
+        $processOrder = new \Movo\Orders\ProcessOrder();
+        Input::replace(['token' => 'a-token-here']);
+        $data = [];
+        $shippingMethod = new Shipping();
+        $shippingMethod->rate = 5.75;
+        $coupon = new Coupon();
+        $coupon->method = "$";
+        $coupon->amount = "10";
+        $data = $processOrder->populateDataWithOrderAmounts($data, 39.99, 0, $shippingMethod, 0.08875, "NY", $coupon);
+        echo json_encode($data);
+        $this->assertNotEmpty($data);
+        $this->assertEquals($data['amount'], 49.8);
+        $this->assertEquals($data['order-total'], 49.8);
+    }
+
+
     public function test_it_should_calculate_item_totals()
     {
         $item = [
@@ -47,6 +65,7 @@ class OrderTotalTests extends TestCase
             "description" => "foo",
             "quantity" => "2",
             "discount" => "12",
+            'shipping-rate' => "5.75"
         ];
 
         $data['items'] = [$item];
