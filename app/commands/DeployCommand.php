@@ -40,10 +40,9 @@ class DeployCommand extends Command
     {
         echo exec("git checkout production")."\n";
         echo exec("git pull origin production")."\n";
-        echo exec("git merge master --no-ff")."\n";
-        echo exec("git commit -am \"merging master branch into production\"")."\n";
-        if ($this->option('inc')) {
-            $currentBranch = exec('git symbolic-ref --short HEAD');
+        //echo exec("git merge master --no-ff")."\n";
+        //echo exec("git commit -am \"merging master branch into production\"")."\n";
+        if ($this->option('increment-javascript')) {
             $this->incrementJavascript();
             $this->commitAndPushConfig();
             echo "Incrementing Javascript...\n";
@@ -60,12 +59,13 @@ class DeployCommand extends Command
 
             if ($this->option('migrate'))
                 $commands[] = 'php artisan migrate --force';
+                $commands[] = 'php artisan cache:clear';
 
             if ($this->option('composer'))
                 $commands[] = 'composer install --no-dev';
 
             $commands[] = "php artisan up";
-            SSH::into('production')->run(
+            SSH::into('productions')->run(
                 $commands
             );
         }
@@ -91,7 +91,7 @@ class DeployCommand extends Command
     protected function getOptions()
     {
         return array(
-            array('inc', "i", InputOption::VALUE_NONE, 'Increment javascript', null),
+            array('increment-javascript', "i", InputOption::VALUE_NONE, 'Increment javascript', null),
             array('migrate', "m", InputOption::VALUE_NONE, 'Run a migration', null),
             array('composer', "c", InputOption::VALUE_NONE, 'Run composer', null),
         );
