@@ -1,0 +1,8 @@
+{
+  "name": "Movo",
+  "description": "Movo Tests",
+  "version": "0.0.1",
+  "devDependencies": {
+    "dalek-reporter-html": "0.0.4"
+  }
+}
