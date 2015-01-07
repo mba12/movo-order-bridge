@@ -25,6 +25,7 @@ class SalesTax {
                 }
                 this.rate = response.rate;
                 if (callback) callback(response);
+
             }, error: (response)=> {
                 if (callback) callback({error: "There was an error retrieving sales tax"});
             }

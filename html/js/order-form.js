@@ -382,6 +382,7 @@ var FixedRightModule = (function () {
         }
         this.salesTax.setLocation(this.$shippingZipCode.val(), this.$shippingStateSelect.val(), function (response) {
             _this.$salesTax.html('$' + _this.getSalesTax().toFixed(2));
+            _this.setTotal();
             if (callback)
                 callback(response);
         });

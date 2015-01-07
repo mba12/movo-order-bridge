@@ -134,6 +134,7 @@ class FixedRightModule {
 
         this.salesTax.setLocation(this.$shippingZipCode.val(), this.$shippingStateSelect.val(), (response)=> {
             this.$salesTax.html('$' + this.getSalesTax().toFixed(2));
+            this.setTotal();
             if (callback) callback(response);
         })
     }
