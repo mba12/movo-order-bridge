@@ -1280,7 +1280,7 @@ var OrderForm = (function () {
         payment.addTracker(new GoogleTrackOrder());
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination, fixedRightModule);
-        pagination.gotoPage(1);
+        //pagination.gotoPage(1);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');
