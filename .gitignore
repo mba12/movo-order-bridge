@@ -10,3 +10,5 @@ Thumbs.db
 *.iml
 bower_components
 *.map
+/cert
+/auth
