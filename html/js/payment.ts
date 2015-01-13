@@ -153,6 +153,8 @@ class Payment extends ScreenBase {
     }
 
     private trackOrder(data):void {
+        var environment = $('meta[name="environment"]').attr('content');
+        if(environment!="production") return;
         for (var i = 0; i < this.trackables.length; i++) {
             this.trackables[i].track(data);
         }

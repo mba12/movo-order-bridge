@@ -838,6 +838,9 @@ var Payment = (function (_super) {
         this.$prevBtn.hide();
     };
     Payment.prototype.trackOrder = function (data) {
+        var environment = $('meta[name="environment"]').attr('content');
+        if (environment != "production")
+            return;
         for (var i = 0; i < this.trackables.length; i++) {
             this.trackables[i].track(data);
         }

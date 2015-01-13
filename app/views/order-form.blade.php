@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="publishable-key" content="{{{Config::get("services.stripe.publishable")}}}"/>
+        <meta name="environment" content="{{{App::environment()}}}"/>
         <title>Movo - Order Form</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600,400,700' rel='stylesheet' type='text/css'>
