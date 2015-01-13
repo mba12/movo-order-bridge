@@ -40,8 +40,10 @@ class DeployCommand extends Command
     {
         echo exec("git checkout production")."\n";
         echo exec("git pull origin production")."\n";
-        //echo exec("git merge master --no-ff")."\n";
-        //echo exec("git commit -am \"merging master branch into production\"")."\n";
+        if ($this->option('merge')) {
+            echo exec("git merge master --no-ff")."\n";
+            echo exec("git commit -am \"merging master branch into production\"")."\n";
+        }
         if ($this->option('increment-javascript')) {
             $this->incrementJavascript();
             $this->commitAndPushConfig();
@@ -59,7 +61,7 @@ class DeployCommand extends Command
 
             if ($this->option('migrate'))
                 $commands[] = 'php artisan migrate --force';
-                $commands[] = 'php artisan cache:clear';
+            $commands[] = 'php artisan cache:clear';
 
             if ($this->option('composer'))
                 $commands[] = 'composer install --no-dev';
@@ -69,7 +71,10 @@ class DeployCommand extends Command
                 $commands
             );
         }
-        echo exec("git checkout master")."\n";
+        if ($this->option('merge')) {
+            echo exec("git checkout master")."\n";
+        }
+
         $this->info('All done!');
 
     }
@@ -94,6 +99,7 @@ class DeployCommand extends Command
             array('increment-javascript', "i", InputOption::VALUE_NONE, 'Increment javascript', null),
             array('migrate', "m", InputOption::VALUE_NONE, 'Run a migration', null),
             array('composer', "c", InputOption::VALUE_NONE, 'Run composer', null),
+            array('merge', "merge", InputOption::VALUE_NONE, 'Merge in master branch before deploying', null),
         );
     }
 
