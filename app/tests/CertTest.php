@@ -1,6 +1,6 @@
 <?php
   use Movo\Helpers\Format;
-class CertTests extends TestCase
+class CertTest extends TestCase
 {
 
     public function tearDown()
