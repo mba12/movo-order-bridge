@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <message>
     <message-header>
         <message-id>str1234</message-id>
