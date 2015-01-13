@@ -20,6 +20,8 @@ class IngramController extends \BaseController {
 		$log = new Logger('ingram-returns');
 		$log->pushHandler(new StreamHandler('../app/storage/logs/returns.log', Logger::INFO));
 		$log->addInfo(json_encode(Input::all()));
+		$content =  View::make("ingram.returns");
+		return Response::make($content, '200')->header('Content-Type', 'text/xml');
 	}
 
 	public function shipAdvice(){
