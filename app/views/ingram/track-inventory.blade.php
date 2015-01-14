@@ -1,37 +1,16 @@
 <message>
     <message-header>
-        <message-id>1234</message-id>
-        <transaction-name>str1234</transaction-name>
-        <partner-name>str1234</partner-name>
-        <source-url>http://www.xsd2xml.com</source-url>
-        <create-timestamp>str1234</create-timestamp>
+        <message-id/>
+        <transaction-name/>
+        <partner-name>Movo</partner-name>
+        <source-url>http://www.getmovo.com</source-url>
+        <create-timestamp>20130820132850</create-timestamp>
         <response-request>0</response-request>
     </message-header>
-    <inventory-synchronization>
-        <header>
-            <customer-information>
-                <customer-id>str1234</customer-id>
-                <business-name>str1234</business-name>
-            </customer-information>
-        </header>
-        <detail>
-            <line-item>
-                <line-no>str1234</line-no>
-                <transaction-document-number>str1234</transaction-document-number>
-                <item-code>str1234</item-code>
-                <universal-product-code>str1234</universal-product-code>
-                <warehouse-id>str1234</warehouse-id>
-                <unit-of-measure>EA</unit-of-measure>
-                <quantity-on-hand>123.45</quantity-on-hand>
-                <quantity-committed>123.45</quantity-committed>
-                <quantity-available>123.45</quantity-available>
-                <quantity-on-back-order>123.45</quantity-on-back-order>
-                <synchronization-timestamp>str1234</synchronization-timestamp>
-                <comments>str1234</comments>
-            </line-item>
-        </detail>
-    </inventory-synchronization>
-    <transactionInfo>
-        <eventID>str1234</eventID>
-    </transactionInfo>
+    <message-status>
+        <status-code>1</status-code>
+        <status-description>SUCCESS</status-description>
+        <comments>Message received</comments>
+        <response-></response->
+    </message-status>
 </message>
