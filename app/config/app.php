@@ -128,6 +128,7 @@ return array(
         'Movo\Providers\ReceiptsServiceProvider',
         'Movo\Providers\SalesTaxServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
+        'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
         'Indatus\Dispatcher\ServiceProvider',
         'Stolz\Assets\ManagerServiceProvider',
         'Artisaninweb\SoapWrapper\ServiceProvider',
