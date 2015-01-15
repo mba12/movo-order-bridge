@@ -8,33 +8,6 @@
 * v0.7.2
 * Docs at http://davidtheclark.github.io/scut
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -466,7 +439,7 @@ html {
       font-weight: 700;
       margin-bottom: 25px; }
   #form-content-box .error-messages {
-    color: #e60b21;
+    color: #e60b1f;
     font-size: 0.8125em;
     margin: 10px 0 10px;
     line-height: 1.3em; }
@@ -490,7 +463,7 @@ html {
     margin: 5px 10px 0 0;
     display: none; }
   #form-content-box a {
-    color: #e60b21;
+    color: #e60b1f;
     text-decoration: underline;
     -webkit-transition: 0.3s color;
     -moz-transition: 0.3s color;
@@ -698,9 +671,18 @@ html {
       margin-bottom: 17px; }
     #form-content-box #products #too-many-units {
       font-size: 0.8125rem;
-      margin-bottom: 15px !important; }
+      margin-bottom: 30px !important; }
       #form-content-box #products #too-many-units a, #form-content-box #products #too-many-units a:visited, #form-content-box #products #too-many-units a:active {
-        color: #e60b21; }
+        color: #e60b1f; }
+    #form-content-box #products .charity-donations {
+      margin-top: 15px;
+      margin-bottom: 20px; }
+      #form-content-box #products .charity-donations h3 {
+        margin-bottom: 15px; }
+      #form-content-box #products .charity-donations p {
+        font-size: 0.84375em;
+        margin-bottom: 15px;
+        line-height: 1.25em; }
     #form-content-box #products #product-sizing-btn {
       color: #333;
       font-size: 0.875em;
@@ -711,12 +693,19 @@ html {
       margin-top: 0; }
   #form-content-box #loops {
     display: none; }
+    #form-content-box #loops p {
+      font-size: 0.875em;
+      margin-top: -5px;
+      margin-bottom: 25px;
+      line-height: 1.25em; }
     #form-content-box #loops .item {
       margin-bottom: 20px;
       display: table; }
       #form-content-box #loops .item > div {
         display: table-cell;
         vertical-align: top; }
+      #form-content-box #loops .item .left img {
+        border: 1px solid #d3d3d3; }
       #form-content-box #loops .item .right .product-title {
         margin-left: 10px;
         font-size: 0.9375em;
@@ -856,7 +845,7 @@ html {
   -moz-transition: 0.2s all;
   transition: 0.2s all; }
   .button:hover {
-    background-color: #f00c22; }
+    background-color: #f00c20; }
 
 .small-gray-button {
   color: #666;

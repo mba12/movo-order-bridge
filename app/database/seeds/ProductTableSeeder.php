@@ -68,12 +68,12 @@ class ProductTableSeeder extends Seeder
             "category" => "loop"
         ));
 
-        Product::create(array(
+        /*Product::create(array(
             "name" => "USC Loops",
             "sku" => '857458005077',
             "price" => "10.00",
             "category" => "loop"
-        ));
+        ));*/
 
         $option = new ProductOption();
         $option->name = "color";
