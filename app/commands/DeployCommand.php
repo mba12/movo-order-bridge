@@ -59,13 +59,20 @@ class DeployCommand extends Command
                 'git reset --hard',
             ];
 
-            if ($this->option('migrate'))
+            if ($this->option('migrate')) {
                 $commands[] = 'php artisan migrate --force';
+            }
             $commands[] = 'php artisan cache:clear';
 
-            if ($this->option('composer'))
-                $commands[] = 'composer install --no-dev';
 
+            if ($this->option('composer')) {
+                $commands[] = 'composer install --no-dev';
+                $commands[] = 'php artisan optimize';
+            }
+            if ($this->option('products')) {
+                $commands[] = 'php artisan db:seed --class ProductTableSeeder';
+            }
+            $commands[] = 'php artisan dump-autoload';
             $commands[] = "php artisan up";
             SSH::into('production')->run(
                 $commands
@@ -100,6 +107,7 @@ class DeployCommand extends Command
             array('migrate', "m", InputOption::VALUE_NONE, 'Run a migration', null),
             array('composer', "c", InputOption::VALUE_NONE, 'Run composer', null),
             array('merge', "merge", InputOption::VALUE_NONE, 'Merge in master branch before deploying', null),
+            array('products', "products", InputOption::VALUE_NONE, 'Run db seed on products', null),
         );
     }
 
