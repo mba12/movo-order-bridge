@@ -24,7 +24,7 @@
                 <warehouse-id>str1234</warehouse-id>
                 <unit-of-measure>EA</unit-of-measure>
                 <quantity-on-hand>123.45</quantity-on-hand>
-                <quantity-committed>123.45</quantity-committed>
+                <quantity-committed>300.45</quantity-committed>
                 <quantity-available>123.45</quantity-available>
                 <quantity-on-back-order>123.45</quantity-on-back-order>
                 <synchronization-timestamp>str1234</synchronization-timestamp>
