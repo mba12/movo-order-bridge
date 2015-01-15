@@ -1,0 +1,29 @@
+<?php
+use Illuminate\Database\Eloquent\Model as Eloquent;
+
+class %CLASS% extends \Eloquent
+{
+    protected $guarded = [];
+    protected $table = "%TABLE%";
+
+    public static function parseSAndSaveData($doc)
+    {
+        $xml = new SimpleXMLElement($doc);
+        $data = %CLASS%::parseData($xml);
+        %CLASS%::saveData($data);
+
+
+    }
+
+    private static function parseData($xml)
+    {
+        %DATA%
+        return $data;
+    }
+
+    private static function saveData($data)
+    {
+        %CREATE%
+    }
+
+}

@@ -20,7 +20,7 @@ class Coupon extends \Eloquent
 
     public function usedCouponCount()
     {
-        return $this->instances()->where("used", "=", 1)->count();
+        return Order::where("coupon","=", $this->code)->where("stripe_charge_id","!=", "")->count();
     }
 
     public function calculateCouponDiscount($unitPrice, $quantity)
