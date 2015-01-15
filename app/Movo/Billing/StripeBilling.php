@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Shipping;
 use Stripe;
 use Stripe_Charge;
+use Stripe_Transfer;
 
 class StripeBilling implements BillingInterface
 {
@@ -28,7 +29,6 @@ class StripeBilling implements BillingInterface
                 'card' => $data['token'],
                 'metadata'=>$data['metadata']
             ]);
-
             return $result;
         } catch (\Stripe_InvalidRequestError $e) {
             return null;

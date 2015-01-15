@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Movo\Errors\OrderException;
 use SoapBox\Formatter\Formatter;
+use GuzzleHttp;
+use GuzzleHttp\Client;
 
 class IngramShipping implements ShippingInterface
 {
@@ -95,7 +97,7 @@ class IngramShipping implements ShippingInterface
     {
 
 
-        $fp=fopen(base_path()."/cert/messagehub_TEST.cer","r");
+      /* $fp=fopen(base_path()."/cert/messagehub_TEST.cer","r");
         $pub_key=fread($fp,8192);
         fclose($fp);
         $plaintext = "String to encrypt";
@@ -106,7 +108,7 @@ class IngramShipping implements ShippingInterface
             'body' => [
                 'data' => $crypttext
             ]
-        ]);
+        ]);*/
 
     }
 

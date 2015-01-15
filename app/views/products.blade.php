@@ -15,9 +15,9 @@
             voluptatibus?</p>
         <select name="charity" id="charity" data-validate="min:1" data-error-selector=".error-messages .charity">
             <option value="">-- Select Charity --</option>
-            @foreach($waves as $wave)
-                <option value="{{$wave->sku}}" data-price="{{$wave->price}}}">
-                    {{$wave->name}}
+            @foreach($charities as $charity)
+                <option value="{{$charity->id}}"">
+                    {{$charity->name}}
                 </option>
             @endforeach
         </select>

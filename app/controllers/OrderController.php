@@ -9,6 +9,7 @@ class OrderController extends BaseController
     {
         $waves=Product::waves();
         $loops=Product::loops();
+        $charities=Charity::getList();
         $unitPrice = $waves[0]->price;
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
@@ -28,6 +29,7 @@ class OrderController extends BaseController
             'stateTaxMethods' => $stateTaxMethods,
             'after3pm' => strtotime("03:00 pm") - time() < 0,
             'loops'=>$loops,
+            'charities'=>$charities,
             'waves'=>$waves
         ]);
     }
