@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Movo\Errors\OrderException;
+use Movo\Handlers\DonationHandler;
 use Movo\Handlers\InputLogHandler;
 use Movo\Handlers\OrderErrorLogHandler;
 use Movo\Handlers\OrderHandler;
@@ -77,6 +78,7 @@ class ProcessOrder
         (new InputLogHandler)->handleNotification($data);
         try {
             $order = (new OrderHandler)->handleNotification($data);
+            (new DonationHandler)->handleNotification($order);
         } catch (ErrorException $e) {
             return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
         }
