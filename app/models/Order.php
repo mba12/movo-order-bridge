@@ -43,6 +43,11 @@ class Order extends \Eloquent
         return $this->hasMany("Item");
     }
 
+    public function donations()
+    {
+        return $this->hasMany("Donation");
+    }
+
     public function combineAndCountItems($items, $key="description")
     {
 

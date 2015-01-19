@@ -19,10 +19,10 @@ class DonationHandler implements Observer
      * @throws \Exception
      * @internal param $data
      */
-    public function handleNotification( $order)
+    public function handleNotification( $orderData)
     {
         try {
-            (new Donation())->saveDonation($order, Input::get("charity"),sizeof(json_decode(Input::get("loops"))));
+            (new Donation())->saveDonation($orderData['order'], $orderData['data']);
 
         } catch (ErrorException $e) {
             throw new \Exception("Error on save donation");

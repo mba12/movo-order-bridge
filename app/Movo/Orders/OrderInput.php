@@ -17,6 +17,7 @@ class OrderInput
     public static function convertInputToData($data)
     {
         $data['quantity'] = Input::get("quantity");
+        $data['charity'] = Input::get("charity");
         $data['shipping-type'] = Input::get("shipping-type");
         $data['shipping-first-name'] = Input::get("shipping-first-name");
         $data['shipping-last-name'] = Input::get("shipping-last-name");
