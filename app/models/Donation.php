@@ -1,9 +1,9 @@
 <?php
 
 class Donation extends \Eloquent {
-	protected $fillable = ["charity_id", "order_id", "item_sku","amount"];
+	protected $fillable = ["charity_id", "order_id", "item_sku","amount", "campaign_id"];
 
-	public  function saveDonation($order, $data){
+	public  function saveAllDonations($order, $data){
 		$donations=[];
 		$charityCalculations=CharityCalculation::all();
 
@@ -12,26 +12,31 @@ class Donation extends \Eloquent {
 					 if($calc->item_sku==$data['items'][$i]['sku']){
 						  if(!isset($donations[$calc->item_sku])){
 							  $donations[$calc->item_sku]=1;
-							  Donation::create(
-								  [
-									  "charity_id"=> $data['charity'],
-									  "order_id"=> $order->id,
-									  "amount"=> $this->getDonation($calc,$data['items'][$i]),
-									  "item_sku"=> $data['items'][$i]['sku'],
-								  ]
-							  );
+							  $this->saveDonation($order,$calc,$data, $i);
 						  }
 					 }
 				 }
 		}
 	}
 
+	public function saveDonation($order, $calc,$data, $index){
+		$savedDonation=Donation::create(
+			[
+				"charity_id"=> $data['charity'],
+				"order_id"=> $order->id,
+				"amount"=> $this->getDonation($calc,$data['items'][$index]),
+				"item_sku"=> $data['items'][$index]['sku'],
+				"campaign_id"=> $calc->campaign_id,
+			]
+		);
+		return $savedDonation;
+	}
 	public function getDonation($calc, $item)
 	{
 		if($calc->calculation_type=="fixed"){
 			return $calc->fixed_amt;
 		}   else{
-			  return $item['amount']*$calc->percent_amt;
+			  return $item['amount']*$calc->percent_amt/10;
 		}
 	}
 }

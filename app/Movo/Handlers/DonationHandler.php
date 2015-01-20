@@ -22,7 +22,7 @@ class DonationHandler implements Observer
     public function handleNotification( $orderData)
     {
         try {
-            (new Donation())->saveDonation($orderData['order'], $orderData['data']);
+            (new Donation())->saveAllDonations($orderData['order'], $orderData['data']);
 
         } catch (ErrorException $e) {
             throw new \Exception("Error on save donation");
