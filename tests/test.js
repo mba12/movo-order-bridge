@@ -1,22 +1,10 @@
 module.exports = {
     "Test Movo order totals": function (test) {
-        /*test.open("http://movo.app:8000")
-            .screenshot("movo.png")
-            .assert.exists('#products .next', "Next button exists on products page")
-            .screenshot("form.png")
-            .click('#products .next')
-            .assert.visible('.error-messages li')
-            .screenshot("form2.png")
-            .click('#unit1 option[value="857458005008"]')
-            .click('#products .next')
-            .waitForElement("#billing-info h3")
-            .screenshot("form3.png")
-            .assert.not.visible('.error-messages li')
-            .done();*/
         test.open("http://movo.app:8000")
             .click('#unit1 option[value="857458005008"]')
+            .click('#charity option[value="2"]')
             .click('#products .next')
-            .type('#loop1', '1')
+            .type('#loop1', '2')
             .click('#loops .next')
             .type('#billing-first-name', 'Ryan')
             .type('#billing-last-name', 'Hovland')
@@ -39,7 +27,7 @@ module.exports = {
             .click('#shipping-type option[value="1"]')
             .click('#shipping-info .next')
             .wait(2000)
-            .assert.text('#total .price li', '$49.80')
+            .assert.text('#total .price li', '$60.69')
 
             // testing Oregon sales tax
             .click('#payment .prev')
@@ -47,7 +35,7 @@ module.exports = {
             .click('#shipping-state-select option[value="OR"]')
             .click('#shipping-info .next')
             .wait(2000)
-            .assert.text('#total .price li', '$45.74')
+            .assert.text('#total .price li', '$55.74')
 
 
             .click('#cc-month option[value="12"]')
@@ -55,7 +43,7 @@ module.exports = {
             .type('#coupon-code', 'friends20')
             .click('#submit-coupon-code')
             .wait(2000)
-            .assert.text('#total .price li', '$39.74')
+            .assert.text('#total .price li', '$49.74')
 
             .click('#submit-order')
             .wait(3000)

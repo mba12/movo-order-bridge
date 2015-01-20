@@ -9,7 +9,7 @@ class Charity extends \Eloquent
         if (Cache::has("charities")) {
             return Cache::get("charities");
         }
-        $charities = Charity::all();
+        $charities = Charity::where("active", "=", 1)->get();
         Cache::put("charities", $charities, 1440);
         return $charities;
     }
