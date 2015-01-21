@@ -19,6 +19,7 @@ class IngramController extends \BaseController {
 
 	public function returns()
 	{
+
 		$request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-returns');
