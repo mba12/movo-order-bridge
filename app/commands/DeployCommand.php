@@ -81,7 +81,7 @@ class DeployCommand extends Command
 
     private function incrementJavascript()
     {
-        $path = app_path() . "\config\packages\stolz\assets\config.php";
+        $path = app_path() . "/config/packages/stolz/assets/config.php";
         $contents = File::get($path);
         $newString = preg_replace_callback("/'local' \? (\d*) : (\d*)/", function ($matches) {
             $parts = explode(" ", $matches[0]);
@@ -105,7 +105,7 @@ class DeployCommand extends Command
 
     private function commitAndPushConfig()
     {
-        $path = app_path() . "\config\packages\stolz\assets\config.php";
+        $path = app_path() . "/config/packages/stolz/assets/config.php";
         echo exec("git commit -m 'incrementing' " . $path);
         echo exec("git push origin production");
     }

@@ -1239,7 +1239,8 @@ var OrderForm = (function () {
         }
         else {
             // The page is not in an iframe
-            history.go(-1);
+            //history.go(-1);
+            window.location.href = "http://www.getmovo.com";
         }
     };
     OrderForm.prototype.onCloseClick = function () {
