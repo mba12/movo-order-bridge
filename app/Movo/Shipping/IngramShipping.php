@@ -14,7 +14,112 @@ class IngramShipping implements ShippingInterface
         Log::info("attempting to retry orders");
     }
 
+    public static function generateTestOrder()
+    {
+
+        $data['quantity'] = 1;
+        $data['shipping-type'] = 1;
+        $data['shipping-code'] = "FXSP";
+        $data['shipping-first-name'] = "Test";
+        $data['shipping-last-name'] = "User";
+        $data['shipping-address'] = "123 Oak";
+        $data['shipping-city'] = "Anytown";
+        $data['shipping-state'] = "NY";
+        $data['shipping-zip'] = "10007";
+        $data['shipping-country'] = "US";
+        $data['shipping-phone'] = "222-555-5555";
+
+        $data['billing-first-name'] = "Test";
+        $data['billing-last-name'] = "User";
+        $data['billing-address'] = "123 Oak";
+        $data['billing-city'] = "Anytown";
+        $data['billing-state'] = "NY";
+        $data['billing-zip'] = "10007";
+        $data['billing-country'] = "US";
+        $data['billing-phone'] =  "222-555-5555";
+        $data['email'] =  "info@getmovo.com";
+        $data['coupon'] =  "";
+        $data['result'] =  [
+            "id"=>"test_stripe_id"
+        ];
+        $items=[];
+        for ($i = 0; $i < 1; $i++) {
+            $items[]=[
+                "sku"=>"857458005008" ,
+                "description"=>"Extra small (5.7\" -- Youth / Young Adult)",
+            ];
+        }
+        $data['items']= $items;
+        $xml = (new IngramShipping)->generateXMLFromData($data);
+        return $xml;
+    }
+
     public function ship(array $data)
+    {
+
+        $xml = $this->generateXMLFromData($data);
+        $this->sendToFulfillment($xml);
+
+    }
+
+    public function convertToXML(array $data)
+    {
+        $formatter = Formatter::make($data, Formatter::ARR);
+        $xml = $formatter->toXml();
+        return $xml;
+    }
+
+
+
+    private function sendToFulfillment($xml)
+    {
+
+
+        $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";
+
+        $header = "GET HTTP/1.0 \r\n";
+        $header .= "Content-type: text/xml \r\n";
+        $header .= "Content-length: " . strlen($xml) . " \r\n";
+        $header .= "Content-transfer-encoding: text \r\n";
+        $header .= "Connection: close \r\n\r\n";
+        $header .= $xml;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $header);
+
+        $data = curl_exec($ch);
+
+        if (curl_errno($ch))
+            print curl_error($ch);
+        else
+            curl_close($ch);
+
+
+        //echo($data);
+    }
+
+    /**
+     * @param $xml
+     * @return mixed
+     */
+    private function replaceItemNodeNames($xml)
+    {
+        $xml = str_replace("<xml>", "", $xml);
+        $xml = str_replace("</xml>", "", $xml);
+        $xml = str_replace("<item>", "<line-item>", $xml);
+        $xml = str_replace("</item>", "</line-item>", $xml);
+        return $xml;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function generateXMLFromData(array $data)
     {
         $date = new \DateTime;
         $array = [
@@ -59,79 +164,12 @@ class IngramShipping implements ShippingInterface
                             'order-type' => 'WEB-SALES',
                         ]
                     ],
-                    'detail' => $this->createOrderList()
+                    'detail' => $data['items'],
                 ]
             ],
         ];
         $xml = $this->convertToXML($array);
         $xml = $this->replaceItemNodeNames($xml);
-        $this->sendToFulfillment($xml);
-
-    }
-
-    public function convertToXML(array $data)
-    {
-        $formatter = Formatter::make($data, Formatter::ARR);
-        $xml = $formatter->toXml();
-        return $xml;
-    }
-
-    private function createOrderList()
-    {
-        $items = [];
-        for ($i = 0; $i < Input::get("quantity"); $i++) {
-            array_push($items,
-                [
-                    'line-no' => '1',
-                    'item-code' => Input::get("unit" . ($i + 1)),
-                    'quantity' => '1.0',
-                    'unit-of-measure' => 'EA',
-                ]);
-        }
-        return $items;
-    }
-
-    private function sendToFulfillment($xml)
-    {
-
-
-        $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";
-
-        $header = "GET HTTP/1.0 \r\n";
-        $header .= "Content-type: text/xml \r\n";
-        $header .= "Content-length: " . strlen($xml) . " \r\n";
-        $header .= "Content-transfer-encoding: text \r\n";
-        $header .= "Connection: close \r\n\r\n";
-        $header .= $xml;
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $header);
-
-        $data = curl_exec($ch);
-
-        if (curl_errno($ch))
-            print curl_error($ch);
-        else
-            curl_close($ch);
-
-
-        //echo($data);
-    }
-
-    /**
-     * @param $xml
-     * @return mixed
-     */
-    private function replaceItemNodeNames($xml)
-    {
-        $xml = str_replace("<xml>", "", $xml);
-        $xml = str_replace("</xml>", "", $xml);
-        $xml = str_replace("<item>", "<line-item>", $xml);
-        $xml = str_replace("</item>", "</line-item>", $xml);
         return $xml;
     }
 
