@@ -14,6 +14,14 @@ class IngramShipping implements ShippingInterface
         Log::info("attempting to retry orders");
     }
 
+    public static function encryptXML($xml){
+        $fp=fopen(base_path()."/cert/messagehub_TEST.cer","r");
+        $pub_key=fread($fp,8192);
+        fclose($fp);
+        openssl_public_encrypt($xml,$crypttext, $pub_key );
+        return(base64_encode($crypttext));
+    }
+
     public static function generateTestOrder()
     {
 

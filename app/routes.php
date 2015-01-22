@@ -6,6 +6,7 @@ use Monolog\Logger;
 use Movo\Helpers\Format;
 use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
+use Movo\Shipping\IngramShipping;
 
 App::bind("Pusher", function ($app) {
     $keys = $app['config']->get('services.pusher');
@@ -162,9 +163,9 @@ Route::get('connection-test-https', function(){
 
 Route::get('order-test', function(){
     $client = new GuzzleHttp\Client();
-    $orderXML=\Movo\Shipping\IngramShipping::generateTestOrder();
+    $orderXML= IngramShipping::generateTestOrder();
     $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
-        'body' => $orderXML
+        'body' => IngramShipping::encryptXML($orderXML)
     ]);
     $log = new Logger('ingram-order-test');
     $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
