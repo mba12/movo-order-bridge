@@ -64,7 +64,8 @@ class OrderForm {
             parent.window.postMessage('close-order-lightbox', parentUrl);
         } else {
             // The page is not in an iframe
-            history.go(-1);
+            //history.go(-1);
+            window.location.href = "http://www.getmovo.com";
         }
     }
 
