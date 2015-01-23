@@ -164,7 +164,7 @@ Route::get('connection-test-https', function(){
 Route::get('order-test', function(){
     $client = new GuzzleHttp\Client();
     $orderXML= IngramShipping::generateTestOrder();
-    $response = $client->post('https://messagehub-dev.brightpoint.com:9135/HttpPost', [
+    $response = $client->post('https://messagehub-dev.brightpoint.com:9443/HttpPost', [
         'body' => IngramShipping::encryptXML($orderXML)
     ]);
     $log = new Logger('ingram-order-test');
