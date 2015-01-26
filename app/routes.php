@@ -163,10 +163,10 @@ Route::get('connection-test-https', function(){
 
 Route::get('order-test', function(){
     $client = new GuzzleHttp\Client();
-    $client->get('/', ['verify' => base_path()."/cert/messagehub_TEST.cer"]);
     $orderXML= IngramShipping::generateTestOrder();
     $response = $client->post('https://messagehub-dev.brightpoint.com:9443/HttpPost', [
-        'body' => $orderXML
+        'body' => $orderXML ,
+        'verify' => base_path()."/cert/messagehub_TEST.cer"
     ]);
     $log = new Logger('ingram-order-test');
     $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
