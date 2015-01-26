@@ -173,3 +173,8 @@ Route::get('order-test', function(){
     $log->addInfo($response);
     return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
 });
+
+Route::get('dummy', function(){
+    $orderXML= IngramShipping::generateTestOrder();
+    return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
+});
