@@ -6,15 +6,14 @@ class InventorySync extends \Eloquent
     protected $guarded = [];
     protected $table = "inventory_sync";
 
-    public static function parseSAndSaveData($doc)
+    public static function parseAndSaveData($xmlString)
     {
-        $xml = new SimpleXMLElement($doc);
-        $items=  $xml->xpath('//line-item');
-        for ($i = 0; $i < sizeof($items); $i++) {
-            $data = InventorySync::parseData($xml, $i);
+        $xml = new SimpleXMLElement($xmlString);
+        $result = $xml->xpath('//line-item');
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $data = InventorySync::parseData($result[$i], $i);
             InventorySync::saveData($data);
         }
-
     }
 
     private static function parseData($xml, $i)
@@ -27,7 +26,6 @@ class InventorySync extends \Eloquent
         $data["create_timestamp"] = (String)$xml->xpath('//create-timestamp')[0];
         $data["response_request"] =(String) $xml->xpath('//response-request')[0];
         $data["customer_id"] = (String)$xml->xpath('//customer-id')[0];
-        $data["business_name"] = (String)$xml->xpath('//business-name')[0];
         $data["line_no"] = (String)$xml->xpath('//line-no')[$i];
         $data["transaction_document_number"] = (String)$xml->xpath('//transaction-document-number')[$i];
         $data["item_code"] = (String)$xml->xpath('//item-code')[$i];
@@ -39,7 +37,6 @@ class InventorySync extends \Eloquent
         $data["quantity_available"] = (String)$xml->xpath('//quantity-available')[$i];
         $data["quantity_on_back_order"] = (String)$xml->xpath('//quantity-on-back-order')[$i];
         $data["synchronization_timestamp"] = (String)$xml->xpath('//synchronization-timestamp')[$i];
-        $data["comments"] = (String)$xml->xpath('//comments')[0];
         $data["eventID"] = (String)$xml->xpath('//eventID')[0];
         return $data;
     }
@@ -55,7 +52,7 @@ class InventorySync extends \Eloquent
             "create_timestamp" => $data["create_timestamp"],
             "response_request" => $data["response_request"],
             "customer_id" => $data["customer_id"],
-            "business_name" => $data["business_name"],
+            "business_name" => "",
             "line_no" => $data["line_no"],
             "transaction_document_number" => $data["transaction_document_number"],
             "item_code" => $data["item_code"],
@@ -67,7 +64,7 @@ class InventorySync extends \Eloquent
             "quantity_available" => $data["quantity_available"],
             "quantity_on_back_order" => $data["quantity_on_back_order"],
             "synchronization_timestamp" => $data["synchronization_timestamp"],
-            "comments" => $data["comments"],
+            "comments" => "",
             "eventID" => $data["eventID"],
         ]);
     }
