@@ -42,13 +42,22 @@ class OrderValidate
 
             )
         );
+        $itemCount = 0;
+        for ($i = 0; $i < sizeof($data['items']); $i++) {
+            if (!isset($data['items'][$i]['quantity'])) {
+                $itemCount++;
+            } else {
+                $itemCount += $data['items'][$i]['quantity'];
+            }
+        }
 
-        if (sizeof($data['items']) != $data['quantity']) {
+        if ($itemCount != $data['quantity']) {
+
             return false;
         }
-        for ($i = 0; $i < $data['quantity']; $i++) {
+        for ($i = 0; $i < sizeof($data['items']); $i++) {
             if (!isset($data['items'][$i])) {
-                return false;
+                 return false;
             }
             if (!isset($data['items'][$i]['sku'])) {
                 return false;

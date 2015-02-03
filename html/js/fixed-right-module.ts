@@ -18,7 +18,8 @@ class FixedRightModule {
     private salesTax:SalesTax = new SalesTax();
     private $discount:JQuery;
 
-    private order:Order=Order.getInstance();
+    private order:Order = Order.getInstance();
+    private $loopInputFields:JQuery;
 
     constructor(public pagination:Pagination) {
         this.setSelectors();
@@ -43,6 +44,7 @@ class FixedRightModule {
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$discount = $('#subtotal-fields').find('.discount');
+        this.$loopInputFields = $('#loops').find('.loop-input');
     }
 
     private initEvents() {
@@ -50,6 +52,7 @@ class FixedRightModule {
         this.$quantityInputField.on('keypress', (e)=>this.onKeyPress(e));
         this.$shippingSelect.on('change', ()=>this.onShippingSelectChange());
         this.$shippingCountrySelect.on('change', ()=>this.onShippingCountrySelectChange());
+        this.$loopInputFields.on('change', ()=>this.onLoopInputChange());
     }
 
     private setQuantityFieldIfPassedIn():void {
@@ -81,6 +84,10 @@ class FixedRightModule {
     private onShippingCountrySelectChange():void {
         this.calculatePrice();
     }
+    
+    private onLoopInputChange():void {
+        this.calculatePrice();
+    }
 
     public calculatePrice():void {
         this.setUnitPrice();
@@ -92,22 +99,18 @@ class FixedRightModule {
     }
 
     private setUnitPrice():void {
-
-        var priceStr:string = '$' + this.order.getUnitPrice();
-        this.$unitPrice.html(priceStr);
+        //var priceStr:string = '$' + this.order.getUnitPrice();
+        //this.$unitPrice.html(priceStr);
     }
 
     private applyCoupon():void {
-        if (this.order.getDiscount()>0) {
-
+        if (this.order.getDiscount() > 0) {
             this.$discount.fadeIn();
             var discountStr:string = "-$" + parseFloat(<any>(Math.round(this.order.getDiscount() * 100) / 100)).toFixed(2);
             $('#subtotal-fields').find('.price').find('.discount').html(discountStr);
         } else {
             this.$discount.fadeOut();
-
         }
-
     }
 
     public hideDiscountFields():void {
@@ -115,7 +118,6 @@ class FixedRightModule {
     }
 
     private setSubtotal():void {
-
         this.$subtotal.html('$' + this.order.getSubtotal().toFixed(2));
     }
 
@@ -132,12 +134,13 @@ class FixedRightModule {
 
         this.salesTax.setLocation(this.$shippingZipCode.val(), this.$shippingStateSelect.val(), (response)=> {
             this.$salesTax.html('$' + this.getSalesTax().toFixed(2));
+            this.setTotal();
             if (callback) callback(response);
         })
     }
 
     private getSalesTax():number {
-        return this.salesTax.total(this.order.getQuantity(), this.order.getUnitPrice(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.order.getSubtotal(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
     }
 
     private setShipping():void {
@@ -169,7 +172,7 @@ class FixedRightModule {
         }
     }
 
-    public resetOrder():void{
+    public resetOrder():void {
         this.order.resetOrder();
         Coupon.reset();
         this.hideDiscountFields();

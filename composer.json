@@ -22,7 +22,9 @@
   "require-dev": {
     "way/generators": "~2.0",
     "phpunit/phpunit": "~4.0",
-    "mockery/mockery": "dev-master"
+    "mockery/mockery": "dev-master",
+    "xethron/migrations-generator": "dev-master"       ,
+    "fzaninotto/faker": "v1.3.0"
   },
   "autoload": {
     "classmap": [

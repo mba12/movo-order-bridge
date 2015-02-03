@@ -42,7 +42,7 @@ class CouponTests extends TestCase
         $coupon = new Coupon();
         $coupon->limit = 100;
         $coupon->min_units = 1;
-        $result = $couponController->couponLimitReached($coupon, "friends20", 1, 99);
+        $result = $couponController->couponLimitReached($coupon, 1, 99);
         $this->assertFalse($result);
     }
 

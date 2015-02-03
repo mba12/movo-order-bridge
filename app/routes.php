@@ -6,7 +6,6 @@ use Monolog\Logger;
 use Movo\Helpers\Format;
 use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
-use Movo\Shipping\IngramShipping;
 
 App::bind("Pusher", function ($app) {
     $keys = $app['config']->get('services.pusher');

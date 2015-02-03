@@ -47,6 +47,7 @@
                       }}
                        @include('fixed-right-module')
                        @include('products')
+                       @include('loops')
                        @include('billing')
                        @include('shipping')
                        @include('payment')

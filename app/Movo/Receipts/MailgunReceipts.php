@@ -17,16 +17,18 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
         $data['address1']=Input::get("shipping-address");
         $data['address2']=Input::get("shipping-city").", ".Input::get("shipping-state")." ".Input::get("shipping-zip");
         $data['quantity']=Input::get("quantity");
-        $data['items'] = [];
+        /*$data['items'] = [];
 
         for ($i = 0; $i < $data['quantity']; $i++) {
             $data['items'][]=[
                 "description"=>Input::get("unit" . ($i + 1)."Name"),
                 "sku"=>Input::get("unit" . ($i + 1)),
                 "quantity"=>1,
-                "price"=>Format::FormatUSD($data['unit-price'])
+                "price"=>Format::FormatUSD($data['total-unit-prices'])
+                //TODO fix displayed price in email
             ];
         }
+        $data['items']=(new Order)->combineAndCountItems($data['items']);*/
         $data['items']=(new Order)->combineAndCountItems($data['items']);
         $emailData = $this->createEmailData($data);
 

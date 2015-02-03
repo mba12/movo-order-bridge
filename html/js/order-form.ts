@@ -6,6 +6,7 @@
 /// <reference path="screen-base.ts" />
 /// <reference path="fixed-right-module.ts" />
 /// <reference path="products.ts" />
+/// <reference path="loops.ts" />
 /// <reference path="billing-info.ts" />
 /// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
@@ -29,15 +30,16 @@ class OrderForm {
         this.setSelectors();
         this.initEvents();
         var pagination = new Pagination();
-        var fixedRightModule:FixedRightModule= new FixedRightModule(pagination);
-        new ShippingInfo(pagination,fixedRightModule);
+        var fixedRightModule:FixedRightModule = new FixedRightModule(pagination);
+        new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
+        new Loops(pagination);
         new BillingInfo(pagination);
-        var payment:Payment=new Payment(pagination,fixedRightModule);
+        var payment:Payment = new Payment(pagination, fixedRightModule);
         payment.addTracker(new GoogleTrackOrder());
         payment.addTracker(new FacebookTrackOrder());
-        new Summary(pagination,fixedRightModule);
-        //pagination.gotoPage(3);
+        new Summary(pagination, fixedRightModule);
+        //pagination.gotoPage(1);
     }
 
     private setSelectors():void {

@@ -37,10 +37,25 @@ class Order extends \Eloquent
         'tracking_code',
         'error_flag',
     ];
-
+    public static function parseAndSaveData($xmlString)
+    {
+        $xml = new SimpleXMLElement($xmlString);
+        $result = $xml->xpath('//customer-id')[0];
+        $order=Order::where("stripe_charge_id", "=", (String)$result)->first();
+        $order->ingram_order_id= (String)$xml->xpath('//message-id')[0];
+        if((String)$xml->xpath('//transaction-name')[0]=="sales-order-rejection"){
+            $order->error_flag=3;
+        }
+        $order->save();
+    }
     public function items()
     {
         return $this->hasMany("Item");
+    }
+
+    public function donations()
+    {
+        return $this->hasMany("Donation");
     }
 
     public function combineAndCountItems($items, $key="description")
@@ -48,12 +63,10 @@ class Order extends \Eloquent
         $combinedItems=[];
         foreach ($items as $item) {
             if(!isset($combinedItems[$item[$key]])){
-                $combinedItems[$item[$key]]=[
-                    $key=>$item[$key],
-                    "count"=>1
-                ];
+                $combinedItems[$item[$key]]=$item;
+                $combinedItems[$item[$key]]['quantity']=$item['quantity'];
             }else{
-                $combinedItems[$item[$key]]['count']++;
+                $combinedItems[$item[$key]]['quantity']++;
             }
         }
         return $combinedItems;

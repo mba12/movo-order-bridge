@@ -160,6 +160,8 @@ var Validation = (function () {
     Validation.prototype.isNumber = function (value, validator) {
         if (validator != "number")
             return true;
+        if (value == '')
+            return false;
         return !isNaN(value);
     };
     Validation.prototype.isMinValue = function (value, validator) {
@@ -191,6 +193,7 @@ var Pagination = (function () {
     Pagination.prototype.initPages = function () {
         this.pages = [
             $('#products'),
+            $('#loops'),
             $('#billing-info'),
             $('#shipping-info'),
             $('#payment'),
@@ -225,11 +228,11 @@ var Pagination = (function () {
         this.showCurrentPage();
     };
     Pagination.prototype.gotoSummaryPage = function () {
-        this.currentIndex = 4;
+        this.currentIndex = 5;
         this.showCurrentPage();
     };
     Pagination.prototype.gotoShippingPage = function () {
-        this.currentIndex = 2;
+        this.currentIndex = 3;
         this.showCurrentPage();
     };
     Pagination.prototype.gotoPage = function (page) {
@@ -301,6 +304,7 @@ var FixedRightModule = (function () {
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$discount = $('#subtotal-fields').find('.discount');
+        this.$loopInputFields = $('#loops').find('.loop-input');
     };
     FixedRightModule.prototype.initEvents = function () {
         var _this = this;
@@ -308,6 +312,7 @@ var FixedRightModule = (function () {
         this.$quantityInputField.on('keypress', function (e) { return _this.onKeyPress(e); });
         this.$shippingSelect.on('change', function () { return _this.onShippingSelectChange(); });
         this.$shippingCountrySelect.on('change', function () { return _this.onShippingCountrySelectChange(); });
+        this.$loopInputFields.on('change', function () { return _this.onLoopInputChange(); });
     };
     FixedRightModule.prototype.setQuantityFieldIfPassedIn = function () {
         var passedInQuantity = parseInt(this.getParameterByName('quantity'));
@@ -333,6 +338,9 @@ var FixedRightModule = (function () {
     FixedRightModule.prototype.onShippingCountrySelectChange = function () {
         this.calculatePrice();
     };
+    FixedRightModule.prototype.onLoopInputChange = function () {
+        this.calculatePrice();
+    };
     FixedRightModule.prototype.calculatePrice = function () {
         this.setUnitPrice();
         this.applyCoupon();
@@ -342,8 +350,8 @@ var FixedRightModule = (function () {
         this.setTotal();
     };
     FixedRightModule.prototype.setUnitPrice = function () {
-        var priceStr = '$' + this.order.getUnitPrice();
-        this.$unitPrice.html(priceStr);
+        //var priceStr:string = '$' + this.order.getUnitPrice();
+        //this.$unitPrice.html(priceStr);
     };
     FixedRightModule.prototype.applyCoupon = function () {
         if (this.order.getDiscount() > 0) {
@@ -374,12 +382,13 @@ var FixedRightModule = (function () {
         }
         this.salesTax.setLocation(this.$shippingZipCode.val(), this.$shippingStateSelect.val(), function (response) {
             _this.$salesTax.html('$' + _this.getSalesTax().toFixed(2));
+            _this.setTotal();
             if (callback)
                 callback(response);
         });
     };
     FixedRightModule.prototype.getSalesTax = function () {
-        return this.salesTax.total(this.order.getQuantity(), this.order.getUnitPrice(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.order.getSubtotal(), this.order.getDiscount(), this.order.getShippingPrice(), this.$shippingStateSelect.val());
     };
     FixedRightModule.prototype.setShipping = function () {
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
@@ -494,6 +503,39 @@ var Products = (function (_super) {
         }
     };
     return Products;
+})(ScreenBase);
+var Loops = (function (_super) {
+    __extends(Loops, _super);
+    function Loops($pagination) {
+        _super.call(this, $pagination);
+        this.setSelectors();
+        this.initEvents();
+        this.initQuantitySteppers();
+        var loopsArray = [];
+        $('#loops').find('.loop-input').each(function (i, el) {
+            var $item = $(el);
+            if ($item.val() > -1) {
+                loopsArray.push({
+                    sku: $item.data('sku'),
+                    name: $item.data('name'),
+                    quantity: $item.val()
+                });
+            }
+        });
+        console.log(loopsArray);
+    }
+    Loops.prototype.setSelectors = function () {
+        this.$currentPage = $('#loops');
+        this.$qty = this.$currentPage.find('.qty').find('input');
+        _super.prototype.setSelectors.call(this);
+    };
+    Loops.prototype.initEvents = function () {
+        _super.prototype.initEvents.call(this);
+    };
+    Loops.prototype.initQuantitySteppers = function () {
+        this.$qty.stepper({ min: 0, max: 99 });
+    };
+    return Loops;
 })(ScreenBase);
 var BillingInfo = (function (_super) {
     __extends(BillingInfo, _super);
@@ -802,6 +844,21 @@ var Payment = (function (_super) {
             var unitText = $("#" + itemName + " option:selected").text().trim();
             data.push({ "name": itemName + "Name", "value": unitText });
         }
+        var loopsArray = [];
+        $('#loops').find('.loop-input').each(function (i, el) {
+            var $item = $(el);
+            if ($item.val() > 0) {
+                loopsArray.push({
+                    sku: $item.data('sku'),
+                    name: $item.data('name'),
+                    quantity: $item.val()
+                });
+            }
+        });
+        data.push({
+            "name": 'loops',
+            "value": JSON.stringify(loopsArray)
+        });
         $.ajax({
             type: 'POST',
             url: formURL,
@@ -1025,11 +1082,11 @@ var SalesTax = (function () {
             }
         });
     };
-    SalesTax.prototype.total = function (quantity, unitPrice, discount, shippingRate, state) {
+    SalesTax.prototype.total = function (subtotal, discount, shippingRate, state) {
         if (!state || state == "") {
             return 0;
         }
-        return this.getTaxMethod(state).calculate(quantity, unitPrice, discount, shippingRate, this.rate);
+        return this.getTaxMethod(state).calculate(subtotal, discount, shippingRate, this.rate);
     };
     SalesTax.prototype.getTaxMethod = function (state) {
         state = state.trim();
@@ -1046,16 +1103,16 @@ var SalesTax = (function () {
 var IncludeShippingMethod = (function () {
     function IncludeShippingMethod() {
     }
-    IncludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
-        return ((quantity * unitPrice) - discount + shippingRate) * rate;
+    IncludeShippingMethod.prototype.calculate = function (subtotal, discount, shippingRate, rate) {
+        return (subtotal - discount + shippingRate) * rate;
     };
     return IncludeShippingMethod;
 })();
 var ExcludeShippingMethod = (function () {
     function ExcludeShippingMethod() {
     }
-    ExcludeShippingMethod.prototype.calculate = function (quantity, unitPrice, discount, shippingRate, rate) {
-        return ((quantity * unitPrice) - discount) * rate;
+    ExcludeShippingMethod.prototype.calculate = function (subtotal, discount, shippingRate, rate) {
+        return (subtotal - discount) * rate;
     };
     return ExcludeShippingMethod;
 })();
@@ -1086,6 +1143,7 @@ var Order = (function () {
         this.$shippingZipCode = $('#shipping-zip');
         this.$shippingStateSelect = $('#shipping-state-select');
         this.$quantityInputField = $("#quantity");
+        this.$loopInputFields = $('#loops').find('.loop-input');
     };
     Order.prototype.resetOrder = function () {
         this.coupon = null;
@@ -1103,7 +1161,7 @@ var Order = (function () {
                     discount = this.coupon.amount;
                 }
                 else {
-                    discount = (this.coupon.amount / 100) * this.getQuantity() * this.getUnitPrice();
+                    discount = (this.coupon.amount / 100) * this.getSubtotal();
                 }
             }
         }
@@ -1113,7 +1171,15 @@ var Order = (function () {
         return Math.min(parseInt(this.$quantityInputField.val()), FixedRightModule.MAX_UNITS);
     };
     Order.prototype.getSubtotal = function () {
-        return this.getQuantity() * this.getUnitPrice();
+        return (this.getQuantity() * this.getUnitPrice()) + this.getLoopsSubtotal();
+    };
+    Order.prototype.getLoopsSubtotal = function () {
+        var subtotal = 0;
+        this.$loopInputFields.each(function (i, el) {
+            var $item = $(el);
+            subtotal += $item.val() * parseInt($item.data('price'));
+        });
+        return subtotal;
     };
     Order.prototype.setSalesTax = function (callback) {
         if (this.$shippingCountrySelect.val() != "US") {
@@ -1131,7 +1197,7 @@ var Order = (function () {
         });
     };
     Order.prototype.getSalesTax = function () {
-        return this.salesTax.total(this.getQuantity(), this.getUnitPrice(), this.getDiscount(), this.getShippingPrice(), this.$shippingStateSelect.val());
+        return this.salesTax.total(this.getSubtotal(), this.getDiscount(), this.getShippingPrice(), this.$shippingStateSelect.val());
     };
     Order.prototype.getShippingPrice = function () {
         if (!this.$shippingSelect.val() || this.$shippingSelect.val() == '') {
@@ -1189,6 +1255,7 @@ var FacebookTrackOrder = (function () {
 /// <reference path="screen-base.ts" />
 /// <reference path="fixed-right-module.ts" />
 /// <reference path="products.ts" />
+/// <reference path="loops.ts" />
 /// <reference path="billing-info.ts" />
 /// <reference path="shipping-info.ts" />
 /// <reference path="payment.ts" />
@@ -1211,12 +1278,13 @@ var OrderForm = (function () {
         var fixedRightModule = new FixedRightModule(pagination);
         new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
+        new Loops(pagination);
         new BillingInfo(pagination);
         var payment = new Payment(pagination, fixedRightModule);
         payment.addTracker(new GoogleTrackOrder());
         payment.addTracker(new FacebookTrackOrder());
         new Summary(pagination, fixedRightModule);
-        //pagination.gotoPage(3);
+        //pagination.gotoPage(1);
     }
     OrderForm.prototype.setSelectors = function () {
         this.$closeBtn = $('#close');

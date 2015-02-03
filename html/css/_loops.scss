@@ -1,0 +1,40 @@
+#loops {
+  display: none;
+  p {
+    font-size: em(14);
+    margin-top: -5px;
+    margin-bottom: 25px;
+    line-height: 1.25em;
+  }
+  .item {
+    margin-bottom: 20px;
+    display: table;
+    > div {
+      display: table-cell;
+      vertical-align: top;
+    }
+    .left {
+      img {
+        border: 1px solid #d3d3d3;
+      }
+    }
+    .right {
+      .product-title {
+        margin-left: 10px;
+        font-size: em(15);
+        margin-bottom: 5px;
+      }
+      .qty {
+        margin-left: 10px;
+        width: 52px;
+        input {
+          border: 1px;
+        }
+      }
+    }
+  }
+
+  .error-messages {
+    margin-top: 0;
+  }
+}

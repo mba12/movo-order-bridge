@@ -16,14 +16,12 @@
         </div>
         <div id="subtotal-fields" class="pricing">
             <ul class="price">
-                <li class="unit-price"></li>
                 <li class="subtotal"></li>
                 <li class="sales-tax">--</li>
                 <li class="shipping">--</li>
                 <li class="discount green">--</li>
             </ul>
             <ul class="text">
-                <li>Unit Price</li>
                 <li>Subtotal</li>
                 <li>Tax</li>
                 <li>Shipping</li>

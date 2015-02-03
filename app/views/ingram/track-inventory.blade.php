@@ -9,7 +9,7 @@
     </message-header>
     <message-status>
         <status-code>0</status-code>
-        <status-description>SUCCESS</status-description>
+        <status-description>INVENTORY SUCCESS</status-description>
         <comments>Message received</comments>
         <response-></response->
     </message-status>

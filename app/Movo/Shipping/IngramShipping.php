@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Movo\Errors\OrderException;
 use SoapBox\Formatter\Formatter;
+use GuzzleHttp;
+use GuzzleHttp\Client;
 
 class IngramShipping implements ShippingInterface
 {
@@ -83,31 +85,19 @@ class IngramShipping implements ShippingInterface
     {
 
 
-        $url = "http://maps.google.com/maps/api/directions/xml?origin=New York&destination=California&sensor=false";
+      /* $fp=fopen(base_path()."/cert/messagehub_TEST.cer","r");
+        $pub_key=fread($fp,8192);
+        fclose($fp);
+        $plaintext = "String to encrypt";
+        openssl_public_encrypt($plaintext,$crypttext, $pub_key );
 
-        $header = "GET HTTP/1.0 \r\n";
-        $header .= "Content-type: text/xml \r\n";
-        $header .= "Content-length: " . strlen($xml) . " \r\n";
-        $header .= "Content-transfer-encoding: text \r\n";
-        $header .= "Connection: close \r\n\r\n";
-        $header .= $xml;
+        $client = new GuzzleHttp\Client();
+        $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
+            'body' => [
+                'data' => $crypttext
+            ]
+        ]);*/
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $header);
-
-        $data = curl_exec($ch);
-
-        if (curl_errno($ch))
-            print curl_error($ch);
-        else
-            curl_close($ch);
-
-
-        //echo($data);
     }
 
     /**

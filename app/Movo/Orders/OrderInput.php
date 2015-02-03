@@ -10,13 +10,14 @@ namespace Movo\Orders;
 
 
 use Illuminate\Support\Facades\Input;
-
+ use GuzzleHttp;
 class OrderInput
 {
 
     public static function convertInputToData($data)
     {
         $data['quantity'] = Input::get("quantity");
+        $data['charity'] = Input::get("charity");
         $data['shipping-type'] = Input::get("shipping-type");
         $data['shipping-first-name'] = Input::get("shipping-first-name");
         $data['shipping-last-name'] = Input::get("shipping-last-name");
@@ -37,14 +38,28 @@ class OrderInput
         $data['billing-phone'] = Input::get("billing-phone");
         $data['email'] = Input::get("email");
         $data['coupon'] = Input::has("code") ? Input::get("code") : "";
+        $data['quantity'] =0;
         $items=[];
         for ($i = 0; $i < Input::get("quantity"); $i++) {
             $items[]=[
                 "sku"=>Input::get("unit" . ($i + 1)) ,
                 "description"=>Input::get("unit" . ($i + 1)."Name"),
             ];
+            $data['quantity']++;
+        }
+        $loops=json_decode(Input::get("loops"));
+
+        for ($i = 0; $i < sizeof($loops); $i++) {
+            $item=$loops[$i];
+            $items[]=[
+                "sku"=>$item->sku ,
+                "description"=>$item->name,
+                "quantity"=>$item->quantity,
+            ];
+            $data['quantity']+=$item->quantity;
         }
         $data['items']= $items;
+
         return $data;
     }
 }

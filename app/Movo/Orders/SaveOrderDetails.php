@@ -23,10 +23,11 @@ class SaveOrderDetails
         if($data['quantity']>3){
             $orderStatus=2;
         }*/
+
         $order->amount = round($data['amount']*100);
         $order->tax = $data['tax'];
         $order->discount = $data['discount'];
-        $order->unit_price = $data['unit-price'];
+        $order->unit_price = $data['total-unit-prices'];
         $order->quantity = $data['quantity'];
         $order->shipping_type = $data['shipping-type'];
         $order->shipping_first_name = $data['shipping-first-name'];
@@ -53,18 +54,36 @@ class SaveOrderDetails
         $order->error_flag = "";
         $order->coupon = $data['coupon'];
         $order->save();
+        $combinedItems = $order->combineAndCountItems($data['items']);
 
-        foreach($data['items'] as $item){
-            $orderItem=new \Item(
-                [
-                    "sku"=>$item['sku'],
-                    "description"=>$item['description'],
-                ]
-            );
-
-            $order->items()->save($orderItem);
+        foreach ($combinedItems as $item) {
+           $order->items()->save(self::saveOrderItemPercentages($item, $data));
         }
+
         return $order;
     }
 
+    /**
+     * @param $item
+     * @param $data
+     * @return \Item
+     */
+    public static function saveOrderItemPercentages($item, $data)
+    {
+
+        $itemPercentageOfTotal = $item['price'] / $data['total-unit-prices'];
+        $orderItem = new \Item(
+            [
+
+                "sku" => $item['sku'],
+                "description" => $item['description'],
+                "amount" => $item['price'] * $item['quantity'],
+                "tax" => $data['tax'] * $itemPercentageOfTotal * $item['quantity'],
+                "quantity" => $item['quantity'],
+                "shipping" => $data ['shipping-rate']* $itemPercentageOfTotal * $item['quantity'],
+                "discount" => $data['discount'] * $itemPercentageOfTotal * $item['quantity'],
+            ]
+        );
+        return $orderItem;
+    }
 }
