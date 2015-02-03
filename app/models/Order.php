@@ -37,7 +37,17 @@ class Order extends \Eloquent
         'tracking_code',
         'error_flag',
     ];
-
+    public static function parseAndSaveData($xmlString)
+    {
+        $xml = new SimpleXMLElement($xmlString);
+        $result = $xml->xpath('//customer-id')[0];
+        $order=Order::where("stripe_charge_id", "=", (String)$result)->first();
+        $order->ingram_order_id= (String)$xml->xpath('//message-id')[0];
+        if((String)$xml->xpath('//transaction-name')[0]=="sales-order-rejection"){
+            $order->error_flag=3;
+        }
+        $order->save();
+    }
     public function items()
     {
         return $this->hasMany("Item");
