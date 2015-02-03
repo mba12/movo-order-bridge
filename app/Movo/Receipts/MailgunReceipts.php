@@ -29,6 +29,7 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
             ];
         }
         $data['items']=(new Order)->combineAndCountItems($data['items']);*/
+        $data['items']=(new Order)->combineAndCountItems($data['items']);
         $emailData = $this->createEmailData($data);
 
         Mail::send('emails.receipt', array('data' => $emailData), function ($message) {

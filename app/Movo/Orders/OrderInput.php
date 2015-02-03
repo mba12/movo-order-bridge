@@ -38,12 +38,14 @@ class OrderInput
         $data['billing-phone'] = Input::get("billing-phone");
         $data['email'] = Input::get("email");
         $data['coupon'] = Input::has("code") ? Input::get("code") : "";
+        $data['quantity'] =0;
         $items=[];
         for ($i = 0; $i < Input::get("quantity"); $i++) {
             $items[]=[
                 "sku"=>Input::get("unit" . ($i + 1)) ,
                 "description"=>Input::get("unit" . ($i + 1)."Name"),
             ];
+            $data['quantity']++;
         }
         $loops=json_decode(Input::get("loops"));
 
@@ -54,6 +56,7 @@ class OrderInput
                 "description"=>$item->name,
                 "quantity"=>$item->quantity,
             ];
+            $data['quantity']+=$item->quantity;
         }
         $data['items']= $items;
 

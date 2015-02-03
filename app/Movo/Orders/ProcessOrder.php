@@ -33,6 +33,7 @@ class ProcessOrder
 
         if(!OrderValidate::validate($data)){
             (new OrderErrorLogHandler)->handleNotification($data);
+
             return Response::json(array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Please refresh the page and try again.'));
         }
         $billing = App::make('Movo\Billing\BillingInterface');
@@ -52,16 +53,16 @@ class ProcessOrder
             $products=Product::getAll();
             $totalUnitPrices=0;
             $totalDiscount=0;
-
             for ($i = 0; $i < sizeof($data['items']); $i++) {
               foreach($products as $product){
                     if($product->sku==$data['items'][$i]['sku']){
-                        $data['items'][$i]['price']=$product->price;
-                        //if(!isset($data['items'][$i]['quantity'])){
+                        if(!isset($data['items'][$i]['quantity'])){
                             $data['items'][$i]['quantity']=1;
-                        //}
-                        $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price);
-                        $totalUnitPrices+=$product->price;
+                        }
+                        $data['items'][$i]['price']=$product->price;
+
+                        $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price*$data['items'][$i]['quantity']);
+                        $totalUnitPrices+=$product->price*$data['items'][$i]['quantity'];
                         $totalDiscount+=$data['items'][$i]['discount'];
                     }
                 }
@@ -72,7 +73,6 @@ class ProcessOrder
         } catch (Exception $e) {
             return Response::json(array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.'));
         }
-
         $orderTotal = $this->getOrderTotal($totalUnitPrices, $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState);
         $data = $this->populateDataWithOrderAmounts($data, $totalUnitPrices,  $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance);
         (new InputLogHandler)->handleNotification($data);

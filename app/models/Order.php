@@ -60,12 +60,11 @@ class Order extends \Eloquent
 
     public function combineAndCountItems($items, $key="description")
     {
-
         $combinedItems=[];
         foreach ($items as $item) {
             if(!isset($combinedItems[$item[$key]])){
                 $combinedItems[$item[$key]]=$item;
-                $combinedItems[$item[$key]]['quantity']=1;
+                $combinedItems[$item[$key]]['quantity']=$item['quantity'];
             }else{
                 $combinedItems[$item[$key]]['quantity']++;
             }
