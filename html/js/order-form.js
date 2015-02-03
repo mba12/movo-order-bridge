@@ -1161,7 +1161,7 @@ var Order = (function () {
                     discount = this.coupon.amount;
                 }
                 else {
-                    discount = (this.coupon.amount / 100) * this.getQuantity() * this.getUnitPrice();
+                    discount = (this.coupon.amount / 100) * this.getSubtotal();
                 }
             }
         }
