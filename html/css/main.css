@@ -676,7 +676,8 @@ html {
         color: #e60b1f; }
     #form-content-box #products .charity-donations {
       margin-top: 15px;
-      margin-bottom: 20px; }
+      margin-bottom: 20px;
+      display: none; }
       #form-content-box #products .charity-donations h3 {
         margin-bottom: 15px; }
       #form-content-box #products .charity-donations p {

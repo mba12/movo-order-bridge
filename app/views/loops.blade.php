@@ -1,6 +1,7 @@
 <section id="loops">
     <h3 class="section-title">Loops</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut autem consectetur ducimus eius esse excepturi incidunt molestiae molestias nam numquam odio quia, repellendus repudiandae sequi sit ut veniam vitae voluptatibus?</p>
+    <p>Showcase your style with additional color loops! Match your outfit, wear your team colors and make the Movo Wave
+        your own.</p>
 
     @for($i=0; $i<sizeof($loops); $i++)
         <div class="item">

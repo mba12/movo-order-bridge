@@ -19,7 +19,7 @@ class ProductTableSeeder extends Seeder
 
         Product::create(array(
             "id" => 1,
-            "name" => "Extra small (5.7\" -- Youth / Young Adult)",
+            "name" => "Extra small (5.7\" -- Child)",
             "sku" => '857458005008',
             "price" => "29.99",
             "category" => "wave"
@@ -57,14 +57,14 @@ class ProductTableSeeder extends Seeder
         Product::create(array(
             "name" => "Standard Loops",
             "sku" => '857458005053',
-            "price" => "10.00",
+            "price" => "5.00",
             "category" => "loop"
         ));
 
         Product::create(array(
             "name" => "Neon Loops",
             "sku" => '857458005060',
-            "price" => "10.00",
+            "price" => "5.00",
             "category" => "loop"
         ));
 

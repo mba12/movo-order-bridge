@@ -59,16 +59,18 @@ class DeployCommand extends Command
                 'git reset --hard',
             ];
 
+            if ($this->option('composer')) {
+                $commands[] = 'composer install --no-dev';
+                $commands[] = 'php artisan optimize';
+            }
+
             if ($this->option('migrate')) {
                 $commands[] = 'php artisan migrate --force';
             }
             $commands[] = 'php artisan cache:clear';
 
 
-            if ($this->option('composer')) {
-                $commands[] = 'composer install --no-dev';
-                $commands[] = 'php artisan optimize';
-            }
+
             if ($this->option('products')) {
                 $commands[] = 'php artisan db:seed --class ProductTableSeeder';
             }

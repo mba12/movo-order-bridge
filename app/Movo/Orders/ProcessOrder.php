@@ -78,7 +78,7 @@ class ProcessOrder
         (new InputLogHandler)->handleNotification($data);
         try {
             $order = (new OrderHandler)->handleNotification($data);
-            (new DonationHandler)->handleNotification(["order"=>$order,"data"=>$data]);
+            //(new DonationHandler)->handleNotification(["order"=>$order,"data"=>$data]);
         } catch (ErrorException $e) {
             return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
         }
