@@ -26,6 +26,7 @@
 
     <ul class="error-messages">
         <li class="quantity">Please enter a valid quantity!</li>
+        <li class="no-products">You must choose at least one product to continue.</li>
     </ul>
     <div class="prev-next">
         <div class="button next">Next</div>

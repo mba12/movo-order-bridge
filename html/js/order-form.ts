@@ -33,7 +33,7 @@ class OrderForm {
         var fixedRightModule:FixedRightModule = new FixedRightModule(pagination);
         new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
-        new Loops(pagination);
+        new Loops(pagination, fixedRightModule);
         new BillingInfo(pagination);
         var payment:Payment = new Payment(pagination, fixedRightModule);
         payment.addTracker(new GoogleTrackOrder());

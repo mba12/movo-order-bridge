@@ -50,9 +50,10 @@ class OrderValidate
                 $itemCount += $data['items'][$i]['quantity'];
             }
         }
-
+        if($itemCount == 0) {
+            return false;
+        }
         if ($itemCount != $data['quantity']) {
-
             return false;
         }
         for ($i = 0; $i < sizeof($data['items']); $i++) {

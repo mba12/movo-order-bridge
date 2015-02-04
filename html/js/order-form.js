@@ -325,7 +325,7 @@ var FixedRightModule = (function () {
         this.pagination.gotoProductsPage();
     };
     FixedRightModule.prototype.initQuantityStepper = function () {
-        this.$quantityInputField.stepper({ min: 1, max: FixedRightModule.MAX_UNITS });
+        this.$quantityInputField.stepper({ min: 0, max: FixedRightModule.MAX_UNITS });
     };
     FixedRightModule.prototype.getParameterByName = function (name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -506,8 +506,9 @@ var Products = (function (_super) {
 })(ScreenBase);
 var Loops = (function (_super) {
     __extends(Loops, _super);
-    function Loops($pagination) {
+    function Loops($pagination, fixedRightModule) {
         _super.call(this, $pagination);
+        this.fixedRightModule = fixedRightModule;
         this.setSelectors();
         this.initEvents();
         this.initQuantitySteppers();
@@ -522,7 +523,6 @@ var Loops = (function (_super) {
                 });
             }
         });
-        console.log(loopsArray);
     }
     Loops.prototype.setSelectors = function () {
         this.$currentPage = $('#loops');
@@ -534,6 +534,20 @@ var Loops = (function (_super) {
     };
     Loops.prototype.initQuantitySteppers = function () {
         this.$qty.stepper({ min: 0, max: 99 });
+    };
+    Loops.prototype.onPrevClick = function () {
+        this.$currentPage.find('.no-products').hide();
+        _super.prototype.onPrevClick.call(this);
+    };
+    Loops.prototype.onNextClick = function () {
+        if (Order.getInstance().getSubtotal() > 0) {
+            this.pagination.next();
+            this.pagination.showCurrentPage();
+            this.$currentPage.find('.no-products').hide();
+        }
+        else {
+            this.$currentPage.find('.no-products').show();
+        }
     };
     return Loops;
 })(ScreenBase);
@@ -1278,7 +1292,7 @@ var OrderForm = (function () {
         var fixedRightModule = new FixedRightModule(pagination);
         new ShippingInfo(pagination, fixedRightModule);
         new Products(pagination);
-        new Loops(pagination);
+        new Loops(pagination, fixedRightModule);
         new BillingInfo(pagination);
         var payment = new Payment(pagination, fixedRightModule);
         payment.addTracker(new GoogleTrackOrder());

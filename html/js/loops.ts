@@ -2,7 +2,7 @@ class Loops extends ScreenBase {
 
     private $qty:JQuery;
 
-    constructor($pagination:Pagination) {
+    constructor($pagination:Pagination, public fixedRightModule:FixedRightModule) {
         super($pagination);
         this.setSelectors();
         this.initEvents();
@@ -19,14 +19,12 @@ class Loops extends ScreenBase {
                 });
             }
         });
-        console.log(loopsArray);
     }
 
     public setSelectors() {
         this.$currentPage = $('#loops');
         this.$qty = this.$currentPage.find('.qty').find('input');
         super.setSelectors();
-        
     }
 
     public initEvents() {
@@ -35,6 +33,22 @@ class Loops extends ScreenBase {
 
     private initQuantitySteppers():void {
         this.$qty.stepper({min: 0, max: 99});
+    }
+
+    public onPrevClick():void {
+        this.$currentPage.find('.no-products').hide();
+        super.onPrevClick();
+    }
+
+    public onNextClick():void {
+
+        if(Order.getInstance().getSubtotal() > 0) {
+            this.pagination.next();
+            this.pagination.showCurrentPage();
+            this.$currentPage.find('.no-products').hide();
+        } else {
+            this.$currentPage.find('.no-products').show();
+        }
     }
 
 }
