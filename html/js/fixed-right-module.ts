@@ -68,7 +68,7 @@ class FixedRightModule {
     }
 
     private initQuantityStepper():void {
-        this.$quantityInputField.stepper({min: 1, max: FixedRightModule.MAX_UNITS});
+        this.$quantityInputField.stepper({min: 0, max: FixedRightModule.MAX_UNITS});
     }
 
     private getParameterByName(name):any {
