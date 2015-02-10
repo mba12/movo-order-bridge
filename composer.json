@@ -14,7 +14,7 @@
     "pusher/pusher-php-server": "~2.0",
     "nategood/httpful": "*",
     "indatus/dispatcher": "~1.4",
-    "stolz/assets": "dev-master",
+    "stolz/assets": "dev-master#e8dee1bb2bad74ba75ee0fa9a8dde5688e78dc7d",
     "artisaninweb/laravel-soap": "0.2.*" ,
     "monolog/monolog":"1.*",
     "dinesh/bugonemail": "dev-master"
