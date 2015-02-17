@@ -213,7 +213,7 @@ Route::get('order-test', function () {
        /* $log = new Logger('ingram-order-test');
         $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
         $log->addInfo($output);*/
-        return Response::make($output.$orderXML, '200')->header('Content-Type', 'text/xml');
+        return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
     //}
 
 });
