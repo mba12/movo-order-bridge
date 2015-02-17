@@ -162,7 +162,7 @@ Route::get('connection-test-https', function () {
 });
 
 Route::get('order-test', function () {
-    for ($i = 0; $i < 1; $i++) {
+   // for ($i = 0; $i < 1; $i++) {
         $orderXML = IngramShipping::generateTestOrder();
 
         $url = "https://168.215.84.144:9443/HttpPost";
@@ -214,7 +214,7 @@ Route::get('order-test', function () {
         $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
         $log->addInfo($output);*/
         return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
-    }
+    //}
 
 });
 
