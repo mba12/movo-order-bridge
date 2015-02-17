@@ -168,7 +168,7 @@ Route::get('order-test', function () {
         $url = "https://168.215.84.144:9443/HttpPost";
         $cert_file = "/root/test2.pem";
         $result = openssl_get_privatekey($cert_file, 'password');
-        echo "Result: " . $result;
+       // echo "Result: " . $result;
 
         $ch = curl_init();
 
