@@ -6,6 +6,7 @@ use Monolog\Logger;
 use Movo\Helpers\Format;
 use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
+use Movo\Shipping\IngramShipping;
 
 App::bind("Pusher", function ($app) {
     $keys = $app['config']->get('services.pusher');
@@ -90,7 +91,7 @@ Route::get('admin/login', array(
     'uses' => 'AdminController@login',
 ));
 
-Route::get('admin/logout', function(){
+Route::get('admin/logout', function () {
     Auth::logout();
     Session::flush();
     return Redirect::to('/admin');
@@ -134,7 +135,7 @@ Route::any('/ingram/order-status', array(
     'uses' => 'IngramController@orderStatus',
 ));
 
-Route::get('connection-test-http', function(){
+Route::get('connection-test-http', function () {
     $client = new GuzzleHttp\Client();
     $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
         'body' => [
@@ -147,7 +148,7 @@ Route::get('connection-test-http', function(){
     $log->addInfo($response);
 });
 
-Route::get('connection-test-https', function(){
+Route::get('connection-test-https', function () {
     $client = new GuzzleHttp\Client();
     $response = $client->post('https://messagehub-dev.brightpoint.com:9443/HttpPost', [
         'body' => [
@@ -160,20 +161,64 @@ Route::get('connection-test-https', function(){
     $log->addInfo($response);
 });
 
-Route::get('order-test', function(){
-    $client = new GuzzleHttp\Client();
-    $orderXML= IngramShipping::generateTestOrder();
-    $response = $client->post('https://messagehub-dev.brightpoint.com:9443/HttpPost', [
-        'body' => $orderXML ,
-        'verify' => base_path()."/cert/messagehub_TEST.cer"
-    ]);
-    $log = new Logger('ingram-order-test');
-    $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
-    $log->addInfo($response);
-    return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
+Route::get('order-test', function () {
+    for ($i = 0; $i < 5; $i++) {
+        $orderXML = IngramShipping::generateTestOrder();
+
+        $url = "https://168.215.84.144:9443/HttpPost";
+        $cert_file = "/root/test2.pem";
+        $result = openssl_get_privatekey($cert_file, 'password');
+        echo "Result: " . $result;
+
+        $ch = curl_init();
+
+        $options = array(
+
+            CURLOPT_POST => 1,
+            CURLOPT_HTTPHEADER => ['Content-Type:', 'text/xml'],
+            CURLOPT_POSTFIELDS => $orderXML,
+            CURLOPT_RETURNTRANSFER => 1,
+            //CURLOPT_SSLCERTTYPE => "DER",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
+            CURLOPT_VERBOSE => true,
+            CURLOPT_URL => $url,
+            CURLOPT_CAPATH => "/etc/pki/tls",
+            CURLOPT_SSLVERSION => 3,
+            //CURLOPT_SSLCERT => $cert_file ,
+        );
+
+        curl_setopt_array($ch, $options);
+
+        $output = curl_exec($ch);
+        $curl_errno = curl_errno($ch);
+        $curl_error = curl_error($ch);
+        if ($curl_errno > 0) {
+            echo "cURL Error ($curl_errno): $curl_error\n";
+        } else {
+            echo "Data received\n";
+        }
+
+        if (!$output) {
+            echo "Curl Error : " . curl_error($ch);
+        } else {
+            echo htmlentities($output);
+        }
+        curl_close($ch);
+
+       /* $log = new Logger('ingram-order-test');
+        $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
+        $log->addInfo($output);*/
+        //return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
+    }
+
 });
 
-Route::get('dummy', function(){
-    $orderXML= IngramShipping::generateTestOrder();
+Route::get('dummy', function () {
+    $orderXML = IngramShipping::generateTestOrder();
     return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
 });
