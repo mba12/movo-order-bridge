@@ -206,7 +206,7 @@ Route::get('order-test', function () {
         if (!$output) {
           //  echo "Curl Error : " . curl_error($ch);
         } else {
-          //  echo htmlentities($output);
+            echo htmlentities($output);
         }
         curl_close($ch);
 
