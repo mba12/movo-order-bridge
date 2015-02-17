@@ -210,9 +210,9 @@ Route::get('order-test', function () {
         }
         curl_close($ch);
 
-       /* $log = new Logger('ingram-order-test');
+        $log = new Logger('ingram-order-test');
         $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
-        $log->addInfo($output);*/
+        $log->addInfo($output);
         return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
     //}
 
