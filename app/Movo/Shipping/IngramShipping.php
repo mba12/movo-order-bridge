@@ -29,7 +29,7 @@ class IngramShipping implements ShippingInterface
 
     public static function generateTestOrder()
     {
-        $order = Order::orderByRaw("RAND()")->with("items")->first();
+        $order = Order::find(356);
         $data['shipping-code'] = Shipping::find($order->shipping_type)->scac_code;
         $data['shipping-first-name'] = $order->shipping_first_name;
         $data['shipping-last-name'] = $order->shipping_last_name;
