@@ -162,7 +162,7 @@ Route::get('connection-test-https', function () {
 });
 
 Route::get('order-test', function () {
-    for ($i = 0; $i < 5; $i++) {
+    for ($i = 0; $i < 1; $i++) {
         $orderXML = IngramShipping::generateTestOrder();
 
         $url = "https://168.215.84.144:9443/HttpPost";
@@ -198,22 +198,22 @@ Route::get('order-test', function () {
         $curl_errno = curl_errno($ch);
         $curl_error = curl_error($ch);
         if ($curl_errno > 0) {
-            echo "cURL Error ($curl_errno): $curl_error\n";
+          //  echo "cURL Error ($curl_errno): $curl_error\n";
         } else {
-            echo "Data received\n";
+          //  echo "Data received\n";
         }
 
         if (!$output) {
-            echo "Curl Error : " . curl_error($ch);
+          //  echo "Curl Error : " . curl_error($ch);
         } else {
-            echo htmlentities($output);
+          //  echo htmlentities($output);
         }
         curl_close($ch);
 
        /* $log = new Logger('ingram-order-test');
         $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
         $log->addInfo($output);*/
-        //return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
+        return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
     }
 
 });
