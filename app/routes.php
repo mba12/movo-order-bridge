@@ -204,16 +204,16 @@ Route::get('order-test', function () {
         }
 
         if (!$output) {
-            echo "Curl Error : " . curl_error($ch);
+            //echo "Curl Error : " . curl_error($ch);
         } else {
-            echo htmlentities($output);
+          //  echo htmlentities($output);
         }
         curl_close($ch);
 
        /* $log = new Logger('ingram-order-test');
         $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
         $log->addInfo($output);*/
-        //return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
+        return Response::make($output.$orderXML, '200')->header('Content-Type', 'text/xml');
     //}
 
 });
