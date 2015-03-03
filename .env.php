@@ -8,7 +8,7 @@ return [
     'ingram' => array(
         'partner-name' => 'movo',
         'customer-id' => '563723',
-        'source-url' => 'orders.getmovo.com',
+        'source-url' => 'http://orders.getmovo.com',
     ),
     'pusher' => array(
         'public' => '7c1d3ca82e7d3904f4f0',
