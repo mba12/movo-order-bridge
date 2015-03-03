@@ -99,7 +99,8 @@ return array(
     | Default: false
     */
 
-    'pipeline' => App::environment() == 'local' ? 0 : 46,
+    // TODO: always increment the second number before deploying to prod.
+    'pipeline' => App::environment() == 'local' ? 0 : 47,
 
     /*
     |--------------------------------------------------------------------------
