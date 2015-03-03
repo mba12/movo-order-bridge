@@ -21,7 +21,7 @@ class IngramShipping implements ShippingInterface
         $pub_key=fread($fp,8192);
         fclose($fp);
         openssl_public_encrypt($xml,$crypttext, $pub_key );
-        return(base64_encode($crypttext));
+        return($crypttext);
     }
 
     public static function generateTestOrder()
