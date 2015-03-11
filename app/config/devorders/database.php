@@ -6,7 +6,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'devmovo',
 			'username'  => 'homestead',
-			'password'  => 'secret',
+			'password'  => 'Isye06_7',
 		)
 	),
 );
