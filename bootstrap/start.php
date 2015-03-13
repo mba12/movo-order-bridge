@@ -70,24 +70,6 @@ if(isset($_SERVER['HTTP_HOST'])) {
 
 $app->bindInstallPaths(require __DIR__.'/paths.php');
 
-// LOG THE ENVIRONMENT RESULT
-$envLog = $app['path.base'].
-    '/app/storage/logs/environment.log';
-
-if (is_writable($envLog)) {
-
-    if (!$handle = fopen($envLog, 'a')) {
-        exit;
-    }
-
-    if (fwrite($handle, date("Ymd:His") . ': ' . $env) === FALSE) {
-        echo "Cannot write to file ($envLog)";
-        exit;
-    }
-
-}
-
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application
