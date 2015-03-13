@@ -5,7 +5,7 @@ return array(
 		'mysql' => array(
 			'host'      => 'localhost',
 			'database'  => 'devmovo',
-			'username'  => 'homestead',
+			'username'  => 'devmovo',
 			'password'  => 'Isye06_7',
 		)
 	),

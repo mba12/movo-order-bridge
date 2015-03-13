@@ -5,8 +5,8 @@ return array(
 		'mysql' => array(
 			'host'      => 'localhost',
 			'database'  => 'qamovo',
-			'username'  => 'homestead',
-			'password'  => 'Isye06_7',
+			'username'  => 'qamovo',
+			'password'  => 'Tddo5~32',
 		)
 	),
 );
