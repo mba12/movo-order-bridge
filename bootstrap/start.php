@@ -56,17 +56,17 @@ if(isset($_SERVER['HTTP_HOST'])) {
 }
 
 // LOG THE ENVIRONMENT RESULT
-$envlog = $app['path.base'].
+$envLog = $app['path.base'].
     '/app/storage/logs/environment.log';
 
-if (is_writable($envlog)) {
+if (is_writable($envLog)) {
 
-    if (!$handle = fopen($envlog, 'a')) {
+    if (!$handle = fopen($envLog, 'a')) {
         exit;
     }
 
     if (fwrite($handle, date("Ymd:His") . ': ' . $env) === FALSE) {
-        echo "Cannot write to file ($envlog)";
+        echo "Cannot write to file ($envLog)";
         exit;
     }
 
