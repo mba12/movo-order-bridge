@@ -27,6 +27,9 @@ $app = new Illuminate\Foundation\Application;
 if(isset($_SERVER['HTTP_HOST'])) {
     $env = $app->detectEnvironment(function(){
         switch($_SERVER['HTTP_HOST']) {
+            case 'orders.getmovo.com':
+                return 'production';
+                break;
             case 'movo.app:8000':
                 return 'local';
                 break;
@@ -36,11 +39,14 @@ if(isset($_SERVER['HTTP_HOST'])) {
             case 'qaorders.getmovo.com':
                 return 'qaorders';
                 break;
+            case '72.47.233.8':
+                return 'production';
+                break;
             case 'movo.jumpkick.pro':
                 return 'jumpkick-dev';
                 break;
             default:
-                return 'production';
+                return 'local';
         }
     });
 } else{
