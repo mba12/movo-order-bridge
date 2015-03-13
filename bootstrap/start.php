@@ -55,6 +55,24 @@ if(isset($_SERVER['HTTP_HOST'])) {
     ));;
 }
 
+// LOG THE ENVIRONMENT RESULT
+$envlog = $app['path.base'].
+    '/app/storage/logs/environment.log';
+
+if (is_writable($envlog)) {
+
+    if (!$handle = fopen($envlog, 'a')) {
+        exit;
+    }
+
+    if (fwrite($handle, date("Ymd:His") . ': ' . $env) === FALSE) {
+        echo "Cannot write to file ($envlog)";
+        exit;
+    }
+
+}
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Paths
