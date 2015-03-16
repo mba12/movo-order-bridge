@@ -35,7 +35,6 @@ Route::get('tax/{zipcode}/{state}', array(
     'uses' => 'SalesTaxController@getSalesTax',
 ));
 
-
 Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/orders', array(
         'as' => 'admin-orders',
@@ -52,9 +51,19 @@ Route::group(array('before' => 'admin'), function () {
         'uses' => 'AdminController@coupons',
     ));
 
+    Route::get('/admin/manual', array(
+        'as' => 'admin-manual',
+        'uses' => 'AdminController@manual',
+    ));
+
     Route::any('/admin/stats', array(
         'as' => 'post-admin-stats',
         'uses' => 'AdminController@getStats',
+    ));
+
+    Route::put('/admin/manualorderentry', array(
+        'as' => 'manualorderentry',
+        'uses' => 'AdminController@manualorderentry',
     ));
 
     Route::get('/admin', 'AdminController@index');
