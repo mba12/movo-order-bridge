@@ -55,8 +55,10 @@ class IngramShipping implements ShippingInterface
         ];
 
         $items = [];
+        $count = 1;
         foreach ($order->items as $item) {
             $items[] = [
+                "line-no" => $count++,
                 "item-code" => $item->sku,
                 "product-name" => 'CDATA[[' . $item->description . ']]',
                 "quantity" => $item->quantity,
@@ -137,6 +139,7 @@ class IngramShipping implements ShippingInterface
     public function generateXMLFromData(array $data)
     {
         $date = new \DateTime;
+        $date_str = date_format($date->getTimestamp(), 'Y-m-d');
         $array = [
             'message' => [
                 'message-header' => [
@@ -145,7 +148,7 @@ class IngramShipping implements ShippingInterface
                     'partner-name' => Config::get('services.ingram.partner-name'),
                     'partner-password' => '',
                     'source-url' => Config::get('services.ingram.source-url'),
-                    'create-timestamp' => $date->getTimestamp(),
+                    'create-timestamp' => $date_str,
                     'response-request' => '1',
                 ],
                 'sales-order-submission' => [
@@ -184,7 +187,7 @@ class IngramShipping implements ShippingInterface
                             'ship-fax' => '',
                             'ship-email' => $data['email'],
                             'ship-via' => $data['shipping-code'],
-                            'ship-request-date' => $date->getTimestamp(),
+                            'ship-request-date' => $date_str,
                             'ship-request-from' => 'Indianapolis',
                             'ship-request-warehouse' => 'MVO1',
                         ],
@@ -220,7 +223,7 @@ class IngramShipping implements ShippingInterface
                         ],
                         'order-header' => [
                             'customer-order-number' => $data['result']['id'],
-                            'customer-order-date' => $date->getTimestamp(),
+                            'customer-order-date' => $date_str,
                             'order-type' => 'WEB-SALES',
                             'order-sub-total' => '',
                             'order-discount' => '',
