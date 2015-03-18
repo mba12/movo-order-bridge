@@ -123,8 +123,8 @@ class IngramShipping implements ShippingInterface
      */
     private function replaceItemNodeNames($xml)
     {
-        $xml = str_replace("'xml>", "", $xml);
-        $xml = str_replace("'/xml>", "", $xml);
+        $xml = str_replace("<xml>", "", $xml);
+        $xml = str_replace("</xml>", "", $xml);
         $xml = str_replace("<item>", "<line-item>", $xml);
         $xml = str_replace("</item>", "</line-item>", $xml);
         return $xml;
