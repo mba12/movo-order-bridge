@@ -139,7 +139,7 @@ class IngramShipping implements ShippingInterface
     public function generateXMLFromData(array $data)
     {
         $date = new \DateTime;
-        $date_str = date_format($date->getTimestamp(), 'Y-m-d');
+        $date_str = date_format($date, 'Y-m-d');
         $array = [
             'message' => [
                 'message-header' => [
