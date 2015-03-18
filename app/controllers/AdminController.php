@@ -108,5 +108,44 @@ class AdminController extends \BaseController
         return Order::orderBy("created_at", "DESC")->paginate(36);
     }
 
+    public function manual()
+    {
 
+        $manual = array();
+        $manual['test'] = 'test';
+
+        $waves=Product::waves();
+        $loops=Product::loops();
+        $charities=Charity::getList();
+        $unitPrice = $waves[0]->price;
+        $shippingInfo = Shipping::getShippingMethodsAndPrices();
+        $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
+        $sizeInfo = $waves;
+        $stateTaxMethods = Tax::getStateTaxMethods();
+        $coupon = null;
+        $code = Input::get("code");
+        if ($code) {
+            $coupon = Coupon::where("code", "=", $code)->first();
+        }
+
+        return View::make('admin.manual', [
+            'shippingDropdownData' => $shippingDropdownData,
+            'unitPrice' => $unitPrice,
+            'sizeInfo' => $sizeInfo,
+            'coupon' => $coupon,
+            'stateTaxMethods' => $stateTaxMethods,
+            'after3pm' => strtotime("03:00 pm") - time() < 0,
+            'loops'=>$loops,
+            'charities'=>$charities,
+            'waves'=>$waves,
+            'manual'=>$manual
+        ]);
+    }
+
+    public function manualorderentry()
+    {
+        return View::make("admin.manual", [
+            "michael" => "Michael",
+        ]);
+    }
 }
