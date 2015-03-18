@@ -1,6 +1,5 @@
 <?php
 
-
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Movo\Helpers\Format;
@@ -92,7 +91,15 @@ Route::group(array('before' => 'admin'), function () {
         'uses' => 'AdminController@orderSearch'
     ]);
 
+    Route::get('/admin/manual', array(
+        'as' => 'admin-manual',
+        'uses' => 'AdminController@manual',
+    ));
 
+    Route::put('/admin/manualorderentry', array(
+        'as' => 'manualorderentry',
+        'uses' => 'AdminController@manualorderentry',
+    ));
 });
 
 Route::get('admin/login', array(

@@ -1,6 +1,4 @@
 <?php
-/* adding comments to help with branch merge */
-
 return array(
 	'connections' => array(
 		'mysql' => array(
