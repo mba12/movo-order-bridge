@@ -187,7 +187,7 @@ class AdminController extends \BaseController
         ]);
     }
 
-    public function manualorderentry()
+    public function manualOrderEntry()
     {
         return View::make("admin.manual", [
             "michael" => "Michael",
