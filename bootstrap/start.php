@@ -39,7 +39,7 @@ if(isset($_SERVER['HTTP_HOST'])) {
             case 'qaorders.getmovo.com':
                 return 'qaorders';
                 break;
-            case '72.47.233.8':
+            case 'prodorders.getmovo.com':
                 return 'production';
                 break;
             case 'movo.jumpkick.pro':
