@@ -54,7 +54,8 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'orders.getmovo.com',
+            'host'      => 'localhost',
+			// 'host'      => 'orders.getmovo.com',
 			'database'  => 'movo',
 			'username'  => 'movo',
 			'password'  => 'uPk44?h1',

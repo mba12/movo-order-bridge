@@ -33,7 +33,7 @@ return array(
 	),
 	'ingram' => array(
 		'source-url' => getenv('ingram.source-url'),
-		'publishable' => getenv('ingram.partner-name'),
 		'customer-id' => getenv('ingram.customer-id'),
+		'partner-name' => getenv('ingram.partner-name'),
 	),
 );

@@ -48,6 +48,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Exception $exception, $code)   {
 	Log::error($exception);
+    Log::error("Server is: " . $_SERVER['HTTP_HOST']);
 });
 
 /*

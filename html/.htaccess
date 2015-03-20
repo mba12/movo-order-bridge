@@ -1,4 +1,6 @@
 <IfModule mod_rewrite.c>
+    SSLOptions +StdEnvVars +ExportCertData
+
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>

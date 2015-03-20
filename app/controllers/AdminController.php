@@ -1,5 +1,7 @@
 <?php
 
+use Movo\Shipping\ShippingDropdown;
+
 class AdminController extends \BaseController
 {
 
@@ -47,7 +49,6 @@ class AdminController extends \BaseController
         ]);
     }
 
-
     public function orders()
     {
         return View::make("admin.orders", [
@@ -58,10 +59,10 @@ class AdminController extends \BaseController
     public function orderDetails($id)
     {
         $order = Order::find($id);
-        $combinedItems = $order->combineAndCountItems($order->items->all());
+        $combinedItems = $order->combineAndCountItems($order->items()->all());
         return View::make("admin.order-details", [
             'order' => $order,
-            'shipping' => Shipping::find($order->shipping_type)  ,
+            'shipping' => Shipping::find($order->shipping_type),
             'combinedItems' => $combinedItems,
         ]);
     }
@@ -108,5 +109,44 @@ class AdminController extends \BaseController
         return Order::orderBy("created_at", "DESC")->paginate(36);
     }
 
+    public function manual()
+    {
 
+        $manual = array();
+        $manual['test'] = 'test';
+
+        $waves=Product::waves();
+        $loops=Product::loops();
+        $charities=Charity::getList();
+        $unitPrice = $waves[0]->price;
+        $shippingInfo = Shipping::getShippingMethodsAndPrices();
+        $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
+        $sizeInfo = $waves;
+        $stateTaxMethods = Tax::getStateTaxMethods();
+        $coupon = null;
+        $code = Input::get("code");
+        if ($code) {
+            $coupon = Coupon::where("code", "=", $code)->first();
+        }
+
+        return View::make('admin.manual', [
+            'shippingDropdownData' => $shippingDropdownData,
+            'unitPrice' => $unitPrice,
+            'sizeInfo' => $sizeInfo,
+            'coupon' => $coupon,
+            'stateTaxMethods' => $stateTaxMethods,
+            'after3pm' => strtotime("03:00 pm") - time() < 0,
+            'loops'=>$loops,
+            'charities'=>$charities,
+            'waves'=>$waves,
+            'manual'=>$manual
+        ]);
+    }
+
+    public function manualOrderEntry()
+    {
+        return View::make("admin.manual", [
+            "michael" => "Michael",
+        ]);
+    }
 }

@@ -13,7 +13,8 @@
 
 body {
   color:            $darkGray;
-  font-family:      'Open Sans', sans-serif;
+/*  font-family:      'Open Sans', sans-serif; */
+  font-family:      'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
   @include fw-regular;
   background-color: rgba(0, 0, 0, 0.7);
   margin-bottom: 40px;
@@ -27,6 +28,7 @@ html {
   -webkit-overflow-scrolling: touch !important;
   overflow: auto !important;
 }
+
 
 #form-content-box {
   width:            90%;

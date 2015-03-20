@@ -130,9 +130,10 @@ return array(
         'Way\Generators\GeneratorsServiceProvider',
         'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
         'Indatus\Dispatcher\ServiceProvider',
-        'Stolz\Assets\ManagerServiceProvider',
         'Artisaninweb\SoapWrapper\ServiceProvider',
         'Dinesh\Bugonemail\BugonemailServiceProvider',
+        'Stolz\Assets\ManagerServiceProvider',
+
     ),
 
     /*

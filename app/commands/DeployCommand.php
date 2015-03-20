@@ -60,20 +60,16 @@ class DeployCommand extends Command
             ];
 
             if ($this->option('composer')) {
-                $commands[] = 'composer install --no-dev';
+                $commands[] = 'composer update';
                 $commands[] = 'php artisan optimize';
             }
-
             if ($this->option('migrate')) {
                 $commands[] = 'php artisan migrate --force';
             }
-            $commands[] = 'php artisan cache:clear';
-
-
-
             if ($this->option('products')) {
-                $commands[] = 'php artisan db:seed --class ProductTableSeeder';
+                $commands[] = 'php artisan db:seed --class ProductTableSeeder --force';
             }
+            $commands[] = 'php artisan cache:clear';
             $commands[] = 'php artisan dump-autoload';
             $commands[] = "php artisan up";
             SSH::into('production')->run(
@@ -90,7 +86,7 @@ class DeployCommand extends Command
 
     private function incrementJavascript()
     {
-        $path = app_path() . "\config\packages\stolz\assets\config.php";
+        $path = app_path() . "/config/packages/stolz/assets/config.php";
         $contents = File::get($path);
         $newString = preg_replace_callback("/'local' \? (\d*) : (\d*)/", function ($matches) {
             $parts = explode(" ", $matches[0]);
@@ -109,13 +105,13 @@ class DeployCommand extends Command
             array('migrate', "m", InputOption::VALUE_NONE, 'Run a migration', null),
             array('composer', "c", InputOption::VALUE_NONE, 'Run composer', null),
             array('merge', "merge", InputOption::VALUE_NONE, 'Merge in master branch before deploying', null),
-            array('products', "products", InputOption::VALUE_NONE, 'Run db seed on products', null),
+            array('products', "p", InputOption::VALUE_NONE, 'Run db seed on products', null),
         );
     }
 
     private function commitAndPushConfig()
     {
-        $path = app_path() . "\config\packages\stolz\assets\config.php";
+        $path = app_path() . "/config/packages/stolz/assets/config.php";
         echo exec("git commit -m 'incrementing' " . $path);
         echo exec("git push origin production");
     }

@@ -1,12 +1,11 @@
 <?php
-
 return array(
 	'connections' => array(
 		'mysql' => array(
 			'host'      => 'localhost',
 			'database'  => 'devmovo',
-			'username'  => 'homestead',
-			'password'  => 'secret',
+            'username'  => 'devmovo',
+            'password'  => 'Isye06_7',
 		)
 	),
 );

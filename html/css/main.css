@@ -373,7 +373,8 @@ USAGE:
 
 body {
   color: #333;
-  font-family: 'Open Sans', sans-serif;
+  /*  font-family:      'Open Sans', sans-serif; */
+  font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
   font-weight: 400;
   background-color: rgba(0, 0, 0, 0.7);
   margin-bottom: 40px;
@@ -558,7 +559,7 @@ html {
       transform: rotate(90deg);
       cursor: pointer; }
   #form-content-box #nav {
-    background-color: #4d4d4d;
+    background-color: #080808;
     position: relative;
     z-index: 1;
     display: none; }
@@ -702,7 +703,7 @@ html {
     #form-content-box #loops .item {
       margin-bottom: 20px;
       display: table; }
-      #form-content-box #loops .item > div {
+      #form-content-box #loops .item div {
         display: table-cell;
         vertical-align: top; }
       #form-content-box #loops .item .left img {

@@ -6,6 +6,7 @@ return array(
     'email_template' => "bugonemail::email.notifyException",
     'notify_environment' => array( 'production'),
     'prevent_exception' => array(
-        'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+        'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
+        'Illuminate\Session\TokenMismatchException'
     ),
 );

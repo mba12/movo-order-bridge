@@ -2,13 +2,13 @@
 
 return [
     'stripeKeys' => array(
-        'secret' => 'sk_live_HRwsmGs8rrarrkMR3RuS3l1Q',
-        'publishable' => 'pk_live_k7POkoxvKrlibLuAOevWjqna',
+        'secret' => 'sk_test_6k4usddYrqLuqbUk1Whjv9Rk',
+        'publishable' => 'pk_test_OuHlTHKOg57i4bZVmP7oShFy',
     ),
     'ingram' => array(
         'partner-name' => 'movo',
-        'customer-id' => '563723',
-        'source-url' => 'http://orders.getmovo.com',
+        'customer-id' => '315703',
+        'source-url' => 'orders.getmovo.com',
     ),
     'pusher' => array(
         'public' => '7c1d3ca82e7d3904f4f0',
