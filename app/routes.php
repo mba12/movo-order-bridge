@@ -245,7 +245,7 @@ Route::get('order-test', function () {
 
             curl_close($ch);
 
-            sleep(1);
+            sleep(.1);
         }
 
     }
