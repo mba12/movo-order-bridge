@@ -22,18 +22,18 @@ class StandardResponse extends \Eloquent
     {
         Log::info("Incoming String: " . $xmlString);
         $xml = new SimpleXMLElement($xmlString);
-        $messageId = $xml->xpath('//message_id')[0];
-        $transactionName = $xml->xpath('//transaction_name')[0];
-        $partnerName = $xml->xpath('//partner_name')[0];
-        $partnerPassword = $xml->xpath('//partner_password')[0];
-        $sourceUrl = $xml->xpath('//source_url')[0];
-        $responseRequest = $xml->xpath('//response_request')[0];
-        $status_code = $xml->xpath('//status_code')[0];
-        $status_description = $xml->xpath('//status_description')[0];
-        $comments = $xml->xpath('//comments')[0];
-        $responseTimestamp = $xml->xpath('//response_timestamp')[0];
-        $fileName = $xml->xpath('//filename')[0];
-        $eventId = $xml->xpath('//eventID')[0];
+        $messageId = (String) $xml->xpath('//message_id'); //[0];
+        $transactionName = (String) $xml->xpath('//transaction_name'); //[0];
+        $partnerName = (String) $xml->xpath('//partner_name'); //[0];
+        $partnerPassword = (String) $xml->xpath('//partner_password'); //[0];
+        $sourceUrl = (String) $xml->xpath('//source_url'); //[0];
+        $responseRequest = (String) $xml->xpath('//response_request'); //[0];
+        $status_code = (String) $xml->xpath('//status_code'); //[0];
+        $status_description = (String) $xml->xpath('//status_description'); //[0];
+        $comments = (String) $xml->xpath('//comments'); //[0];
+        $responseTimestamp = (String) $xml->xpath('//response_timestamp'); //[0];
+        $fileName = (String) $xml->xpath('//filename'); //[0];
+        $eventId = (String) $xml->xpath('//eventID'); //[0];
 
         $response = StandardResponse::create([
 
