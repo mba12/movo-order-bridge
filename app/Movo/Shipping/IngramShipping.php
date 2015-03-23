@@ -27,9 +27,40 @@ class IngramShipping implements ShippingInterface
         return ($crypttext);
     }
 
-    public static function generateTestOrder()
+    public function generateTestOrderIds()
     {
-        $order = Order::find(356);
+        $rand1 = rand ( 3 , 7 );
+        $rand2 = rand ( 5 , 11 );
+        Log::info($rand1 . " :: " . $rand2);
+        $order = new Order();
+        $ids = $order->getIds($rand1, $rand2);
+
+        $idList = array();
+        $count = 0;
+
+        foreach($ids as $id) {
+            if ($id->id % $rand1 === 0 || $id->id % $rand2 === 0) {
+                continue;
+            }
+            $idList[$count] = $id->id;
+            $count++;
+        }
+
+        foreach($idList as $k=>$l) {
+            Log::info($k . " :: " . $l);
+        }
+
+        return $idList;
+    }
+
+    public static function generateTestOrder($orderID) {
+        Log::info("Generating test order: " . $orderID);
+        $data = array();
+        $order = Order::find($orderID);
+        Log::info("Shipping Type: " . $order->shipping_type);
+        Log::info("Shipping Code: " . Shipping::find($order->shipping_type)->scac_code);
+
+        $data['id'] = $order->id;
         $data['shipping-code'] = Shipping::find($order->shipping_type)->scac_code;
         $data['shipping-first-name'] = $order->shipping_first_name;
         $data['shipping-last-name'] = $order->shipping_last_name;
@@ -80,8 +111,9 @@ class IngramShipping implements ShippingInterface
         }
 
         $data['items'] = $items;
-        $xml = (new IngramShipping)->generateXMLFromData($data);
-        return $xml;
+
+        return $data;
+
     }
 
     public function ship(array $data)
@@ -140,6 +172,8 @@ class IngramShipping implements ShippingInterface
     {
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
+
+        Log::info("Order ID: " . $data['id']);
         $array = [
             'message' => [
                 'message-header' => [
@@ -192,7 +226,7 @@ class IngramShipping implements ShippingInterface
                             'ship-request-warehouse' => 'MVO1',
                         ],
                         'purchase-order-information' => [
-                            'purchase-order-number' => '325',
+                            'purchase-order-number' => $data['id'],
                             'purchase-order-amount' => '',
                             'currency-code' => 'USD',
                             'account-description' => '',
@@ -222,7 +256,7 @@ class IngramShipping implements ShippingInterface
                             'merchant-name' => '',
                         ],
                         'order-header' => [
-                            'customer-order-number' => $data['result']['id'],
+                            'customer-order-number' => $data['result']['id'], // Stripe charge id
                             'customer-order-date' => $date_str,
                             'order-type' => 'WEB-SALES',
                             'order-sub-total' => '',

@@ -37,6 +37,7 @@ class Order extends \Eloquent
         'tracking_code',
         'error_flag',
     ];
+
     public static function parseAndSaveData($xmlString)
     {
         $xml = new SimpleXMLElement($xmlString);
@@ -95,5 +96,16 @@ class Order extends \Eloquent
     public function errors()
     {
         return $this->where("error_flag", "=", 2);
+    }
+
+    public function getIds($first, $second)
+    {
+        //$result = DB::table('orders')->where("id", ">", 67 + $first * $second)->get();
+        // $result = DB::table('orders')->get();
+        //$result = $this->all();
+        $result = $this->where("id", ">", 67 + $first * $second)->get(); //->pluck('id');
+        Log::info("Database query finished: " . $result->count());
+
+        return $result;
     }
 }

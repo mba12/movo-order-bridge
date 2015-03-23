@@ -178,63 +178,76 @@ Route::get('connection-test-https', function () {
 });
 
 Route::get('order-test', function () {
-   // for ($i = 0; $i < 1; $i++) {
-        $orderXML = IngramShipping::generateTestOrder();
 
-        $url = "https://168.215.84.144:9443/HttpPost";
-        $cert_file = "/root/test2.pem";
-        $result = openssl_get_privatekey($cert_file, 'password');
-       // echo "Result: " . $result;
+    $log = new Logger('ingram-order-test');
+    $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
 
-        $ch = curl_init();
+    $shipping = new IngramShipping();
+    $orderIds = $shipping->generateTestOrderIds();
 
-        $options = array(
+    if(count($orderIds) > 0) {
+        for ($i = 0; $i < 30; $i++) {
+            $log->addInfo("Getting test order: " . $i . " ==> " . $orderIds[$i]);
 
-            CURLOPT_POST => 1,
-            CURLOPT_HTTPHEADER => ['Content-Type:', 'text/xml'],
-            CURLOPT_POSTFIELDS => $orderXML,
-            CURLOPT_RETURNTRANSFER => 1,
-            //CURLOPT_SSLCERTTYPE => "DER",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
-            CURLOPT_VERBOSE => true,
-            CURLOPT_URL => $url,
-            CURLOPT_CAPATH => "/etc/pki/tls",
-            CURLOPT_SSLVERSION => 3,
-            //CURLOPT_SSLCERT => $cert_file ,
-        );
+            $data = IngramShipping::generateTestOrder($orderIds[$i]);
+            $orderXML = null;
+            $orderXML = $shipping->generateXMLFromData($data);
 
-        curl_setopt_array($ch, $options);
+            $url = "https://168.215.84.144:9443/HttpPost";
+            // $cert_file = "/root/test2.pem";
+            // $result = openssl_get_privatekey($cert_file, 'password');
+            // echo "Result: " . $result;
 
-        $output = curl_exec($ch);
-        $curl_errno = curl_errno($ch);
-        $curl_error = curl_error($ch);
-        if ($curl_errno > 0) {
-          //  echo "cURL Error ($curl_errno): $curl_error\n";
-        } else {
-          //  echo "Data received\n";
+            $ch = curl_init();
+
+            $options = array(
+
+                CURLOPT_POST => 1,
+                CURLOPT_HTTPHEADER => ['Content-Type:', 'text/xml'],
+                CURLOPT_POSTFIELDS => $orderXML,
+                CURLOPT_RETURNTRANSFER => 1,
+                //CURLOPT_SSLCERTTYPE => "DER",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
+                CURLOPT_VERBOSE => true,
+                CURLOPT_URL => $url,
+                CURLOPT_CAPATH => "/etc/pki/tls",
+                CURLOPT_SSLVERSION => 3,
+                //CURLOPT_SSLCERT => $cert_file ,
+            );
+
+            curl_setopt_array($ch, $options);
+            $output = curl_exec($ch);
+            $curl_errno = curl_errno($ch);
+            $curl_error = curl_error($ch);
+            if ($curl_errno > 0) {
+              echo "cURL Error ($curl_errno): $curl_error\n";
+            } else {
+              echo "Data received\n";
+            }
+
+            if (!$output) {
+                echo "Curl Error : " . curl_error($ch);
+            } else {
+                echo htmlentities($output);
+            }
+            curl_close($ch);
+
+            $log->addInfo($output);
+            sleep(1);
         }
 
-        if (!$output) {
-            //echo "Curl Error : " . curl_error($ch);
-        } else {
-          //  echo htmlentities($output);
-        }
-        curl_close($ch);
+    }
 
-        $log = new Logger('ingram-order-test');
-        $log->pushHandler(new StreamHandler('../app/storage/logs/ingram-order-test.log', Logger::INFO));
-        $log->addInfo($output);
-        return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
-    //}
+    return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
 
 });
 
 Route::get('dummy', function () {
-    $orderXML = IngramShipping::generateTestOrder();
+    $orderXML = IngramShipping::generateTestOrder(365);
     return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');
 });
