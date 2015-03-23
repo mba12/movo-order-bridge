@@ -24,12 +24,12 @@ class StandardResponse extends \Eloquent
         $xml = new SimpleXMLElement($xmlString);
 
         $testArray = var_dump($xml->xpath('//message_id'));
-        Log::info("Test: " . ((String) $testArray[0]));
+        Log::info("Test: " . $testArray);
 
-        $messageId = (String) $xml->xpath('//message_id');
-        $transactionName = (String) $xml->xpath('//transaction_name');
-        $partnerName = (String) $xml->xpath('//partner_name');
-        $partnerPassword = (String) $xml->xpath('//partner_password');
+        $messageId = $xml->xpath('//message_id');
+        $transactionName = $xml->xpath('//transaction_name');
+        $partnerName = $xml->xpath('//partner_name');
+        $partnerPassword = $xml->xpath('//partner_password');
         $sourceUrl = $xml->xpath('//source_url');
         $responseRequest = $xml->xpath('//response_request');
         $status_code = $xml->xpath('//status_code');
