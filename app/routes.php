@@ -239,7 +239,7 @@ Route::get('order-test', function () {
                 $output = substr($output, $startPos);
                 $log->addInfo("Message Received: " . $output);
                 $sp = new StandardResponse();
-                $sp->parseAndSaveData($output);
+                $sp->parseAndSaveData($orderIds[$i], $output);
                 // echo htmlentities($output);
             }
 
