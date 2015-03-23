@@ -221,23 +221,27 @@ Route::get('order-test', function () {
             );
 
             curl_setopt_array($ch, $options);
+
             $output = curl_exec($ch);
             $curl_errno = curl_errno($ch);
             $curl_error = curl_error($ch);
             if ($curl_errno > 0) {
-              echo "cURL Error ($curl_errno): $curl_error\n";
+                $log->addInfo("cURL Error ($curl_errno): $curl_error\n");
             } else {
-              echo "Data received\n";
+                $log->addInfo("Data received\n");
             }
 
             if (!$output) {
-                echo "Curl Error : " . curl_error($ch);
+                $log->addInfo("Curl Error : " . curl_error($ch));
+                $log->addInfo(curl_error($ch));
             } else {
-                echo htmlentities($output);
+                $sp = new StandardResponse();
+                $sp->parseAndSaveData($output);
+                // echo htmlentities($output);
             }
+
             curl_close($ch);
 
-            $log->addInfo($output);
             sleep(1);
         }
 
