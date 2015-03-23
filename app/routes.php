@@ -235,6 +235,7 @@ Route::get('order-test', function () {
                 $log->addInfo("Curl Error : " . curl_error($ch));
                 $log->addInfo(curl_error($ch));
             } else {
+                $log->addInfo("Message Received: " . $output);
                 $sp = new StandardResponse();
                 $sp->parseAndSaveData($output);
                 // echo htmlentities($output);

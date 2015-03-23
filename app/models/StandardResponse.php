@@ -20,6 +20,7 @@ class StandardResponse extends \Eloquent
 
     public function parseAndSaveData($xmlString)
     {
+        Log::info("Incoming String: " . $xmlString);
         $xml = new SimpleXMLElement($xmlString);
         $messageId = $xml->xpath('//message_id')[0];
         $transactionName = $xml->xpath('//transaction_name')[0];
