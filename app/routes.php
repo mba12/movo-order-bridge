@@ -235,6 +235,8 @@ Route::get('order-test', function () {
                 $log->addInfo("Curl Error : " . curl_error($ch));
                 $log->addInfo(curl_error($ch));
             } else {
+                $startPos = strpos($output, "<?xml");
+                $output = substr($output, $startPos);
                 $log->addInfo("Message Received: " . $output);
                 $sp = new StandardResponse();
                 $sp->parseAndSaveData($output);
