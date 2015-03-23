@@ -209,7 +209,7 @@ Route::get('order-test', function () {
                 //CURLOPT_SSLCERTTYPE => "DER",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => true,
-                CURLOPT_FOLLOWLOCATION => true,
+                // CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_SSL_VERIFYHOST => false,
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
