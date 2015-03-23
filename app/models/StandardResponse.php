@@ -25,8 +25,6 @@ class StandardResponse extends \Eloquent
         $xml = simplexml_load_string($xmlString);
         //$xml = new SimpleXMLElement($xmlString);
 
-        $testArray = $xml->message-id;
-        Log::info("Test: " . $testArray);
 
         $messageId = $xml->xpath('//message-id');
         $transactionName = $xml->xpath('//transaction-name');
