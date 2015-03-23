@@ -23,11 +23,13 @@ class StandardResponse extends \Eloquent
         Log::info("Incoming String: " . $xmlString);
         $xml = new SimpleXMLElement($xmlString);
 
-        $testArray = var_dump($xml->xpath('//message_id'));
+        $testArray = $xml->message_id;
         Log::info("Test: " . $testArray);
 
-        $messageId = $xml->xpath('//message_id');
-        $transactionName = $xml->xpath('//transaction_name');
+        //$messageId = $xml->xpath('//message_id');
+        $messageId = $xml->message_id;
+        // $transactionName = $xml->xpath('//transaction_name');
+        $transactionName = $xml->transaction_name;
         $partnerName = $xml->xpath('//partner_name');
         $partnerPassword = $xml->xpath('//partner_password');
         $sourceUrl = $xml->xpath('//source_url');
@@ -41,8 +43,8 @@ class StandardResponse extends \Eloquent
 
         $response = StandardResponse::create([
 
-            'message_id' => (String) $messageId[0],
-            'transaction_name' => (String) $transactionName[0],
+            'message_id' => (String) $messageId,
+            'transaction_name' => (String) $transactionName,
             'partner_name' => (String) $partnerName[0],
             'partner_password' => (String) $partnerPassword[0],
             'source_url' => (String) $sourceUrl[0],
