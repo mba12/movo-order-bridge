@@ -23,36 +23,36 @@ class StandardResponse extends \Eloquent
         Log::info("Incoming String: " . $xmlString);
         $xml = new SimpleXMLElement($xmlString);
 
-        $testArray = var_dump($xml->xpath('//message_id')[0]);
-        Log::info("Test: " . $testArray);
+        $testArray = var_dump($xml->xpath('//message_id'));
+        Log::info("Test: " . ((String) $testArray[0]));
 
-        $messageId = (String) $xml->xpath('//message_id')[0];
-        $transactionName = (String) $xml->xpath('//transaction_name')[0];
-        $partnerName = (String) $xml->xpath('//partner_name')[0];
-        $partnerPassword = (String) $xml->xpath('//partner_password')[0];
-        $sourceUrl = (String) $xml->xpath('//source_url')[0];
-        $responseRequest = (String) $xml->xpath('//response_request')[0];
-        $status_code = (int) $xml->xpath('//status_code')[0];
-        $status_description = (String) $xml->xpath('//status_description')[0];
-        $comments = (String) $xml->xpath('//comments')[0];
-        $responseTimestamp = (String) $xml->xpath('//response_timestamp')[0];
-        $fileName = (String) $xml->xpath('//filename')[0];
-        $eventId = (String) $xml->xpath('//eventID')[0];
+        $messageId = (String) $xml->xpath('//message_id');
+        $transactionName = (String) $xml->xpath('//transaction_name');
+        $partnerName = (String) $xml->xpath('//partner_name');
+        $partnerPassword = (String) $xml->xpath('//partner_password');
+        $sourceUrl = $xml->xpath('//source_url');
+        $responseRequest = $xml->xpath('//response_request');
+        $status_code = $xml->xpath('//status_code');
+        $status_description = $xml->xpath('//status_description');
+        $comments = $xml->xpath('//comments');
+        $responseTimestamp = $xml->xpath('//response_timestamp');
+        $fileName = $xml->xpath('//filename');
+        $eventId = $xml->xpath('//eventID');
 
         $response = StandardResponse::create([
 
-            'message_id' => $messageId,
-            'transaction_name' => $transactionName,
-            'partner_name' => $partnerName,
-            'partner_password' => $partnerPassword,
-            'source_url' => $sourceUrl,
-            'response_request' => $responseRequest,
-            'status_code' => $status_code,
-            'status_description' => $status_description,
-            'comments' => $comments,
-            'response_timestamp' => $responseTimestamp,
-            'filename' => $fileName,
-            'eventID' => $eventId,
+            'message_id' => (String) $messageId[0],
+            'transaction_name' => (String) $transactionName[0],
+            'partner_name' => (String) $partnerName[0],
+            'partner_password' => (String) $partnerPassword[0],
+            'source_url' => (String) $sourceUrl[0],
+            'response_request' => (String) $responseRequest[0],
+            'status_code' => (int) $status_code[0],
+            'status_description' => (String) $status_description[0],
+            'comments' => (String) $comments[0],
+            'response_timestamp' => (String) $responseTimestamp[0],
+            'filename' => (String) $fileName[0],
+            'eventID' => (String) $eventId[0],
         ]);
 
         $response->save();
