@@ -231,6 +231,14 @@ Route::get('order-test', function () {
                 $log->addInfo("Data received\n");
             }
 
+            // TODO: If there is a curl connection error retry after sleeping for 5 minutes
+            /*
+             * [2015-03-23 18:27:43] ingram-order-test.INFO: cURL Error (35): SSL connect error  [] []
+[2015-03-23 18:27:43] ingram-order-test.INFO: Curl Error : SSL connect error [] []
+[2015-03-23 18:27:43] ingram-order-test.INFO: SSL connect error [] []
+
+             */
+
             if (!$output) {
                 $log->addInfo("Curl Error : " . curl_error($ch));
                 $log->addInfo(curl_error($ch));

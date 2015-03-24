@@ -36,6 +36,13 @@ class IngramController extends \BaseController {
 		$log = new Logger('ingram-ship-advice');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/ship-advice.log', Logger::INFO));
 		$log->addInfo($content);
+
+        // Log to database
+        $shipNotify = new ShipNotification();
+        $shipNotify->parseSAndSaveData($content);
+
+        //TODO: email purchaser and provide shipper and tracking number
+
 		$content =  View::make("ingram.ship-advice");
 		return Response::make($content, '200')->header('Content-Type', 'text/xml');
 	}
