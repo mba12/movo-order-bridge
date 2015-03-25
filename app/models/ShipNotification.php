@@ -144,7 +144,7 @@ class ShipNotification extends \Eloquent
         $data=[];
 
         foreach ($fieldList as $f) {
-            $data[$f] = checkData( $xml->xpath("//" . $f) );
+            $data[$f] = ShipNotification::checkData( $xml->xpath("//" . $f) );
         }
 
 /*
