@@ -5,7 +5,7 @@ class ShipNotification extends \Eloquent
 {
     protected $guarded = [];
     protected $table = "ship_notification";
-    public $fieldList = [
+    public static $fieldList = [
         "message-id",
         "transaction-name",
         "partner-name",
@@ -134,14 +134,13 @@ class ShipNotification extends \Eloquent
         $data = ShipNotification::parseData($xml);
         ShipNotification::saveData($data);
 
-
     }
 
     private static function parseData($xml)
     {
         $data=[];
 
-        foreach (self::$fieldList as $f) {
+        foreach (ShipNotification::$fieldList as $f) {
             $data[$f] = ShipNotification::checkData( $xml->xpath("//" . $f) );
         }
 
@@ -161,7 +160,7 @@ class ShipNotification extends \Eloquent
     {
 
         $inputValues = array();
-        foreach(self::$fieldList as $v) {
+        foreach(ShipNotification::$fieldList as $v) {
             $dbField = str_replace("-", "_", $v);
             $inputValues[$dbField] = $data[$v];
         }
