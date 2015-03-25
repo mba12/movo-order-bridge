@@ -8,7 +8,10 @@ class IngramController extends \BaseController {
 
 	public function trackInventory()
 	{
-		$request = Request::instance();
+        $environment = App::environment();
+        Log::info("Current environment: " . $environment);
+
+        $request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-inventory');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/inventory.log', Logger::INFO));
@@ -31,7 +34,11 @@ class IngramController extends \BaseController {
 	}
 
 	public function shipAdvice(){
-		$request = Request::instance();
+
+        $environment = App::environment();
+        Log::info("Current environment: " . $environment);
+
+        $request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-ship-advice');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/ship-advice.log', Logger::INFO));
