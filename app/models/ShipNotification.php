@@ -279,7 +279,7 @@ class ShipNotification extends \Eloquent
 
     private static function checkData($data) {
 
-        if (isset($data)) {
+        if (isset($data[0])) {
             return (String) $data[0];
         } else {
             return '';
