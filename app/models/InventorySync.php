@@ -6,6 +6,26 @@ class InventorySync extends \Eloquent
     protected $guarded = [];
     protected $table = "inventory_sync";
 
+    public static $fieldList = [ 'message-id',
+                                'transaction-name',
+                                'partner-name',
+                                'source-url',
+                                'create-timestamp',
+                                'response-request',
+                                'customer-id',
+                                'line-no',
+                                'transaction-document-number',
+                                'item-code',
+                                'universal-product-code',
+                                'warehouse-id',
+                                'unit-of-measure',
+                                'quantity-on-hand',
+                                'quantity-committed',
+                                'quantity-available',
+                                'quantity-on-back-order',
+                                'synchronization-timestamp',
+                                'eventID'];
+
     public static function parseAndSaveData($xmlString)
     {
         $xml = new SimpleXMLElement($xmlString);
@@ -18,7 +38,16 @@ class InventorySync extends \Eloquent
 
     private static function parseData($xml, $i)
     {
+
         $data = [];
+        foreach (InventorySync::$fieldList as $f) {
+            $data[$f] = InventorySync::checkData( $xml->xpath("//" . $f), $i );
+        }
+
+        return $data;
+
+/*
+
         $data["message_id"] = (String)$xml->xpath('//message-id')[0];
         $data["transaction_name"] = (String)$xml->xpath('//transaction-name')[0];
         $data["partner_name"] = (String)$xml->xpath('//partner-name')[0];
@@ -39,10 +68,21 @@ class InventorySync extends \Eloquent
         $data["synchronization_timestamp"] = (String)$xml->xpath('//synchronization-timestamp')[$i];
         $data["eventID"] = (String)$xml->xpath('//eventID')[0];
         return $data;
+*/
     }
 
     private static function saveData($data)
     {
+
+        $inputValues = array();
+        foreach(InventorySync::$fieldList as $v) {
+            $dbField = str_replace("-", "_", $v);
+            $inputValues[$dbField] = $data[$v];
+        }
+
+        InventorySync::create($inputValues);
+
+/*
         InventorySync::create([
             "message_id" => $data["message_id"],
             "transaction_name" => $data["transaction_name"],
@@ -67,6 +107,17 @@ class InventorySync extends \Eloquent
             "comments" => "",
             "eventID" => $data["eventID"],
         ]);
+*/
     }
+
+    private static function checkData($data, $i) {
+
+        if (isset($data[$i])) {
+            return (String) $data[$i];
+        } else {
+            return '';
+        }
+    }
+
 
 }
