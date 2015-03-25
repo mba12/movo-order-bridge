@@ -5,7 +5,7 @@ class ShipNotification extends \Eloquent
 {
     protected $guarded = [];
     protected $table = "ship_notification";
-    protected $fieldList = [
+    public $fieldList = [
         "message-id",
         "transaction-name",
         "partner-name",
@@ -164,8 +164,9 @@ class ShipNotification extends \Eloquent
     {
 
         $inputValues = array();
-        foreach($data as $v) {
-            $inputValues[$v] = $data[$v];
+        foreach(ShipNotification::$fieldList as $v) {
+            $dbField = str_replace("-", "_", $v);
+            $inputValues[$dbField] = $data[$v];
         }
 
         ShipNotification::create($inputValues);
