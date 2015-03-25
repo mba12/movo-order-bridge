@@ -21,7 +21,7 @@ class ShipNotification extends \Eloquent
 		$data["message-id"] = (String)$xml->xpath("//message-id")[0];
 		$data["transaction-name"] = (String)$xml->xpath("//transaction-name")[0];
 		$data["partner-name"] = (String)$xml->xpath("//partner-name")[0];
-		$data["partner-password"] = (String)$xml->xpath("//partner-password")[0];
+		// $data["partner-password"] = (String)$xml->xpath("//partner-password")[0];
 		$data["source-url"] = (String)$xml->xpath("//source-url")[0];
 		$data["create-timestamp"] = (String)$xml->xpath("//create-timestamp")[0];
 		$data["response-request"] = (String)$xml->xpath("//response-request")[0];
