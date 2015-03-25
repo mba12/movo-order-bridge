@@ -141,7 +141,7 @@ class ShipNotification extends \Eloquent
     {
         $data=[];
 
-        foreach (ShipNotification::fieldList as $f) {
+        foreach (self::$fieldList as $f) {
             $data[$f] = ShipNotification::checkData( $xml->xpath("//" . $f) );
         }
 
@@ -161,7 +161,7 @@ class ShipNotification extends \Eloquent
     {
 
         $inputValues = array();
-        foreach(ShipNotification::fieldList as $v) {
+        foreach(self::$fieldList as $v) {
             $dbField = str_replace("-", "_", $v);
             $inputValues[$dbField] = $data[$v];
         }
