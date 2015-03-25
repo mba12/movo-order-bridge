@@ -17,20 +17,151 @@ class ShipNotification extends \Eloquent
 
     private static function parseData($xml)
     {
+
+        $fieldList = [
+        "message-id",
+		"transaction-name",
+		"partner-name",
+		"partner-password",
+		"source-url",
+		"create-timestamp",
+		"response-request",
+		"customer-id",
+	    "business-name",
+	    "carrier-name",
+	    "ultimate-destination-code",
+	    "packing-list-number",
+	    "release-number",
+    	"customer-first-name",
+		"customer-last-name",
+		"customer-middle-initial",
+		"customer-address1",
+		"customer-address2",
+		"customer-address3",
+		"customer-city",
+		"customer-state",
+		"customer-post-code",
+		"customer-country-code",
+		"customer-phone1",
+		"customer-phone2",
+		"customer-fax",
+		"customer-email",
+    	"ship-first-name",
+		"ship-last-name",
+	    "ship-middle-initial",
+		"ship-address1",
+		"ship-address2",
+		"ship-address3",
+		"ship-city",
+		"ship-state",
+		"ship-post-code",
+		"ship-country-code",
+		"ship-phone1",
+		"ship-phone2",
+		"ship-fax",
+		"ship-email",
+		"ship-via",
+		"ship-request-date",
+		"ship-request-from",
+		"ship-request-warehouse",
+		"purchase-order-number",
+		"account-description",
+		"purchase-order-amount",
+		"currency-code",
+		"comments",
+		"credit-card-number",
+		"credit-card-expiration-date",
+		"credit-card-identification",
+		"global-card-classification-code",
+		"card-holder-name",
+		"card-holder-address1",
+		"card-holder-address2",
+		"card-holder-city",
+		"card-holder-state",
+		"card-holder-post-code",
+		"card-holder-country-code",
+		"invoice-number",
+		"invoice-creation-date",
+		"terms-due-days",
+		"invoice-expiration-date",
+		"terms-discount-percentage",
+		"terms-discount-due-days",
+		"terms-discount-expiration-date",
+		"terms-description",
+		"invoice-amount",
+		"invoice-discount",
+		"customer-order-number",
+		"customer-order-date",
+		"order-reference",
+		"order-sub-total",
+		"order-discount",
+		"order-tax1",
+		"order-tax2",
+		"order-tax3",
+		"order-shipment-charge",
+		"order-total-net",
+		"order-status",
+		"order-type",
+		"customer-channel-type",
+		"customer-group-account",
+		"customer-seller-code",
+		"user-name",
+		"gift-flag",
+		"brightpoint-order-number",
+		"warehouse-id",
+		"ship-date",
+		"ship-to-code",
+		"line-no",
+		"line-reference",
+		"item-code",
+		"universal-product-code",
+		"product-name",
+		"ship-quantity",
+		"packs",
+		"internal-packs",
+		"unit-of-measure",
+		"sid",
+		"irdb",
+		"market-id",
+		"line-status",
+		"base-price",
+		"line-discount",
+		"line-tax1",
+		"line-tax2",
+		"line-tax3",
+		"bill-of-lading",
+		"pallet-id",
+		"scac",
+		"routing-description",
+		"container-id",
+		"ownership-flag",
+		"special-message1",
+		"special-message2",
+		"special-message3",
+		"special-message4",
+		"special-message5"];
+
         $data=[];
+
+        foreach ($fieldList as $f) {
+            $data[$f] = checkData( $xml->xpath("//" . $f) );
+        }
+
+/*
 		$data["message-id"] = (String)$xml->xpath("//message-id")[0];
-		$data["transaction-name"] = (String)$xml->xpath("//transaction-name")[0];
-		$data["partner-name"] = (String)$xml->xpath("//partner-name")[0];
-		// $data["partner-password"] = (String)$xml->xpath("//partner-password")[0];
-		$data["source-url"] = (String)$xml->xpath("//source-url")[0];
-		$data["create-timestamp"] = (String)$xml->xpath("//create-timestamp")[0];
-		$data["response-request"] = (String)$xml->xpath("//response-request")[0];
-		$data["customer-id"] = (String)$xml->xpath("//customer-id")[0];
+		$data["transaction-name"] = (String)$xml->xpath("//transaction-name")[0]; // good
+		$data["partner-name"] = (String)$xml->xpath("//partner-name")[0]; // good
+		$data["partner-password"] = (String)$xml->xpath("//partner-password")[0];
+		$data["source-url"] = (String)$xml->xpath("//source-url")[0]; // good
+		$data["create-timestamp"] = (String)$xml->xpath("//create-timestamp")[0]; // good
+		$data["response-request"] = (String)$xml->xpath("//response-request")[0]; // good
+		$data["customer-id"] = (String)$xml->xpath("//customer-id")[0]; // good
 		$data["business-name"] = (String)$xml->xpath("//business-name")[0];
 		$data["carrier-name"] = (String)$xml->xpath("//carrier-name")[0];
 		$data["ultimate-destination-code"] = (String)$xml->xpath("//ultimate-destination-code")[0];
 		$data["packing-list-number"] = (String)$xml->xpath("//packing-list-number")[0];
 		$data["release-number"] = (String)$xml->xpath("//release-number")[0];
+
 		$data["customer-first-name"] = (String)$xml->xpath("//customer-first-name")[0];
 		$data["customer-last-name"] = (String)$xml->xpath("//customer-last-name")[0];
 		$data["customer-middle-initial"] = (String)$xml->xpath("//customer-middle-initial")[0];
@@ -45,9 +176,10 @@ class ShipNotification extends \Eloquent
 		$data["customer-phone2"] = (String)$xml->xpath("//customer-phone2")[0];
 		$data["customer-fax"] = (String)$xml->xpath("//customer-fax")[0];
 		$data["customer-email"] = (String)$xml->xpath("//customer-email")[0];
+
 		$data["ship-first-name"] = (String)$xml->xpath("//ship-first-name")[0];
 		$data["ship-last-name"] = (String)$xml->xpath("//ship-last-name")[0];
-		$data["ship-middle-initial"] = (String)$xml->xpath("//ship-middle-initial")[0];
+	    $data["ship-middle-initial"] = (String)$xml->xpath("//ship-middle-initial")[0];
 		$data["ship-address1"] = (String)$xml->xpath("//ship-address1")[0];
 		$data["ship-address2"] = (String)$xml->xpath("//ship-address2")[0];
 		$data["ship-address3"] = (String)$xml->xpath("//ship-address3")[0];
@@ -140,7 +272,21 @@ class ShipNotification extends \Eloquent
 		$data["special-message4"] = (String)$xml->xpath("//special-message4")[0];
 		$data["special-message5"] = (String)$xml->xpath("//special-message5")[0];
 
+        */
+
         return $data;
+    }
+
+    private static function checkData($data) {
+
+        if (isset($data)) {
+            return (String) $data[0];
+        } else {
+            return '';
+
+        }
+
+
     }
 
     private static function saveData($data)
