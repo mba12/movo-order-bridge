@@ -40,14 +40,27 @@ class Order extends \Eloquent
 
     public static function parseAndSaveData($xmlString)
     {
+        // NOTE: <order-status>REJECTED</order-status>
+        //       <order-status>ACCEPTED</order-status>
+
         $xml = new SimpleXMLElement($xmlString);
-        $result = $xml->xpath('//customer-id')[0];
+        $result = $xml->xpath('//customer-order-number')[0];  // NOTE: Field contains the stripe id
         $order=Order::where("stripe_charge_id", "=", (String)$result)->first();
         $order->ingram_order_id= (String)$xml->xpath('//message-id')[0];
-        if((String)$xml->xpath('//transaction-name')[0]=="sales-order-rejection"){
+        if((String)$xml->xpath('//order-status')[0]=="REJECTED"){
             $order->error_flag=3;
+            $order->status=-1;
+        } else if((String)$xml->xpath('//order-status')[0]=="ACCEPTED"){
+            $order->error_flag=0;
+            $order->status=1;
+        } else {
+            $order->error_flag=3;
+            $order->status=-1;
         }
         $order->save();
+
+        //TODO: Match the entire order against what we have in our database.
+        //      Right now only the order success field is being matched
     }
     public function items()
     {
