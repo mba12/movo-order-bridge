@@ -58,10 +58,11 @@ class IngramController extends \BaseController {
 		$request = Request::instance();
 		$content = $request->getContent();
 
-		Order::parseAndSaveData($content);
-		$log = new Logger('ingram-order-status');
-		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/order-status.log', Logger::INFO));
-		$log->addInfo($content);
+        $log = new Logger('ingram-order-status');
+        $log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/order-status.log', Logger::INFO));
+        $log->addInfo($content);
+
+        Order::parseAndSaveData($content);
 		$content =  View::make("ingram.order-status");
 		return Response::make($content, '200')->header('Content-Type', 'text/xml');
 	}

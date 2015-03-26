@@ -42,6 +42,7 @@ class Order extends \Eloquent
     {
         // NOTE: <order-status>REJECTED</order-status>
         //       <order-status>ACCEPTED</order-status>
+        // add field purchase-order-number
 
         $xml = new SimpleXMLElement($xmlString);
         $result = $xml->xpath('//customer-order-number')[0];  // NOTE: Field contains the stripe id
