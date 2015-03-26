@@ -48,10 +48,10 @@ class Order extends \Eloquent
         $result = $xml->xpath('//customer-order-number')[0];  // NOTE: Field contains the stripe id
         $order=Order::where("stripe_charge_id", "=", (String)$result)->first();
         $order->ingram_order_id= (String)$xml->xpath('//message-id')[0];
-        if((String)$xml->xpath('//order-status')[0]=="REJECTED"){
+        if((String)($xml->xpath('//order-status')[0])=="REJECTED"){
             $order->error_flag=3;
             $order->status=-1;
-        } else if((String)$xml->xpath('//order-status')[0]=="ACCEPTED"){
+        } else if((String)($xml->xpath('//order-status')[0])=="ACCEPTED"){
             $order->error_flag=0;
             $order->status=1;
         } else {
