@@ -116,10 +116,14 @@ class Order extends \Eloquent
 
     public function getIds($first, $second)
     {
+        $usedIds = [83,86,88,89,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,
+            121,122,123,125,128,129,130,131,132,133,134,135,325,325,325];
+
         //$result = DB::table('orders')->where("id", ">", 67 + $first * $second)->get();
         // $result = DB::table('orders')->get();
         //$result = $this->all();
-        $result = $this->where("id", ">", 67 + $first * $second)->get(); //->pluck('id');
+        $result = $this->where("id", ">", 67 + $first * $second * 2)->whereNotIn('id', $usedIds)->get(); //->pluck('id');
+
         Log::info("Database query finished: " . $result->count());
 
         return $result;
