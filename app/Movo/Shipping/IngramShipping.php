@@ -87,7 +87,7 @@ class IngramShipping implements ShippingInterface
 
         $items = [];
         $count = 1;
-        foreach ($order->items as $item) {
+        foreach ($order->items() as $item) {
             $items[] = [
                 "line-no" => $count++,
                 "item-code" => $item->sku,

@@ -9,6 +9,7 @@
             <li><a href="/admin/orders" class="orders">orders</a></li>
             <li><a href="/admin/coupons" class="coupons">coupons</a></li>
             <li><a href="/admin/manual" class="coupons">manual</a></li>
+            <li><a href="/admin/upload" class="coupons">upload</a></li>
 
         @if(Session::get('admin'))
                 <li><a href="/admin/logout" class="">logout</a></li>

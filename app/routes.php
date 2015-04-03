@@ -96,6 +96,17 @@ Route::group(array('before' => 'admin'), function () {
         'uses' => 'AdminController@manual',
     ));
 
+    Route::get('/admin/upload', array(
+        'as' => 'admin-upload',
+        'uses' => 'AdminController@upload',
+    ));
+
+    Route::post('/admin/processUploads', array(
+        'as' => 'admin-upload',
+        'uses' => 'AdminController@processUploads',
+    ));
+
+
     Route::put('/admin/manualorderentry', array(
         'as' => 'manualorderentry',
         'uses' => 'AdminController@manualorderentry',

@@ -14,6 +14,8 @@ class Order extends \Eloquent
         'shipping_first_name',
         'shipping_last_name',
         'shipping_address',
+        'shipping_address2',
+        'shipping_address3',
         'shipping_city',
         'shipping_state',
         'shipping_zip',
@@ -36,6 +38,9 @@ class Order extends \Eloquent
         'status',
         'tracking_code',
         'error_flag',
+
+        'partner_id',
+        'partner_order_id',
     ];
 
     public static function parseAndSaveData($xmlString)

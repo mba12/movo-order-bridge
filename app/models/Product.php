@@ -2,7 +2,7 @@
 
 class Product extends \Eloquent
 {
-    protected $fillable = [];
+    protected $fillable = ['name', 'price', 'sku', 'category'];
 
     public function options(){
         return $this->hasMany("ProductOption");
@@ -44,4 +44,38 @@ class Product extends \Eloquent
         Cache::put("all-products", $all, 1440);
         return $all;
     }
+
+    public static function getLargeBundle()
+    {
+        if (Cache::has("large-bundle")) {
+            return Cache::get("large-bundle");
+        }
+
+        // TODO: add an inventory check for standard loops
+
+        $bundle = Product::whereIn("id", [4,6])->get();
+        Cache::put("large-bundle", $bundle, 1440);
+        return $bundle;
+    }
+
+    public static function getMediumBundle()
+    {
+        if (Cache::has("medium-bundle")) {
+            return Cache::get("medium-bundle");
+        }
+
+        // TODO: add an inventory check for standard loops
+
+        $bundle = Product::whereIn("id", [3,6])->get();
+        Cache::put("medium-bundle", $bundle, 1440);
+        return $bundle;
+    }
+
+    public static function getProductById($id) {
+        $bundle = Product::where("id", "=", $id)->get();
+        return $bundle;
+    }
+
+
+
 }
