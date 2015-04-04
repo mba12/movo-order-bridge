@@ -60,10 +60,10 @@ class Order extends \Eloquent
             $order->status=1;
         } else if($status == "sales-order-rejection"){
             $order->error_flag=3;
-            $order->status=-1;
+            $order->status=0;
         } else {
             $order->error_flag=3;
-            $order->status=-1;
+            $order->status=0;
         }
         $order->save();
 
@@ -80,7 +80,7 @@ class Order extends \Eloquent
         return $this->hasMany("Donation");
     }
 
-    public function combineAndCountItems($items, $key="description")
+    public function combineAndCountItems($items, $key="sku")
     {
         $combinedItems=[];
         foreach ($items as $item) {
