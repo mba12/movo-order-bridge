@@ -19,10 +19,18 @@ class AdminController extends \BaseController
                                 'X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty',
                                 'Standard-Qty','Neon-Qty');
 
+    private $env;
+    private $url;
+
 
     function __construct(Order $order)
     {
         $this->order = $order;
+    }
+
+    public function setEnvAndUrl($e, $u) {
+        $this->$env = $e;
+        $this->$url = $u;
     }
 
     public function index()
@@ -177,8 +185,6 @@ class AdminController extends \BaseController
         $partnerId = Input::get("partner_id");
         $fileName = $this->backupCsvFile();
 
-        Log::info("Partner Code is: " . $partnerId);
-
         $status = '';
         if (strcasecmp($partnerId,'STACK') == 0) {
             $status = $this->processStack($this->slackHeader, $fileName, $partnerId);
@@ -277,7 +283,7 @@ class AdminController extends \BaseController
 
             if (!$error) {
                 // The entire file has been processed and consolidated into
-                // a single data structure. Now being processed one order
+                // a single data structure. Now being processed one consolidated order
                 // at a time. The original file may contain skus on multiple lines.
                 $processor=new Movo\Orders\ProcessOrder();
                 $status = $processor->processMultipleOffline($masterOrderList);

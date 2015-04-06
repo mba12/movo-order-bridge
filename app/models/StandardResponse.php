@@ -20,7 +20,7 @@ class StandardResponse extends \Eloquent
 
     public function parseAndSaveData($orderId, $xmlString)
     {
-        Log::info("Incoming String: " . $xmlString);
+        Log::info("Standard Response::Incoming String: " . $xmlString);
 
         $xml = simplexml_load_string($xmlString);
         //$xml = new SimpleXMLElement($xmlString);
@@ -36,10 +36,12 @@ class StandardResponse extends \Eloquent
         $responseTimestamp = $xml->xpath('//response-timestamp');
         $fileName = $xml->xpath('//filename');
         $eventId = $xml->xpath('//eventID');
+        $order_id = $xml->xpath('//eventID');
 
         $response = StandardResponse::create([
 
             'message_id' => (String) $messageId[0],
+            'order_id' => intval($order_id),
             'transaction_name' => (String) $transactionName[0],
             'partner_name' => (String) $partnerName[0],
             'partner_password' => strval($orderId),
@@ -56,5 +58,22 @@ class StandardResponse extends \Eloquent
         $response->save();
     }
 
+    public function logTransmissionError($orderId, $url, $description, $comments)
+    {
+
+        $responseTimestamp = date('Ymd:His:e');
+
+        $response = StandardResponse::create([
+            'order_id' => intval($orderId),
+            'transaction_name' => 'Failed transaction',
+            'source_url' => $url,
+            'status_code' => -1,
+            'status_description' => $description,
+            'comments' => $comments,
+            'response_timestamp' => $responseTimestamp,
+        ]);
+
+        $response->save();
+    }
 
 }

@@ -7,6 +7,7 @@ use Movo\Receipts\Item;
 use Movo\Receipts\Receipt;
 use Movo\Shipping\IngramShipping;
 
+
 App::bind("Pusher", function ($app) {
     $keys = $app['config']->get('services.pusher');
     return new Pusher($keys['public'], $keys['secret'], $keys['app-id']);
@@ -18,6 +19,7 @@ Route::post('buy', array(
     'as' => 'buy',
     'uses' => 'OrderController@buy',
 ));
+
 Route::group(array('before' => 'csrf'), function () {
     Route::post('coupons/{code}', array(
         'as' => 'check-coupon',

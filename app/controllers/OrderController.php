@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Movo\Shipping\ShippingDropdown;
+
 
 class OrderController extends BaseController
 {
@@ -36,7 +39,17 @@ class OrderController extends BaseController
 
     public function buy()
     {
+        $env = App::environment();
+        $url = Config::get("ingram.ingram-url");
         $processor=new Movo\Orders\ProcessOrder();
+        $processor->setEnvAndURL($env, $url);
+        return $processor->process();
+    }
+
+    public function buyWithSettings($env, $url)
+    {
+        $processor=new Movo\Orders\ProcessOrder();
+        $processor->setEnvAndURL($env, $url);
         return $processor->process();
     }
 }

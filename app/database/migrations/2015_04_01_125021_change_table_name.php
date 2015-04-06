@@ -13,6 +13,9 @@ class ChangeTableName extends Migration {
 	public function up()
 	{
         Schema::rename('standard_response', 'standard_responses');
+        Schema::table('orders', function($table) {
+            $table->int('order_id');
+        });
 	}
 
 	/**
@@ -23,6 +26,10 @@ class ChangeTableName extends Migration {
 	public function down()
 	{
         Schema::rename('standard_responses', 'standard_response');
-	}
+        Schema::table('orders', function(Blueprint $table) {
+            $table->dropColumn('order_id');
+        });
+
+    }
 
 }

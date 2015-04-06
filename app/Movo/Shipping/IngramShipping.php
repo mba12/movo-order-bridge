@@ -3,18 +3,44 @@
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\App;
 use Movo\Errors\OrderException;
+use Movo\Handlers\OrderErrorLogHandler;
 use Order;
 use Shipping;
 use SoapBox\Formatter\Formatter;
 use GuzzleHttp;
 use GuzzleHttp\Client;
+use SimpleXMLElement;
 
 class IngramShipping implements ShippingInterface
 {
+    private static $failed = "Order appears to have connected to Brightpoint but no response received.";
+    private static $url;
+    private static $environment;
+
+    public function ship(array $data)
+    {
+        $xml = $this->generateXMLFromData($data);
+        $xmlObj = new SimpleXMLElement($xml);
+        $this->sendToFulfillment($xmlObj);
+    }
+
+    public function shipWithSettings($environment, $url, array $data) {
+        $xml = $this->generateXMLFromData($data);
+        $this->sendToFulfillment($environment, $url, $xml);
+    }
+
+
+
     public static function retryFailedOrders()
     {
-        //TODO retry Ingram SOAP and mark order as complete
+        //TODO filter for orders that need to be resubmitted based on a flag
+
+        //NOTE: figure out what designates a failed order
+        //      filter and resend
         Log::info("attempting to retry orders");
     }
 
@@ -116,14 +142,6 @@ class IngramShipping implements ShippingInterface
 
     }
 
-    public function ship(array $data)
-    {
-
-        $xml = $this->generateXMLFromData($data);
-        $this->sendToFulfillment($xml);
-
-    }
-
     public function convertToXML(array $data)
     {
         $formatter = Formatter::make($data, Formatter::ARR);
@@ -131,23 +149,124 @@ class IngramShipping implements ShippingInterface
         return $xml;
     }
 
+    private function sendToFulfillmentWithSettings($environment, $url, $xml)
+    {
+        if(!isset($this->envionment)) { $this->envionment = $environment; }
+        if(!isset($this->url)) { $this->url = $url; }
+        $this->sendToFulfillment($xml);
+
+    }
 
     private function sendToFulfillment($xml)
     {
 
+        $errorLog = new OrderErrorLogHandler();
 
-        /* $fp=fopen(base_path()."/cert/messagehub_TEST.cer","r");
-          $pub_key=fread($fp,8192);
-          fclose($fp);
-          $plaintext = "String to encrypt";
-          openssl_public_encrypt($plaintext,$crypttext, $pub_key );
+        $environment = App::environment();
+        $url = htmlentities(getenv('ingram.ingram-url'));
 
-          $client = new GuzzleHttp\Client();
-          $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
-              'body' => [
-                  'data' => $crypttext
-              ]
-          ]);*/
+        $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
+
+        $orderId = $xml->xpath('//purchase-order-number');
+
+        if(!isset($environment) && !isset($url)) {
+            $errorLog->handleNotification([ "Error" => "Parameters not set properly",
+                "environment" => isset($environment)?$environment:"",
+                "url" => isset($url)?$url:"",
+                "Message" => "Check the settings for url and environment in sentToFulfillment"]);
+
+            return;
+        }
+
+        switch($environment){
+            case 'production':
+            case 'prod':
+            case 'devorders':
+            case 'qaorders':
+
+            //->handleNotification($data);
+            // The environment is local
+            $ch = curl_init();
+
+            $options = array(
+
+                CURLOPT_POST => 1,
+                CURLOPT_HTTPHEADER => ['Content-Type:', 'text/xml'],
+                CURLOPT_POSTFIELDS => $xml,
+                CURLOPT_RETURNTRANSFER => 1,
+                //CURLOPT_SSLCERTTYPE => "DER",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true,
+                // CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
+                CURLOPT_VERBOSE => true,
+                CURLOPT_URL => $this->url,
+                CURLOPT_CAPATH => "/etc/pki/tls",
+                CURLOPT_SSLVERSION => 3,
+                //CURLOPT_SSLCERT => $cert_file ,
+            );
+
+            curl_setopt_array($ch, $options);
+
+            $output = curl_exec($ch);
+            $curl_errno = curl_errno($ch);
+            $curl_error = curl_error($ch);
+
+            $sp = new StandardResponse(); // Logs the transmission status
+
+            if ($curl_errno > 0) {
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => $curl_error,
+                    "Message" => "Order transmission failed to connect to Brightpoint."]);
+
+            } else {
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => isset($curl_error)?$curl_error:"No error message",
+                    "Message" => "Order transmission successfully connected to Brightpoint."]);
+
+            }
+
+            // NOTE: If there is a curl connection error log and let the retry job try the order again
+            /*
+             * [2015-03-23 18:27:43] ingram-order-test.INFO: cURL Error (35): SSL connect error  [] []
+    [2015-03-23 18:27:43] ingram-order-test.INFO: Curl Error : SSL connect error [] []
+    [2015-03-23 18:27:43] ingram-order-test.INFO: SSL connect error [] []
+
+             */
+
+            if (!$output) {
+                $description = "Order appears to have connected to Brightpoint but no response received.";
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => $curl_error,
+                    "Message" => $this->failed]);
+
+                $sp->logTransmissionError($orderId, $url,$curl_error, $this->failed);
+
+            } else {
+                $startPos = strpos($output, "<?xml");
+                $output = substr($output, $startPos);
+
+                // Add to error log file
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => isset($curl_error)?$curl_error:"No error message",
+                    "Message Status" => "Order transmission successfully connected to Brightpoint.",
+                    "Message" => $output]);
+
+                $sp->parseAndSaveData($orderId, $output);
+            }
+
+            curl_close($ch);
+            default:
+                 // Do nothing
+                 break;
+
+        }
 
     }
 
@@ -173,7 +292,7 @@ class IngramShipping implements ShippingInterface
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
 
-        Log::info("Order ID: " . $data['id']);
+        Log::info("Order ID: " . $data['order_id']);
         $array = [
             'message' => [
                 'message-header' => [
@@ -226,7 +345,7 @@ class IngramShipping implements ShippingInterface
                             'ship-request-warehouse' => 'MVO1',
                         ],
                         'purchase-order-information' => [
-                            'purchase-order-number' => $data['id'],
+                            'purchase-order-number' => $data['order_id'],
                             'purchase-order-amount' => '',
                             'currency-code' => 'USD',
                             'account-description' => '',

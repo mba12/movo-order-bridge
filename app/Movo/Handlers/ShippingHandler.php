@@ -11,6 +11,14 @@ class ShippingHandler implements Observer {
     {
         $shipping = App::make('Movo\Shipping\ShippingInterface');
         $shipping->ship($data);
-
     }
+
+    public function handleNotificationWithSettings($env, $url, $data)
+    {
+        $shipping = App::make('Movo\Shipping\ShippingInterface');
+        $shipping->sendToFulfillmentWithSettings($env, $url, $data);
+    }
+
+
+
 }

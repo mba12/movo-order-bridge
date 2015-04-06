@@ -5,6 +5,7 @@ use Coupon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+
 use Movo\Errors\OrderException;
 use Movo\Handlers\DonationHandler;
 use Movo\Handlers\InputLogHandler;
@@ -23,7 +24,6 @@ use Shipping;
 
 class ProcessOrder
 {
-
 
     public function process()
     {
@@ -81,6 +81,7 @@ class ProcessOrder
         try {
             $order = (new OrderHandler)->handleNotification($data);
             //(new DonationHandler)->handleNotification(["order"=>$order,"data"=>$data]);
+            $data['order_id'] = $order->id;
         } catch (ErrorException $e) {
             return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
         }
@@ -94,9 +95,12 @@ class ProcessOrder
             $result['_apiKey']=null;
             $data = $this->updateDataWithChargeInfo($result, $data);
             $this->updateOrderWithChargeId($result, $order);
+
             (new OrderLogHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
-            (new ReceiptHandler)->handleNotification($data);
+            // (new ShippingHandler)->handleNotificationWithSettings($this->env, $this->url, $data); // This notifies Ingram of an incoming order
+
+            (new ReceiptHandler)->handleNotification($data); // This sends the email to the customer
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 
         }  else {
@@ -108,16 +112,22 @@ class ProcessOrder
 
     public function processMultipleOffline($masterOrderList) {
 
+        $orderLog = new OrderErrorLogHandler();
         $response = '';
         foreach($masterOrderList as $key => $order) {
             $data = $order->asArray();
             $response = $this->processOffline($data);
+
+            $orderLog ->handleNotification(['response' => $response]);
+            // if one of the orders throws an error
+            // return immediately
             /*
             $jsonArray = json_decode($response, true);
             if( intval($jsonArray['status']) != 200 ) {
                 return $response;
             }
             */
+
         }
 
         return $response;
@@ -183,7 +193,7 @@ class ProcessOrder
         (new InputLogHandler)->handleNotification($data);
         try {
             $order = (new OrderHandler)->handleNotification($data);
-            $data['id'] = $order->id;
+            $data['order_id'] = $order->id;
             //(new DonationHandler)->handleNotification(["order"=>$order,"data"=>$data]);
         } catch (ErrorException $e) {
             return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
@@ -203,8 +213,13 @@ class ProcessOrder
             $data = $this->updateDataWithChargeInfo($result, $data);
             $this->updateOrderWithChargeId($result, $order);
             (new OrderLogHandler)->handleNotification($data);
+
             (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
-            (new ReceiptHandler)->handleOfflineNotification($data);
+            // (new ShippingHandler)->handleNotificationWithSettings($this->env, $this->url, $data); // This notifies Ingram of an incoming order
+
+            $data['email'] = 'michael@getmovo.com';
+            $data['email'] = getenv('ingram.receipt-email'); // highjack the email address so customers don't get an email
+            (new ReceiptHandler)->handleOfflineNotification($data); // This sends the email to the customer
 
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 
