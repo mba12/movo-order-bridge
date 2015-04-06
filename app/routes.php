@@ -269,7 +269,6 @@ Route::get('order-test', function () {
 
             sleep(.1);
         }
-
     }
 
     return Response::make($orderXML, '200')->header('Content-Type', 'text/xml');

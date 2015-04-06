@@ -127,7 +127,7 @@ class Order extends \Eloquent
         //$result = DB::table('orders')->where("id", ">", 67 + $first * $second)->get();
         // $result = DB::table('orders')->get();
         //$result = $this->all();
-        $result = $this->where("id", ">", 67 + $first * $second * 2)->whereNotIn('id', $usedIds)->get(); //->pluck('id');
+        $result = $this->where("id", ">", 300 + $first * $second * 2)->whereNotIn('id', $usedIds)->get(); //->pluck('id');
 
         Log::info("Database query finished: " . $result->count());
 
