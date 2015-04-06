@@ -159,8 +159,8 @@ class IngramShipping implements ShippingInterface
 
         $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
 
-        $orderId = $xml->xpath('//purchase-order-number');
-
+        $id = $xml->xpath('//purchase-order-number');
+        $orderId = intval($id[0]);
         if(!isset($environment) && !isset($url)) {
             $errorLog->handleNotification([ "Error" => "Parameters not set properly",
                 "environment" => isset($environment)?$environment:"",
@@ -169,6 +169,8 @@ class IngramShipping implements ShippingInterface
 
             return;
         }
+
+        $errorLog->handleNotification([ "Order ID" => $orderId, "xml" => $xml]);
 
         switch($environment){
             case 'production':
