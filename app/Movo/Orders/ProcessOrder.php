@@ -61,6 +61,11 @@ class ProcessOrder
                         }
                         $data['items'][$i]['price']=$product->price;
 
+                        $data['items'][$i]['line-no']=$i;
+                        $data['items'][$i]['item-code']=$product->sku;
+                        $data['items'][$i]['Unit-of-measure']='EA';
+
+
                         $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price*$data['items'][$i]['quantity']);
                         $totalUnitPrices+=$product->price*$data['items'][$i]['quantity'];
                         $totalDiscount+=$data['items'][$i]['discount'];
@@ -169,6 +174,10 @@ class ProcessOrder
                             $data['items'][$i]['quantity']=1;
                         }
                         $data['items'][$i]['price']=$product->price;
+
+                        $data['items'][$i]['line-no']=$i;
+                        $data['items'][$i]['item-code']=$product->sku;
+                        $data['items'][$i]['Unit-of-measure']='EA';
 
                         $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price*$data['items'][$i]['quantity']);
                         $totalUnitPrices+=$product->price*$data['items'][$i]['quantity'];
