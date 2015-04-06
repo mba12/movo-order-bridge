@@ -286,7 +286,6 @@ class IngramShipping implements ShippingInterface
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
 
-        Log::info("Order ID: " . $data['order_id']);
         $array = [
             'message' => [
                 'message-header' => [

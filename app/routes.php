@@ -200,7 +200,7 @@ Route::get('order-test', function () {
     $orderIds = $shipping->generateTestOrderIds();
 
     if(count($orderIds) > 0) {
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $log->addInfo("Getting test order: " . $i . " ==> " . $orderIds[$i]);
 
             $data = IngramShipping::generateTestOrder($orderIds[$i]);
