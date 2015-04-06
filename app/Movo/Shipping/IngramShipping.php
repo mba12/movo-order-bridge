@@ -19,8 +19,7 @@ use SimpleXMLElement;
 class IngramShipping implements ShippingInterface
 {
     private static $failed = "Order appears to have connected to Brightpoint but no response received.";
-    private static $url;
-    private static $environment;
+    private static $success = "Order transmission successfully connected to Brightpoint.";
 
     public function ship(array $data)
     {
@@ -150,14 +149,6 @@ class IngramShipping implements ShippingInterface
         return $xml;
     }
 
-    private function sendToFulfillmentWithSettings($environment, $url, $xml)
-    {
-        if(!isset($this->envionment)) { $this->envionment = $environment; }
-        if(!isset($this->url)) { $this->url = $url; }
-        $this->sendToFulfillment($xml);
-
-    }
-
     private function sendToFulfillment($xml)
     {
 
@@ -240,13 +231,13 @@ class IngramShipping implements ShippingInterface
              */
 
             if (!$output) {
-                $description = "Order appears to have connected to Brightpoint but no response received.";
+
                 $errorLog->handleNotification([ "order_id" => $orderId,
                     "curl_errno" => $curl_errno,
                     "curl_error" => $curl_error,
-                    "Message" => $this->failed]);
+                    "Message" => IngramShipping::$failed]);
 
-                $sp->logTransmissionError($orderId, $url,$curl_error, $this->failed);
+                $sp->logTransmissionError($orderId, $url,$curl_error, IngramShipping::$failed);
 
             } else {
                 $startPos = strpos($output, "<?xml");
@@ -256,7 +247,7 @@ class IngramShipping implements ShippingInterface
                 $errorLog->handleNotification([ "order_id" => $orderId,
                     "curl_errno" => $curl_errno,
                     "curl_error" => isset($curl_error)?$curl_error:"No error message",
-                    "Message Status" => "Order transmission successfully connected to Brightpoint.",
+                    "Message Status" => IngramShipping::$success,
                     "Message" => $output]);
 
                 $sp->parseAndSaveData($orderId, $output);
