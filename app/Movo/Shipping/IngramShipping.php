@@ -79,7 +79,7 @@ class IngramShipping implements ShippingInterface
         Log::info("Shipping Type: " . $order->shipping_type);
         Log::info("Shipping Code: " . Shipping::find($order->shipping_type)->scac_code);
 
-        $data['id'] = $order->id;
+        $data['order_id'] = $order->id;
         $data['shipping-code'] = Shipping::find($order->shipping_type)->scac_code;
         $data['shipping-first-name'] = $order->shipping_first_name;
         $data['shipping-last-name'] = $order->shipping_last_name;
