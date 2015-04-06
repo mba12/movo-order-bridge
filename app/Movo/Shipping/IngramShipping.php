@@ -151,6 +151,7 @@ class IngramShipping implements ShippingInterface
         $url = htmlentities(getenv('ingram.ingram-url'));
 
         $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
+        $errorLog->handleNotification([ "xml" => $xml]);
 
         $id = $xml->xpath('//purchase-order-number');
         $orderId = intval($id[0]);
@@ -163,7 +164,7 @@ class IngramShipping implements ShippingInterface
             return;
         }
 
-        $errorLog->handleNotification([ "Order ID" => $orderId, "xml" => $xml]);
+        $errorLog->handleNotification([ "Order ID" => $orderId]);
 
         switch($environment){
             case 'production':
