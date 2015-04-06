@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 use Movo\Errors\OrderException;
 use Movo\Handlers\OrderErrorLogHandler;
+use StandardResponse;
 use Order;
 use Shipping;
 use SoapBox\Formatter\Formatter;
