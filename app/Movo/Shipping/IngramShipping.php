@@ -151,7 +151,13 @@ class IngramShipping implements ShippingInterface
         $url = htmlentities(getenv('ingram.ingram-url'));
 
         $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
-        $errorLog->handleNotification([ "xml" => $xml]);
+
+
+        // $string = trim(preg_replace('/\s+/', ' ', $xml));
+        $string = preg_replace("/\r\n|\r|\n/", ' ', $xml);
+        $new_xml = stripslashes($string);
+
+        $errorLog->handleNotification([ "xml" => $new_xml]);
         $xmlObj = simplexml_load_string($xml);
         $id = $xmlObj->xpath('//purchase-order-number');
         $orderId = intval($id[0]);
@@ -180,7 +186,7 @@ class IngramShipping implements ShippingInterface
 
                 CURLOPT_POST => 1,
                 CURLOPT_HTTPHEADER => ['Content-Type:', 'text/xml'],
-                CURLOPT_POSTFIELDS => $xml,
+                CURLOPT_POSTFIELDS => $new_xml,
                 CURLOPT_RETURNTRANSFER => 1,
                 //CURLOPT_SSLCERTTYPE => "DER",
                 CURLOPT_RETURNTRANSFER => true,
