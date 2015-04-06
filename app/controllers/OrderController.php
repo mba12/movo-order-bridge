@@ -39,17 +39,8 @@ class OrderController extends BaseController
 
     public function buy()
     {
-        $env = App::environment();
-        $url = Config::get("ingram.ingram-url");
         $processor=new Movo\Orders\ProcessOrder();
-        $processor->setEnvAndURL($env, $url);
         return $processor->process();
     }
 
-    public function buyWithSettings($env, $url)
-    {
-        $processor=new Movo\Orders\ProcessOrder();
-        $processor->setEnvAndURL($env, $url);
-        return $processor->process();
-    }
 }
