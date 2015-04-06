@@ -61,7 +61,7 @@ class ProcessOrder
                         }
                         $data['items'][$i]['price']=$product->price;
 
-                        $data['items'][$i]['line-no']=$i;
+                        $data['items'][$i]['line-no']=$i+1;
                         $data['items'][$i]['item-code']=$product->sku;
                         $data['items'][$i]['Unit-of-measure']='EA';
 
@@ -175,7 +175,7 @@ class ProcessOrder
                         }
                         $data['items'][$i]['price']=$product->price;
 
-                        $data['items'][$i]['line-no']=$i;
+                        $data['items'][$i]['line-no']=$i+1;
                         $data['items'][$i]['item-code']=$product->sku;
                         $data['items'][$i]['Unit-of-measure']='EA';
 
