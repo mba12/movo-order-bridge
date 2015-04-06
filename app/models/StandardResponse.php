@@ -43,7 +43,7 @@ class StandardResponse extends \Eloquent
             'order_id' => intval($orderId),
             'transaction_name' => (String) $transactionName[0],
             'partner_name' => (String) $partnerName[0],
-            'partner_password' => strval($orderId),
+            'partner_password' => '',
             'source_url' => (String) $sourceUrl[0],
             'response_request' => (String) $responseRequest[0],
             'status_code' => intval($status_code[0]),
