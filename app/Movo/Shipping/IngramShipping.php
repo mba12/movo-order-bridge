@@ -24,16 +24,9 @@ class IngramShipping implements ShippingInterface
     public function ship(array $data)
     {
         $xml = $this->generateXMLFromData($data);
-        $xmlObj = new SimpleXMLElement($xml);
-        $this->sendToFulfillment($xmlObj);
+        //$xmlObj = new SimpleXMLElement($xml);
+        $this->sendToFulfillment($xml);
     }
-
-    public function shipWithSettings($environment, $url, array $data) {
-        $xml = $this->generateXMLFromData($data);
-        $this->sendToFulfillment($environment, $url, $xml);
-    }
-
-
 
     public static function retryFailedOrders()
     {
