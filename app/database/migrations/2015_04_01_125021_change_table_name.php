@@ -14,7 +14,7 @@ class ChangeTableName extends Migration {
 	{
         Schema::rename('standard_response', 'standard_responses');
         Schema::table('orders', function($table) {
-            $table->int('order_id');
+            $table->integer('order_id');
         });
 	}
 
