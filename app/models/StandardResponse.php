@@ -46,7 +46,7 @@ class StandardResponse extends \Eloquent
             'partner_password' => strval($orderId),
             'source_url' => (String) $sourceUrl[0],
             'response_request' => (String) $responseRequest[0],
-            'status_code' => (int) $status_code[0],
+            'status_code' => intval($status_code[0]),
             'status_description' => (String) $status_description[0],
             'comments' => (String) $comments[0],
             'response_timestamp' => (String) $responseTimestamp[0],
