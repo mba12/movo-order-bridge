@@ -36,12 +36,11 @@ class StandardResponse extends \Eloquent
         $responseTimestamp = $xml->xpath('//response-timestamp');
         $fileName = $xml->xpath('//filename');
         $eventId = $xml->xpath('//eventID');
-        $order_id = $xml->xpath('//eventID');
 
         $response = StandardResponse::create([
 
             'message_id' => (String) $messageId[0],
-            'order_id' => intval($order_id),
+            'order_id' => intval($orderId),
             'transaction_name' => (String) $transactionName[0],
             'partner_name' => (String) $partnerName[0],
             'partner_password' => strval($orderId),
