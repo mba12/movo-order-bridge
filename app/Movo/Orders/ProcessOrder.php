@@ -103,8 +103,6 @@ class ProcessOrder
 
             (new OrderLogHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
-            // (new ShippingHandler)->handleNotificationWithSettings($this->env, $this->url, $data); // This notifies Ingram of an incoming order
-
             (new ReceiptHandler)->handleNotification($data); // This sends the email to the customer
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 

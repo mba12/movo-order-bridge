@@ -41,7 +41,7 @@ class IngramShipping implements ShippingInterface
         //      filter and resend
         Log::info("Running retry orders");
         $orders = new Order();
-        $ids = $orders->where('ingram_order_id', '=', DB::raw('') )->orWhereNull('ingram_order_id')->get();
+        $ids = $orders->where('trim(ingram_order_id)', '=', '' )->orWhereNull('ingram_order_id')->get();
         if(count($ids) > 0) {
             Log::info(count($ids) . " Orders need to be retried.");
 
