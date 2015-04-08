@@ -97,7 +97,7 @@ EOF;
             // then the response is good
             $order = new Order();
             $order->find($orderId);
-            $order->ingram_order_id = (String) $eventId[0];
+            $order->ingram_order_id = (String) $responseTimestamp[0];
             $order->save();
         }
 
