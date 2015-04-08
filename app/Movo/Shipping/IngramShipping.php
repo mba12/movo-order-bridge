@@ -30,11 +30,30 @@ class IngramShipping implements ShippingInterface
 
     public static function retryFailedOrders()
     {
-        //TODO filter for orders that need to be resubmitted based on a flag
+        // CronTab values
+        // 12 07-14 * * 1-5 php /var/www/vhosts/rx7w-7k7n.accessdomain.com/artisan scheduled:run 1>> /dev/null 2>&1
+
+        // devorders machine
+        // /var/www/vhosts/dkly-pzds.accessdomain.com/devorders.getmovo.com/movo-order-bridge
+        // * 07-14 * * 1-5 php /var/www/vhosts/dkly-pzds.accessdomain.com/devorders.getmovo.com/movo-order-bridge/artisan scheduled:run 1>> /dev/null 2>&1
 
         //NOTE: figure out what designates a failed order
         //      filter and resend
-        Log::info("attempting to retry orders");
+        Log::info("Running retry orders");
+        $orders = new Order();
+        $ids = $orders->where('ingram_order_id', '=', DB::raw('') )->orWhereNull('ingram_order_id')->get();
+        if(count($ids) > 0) {
+            Log::info(count($ids) . " Orders need to be retried.");
+
+            $shipping = new ShippingHandler();
+            foreach($ids as $id) {
+                $data = IngramShipping::generateOrderArray($id);
+                $shipping->handleNotification($data);
+            }
+        } else {
+            Log::info("No retry orders");
+        }
+
     }
 
     public static function encryptXML($xml)
@@ -76,6 +95,68 @@ class IngramShipping implements ShippingInterface
         Log::info("Generating test order: " . $orderID);
         $data = array();
         $order = Order::find($orderID);
+        Log::info("Shipping Type: " . $order->shipping_type);
+        Log::info("Shipping Code: " . Shipping::find($order->shipping_type)->scac_code);
+
+        $data['order_id'] = $order->id;
+        $data['shipping-code'] = Shipping::find($order->shipping_type)->scac_code;
+        $data['shipping-first-name'] = $order->shipping_first_name;
+        $data['shipping-last-name'] = $order->shipping_last_name;
+        $data['shipping-address'] = $order->shipping_address;
+        $data['shipping-city'] = $order->shipping_city;
+        $data['shipping-state'] = $order->shipping_state;
+        $data['shipping-zip'] = $order->shipping_zip;
+        $data['shipping-country'] = $order->shipping_country;
+        $data['shipping-phone'] = $order->shipping_phone;;
+
+        $data['billing-first-name'] = $order->billing_first_name;
+        $data['billing-last-name'] = $order->billing_last_name;
+        $data['billing-address'] = $order->billing_address;
+        $data['billing-city'] = $order->billing_city;
+        $data['billing-state'] = $order->billing_state;
+        $data['billing-zip'] = $order->billing_zip;
+        $data['billing-country'] = $order->billing_country;
+        $data['billing-phone'] = $order->billing_phone;
+        $data['email'] = $order->email;
+        $data['coupon'] = "";
+        $data['result'] = [
+            "id" => $order->stripe_charge_id
+        ];
+
+        $items = [];
+        $count = 1;
+        foreach ($order->items() as $item) {
+            $items[] = [
+                "line-no" => $count++,
+                "item-code" => $item->sku,
+                "product-name" => 'CDATA[[' . $item->description . ']]',
+                "quantity" => $item->quantity,
+                "line-status" => "IN STOCK",
+                "unit-of-measure" => "EA",
+                'sid' => '',
+                'esn' => '',
+                'min' => '',
+                'mdn' => '',
+                'irdb' => '',
+                'imei' => '',
+                'market-id' => '',
+                'base-price' => '',
+                'line-discount' => '',
+                'line-tax1' => '',
+                'line-tax2' => '',
+                'line-tax3' => '',
+            ];
+        }
+
+        $data['items'] = $items;
+
+        return $data;
+
+    }
+
+    private static function generateOrderArray($order) {
+        Log::info("Generating order array: " . $order->id);
+        $data = array();
         Log::info("Shipping Type: " . $order->shipping_type);
         Log::info("Shipping Code: " . Shipping::find($order->shipping_type)->scac_code);
 
