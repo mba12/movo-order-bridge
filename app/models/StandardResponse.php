@@ -23,7 +23,44 @@ class StandardResponse extends \Eloquent
     {
         Log::info("Standard Response::Incoming String: " . $xmlString);
 
-        $xml = simplexml_load_string($xmlString);
+        $pos = strpos($xmlString, "Service Unavailable");
+        $responseStr = '';
+        if ( $pos === false ) {
+            // then the response is good
+            $responseStr = $xmlString;
+        } else {
+            // In the event that the Brightpoint service is down log that status
+            $timestamp = \Faker\Provider\DateTime::iso8601();
+
+$response = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<message>
+    <message-header>
+        <message-id>12345</message-id>
+        <transaction-name>sales-order-submission</transaction-name>
+        <partner-name>Brightpoint North America L.P.</partner-name>
+        <source-url>http://messagehub.brightpoint.com:9135/HttpPost</source-url>
+        <create-timestamp>{$timestamp}</create-timestamp>
+        <response-request>0</response-request>
+    </message-header>
+    <message-status>
+        <status-code>-100</status-code>
+        <status-description>Message ERROR</status-description>
+        <comments>SERVICE UNAVAILABLE</comments>
+        <response-timestamp>{$timestamp}</response-timestamp>
+        <filename>Business Process ID</filename>
+    </message-status>
+    <transactionInfo>
+        <eventID>12345</eventID>
+    </transactionInfo>
+</message>
+EOF;
+
+            $responseStr = $response;
+
+        }
+
+        $xml = simplexml_load_string($responseStr);
 
         $messageId = $xml->xpath('//message-id');
         $transactionName = $xml->xpath('//transaction-name');
@@ -73,6 +110,12 @@ class StandardResponse extends \Eloquent
         ]);
 
         $response->save();
+    }
+
+    private function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
     }
 
 }
