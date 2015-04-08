@@ -4,6 +4,7 @@ class StandardResponse extends \Eloquent
 {
 
     protected $fillable = [
+        'order_id',
         'message_id',
         'transaction_name',
         'partner_name',
@@ -23,7 +24,6 @@ class StandardResponse extends \Eloquent
         Log::info("Standard Response::Incoming String: " . $xmlString);
 
         $xml = simplexml_load_string($xmlString);
-        //$xml = new SimpleXMLElement($xmlString);
 
         $messageId = $xml->xpath('//message-id');
         $transactionName = $xml->xpath('//transaction-name');

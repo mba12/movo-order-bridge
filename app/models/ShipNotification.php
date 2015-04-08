@@ -6,6 +6,7 @@ class ShipNotification extends \Eloquent
     protected $guarded = [];
     protected $table = "ship_notification";
     public static $fieldList = [
+        "order_id",
         "message-id",
         "transaction-name",
         "partner-name",
@@ -168,6 +169,7 @@ class ShipNotification extends \Eloquent
         ShipNotification::create($inputValues);
 
         /*
+         * NOTE: this is done above in the loop
         ShipNotification::create([
 			"message_id" =>$data["message-id"],
 			"transaction_name" =>$data["transaction-name"],
