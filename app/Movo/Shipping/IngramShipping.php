@@ -3,19 +3,57 @@
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\App;
 use Movo\Errors\OrderException;
+use Movo\Handlers\OrderErrorLogHandler;
+use StandardResponse;
 use Order;
 use Shipping;
 use SoapBox\Formatter\Formatter;
 use GuzzleHttp;
 use GuzzleHttp\Client;
+use SimpleXMLElement;
 
 class IngramShipping implements ShippingInterface
 {
+    private static $failed = "Order appears to have connected to Brightpoint but no response received.";
+    private static $success = "Order transmission successfully connected to Brightpoint.";
+
+    public function ship(array $data)
+    {
+        $xml = $this->generateXMLFromData($data);
+        //$xmlObj = new SimpleXMLElement($xml);
+        $this->sendToFulfillment($xml);
+    }
+
     public static function retryFailedOrders()
     {
-        //TODO retry Ingram SOAP and mark order as complete
-        Log::info("attempting to retry orders");
+        // CronTab values
+        // 12 07-14 * * 1-5 php /var/www/vhosts/rx7w-7k7n.accessdomain.com/artisan scheduled:run 1>> /dev/null 2>&1
+
+        // devorders machine
+        // /var/www/vhosts/dkly-pzds.accessdomain.com/devorders.getmovo.com/movo-order-bridge
+        // * 07-14 * * 1-5 php /var/www/vhosts/dkly-pzds.accessdomain.com/devorders.getmovo.com/movo-order-bridge/artisan scheduled:run 1>> /dev/null 2>&1
+
+        //NOTE: figure out what designates a failed order
+        //      filter and resend
+        Log::info("Running retry orders");
+        $orders = new Order();
+        $ids = $orders->where('ingram_order_id', '=', DB::raw('') )->orWhereNull('ingram_order_id')->get();
+        if(count($ids) > 0) {
+            Log::info(count($ids) . " Orders need to be retried.");
+
+            $shipping = new ShippingHandler();
+            foreach($ids as $id) {
+                $data = IngramShipping::generateOrderArray($id);
+                $shipping->handleNotification($data);
+            }
+        } else {
+            Log::info("No retry orders");
+        }
+
     }
 
     public static function encryptXML($xml)
@@ -27,9 +65,40 @@ class IngramShipping implements ShippingInterface
         return ($crypttext);
     }
 
-    public static function generateTestOrder()
+    public function generateTestOrderIds()
     {
-        $order = Order::find(356);
+        $rand1 = rand ( 3 , 7 );
+        $rand2 = rand ( 5 , 11 );
+        Log::info($rand1 . " :: " . $rand2);
+        $order = new Order();
+        $ids = $order->getIds($rand1, $rand2);
+
+        $idList = array();
+        $count = 0;
+
+        foreach($ids as $id) {
+            if ($id->id % $rand1 === 0 || $id->id % $rand2 === 0) {
+                continue;
+            }
+            $idList[$count] = $id->id;
+            $count++;
+        }
+
+        foreach($idList as $k=>$l) {
+            Log::info($k . " :: " . $l);
+        }
+
+        return $idList;
+    }
+
+    public static function generateTestOrder($orderID) {
+        Log::info("Generating test order: " . $orderID);
+        $data = array();
+        $order = Order::find($orderID);
+        Log::info("Shipping Type: " . $order->shipping_type);
+        Log::info("Shipping Code: " . Shipping::find($order->shipping_type)->scac_code);
+
+        $data['order_id'] = $order->id;
         $data['shipping-code'] = Shipping::find($order->shipping_type)->scac_code;
         $data['shipping-first-name'] = $order->shipping_first_name;
         $data['shipping-last-name'] = $order->shipping_last_name;
@@ -56,7 +125,7 @@ class IngramShipping implements ShippingInterface
 
         $items = [];
         $count = 1;
-        foreach ($order->items as $item) {
+        foreach ($order->items() as $item) {
             $items[] = [
                 "line-no" => $count++,
                 "item-code" => $item->sku,
@@ -80,15 +149,70 @@ class IngramShipping implements ShippingInterface
         }
 
         $data['items'] = $items;
-        $xml = (new IngramShipping)->generateXMLFromData($data);
-        return $xml;
+
+        return $data;
+
     }
 
-    public function ship(array $data)
-    {
+    private static function generateOrderArray($order) {
+        Log::info("Generating order array: " . $order->id);
+        $data = array();
+        Log::info("Shipping Type: " . $order->shipping_type);
+        Log::info("Shipping Code: " . Shipping::find($order->shipping_type)->scac_code);
 
-        $xml = $this->generateXMLFromData($data);
-        $this->sendToFulfillment($xml);
+        $data['order_id'] = $order->id;
+        $data['shipping-code'] = Shipping::find($order->shipping_type)->scac_code;
+        $data['shipping-first-name'] = $order->shipping_first_name;
+        $data['shipping-last-name'] = $order->shipping_last_name;
+        $data['shipping-address'] = $order->shipping_address;
+        $data['shipping-city'] = $order->shipping_city;
+        $data['shipping-state'] = $order->shipping_state;
+        $data['shipping-zip'] = $order->shipping_zip;
+        $data['shipping-country'] = $order->shipping_country;
+        $data['shipping-phone'] = $order->shipping_phone;;
+
+        $data['billing-first-name'] = $order->billing_first_name;
+        $data['billing-last-name'] = $order->billing_last_name;
+        $data['billing-address'] = $order->billing_address;
+        $data['billing-city'] = $order->billing_city;
+        $data['billing-state'] = $order->billing_state;
+        $data['billing-zip'] = $order->billing_zip;
+        $data['billing-country'] = $order->billing_country;
+        $data['billing-phone'] = $order->billing_phone;
+        $data['email'] = $order->email;
+        $data['coupon'] = "";
+        $data['result'] = [
+            "id" => $order->stripe_charge_id
+        ];
+
+        $items = [];
+        $count = 1;
+        foreach ($order->items() as $item) {
+            $items[] = [
+                "line-no" => $count++,
+                "item-code" => $item->sku,
+                "product-name" => 'CDATA[[' . $item->description . ']]',
+                "quantity" => $item->quantity,
+                "line-status" => "IN STOCK",
+                "unit-of-measure" => "EA",
+                'sid' => '',
+                'esn' => '',
+                'min' => '',
+                'mdn' => '',
+                'irdb' => '',
+                'imei' => '',
+                'market-id' => '',
+                'base-price' => '',
+                'line-discount' => '',
+                'line-tax1' => '',
+                'line-tax2' => '',
+                'line-tax3' => '',
+            ];
+        }
+
+        $data['items'] = $items;
+
+        return $data;
 
     }
 
@@ -99,23 +223,125 @@ class IngramShipping implements ShippingInterface
         return $xml;
     }
 
-
     private function sendToFulfillment($xml)
     {
 
+        $errorLog = new OrderErrorLogHandler();
 
-        /* $fp=fopen(base_path()."/cert/messagehub_TEST.cer","r");
-          $pub_key=fread($fp,8192);
-          fclose($fp);
-          $plaintext = "String to encrypt";
-          openssl_public_encrypt($plaintext,$crypttext, $pub_key );
+        $environment = App::environment();
+        $url = htmlentities(getenv('ingram.ingram-url'));
 
-          $client = new GuzzleHttp\Client();
-          $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
-              'body' => [
-                  'data' => $crypttext
-              ]
-          ]);*/
+        $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
+
+
+        // $string = trim(preg_replace('/\s+/', ' ', $xml));
+        $string = preg_replace("/\r\n|\r|\n/", ' ', $xml);
+        $new_xml = stripslashes($string);
+
+        $errorLog->handleNotification([ "xml" => $new_xml]);
+        $xmlObj = simplexml_load_string($xml);
+        $id = $xmlObj->xpath('//purchase-order-number');
+        $orderId = intval($id[0]);
+        if(!isset($environment) && !isset($url)) {
+            $errorLog->handleNotification([ "Error" => "Parameters not set properly",
+                "environment" => isset($environment)?$environment:"",
+                "url" => isset($url)?$url:"",
+                "Message" => "Check the settings for url and environment in sentToFulfillment"]);
+
+            return;
+        }
+
+        $errorLog->handleNotification([ "Order ID" => $orderId]);
+
+        switch($environment){
+            case 'production':
+            case 'prod':
+            case 'devorders':
+            case 'qaorders':
+
+            //->handleNotification($data);
+            // The environment is local
+            $ch = curl_init();
+
+            $options = array(
+
+                CURLOPT_POST => 1,
+                CURLOPT_HTTPHEADER => ['Content-Type:', 'text/xml'],
+                CURLOPT_POSTFIELDS => $new_xml,
+                CURLOPT_RETURNTRANSFER => 1,
+                //CURLOPT_SSLCERTTYPE => "DER",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true,
+                // CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
+                CURLOPT_VERBOSE => true,
+                CURLOPT_URL => $url,
+                CURLOPT_CAPATH => "/etc/pki/tls",
+                CURLOPT_SSLVERSION => 3,
+                //CURLOPT_SSLCERT => $cert_file ,
+            );
+
+            curl_setopt_array($ch, $options);
+
+            $output = curl_exec($ch);
+            $curl_errno = curl_errno($ch);
+            $curl_error = curl_error($ch);
+
+            $sp = new StandardResponse(); // Logs the transmission status
+
+            if ($curl_errno > 0) {
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => $curl_error,
+                    "Message" => "Order transmission failed to connect to Brightpoint."]);
+
+            } else {
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => isset($curl_error)?$curl_error:"No error message",
+                    "Message" => "Order transmission successfully connected to Brightpoint."]);
+
+            }
+
+            // NOTE: If there is a curl connection error log and let the retry job try the order again
+            /*
+             * [2015-03-23 18:27:43] ingram-order-test.INFO: cURL Error (35): SSL connect error  [] []
+    [2015-03-23 18:27:43] ingram-order-test.INFO: Curl Error : SSL connect error [] []
+    [2015-03-23 18:27:43] ingram-order-test.INFO: SSL connect error [] []
+
+             */
+
+            if (!$output) {
+
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => $curl_error,
+                    "Message" => IngramShipping::$failed]);
+
+                $sp->logTransmissionError($orderId, $url,$curl_error, IngramShipping::$failed);
+
+            } else {
+                $startPos = strpos($output, "<?xml");
+                $output = substr($output, $startPos);
+
+                // Add to error log file
+                $errorLog->handleNotification([ "order_id" => $orderId,
+                    "curl_errno" => $curl_errno,
+                    "curl_error" => isset($curl_error)?$curl_error:"No error message",
+                    "Message Status" => IngramShipping::$success,
+                    "Message" => $output]);
+
+                $sp->parseAndSaveData($orderId, $output);
+            }
+
+            curl_close($ch);
+            default:
+                 // Do nothing
+                 break;
+
+        }
 
     }
 
@@ -140,6 +366,7 @@ class IngramShipping implements ShippingInterface
     {
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
+
         $array = [
             'message' => [
                 'message-header' => [
@@ -192,7 +419,7 @@ class IngramShipping implements ShippingInterface
                             'ship-request-warehouse' => 'MVO1',
                         ],
                         'purchase-order-information' => [
-                            'purchase-order-number' => '325',
+                            'purchase-order-number' => $data['order_id'],
                             'purchase-order-amount' => '',
                             'currency-code' => 'USD',
                             'account-description' => '',
@@ -222,7 +449,7 @@ class IngramShipping implements ShippingInterface
                             'merchant-name' => '',
                         ],
                         'order-header' => [
-                            'customer-order-number' => $data['result']['id'],
+                            'customer-order-number' => $data['result']['id'], // Stripe charge id
                             'customer-order-date' => $date_str,
                             'order-type' => 'WEB-SALES',
                             'order-sub-total' => '',

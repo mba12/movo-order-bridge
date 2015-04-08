@@ -7,8 +7,10 @@ return [
     ),
     'ingram' => array(
         'partner-name' => 'movo',
-        'customer-id' => '315703',
+        'customer-id' => '563723',
         'source-url' => 'orders.getmovo.com',
+        'ingram-url' => 'https://168.215.84.144:9443/HttpPost',
+        'receipt-email' => 'michael@getmovo.com',
     ),
     'pusher' => array(
         'public' => '7c1d3ca82e7d3904f4f0',

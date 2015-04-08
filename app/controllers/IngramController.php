@@ -8,7 +8,10 @@ class IngramController extends \BaseController {
 
 	public function trackInventory()
 	{
-		$request = Request::instance();
+        $environment = App::environment();
+        Log::info("Current environment: " . $environment);
+
+        $request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-inventory');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/inventory.log', Logger::INFO));
@@ -31,11 +34,22 @@ class IngramController extends \BaseController {
 	}
 
 	public function shipAdvice(){
-		$request = Request::instance();
+
+        $environment = App::environment();
+        Log::info("Current environment: " . $environment);
+
+        $request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-ship-advice');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/ship-advice.log', Logger::INFO));
 		$log->addInfo($content);
+
+        // Log to database
+        $shipNotify = new ShipNotification();
+        $shipNotify->parseSAndSaveData($content);
+
+        //TODO: email purchaser and provide shipper and tracking number
+
 		$content =  View::make("ingram.ship-advice");
 		return Response::make($content, '200')->header('Content-Type', 'text/xml');
 	}
@@ -44,10 +58,11 @@ class IngramController extends \BaseController {
 		$request = Request::instance();
 		$content = $request->getContent();
 
-		Order::parseAndSaveData($content);
-		$log = new Logger('ingram-order-status');
-		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/order-status.log', Logger::INFO));
-		$log->addInfo($content);
+        $log = new Logger('ingram-order-status');
+        $log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/order-status.log', Logger::INFO));
+        $log->addInfo($content);
+
+        Order::parseAndSaveData($content);
 		$content =  View::make("ingram.order-status");
 		return Response::make($content, '200')->header('Content-Type', 'text/xml');
 	}

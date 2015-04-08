@@ -28,18 +28,22 @@ if(isset($_SERVER['HTTP_HOST'])) {
     $env = $app->detectEnvironment(function(){
         switch($_SERVER['HTTP_HOST']) {
             case 'orders.getmovo.com':
+            case 'orders.getmovo.com:443':
                 return 'production';
                 break;
             case 'movo.app:8000':
                 return 'local';
                 break;
             case 'devorders.getmovo.com':
+            case 'devorders.getmovo.com:443':
                 return 'devorders';
                 break;
             case 'qaorders.getmovo.com':
+            case 'qaorders.getmovo.com:443':
                 return 'qaorders';
                 break;
             case 'prodorders.getmovo.com':
+            case 'prodorders.getmovo.com:443':
                 return 'production';
                 break;
             case 'movo.jumpkick.pro':

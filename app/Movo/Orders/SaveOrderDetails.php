@@ -53,6 +53,10 @@ class SaveOrderDetails
         $order->tracking_code = "";
         $order->error_flag = "";
         $order->coupon = $data['coupon'];
+
+        $order->partner_id = isset($data['partner_id'])?$data['partner_id']:"";
+        $order->partner_order_id = isset($data['partner_order_id'])?$data['partner_order_id']:"";
+
         $order->save();
         $combinedItems = $order->combineAndCountItems($data['items']);
 

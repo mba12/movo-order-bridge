@@ -35,5 +35,6 @@ return array(
 		'source-url' => getenv('ingram.source-url'),
 		'customer-id' => getenv('ingram.customer-id'),
 		'partner-name' => getenv('ingram.partner-name'),
+        'receipt-email' => getenv('ingram.receipt-email'),
 	),
 );

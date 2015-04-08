@@ -9,4 +9,10 @@ class ReceiptHandler implements Observer {
         $receipt = App::make('Movo\Receipts\ReceiptsInterface');
         $receipt->send($data);
     }
+
+    public function handleOfflineNotification($data)
+    {
+        $receipt = App::make('Movo\Receipts\ReceiptsInterface');
+        $receipt->sendOffline($data);
+    }
 }

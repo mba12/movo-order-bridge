@@ -8,9 +8,8 @@
 
 namespace Movo\Orders;
 
-
 use Illuminate\Support\Facades\Input;
- use GuzzleHttp;
+use GuzzleHttp;
 class OrderInput
 {
 
@@ -62,4 +61,150 @@ class OrderInput
 
         return $data;
     }
+
+    public static function convertStackCSVInputToData($csvData)
+    {
+
+        $orderObject = new OrderObject();
+
+        $fieldMap = array(
+            "quantity" => 'QTY',
+            "sku" => 'Vendor SKU',
+            "shipping-type" => "shipping-type",
+            "shipping-first-name" => 'Shipping First Name',
+            "shipping-last-name" => 'Shipping Last Name',
+            "shipping-address" => "Shipping Address 1" ,
+            "shipping-address2" => 'Shipping Address 2',
+            "shipping-city" => "City",
+            "shipping-state" => "State",
+            "shipping-zip" => "Zip",
+            "shipping-country" => "Country",
+            "shipping-phone" => "shipping-phone",
+            "coupon" => "coupon",
+            "billing-first-name" => 'Shipping First Name',
+            "billing-last-name" => 'Shipping Last Name',
+            "billing-address" => "Shipping Address 1",
+            "billing-city" => 'City',
+            "billing-state"=> 'State',
+            "billing-zip"=> 'Zip',
+            "billing-country"=> 'Country',
+            "billing-phone" => "billing-phone",
+            "email" => "Email",
+            "partner_id" => "partner_id",
+            "partner_order_id" => "Order Num",
+            "shipping-type" => "shipping-type");
+
+        $row = 0;
+        foreach($fieldMap as $key => $value ) {
+            if (isset($csvData[$value])) {
+                $orderObject->setProperty($key, $csvData[$value]);
+            } else {
+                $orderObject->setProperty($key, "");
+            }
+            $row++;
+        }
+
+        switch ($csvData['Vendor SKU']) {
+            case  857458005039:
+            case '857458005039':
+                $products =  \Product::getLargeBundle();
+                break;
+            case  857458005022:
+            case '857458005022':
+                $products =  \Product::getMediumBundle();
+                break;
+            default:
+                $orderObject->flagWithError();
+                break;
+        }
+
+        // Now loop through the products and add them to the item array
+        $quantity = 0; // represents the total number of items in the order
+        $items= array();
+        $i = 0;
+        foreach ($products as $p) {
+            $items[$i]=[
+                "sku"=> $p->sku,
+                "description"=> $p->name,
+                "quantity"=>$csvData['QTY'],
+            ];
+            $i++;
+            $quantity += $csvData['QTY'];
+        }
+        $orderObject->addItems($items);
+        $orderObject->setProperty('quantity', $quantity);
+
+        return $orderObject;
+    }
+
+    public static function convertMovoCSVInputToData($csvData)
+    {
+
+        // TODO: check for Refunded - Do Not Ship and 	Reason fields
+
+        $fieldMap = array(
+            "shipping-type" => "Shipping-Type",
+            "shipping-first-name" => "First",
+            "shipping-last-name" => "Last",
+            "shipping-address" => "Shipping Address 1" ,
+            "shipping-address2" => "Shipping Address 2" ,
+            "shipping-address3" => "Shipping Address 3" ,
+            "shipping-city" => "City",
+            "shipping-state" => "State",
+            "shipping-zip" => "Zip",
+            "shipping-country" => "Country",
+            "shipping-phone" => "Telephone",
+            "billing-first-name" => "Billing First Name",
+            "billing-last-name" => "Billing Last Name",
+            "email" => "Email Address",
+            "partner_id" => "Partner-Id",
+            "partner_order_id" => "Partner-Order_Id");
+
+        $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty','Standard-Qty','Neon-Qty');
+        $productIdMap = array ( 'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
+                                'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);
+
+
+        $row = 0;
+        foreach($fieldMap as $key => $value ) {
+            if (isset($csvData[$value])) {
+                $data[$key] = $csvData[$value];
+            } else {
+                $data[$key] = "";
+            }
+            $row++;
+        }
+
+        // Now loop through the products and add them to the item array
+        $data['quantity'] = 0; // represents the total number of items in the order
+        $items=[];
+        $i = 0;
+        foreach($productList as $product) {
+            if( isset($csvData[$product]) && strlen(strval($csvData[$product])) > 0 && is_numeric($csvData[$product]) ) {
+                $productId = $productIdMap[$product];
+                $p =  \Product::find($productId, ['sku', 'name']);
+                $items[$i]=[
+                    "sku"=> $p->sku,
+                    "description"=> $p->name,
+                    "quantity"=>$csvData[$product],
+                ];
+                $data['quantity']+=$csvData[$product];
+                $i++;
+            }
+        }
+
+        $data['billing-address'] = "";
+        $data['billing-city'] = "";
+        $data['billing-state'] = "";
+        $data['billing-zip'] = "";
+        $data['billing-country'] = "";
+        $data['billing-phone'] = "";
+        $data['coupon'] = "";
+
+
+        $data['items']= $items;
+
+        return $data;
+    }
+
 }

@@ -14,6 +14,8 @@ class Order extends \Eloquent
         'shipping_first_name',
         'shipping_last_name',
         'shipping_address',
+        'shipping_address2',
+        'shipping_address3',
         'shipping_city',
         'shipping_state',
         'shipping_zip',
@@ -36,17 +38,37 @@ class Order extends \Eloquent
         'status',
         'tracking_code',
         'error_flag',
+
+        'partner_id',
+        'partner_order_id',
     ];
+
     public static function parseAndSaveData($xmlString)
     {
+
+        // <transaction-name>sales-order-success</transaction-name> sales-order-success
+
         $xml = new SimpleXMLElement($xmlString);
-        $result = $xml->xpath('//customer-id')[0];
+        $result = $xml->xpath('//customer-order-number')[0];  // NOTE: Field contains the stripe id
         $order=Order::where("stripe_charge_id", "=", (String)$result)->first();
         $order->ingram_order_id= (String)$xml->xpath('//message-id')[0];
-        if((String)$xml->xpath('//transaction-name')[0]=="sales-order-rejection"){
+
+        $status = (String)($xml->xpath('//transaction-name')[0]);
+
+        if($status == "sales-order-success"){
+            $order->error_flag=0;
+            $order->status=1;
+        } else if($status == "sales-order-rejection"){
             $order->error_flag=3;
+            $order->status=0;
+        } else {
+            $order->error_flag=3;
+            $order->status=0;
         }
         $order->save();
+
+        //TODO: Match the entire order against what we have in our database.
+        //      Right now only the order success field is being matched
     }
     public function items()
     {
@@ -58,7 +80,7 @@ class Order extends \Eloquent
         return $this->hasMany("Donation");
     }
 
-    public function combineAndCountItems($items, $key="description")
+    public function combineAndCountItems($items, $key="sku")
     {
         $combinedItems=[];
         foreach ($items as $item) {
@@ -95,5 +117,20 @@ class Order extends \Eloquent
     public function errors()
     {
         return $this->where("error_flag", "=", 2);
+    }
+
+    public function getIds($first, $second)
+    {
+        $usedIds = [83,86,88,89,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,
+            121,122,123,125,128,129,130,131,132,133,134,135,325,325,325];
+
+        //$result = DB::table('orders')->where("id", ">", 67 + $first * $second)->get();
+        // $result = DB::table('orders')->get();
+        //$result = $this->all();
+        $result = $this->where("id", ">", 300 + $first * $second * 2)->whereNotIn('id', $usedIds)->get(); //->pluck('id');
+
+        Log::info("Database query finished: " . $result->count());
+
+        return $result;
     }
 }
