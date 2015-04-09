@@ -212,7 +212,7 @@ class AdminController extends \BaseController
 
         // Get the current time
 
-        $timeString = date('YmdHms');
+        $timeString = date('YmdHis');
 
         // go to the storage uploads directory
         $fileName = 'upload.' . $timeString;
