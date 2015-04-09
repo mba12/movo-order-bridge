@@ -233,8 +233,6 @@ class IngramShipping implements ShippingInterface
 
         $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
 
-
-        // $string = trim(preg_replace('/\s+/', ' ', $xml));
         $string = preg_replace("/\r\n|\r|\n/", ' ', $xml);
         $new_xml = stripslashes($string);
 

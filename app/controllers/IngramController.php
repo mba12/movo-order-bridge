@@ -35,9 +35,6 @@ class IngramController extends \BaseController {
 
 	public function shipAdvice(){
 
-        $environment = App::environment();
-        Log::info("Current environment: " . $environment);
-
         $request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-ship-advice');
