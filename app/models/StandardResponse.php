@@ -95,8 +95,7 @@ EOF;
 
         if ( $pos === false ) {
             // then the response is good
-            $order = new Order();
-            $order->find($orderId);
+            $order=Order::find($orderId)->first();
             $order->ingram_order_id = (String) $responseTimestamp[0];
             $order->save();
         }
