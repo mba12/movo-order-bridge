@@ -334,6 +334,10 @@ class IngramShipping implements ShippingInterface
                 $sp->parseAndSaveData($orderId, $output);
             }
 
+            if(strcasecmp($environment, "devorders")) {
+                sleep(.3);
+            }
+
             curl_close($ch);
             default:
                  // Do nothing
