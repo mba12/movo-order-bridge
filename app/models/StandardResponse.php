@@ -104,7 +104,8 @@ EOF;
                 Log::info("Incoming order object NOT null ID: " . $orderId);
             }
             $order->ingram_order_id = (String) $responseTimestamp[0];
-            $order->save();
+            $result = $order->save();
+            Log::info("Save result: " . strval($result));
         }
 
     }
