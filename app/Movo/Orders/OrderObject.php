@@ -18,7 +18,7 @@ class OrderObject {
     private $errorCodes = array();
     private static $required = array(
                     "quantity","shipping-type","shipping-first-name","shipping-last-name","shipping-address",
-                    "shipping-city","shipping-state","shipping-zip","partner_id","partner_order_id");
+                    "shipping-city","shipping-state","shipping-zip",'shipping-country',"partner_id","partner_order_id");
 
     function __construct() {
         $this->propertyMap['items'] = array();

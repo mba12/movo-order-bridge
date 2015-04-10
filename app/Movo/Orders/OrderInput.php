@@ -13,6 +13,7 @@ use GuzzleHttp;
 class OrderInput
 {
     private static $COUNTRY = "shipping-country";
+    private static $BILLING_COUNTRY = "billing-country";
     private static $SHIP_PHONE = "shipping-phone";
     private static $BILL_PHONE = "billing-phone";
     private static $SHIP_STATE = "shipping-state";
@@ -187,6 +188,7 @@ private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Lar
 
         switch ($key) {
             case OrderInput::$COUNTRY:
+            case OrderInput::$BILLING_COUNTRY:
                 //TODO: needs to handle more country codes
                 $newValue = "US";
                 break;
