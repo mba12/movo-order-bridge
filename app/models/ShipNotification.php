@@ -136,6 +136,11 @@ class ShipNotification extends \Eloquent
         $xml = new SimpleXMLElement($doc);
         $data = ShipNotification::parseData($xml);
         ShipNotification::saveData($data);
+        $updateInfo = [ 'order_id' => strval($data['purchase-order-number']),
+                        'tracking_code' => strval($data['bill-of-lading']),
+                        'ship-email' => $data['ship-email']];
+
+        return $updateInfo;
 
     }
 

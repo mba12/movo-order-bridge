@@ -81,7 +81,7 @@ class AdminController extends \BaseController
     {
         Log::info("Order ID: " . $id);
         $order = Order::find($id);
-        Log::info("Order stuff: " . $order->shipping_first_name . " : " . $order->shipping_last_name);
+        Log::info("Order Lookup from admin page: " . $order->shipping_first_name . " : " . $order->shipping_last_name);
 
         // $combinedItems = $order->combineAndCountItems($order->items()->all());
         $combinedItems = $order->combineAndCountItems($order->items()->getResults());

@@ -43,7 +43,27 @@ class IngramController extends \BaseController {
 
         // Log to database
         $shipNotify = new ShipNotification();
-        $shipNotify->parseSAndSaveData($content);
+        $trackingInfo = $shipNotify->parseSAndSaveData($content);
+
+        $order_id = intval($trackingInfo['order_id']);
+        $trackingCode = $trackingInfo['tracking_code'];
+        $order = Order::find($order_id)->first();
+        $order->tracking_code = $trackingCode;
+        $order->save();
+
+        $environment = App::environment();
+        switch($environment) {
+            case 'production':
+            case 'prod':
+                $email = $trackingInfo['ship-email'];
+                break;
+            case 'devorders':
+            case 'qaorders':
+                $email = getenv('ingram.receipt-email');
+                break;
+            default:
+                $email = 'michael@getmovo.com';
+        }
 
         //TODO: email purchaser and provide shipper and tracking number
 

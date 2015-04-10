@@ -225,9 +225,7 @@ class IngramShipping implements ShippingInterface
 
     private function sendToFulfillment($xml)
     {
-
         $errorLog = new OrderErrorLogHandler();
-
         $environment = App::environment();
         $url = htmlentities(getenv('ingram.ingram-url'));
 
@@ -451,7 +449,7 @@ class IngramShipping implements ShippingInterface
                             'merchant-name' => '',
                         ],
                         'order-header' => [
-                            'customer-order-number' => $data['result']['id'], // Stripe charge id
+                            'customer-order-number' => $data['order_id'],
                             'customer-order-date' => $date_str,
                             'order-type' => 'WEB-SALES',
                             'order-sub-total' => '',
