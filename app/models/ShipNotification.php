@@ -3,6 +3,8 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class ShipNotification extends \Eloquent
 {
+
+    //  <purchase-order-number>606</purchase-order-number>
     protected $guarded = [];
     protected $table = "ship_notification";
     public static $fieldList = [

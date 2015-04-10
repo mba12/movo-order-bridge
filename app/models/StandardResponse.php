@@ -21,6 +21,7 @@ class StandardResponse extends \Eloquent
 
     public function parseAndSaveData($orderId, $xmlString)
     {
+        Log::info("Standard Response::Incoming order ID: " . $orderId);
         Log::info("Standard Response::Incoming String: " . $xmlString);
 
         $pos = strpos($xmlString, "Service Unavailable");
@@ -96,6 +97,12 @@ EOF;
         if ( $pos === false ) {
             // then the response is good
             $order=Order::find($orderId)->first();
+
+            if(!isset($order)) {
+                Log::info("Incoming order object null ID: " . $orderId);
+            } else {
+                Log::info("Incoming order object NOT null ID: " . $orderId);
+            }
             $order->ingram_order_id = (String) $responseTimestamp[0];
             $order->save();
         }
