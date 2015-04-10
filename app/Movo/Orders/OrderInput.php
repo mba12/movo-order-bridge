@@ -12,6 +12,80 @@ use Illuminate\Support\Facades\Input;
 use GuzzleHttp;
 class OrderInput
 {
+    private static $COUNTRY = "shipping-country";
+    private static $SHIP_PHONE = "shipping-phone";
+    private static $BILL_PHONE = "billing-phone";
+    private static $SHIP_STATE = "shipping-state";
+    private static $BILL_STATE = "billing-state";
+    private static $SHIP_ZIP = "shipping-zip";
+
+    private static $STATE_CODES =  [
+        "Alabama" => "AL","Alaska" => "AK","Arizona" => "AZ","Arkansas" => "AR","California" => "CA",
+        "Colorado" => "CO","Connecticut" => "CT","Delaware" => "DE","Dist. Of Columbia" => "DC",
+        "District Of Columbia" => "DC", "Florida" => "FL", "Georgia" => "GA", "Hawaii" => "HI",
+        "Idaho" => "ID", "Illinois" => "IL", "Indiana" => "IN", "Iowa" => "IA", "Kansas" => "KS",
+        "Kentucky" => "KY", "Louisiana" => "LA", "Maine" => "ME", "Maryland" => "MD", "Massachusetts" => "MA",
+        "Michigan" => "MI", "Minnesota" => "MN", "Mississippi" => "MS", "Missouri" => "MO", "Montana" => "MT",
+        "Nebraska" => "NE", "Nevada" => "NV", "New Hampshire" => "NH", "New Jersey" => "NJ", "New Mexico" => "NM",
+        "New York" => "NY", "North Carolina" => "NC", "North Dakota" => "ND", "Ohio" => "OH", "Oklahoma" => "OK",
+        "Oregon" => "OR", "Pennsylvania" => "PA", "Rhode Island" => "RI", "South Carolina" => "SC",
+        "South Dakota" => "SD", "Tennessee" => "TN", "Texas" => "TX", "Utah" => "UT", "Vermont" => "VT",
+        "Virginia" => "VA", "Washington" => "WA", "West Virginia" => "WV", "Wisconsin" => "WI",
+        "Wyoming" => "WY", "American Samoa" => "AS", "Guam" => "GU", "Northern Mariana Islands" => "MP",
+		"Puerto Rico" => "PR", "U.S. Virgin Islands" => "VI", "U.s. Virgin Islands" => "VI",
+        "Us Virgin Islands" => "VI", "United States Minor Outlying Islands" => "UM",
+		];
+
+    private static $stackFieldMap = array(
+        "quantity" => 'QTY',
+        "sku" => 'Vendor SKU',
+        "shipping-type" => "shipping-type",
+        "shipping-first-name" => 'Shipping First Name',
+        "shipping-last-name" => 'Shipping Last Name',
+        "shipping-address" => "Shipping Address 1" ,
+        "shipping-address2" => 'Shipping Address 2',
+        "shipping-city" => "City",
+        "shipping-state" => "State",
+        "shipping-zip" => "Zip",
+        "shipping-country" => "Country",
+        "shipping-phone" => "shipping-phone",
+        "coupon" => "coupon",
+        "billing-first-name" => 'Shipping First Name',
+        "billing-last-name" => 'Shipping Last Name',
+        "billing-address" => "Shipping Address 1",
+        "billing-city" => 'City',
+        "billing-state"=> 'State',
+        "billing-zip"=> 'Zip',
+        "billing-country"=> 'Country',
+        "billing-phone" => "billing-phone",
+        "email" => "Email",
+        "partner_id" => "partner_id",
+        "partner_order_id" => "Order Num",
+        "shipping-type" => "shipping-type");
+
+    private static $movoFieldMap = array(
+        "shipping-type" => "Shipping-Type",
+        "shipping-first-name" => "First",
+        "shipping-last-name" => "Last",
+        "shipping-address" => "Shipping Address 1" ,
+        "shipping-address2" => "Shipping Address 2" ,
+        "shipping-address3" => "Shipping Address 3" ,
+        "shipping-city" => "City",
+        "shipping-state" => "State",
+        "shipping-zip" => "Zip",
+        "shipping-country" => "Country",
+        "shipping-phone" => "Telephone",
+        "billing-first-name" => "Billing First Name",
+        "billing-last-name" => "Billing Last Name",
+        "email" => "Email Address",
+        "partner_id" => "Partner-Id",
+        "partner_order_id" => "Partner-Order_Id");
+
+    private static $productIdMap = array ( 'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
+        'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);
+
+private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty','Standard-Qty','Neon-Qty');
+
 
     public static function convertInputToData($data)
     {
@@ -64,40 +138,12 @@ class OrderInput
 
     public static function convertStackCSVInputToData($csvData)
     {
-
         $orderObject = new OrderObject();
-
-        $fieldMap = array(
-            "quantity" => 'QTY',
-            "sku" => 'Vendor SKU',
-            "shipping-type" => "shipping-type",
-            "shipping-first-name" => 'Shipping First Name',
-            "shipping-last-name" => 'Shipping Last Name',
-            "shipping-address" => "Shipping Address 1" ,
-            "shipping-address2" => 'Shipping Address 2',
-            "shipping-city" => "City",
-            "shipping-state" => "State",
-            "shipping-zip" => "Zip",
-            "shipping-country" => "Country",
-            "shipping-phone" => "shipping-phone",
-            "coupon" => "coupon",
-            "billing-first-name" => 'Shipping First Name',
-            "billing-last-name" => 'Shipping Last Name',
-            "billing-address" => "Shipping Address 1",
-            "billing-city" => 'City',
-            "billing-state"=> 'State',
-            "billing-zip"=> 'Zip',
-            "billing-country"=> 'Country',
-            "billing-phone" => "billing-phone",
-            "email" => "Email",
-            "partner_id" => "partner_id",
-            "partner_order_id" => "Order Num",
-            "shipping-type" => "shipping-type");
-
         $row = 0;
-        foreach($fieldMap as $key => $value ) {
+        foreach(OrderInput::$stackFieldMap as $key => $value ) {
             if (isset($csvData[$value])) {
-                $orderObject->setProperty($key, $csvData[$value]);
+                $filtered = OrderInput::filterCheckField($key, $csvData[$value]);
+                $orderObject->setProperty($key, $filtered);
             } else {
                 $orderObject->setProperty($key, "");
             }
@@ -137,38 +183,49 @@ class OrderInput
         return $orderObject;
     }
 
+    private static function filterCheckField($key, $value) {
+
+        switch ($key) {
+            case OrderInput::$COUNTRY:
+                //TODO: needs to handle more country codes
+                $newValue = "US";
+                break;
+            case OrderInput::$SHIP_PHONE:
+            case OrderInput::$BILL_PHONE:
+                // strip out any non-numeric characters
+                $newValue = preg_replace("/[^0-9]/", "", $value);
+                break;
+            case OrderInput::$SHIP_STATE:
+            case OrderInput::$BILL_STATE:
+                if(strlen($value) === 2) {
+                    $newValue = $value;
+                } else {
+                    $newValue = OrderInput::$STATE_CODES[ucwords($value)];
+                }
+                break;
+            case OrderInput::$SHIP_ZIP:
+                if(strlen($value) === 4) {
+                    $newValue = "0" . $value;
+                } else {
+                    $newValue = $value;
+                }
+                break;
+            default:
+                $newValue = $value;
+        }
+        return $newValue;
+    }
+
     public static function convertMovoCSVInputToData($csvData)
     {
 
         // TODO: check for Refunded - Do Not Ship and 	Reason fields
 
-        $fieldMap = array(
-            "shipping-type" => "Shipping-Type",
-            "shipping-first-name" => "First",
-            "shipping-last-name" => "Last",
-            "shipping-address" => "Shipping Address 1" ,
-            "shipping-address2" => "Shipping Address 2" ,
-            "shipping-address3" => "Shipping Address 3" ,
-            "shipping-city" => "City",
-            "shipping-state" => "State",
-            "shipping-zip" => "Zip",
-            "shipping-country" => "Country",
-            "shipping-phone" => "Telephone",
-            "billing-first-name" => "Billing First Name",
-            "billing-last-name" => "Billing Last Name",
-            "email" => "Email Address",
-            "partner_id" => "Partner-Id",
-            "partner_order_id" => "Partner-Order_Id");
-
-        $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty','Standard-Qty','Neon-Qty');
-        $productIdMap = array ( 'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
-                                'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);
-
-
         $row = 0;
-        foreach($fieldMap as $key => $value ) {
+        foreach(OrderInput::$movoFieldMap as $key => $value ) {
             if (isset($csvData[$value])) {
-                $data[$key] = $csvData[$value];
+                $filtered = OrderInput::filterCheckField($key, $csvData[$value]);
+                $data[$key] = $filtered;
             } else {
                 $data[$key] = "";
             }
@@ -179,9 +236,9 @@ class OrderInput
         $data['quantity'] = 0; // represents the total number of items in the order
         $items=[];
         $i = 0;
-        foreach($productList as $product) {
+        foreach(OrderInput::$productList as $product) {
             if( isset($csvData[$product]) && strlen(strval($csvData[$product])) > 0 && is_numeric($csvData[$product]) ) {
-                $productId = $productIdMap[$product];
+                $productId = OrderInput::$productIdMap[$product];
                 $p =  \Product::find($productId, ['sku', 'name']);
                 $items[$i]=[
                     "sku"=> $p->sku,
