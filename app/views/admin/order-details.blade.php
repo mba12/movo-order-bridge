@@ -45,8 +45,7 @@
                     <ul class="items">
                         @foreach($combinedItems as $item)
                             <li>
-
-                                {{$item['count']}} x {{$item['description']}}
+                                {{$item['quantity']}} x {{$item['description']}}
                             </li>
                         @endforeach
                     </ul>
