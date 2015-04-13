@@ -47,11 +47,14 @@ class IngramController extends \BaseController {
 
         $order_id = intval($trackingInfo['order_id']);
         $trackingCode = $trackingInfo['tracking_code'];
+
+        // TODO: The order update is not working ???
         $order = Order::find($order_id)->first();
         $order->tracking_code = $trackingCode;
         $order->save();
 
         $environment = App::environment();
+        $email = 'michael@getmovo.com';
         switch($environment) {
             case 'production':
             case 'prod':
@@ -66,6 +69,8 @@ class IngramController extends \BaseController {
         }
 
         //TODO: email purchaser and provide shipper and tracking number
+        (new ShippingHandler)->handleNotification($trackingInfo);
+
 
 		$content =  View::make("ingram.ship-advice");
 		return Response::make($content, '200')->header('Content-Type', 'text/xml');

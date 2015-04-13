@@ -129,16 +129,31 @@ class ShipNotification extends \Eloquent
         "special-message2",
         "special-message3",
         "special-message4",
-        "special-message5"];
+        "special-message5",
+        "detail"];
 
     public static function parseSAndSaveData($doc)
     {
+        $betterArray = ShipNotification::parseXMLtoArray($doc);
+
         $xml = new SimpleXMLElement($doc);
         $data = ShipNotification::parseData($xml);
         ShipNotification::saveData($data);
-        $updateInfo = [ 'order_id' => strval($data['purchase-order-number']),
-                        'tracking_code' => strval($data['bill-of-lading']),
-                        'ship-email' => $data['ship-email']];
+        $updateInfo =   [   'order_id' => strval($data['purchase-order-number']),
+                            'tracking_code' => strval($data['bill-of-lading']),
+                            'ship-email' => $data['ship-email'],
+                            "ship-first-name" => $data["ship-first-name"],
+                            "ship-last-name" => $data["ship-last-name"],
+                            "ship-address1" => $data["ship-address1"],
+                            "ship-address2" => $data["ship-address2"],
+                            "ship-address3" => $data["ship-address3"],
+                            "ship-city" => $data["ship-city"],
+                            "ship-state" => $data["ship-state"],
+                            "ship-post-code" => $data["ship-post-code"],
+                            "ship-country-code" => $data["ship-country-code"],
+                            "order-total-net" => $data["order-total-net"]
+
+        ];
 
         return $updateInfo;
 
@@ -148,11 +163,22 @@ class ShipNotification extends \Eloquent
     {
         $data=[];
 
+        // TODO: This process does not take into account multiple items
+        //       Should check against our items table to make sure the
+        //       items going out match against what was ordered.
         foreach (ShipNotification::$fieldList as $f) {
             $data[$f] = ShipNotification::checkData( $xml->xpath("//" . $f) );
         }
 
         return $data;
+    }
+
+    private static function parseXMLtoArray($string) {
+
+        $array = json_decode(json_encode((array) simplexml_load_string($string)), 1);
+        Log::info("Output of the ship_notification: \n" . print_r($array));
+
+        return $array;
     }
 
     private static function checkData($data) {

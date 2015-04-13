@@ -260,7 +260,6 @@ private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Lar
         $data['billing-phone'] = "";
         $data['coupon'] = "";
 
-
         $data['items']= $items;
 
         return $data;

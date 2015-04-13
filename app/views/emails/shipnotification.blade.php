@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Getmovo Order</title>
+<title>Getmovo Shipping Notification</title>
 
 <style type="text/css">
     @import url(http://fonts.googleapis.com/css?family=Roboto:400,700);
@@ -34,10 +34,12 @@
             <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
                 {{$data['name']}}<br>
                 {{$data['address1']}}<br>
-                {{$data['address2']}}
+                {{$data['address2']}}<br>
+                {{{ isset($data['address2']) ? $data['address2'] . '<br/>' : '' }}}
+                {{{ isset($data['address3']) ? $data['address3'] . '<br/>' : '' }}}
             </p>
             <div class="total"><span class="bold" style="font-weight: 700;">Shipping Company: <span class="red" style="color: #1729f6;">Fed Ex</span></span></div>
-            <div class="total"><span class="bold" style="font-weight: 700;">Tracking Code: <span class="red" style="color: #1729f6;">{{$data['tracking_code']}}</span></span></div>
+            <div class="total"><span class="bold" style="font-weight: 700;">Tracking Code: <span class="red" style="color: #1729f6;">{{$data['tracking_code']}}</span><span class="red" style="color: #1729f6;">({{ HTML::link($data['link'], 'Track')}})</span></span></div>
             <p style="line-height: 1.4em;margin: 18px 0;">Thank you for your order! If you have any questions, please get in touch: <a href="mailto:info@getmovo.com" style="color: #f6303e;text-decoration: underline;">info@getmovo.com</a></p>
             <p style="line-height: 1.4em;margin: 18px 0;">Enjoy your Wave!</p>
             <p style="line-height: 1.4em;margin: 18px 0;">-Team Movo</p>
