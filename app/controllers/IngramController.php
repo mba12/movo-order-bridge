@@ -69,7 +69,7 @@ class IngramController extends \BaseController {
         }
 
         //TODO: email purchaser and provide shipper and tracking number
-        (new ShippingHandler)->handleNotification($trackingInfo);
+        (new ShipNotificationHandler)->handleNotification($trackingInfo);
 
 
 		$content =  View::make("ingram.ship-advice");
