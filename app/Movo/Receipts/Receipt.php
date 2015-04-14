@@ -20,6 +20,7 @@ class Receipt {
         $emailData['address2'] = $data['address2'];
         $emailData['name'] = $data['name'];
         $emailData['total'] = Format::FormatStripeMoney($data['result']['amount']);
+        $emailData['quantity'] = $data['quantity'];
         return $emailData;
     }
 }

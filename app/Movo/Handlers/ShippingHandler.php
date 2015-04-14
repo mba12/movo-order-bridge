@@ -3,8 +3,6 @@ namespace Movo\Handlers;
 use Illuminate\Support\Facades\App;
 use Movo\Observer\Observer;
 
-
-
 class ShippingHandler implements Observer {
 
     public function handleNotification($data)
@@ -18,7 +16,4 @@ class ShippingHandler implements Observer {
         $shipping = App::make('Movo\Shipping\ShippingInterface');
         $shipping->sendToFulfillmentWithSettings($env, $url, $data);
     }
-
-
-
 }

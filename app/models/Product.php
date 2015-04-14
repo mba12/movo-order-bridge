@@ -76,6 +76,17 @@ class Product extends \Eloquent
         return $bundle;
     }
 
+    public static function getNameBySKU($sku) {
+
+        if (Cache::has("name:" . $sku)) {
+            return Cache::get("name:" . $sku);
+        }
+
+        $product = Product::where("sku", "=", $sku)->get()->first();
+        Cache::put("name:" . $sku, $product->name, 1440);
+
+        return $product->name;
+    }
 
 
 }

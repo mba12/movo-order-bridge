@@ -2,6 +2,7 @@
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Movo\Handlers\ShipNotificationHandler;
 
 class IngramController extends \BaseController {
 
@@ -35,42 +36,56 @@ class IngramController extends \BaseController {
 
 	public function shipAdvice(){
 
+        // Get the incoming request
         $request = Request::instance();
 		$content = $request->getContent();
+
+        // Log all incoming requests to a file before processing
 		$log = new Logger('ingram-ship-advice');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/ship-advice.log', Logger::INFO));
 		$log->addInfo($content);
 
-        // Log to database
+        // Log incoming to the database
         $shipNotify = new ShipNotification();
         $trackingInfo = $shipNotify->parseSAndSaveData($content);
 
-        $order_id = intval($trackingInfo['order_id']);
-        $trackingCode = $trackingInfo['tracking_code'];
+        $order_id = 0;
+        try {
 
-        // TODO: The order update is not working ???
-        $order = Order::find($order_id)->first();
-        $order->tracking_code = $trackingCode;
-        $order->save();
+            $order_id = intval($trackingInfo['order_number']);
+            $order = Order::findOrFail($order_id);
+            $order->tracking_code = $trackingInfo['tracking_code'];
+            $order->save();
 
-        $environment = App::environment();
-        $email = 'michael@getmovo.com';
-        switch($environment) {
-            case 'production':
-            case 'prod':
-                $email = $trackingInfo['ship-email'];
-                break;
-            case 'devorders':
-            case 'qaorders':
-                $email = getenv('ingram.receipt-email');
-                break;
-            default:
-                $email = 'michael@getmovo.com';
+            $partner_id = $order->partner_id;
+            Log::info("Partner id is: " . $partner_id);
+
+            $environment = App::environment();
+            Log::info("Environment is: " . $environment);
+            $trackingInfo['ship-email'] = 'michael@getmovo.com';
+            switch($environment) {
+                case 'production':
+                case 'prod':
+                    Log::info("Sending ship notification to: " . $trackingInfo['ship-email']);
+                    break;
+                case 'devorders':
+                case 'qaorders':
+                    $trackingInfo['ship-email'] = getenv('ingram.receipt-email');
+                    break;
+                default:
+                    $trackingInfo['ship-email'] = 'michael@getmovo.com';
+            }
+
+            if ( !isset($partner_id) ||
+                (isset($partner_id) && strlen($partner_id) === 0) || strcasecmp($partner_id, 'movo')) {
+                    (new ShipNotificationHandler)->handleNotification($trackingInfo);
+            }
+
+        } catch (Exception $e) {
+            Log::info("Exception during ship notification for order: " . $order_id);
+            Log::info("Exception during ship notification: " . $e->getMessage());
+            Log::info("Exception during ship notification: " . $e->getTraceAsString());
         }
-
-        //TODO: email purchaser and provide shipper and tracking number
-        (new ShipNotificationHandler)->handleNotification($trackingInfo);
-
 
 		$content =  View::make("ingram.ship-advice");
 		return Response::make($content, '200')->header('Content-Type', 'text/xml');

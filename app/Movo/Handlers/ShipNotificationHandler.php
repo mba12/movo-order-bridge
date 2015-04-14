@@ -2,17 +2,11 @@
 namespace Movo\Handlers;
 use Illuminate\Support\Facades\App;
 use Movo\Observer\Observer;
-class ReceiptHandler implements Observer {
+class ShipNotificationHandler implements Observer {
 
     public function handleNotification($data)
     {
-        $receipt = App::make('Movo\Receipts\ReceiptsInterface');
-        $receipt->send($data);
-    }
-
-    public function handleOfflineNotification($data)
-    {
-        $receipt = App::make('Movo\Receipts\ReceiptsInterface');
-        $receipt->sendOffline($data);
+        $notifier = App::make('Movo\Receipts\MailgunShipNotification');
+        $notifier->send($data);
     }
 }

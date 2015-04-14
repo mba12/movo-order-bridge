@@ -165,6 +165,8 @@ class IngramShipping implements ShippingInterface
         $data['shipping-first-name'] = $order->shipping_first_name;
         $data['shipping-last-name'] = $order->shipping_last_name;
         $data['shipping-address'] = $order->shipping_address;
+        $data['shipping-address2'] = $order->shipping_address2;
+        $data['shipping-address3'] = $order->shipping_address3;
         $data['shipping-city'] = $order->shipping_city;
         $data['shipping-state'] = $order->shipping_state;
         $data['shipping-zip'] = $order->shipping_zip;
@@ -174,6 +176,8 @@ class IngramShipping implements ShippingInterface
         $data['billing-first-name'] = $order->billing_first_name;
         $data['billing-last-name'] = $order->billing_last_name;
         $data['billing-address'] = $order->billing_address;
+        $data['billing-address2'] = $order->billing_address2;
+        $data['billing-address3'] = $order->billing_address3;
         $data['billing-city'] = $order->billing_city;
         $data['billing-state'] = $order->billing_state;
         $data['billing-zip'] = $order->billing_zip;
@@ -247,7 +251,7 @@ class IngramShipping implements ShippingInterface
             return;
         }
 
-        $errorLog->handleNotification([ "Order ID" => $orderId]);
+        $errorLog->handleNotification([ "Order ID" => $orderId, "OrderXML" => $new_xml]);
 
         switch($environment){
             case 'production':
@@ -381,15 +385,17 @@ class IngramShipping implements ShippingInterface
                 'sales-order-submission' => [
                     'header' => [
                         'customer-id' => Config::get('services.ingram.customer-id'),
-                        'business-name' => 'movo',
+                        'business-name' => '',
                         'carrier-name' => $data['shipping-code'],
                         'customer-information' => [
                             'customer-first-name' => $data['billing-first-name'],
                             'customer-last-name' => $data['billing-last-name'],
                             'customer-middle-initial' => '',
                             'customer-address1' => $data['billing-address'],
-                            'customer-address2' => '',
-                            'customer-address3' => '',
+                            'customer-address2' => (isset($data['billing-address2']) &&
+                                                    strlen($data['billing-address2']) > 0)?$data['billing-address2'] :'',
+                            'customer-address3' => (isset($data['billing-address3']) &&
+                                                    strlen($data['billing-address3']) > 0)?$data['billing-address3'] :'',
                             'customer-city' => $data['billing-city'],
                             'customer-state' => $data['billing-state'],
                             'customer-post-code' => $data['billing-zip'],
@@ -403,8 +409,10 @@ class IngramShipping implements ShippingInterface
                             'ship-first-name' => $data['shipping-first-name'],
                             'ship-last-name' => $data['shipping-last-name'],
                             'ship-address1' => $data['shipping-address'],
-                            'ship-address2' => '',
-                            'ship-address3' => '',
+                            'ship-address2' => (isset($data['shipping-address2']) &&
+                                                strlen($data['shipping-address2']) > 0)?$data['shipping-address2'] :'',
+                            'ship-address3' => (isset($data['shipping-address3']) &&
+                                                strlen($data['shipping-address3']) > 0)?$data['shipping-address3'] :'',
                             'ship-city' => $data['shipping-city'],
                             'ship-state' => $data['shipping-state'],
                             'ship-post-code' => $data['shipping-zip'],
@@ -426,9 +434,6 @@ class IngramShipping implements ShippingInterface
                             'comments' => '',
                         ],
                         'credit-card-information' => [
-                            'credit-card-number' => '',
-                            'credit-card-expiration-date' => '',
-                            'credit-card-identification' => '',
                             'credit-card-number' => '',
                             'credit-card-expiration-date' => '',
                             'credit-card-identification' => '',
