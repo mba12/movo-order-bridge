@@ -10,8 +10,7 @@ class IngramController extends \BaseController {
 	public function trackInventory()
 	{
         $environment = App::environment();
-        Log::info("Current environment: " . $environment);
-
+        Log::info("Track Inventory Current environment: " . $environment);
         $request = Request::instance();
 		$content = $request->getContent();
 		$log = new Logger('ingram-inventory');
@@ -52,34 +51,53 @@ class IngramController extends \BaseController {
         $order_id = 0;
         try {
 
-            $order_id = intval($trackingInfo['order_number']);
-            $order = Order::findOrFail($order_id);
-            $order->tracking_code = $trackingInfo['tracking_code'];
-            $order->save();
+            if(isset($trackingInfo['order_number']) && is_numeric($trackingInfo['order_number']) === false) {
+                // This is not a regular order number and is probably a ship exception or return
+                // Use the Bright Point order number to trace back to the original order
+                // <brightpoint-order-number>114100337</brightpoint-order-number>
+                $log->addInfo("************ RETURN NOTIFICATION RECEIVED ************");
+                /*
+                Mail::send('emails.welcome', $data, function($message) use ($user)
+                {
+                    $message->to($user->email, $user->name)
+                        ->subject('Ingram Return Ship Advice');
+                });
+                */
 
-            $partner_id = $order->partner_id;
-            Log::info("Partner id is: " . $partner_id);
+            } else {
 
-            $environment = App::environment();
-            Log::info("Environment is: " . $environment);
-            $trackingInfo['ship-email'] = 'michael@getmovo.com';
-            switch($environment) {
-                case 'production':
-                case 'prod':
-                    Log::info("Sending ship notification to: " . $trackingInfo['ship-email']);
-                    break;
-                case 'devorders':
-                case 'qaorders':
-                    $trackingInfo['ship-email'] = getenv('ingram.receipt-email');
-                    break;
-                default:
-                    $trackingInfo['ship-email'] = 'michael@getmovo.com';
-            }
+                // This is a regular order number
+                $order_id = intval($trackingInfo['order_number']);
+                $order = Order::findOrFail($order_id);
+                $order->tracking_code = $trackingInfo['tracking_code'];
+                $order->save();
 
-            if ( !isset($partner_id) ||
-                (isset($partner_id) && strlen($partner_id) === 0) || strcasecmp($partner_id, 'movo')) {
+                $partner_id = $order->partner_id;
+                Log::info("Partner id is: " . $partner_id);
+
+                $environment = App::environment();
+                Log::info("Environment is: " . $environment);
+                $trackingInfo['ship-email'] = 'michael@getmovo.com';
+                switch($environment) {
+                    case 'production':
+                    case 'prod':
+                        Log::info("Sending ship notification to: " . $trackingInfo['ship-email']);
+                        break;
+                    case 'devorders':
+                    case 'qaorders':
+                        $trackingInfo['ship-email'] = getenv('ingram.receipt-email');
+                        break;
+                    default:
+                        $trackingInfo['ship-email'] = 'michael@getmovo.com';
+                }
+
+                if ( !isset($partner_id) ||
+                    (isset($partner_id) && strlen($partner_id) === 0) || strcasecmp($partner_id, 'movo')) {
                     (new ShipNotificationHandler)->handleNotification($trackingInfo);
+                }
+
             }
+
 
         } catch (Exception $e) {
             Log::info("Exception during ship notification for order: " . $order_id);

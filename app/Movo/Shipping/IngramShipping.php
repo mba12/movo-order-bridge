@@ -230,15 +230,20 @@ class IngramShipping implements ShippingInterface
     private function sendToFulfillment($xml)
     {
         $errorLog = new OrderErrorLogHandler();
+        $log = new Logger('ingram-order-sent');
+        $log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/order-sent.log', Logger::INFO));
+
         $environment = App::environment();
         $url = htmlentities(getenv('ingram.ingram-url'));
 
-        $errorLog->handleNotification([ "env" => $environment, "url" => $url]);
+        $log->addInfo("ENVIRONMENT: " . $environment);
+        $log->addInfo("URL: " . $url);
 
         $string = preg_replace("/\r\n|\r|\n/", ' ', $xml);
         $new_xml = stripslashes($string);
 
-        $errorLog->handleNotification([ "xml" => $new_xml]);
+        $log->addInfo("xml: " . $new_xml);
+
         $xmlObj = simplexml_load_string($xml);
         $id = $xmlObj->xpath('//purchase-order-number');
         $orderId = intval($id[0]);
