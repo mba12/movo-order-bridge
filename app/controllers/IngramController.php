@@ -56,13 +56,18 @@ class IngramController extends \BaseController {
                 // Use the Bright Point order number to trace back to the original order
                 // <brightpoint-order-number>114100337</brightpoint-order-number>
                 $log->addInfo("************ RETURN NOTIFICATION RECEIVED ************");
-                /*
-                Mail::send('emails.welcome', $data, function($message) use ($user)
+
+                $users = array();
+                $users[0] = "michael@getmovo.com";
+                $users[1] = getenv('ingram.receipt-email');
+
+                Mail::send('emails.return', array('data' => $trackingInfo), function($message) use ($users)
                 {
-                    $message->to($user->email, $user->name)
+                    $message
+                        ->from('michael@getmovo.com', 'Michael Ahern')
                         ->subject('Ingram Return Ship Advice');
+                    $message->to($users);
                 });
-                */
 
             } else {
 

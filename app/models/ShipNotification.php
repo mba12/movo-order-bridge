@@ -54,6 +54,7 @@ class ShipNotification extends \Eloquent
         "ship-date",
         "bill-of-lading",
         "scac",
+        "ship-to-code",
 
     ];
 
@@ -89,6 +90,8 @@ class ShipNotification extends \Eloquent
                             "items" => $items,
                             "quantity" => $quantity,
                             "order_date" => $order_date,
+                            "brightpoint-order-number" => $data["brightpoint-order-number"],
+                            "ship-to-code" => $data["ship-to-code"],
         ];
 
         return $updateInfo;
