@@ -15,6 +15,8 @@ use SoapBox\Formatter\Formatter;
 use GuzzleHttp;
 use GuzzleHttp\Client;
 use SimpleXMLElement;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class IngramShipping implements ShippingInterface
 {
