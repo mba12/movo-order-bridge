@@ -32,9 +32,25 @@
                  <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">{{$item['quantity']}} x {{$item['description']}}</span></p>
              @endforeach
             <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
+
                 {{$data['name']}}<br>
-                {{$data['address1']}}<br>
-                {{$data['address2']}}
+                @if(isset($data['address1']) && strlen($data['address1']) > 0)
+                    {{{  $data['address1'] }}}<br/>
+                @endif
+                @if(isset($data['address2'])  && strlen($data['address2']) > 0)
+                    {{{ $data['address2'] }}}<br/>
+                @endif
+                @if(isset($data['address3'])  && strlen($data['address3']) > 0)
+                    {{{ $data['address3'] }}}<br/>
+                @endif
+                @if(isset($data['address4'])  && strlen($data['address4']) > 0)
+                    {{{ $data['address4'] }}}<br/>
+                @endif
+                @if(isset($data['ship_country_code'])  && strlen($data['ship_country_code']) > 0)
+                    {{{ $data['ship_country_code'] }}}<br/>
+                @endif
+
+
             </p>
             <div class="total"><span class="bold" style="font-weight: 700;">Order Total: <span class="red" style="color: #f6303e;">{{$data['total']}}</span></span></div>
             <p style="line-height: 1.4em;margin: 18px 0;">Thank you for your order! If you have any questions, please get in touch: <a href="mailto:info@getmovo.com" style="color: #f6303e;text-decoration: underline;">info@getmovo.com</a></p>
