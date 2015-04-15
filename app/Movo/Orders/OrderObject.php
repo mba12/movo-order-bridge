@@ -18,6 +18,7 @@ class OrderObject {
     private $errorCodes = array();
     private static $required = array(
                     "quantity","shipping-type","shipping-first-name","shipping-last-name","shipping-address",
+                    "shipping-address2","shipping-address3",
                     "shipping-city","shipping-state","shipping-zip",'shipping-country',"partner_id","partner_order_id");
 
     function __construct() {
