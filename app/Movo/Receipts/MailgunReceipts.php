@@ -38,8 +38,8 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
     {
         $data['name']=$data["shipping-first-name"]." ".$data["shipping-last-name"];
         $data['address1']=$data["shipping-address"];
-        $data['address2']=$data["shipping-address2"];
-        $data['address3']=$data["shipping-address3"];
+        $data['address2']=(isset($data['shipping-address2']) && strlen($data['shipping-address2']) > 0)?$data['shipping-address2']:'';
+        $data['address3']=(isset($data['shipping-address3']) && strlen($data['shipping-address3']) > 0)?$data['shipping-address3']:'';
         $data['address4']=$data["shipping-city"] . ", " . $data["shipping-state"] . " " . $data["shipping-zip"];
         $data['quantity']=$data["quantity"];
 
