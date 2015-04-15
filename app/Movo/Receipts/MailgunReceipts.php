@@ -16,20 +16,11 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
         $data['address1']=$data["shipping-address"];
         $data['address2']=$data["shipping-address2"];
         $data['address3']=$data["shipping-address3"];
-        $data['address4']=$data["shipping-city"].", ".$data["shipping-state"]." ".$data["shipping-zip"];
-        $data['quantity']=Input::get("quantity");
-        /*$data['items'] = [];
+        $data['address4']=$data["shipping-city"] . ", " . $data["shipping-state"] . " " . $data["shipping-zip"];
+        $data['quantity']=$data["quantity"];
 
-        for ($i = 0; $i < $data['quantity']; $i++) {
-            $data['items'][]=[
-                "description"=>Input::get("unit" . ($i + 1)."Name"),
-                "sku"=>Input::get("unit" . ($i + 1)),
-                "quantity"=>1,
-                "price"=>Format::FormatUSD($data['total-unit-prices'])
-                //TODO fix displayed price in email
-            ];
-        }
-        $data['items']=(new Order)->combineAndCountItems($data['items']);*/
+        //TODO: fix displayed price in email  ???
+
         $data['items']=(new Order)->combineAndCountItems($data['items']);
         $emailData = $this->createEmailData($data);
 
@@ -42,24 +33,16 @@ class MailgunReceipts extends Receipt implements ReceiptsInterface
     }
 
 
+    // TODO: This can likely be combined with the method above instead of having two functions
     public function sendOffline(array $data)
     {
         $data['name']=$data["shipping-first-name"]." ".$data["shipping-last-name"];
         $data['address1']=$data["shipping-address"];
-        $data['address2']=$data["shipping-city"].", ".$data["shipping-state"]." ".$data["shipping-zip"];
+        $data['address2']=$data["shipping-address2"];
+        $data['address3']=$data["shipping-address3"];
+        $data['address4']=$data["shipping-city"] . ", " . $data["shipping-state"] . " " . $data["shipping-zip"];
+        $data['quantity']=$data["quantity"];
 
-        /*$data['items'] = [];
-
-        for ($i = 0; $i < $data['quantity']; $i++) {
-            $data['items'][]=[
-                "description"=>Input::get("unit" . ($i + 1)."Name"),
-                "sku"=>Input::get("unit" . ($i + 1)),
-                "quantity"=>1,
-                "price"=>Format::FormatUSD($data['total-unit-prices'])
-                //TODO fix displayed price in email
-            ];
-        }
-        $data['items']=(new Order)->combineAndCountItems($data['items']);*/
         $data['items']=(new Order)->combineAndCountItems($data['items']);
         $emailData = $this->createEmailData($data);
 
