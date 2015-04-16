@@ -79,8 +79,8 @@ class OrderInput
         "billing-first-name" => "Billing First Name",
         "billing-last-name" => "Billing Last Name",
         "email" => "Email Address",
-        "partner_id" => "Partner-Id",
-        "partner_order_id" => "Partner-Order_Id");
+        "partner_id" => "Partner-id",
+        "partner_order_id" => "Partner-Order-Id");
 
     private static $productIdMap = array (  'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
                                             'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);

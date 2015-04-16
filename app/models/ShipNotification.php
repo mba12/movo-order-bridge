@@ -113,8 +113,8 @@ class ShipNotification extends \Eloquent
     }
 
     private static function sumQuantity($items) {
-        $debug = var_export($items, true);
-        Log::info("The array: " . $debug);
+        // $debug = var_export($items, true);
+        // Log::info("The array: " . $debug);
 
         $quantity = 0;
         foreach($items as $i) {
@@ -129,7 +129,7 @@ class ShipNotification extends \Eloquent
 
         // TODO: This process does not take into account multiple items
         //       Should check against our items table to make sure the
-        //       items going out match against what was ordered.
+        //       items going out in the ship advice match against what was ordered.
         foreach (ShipNotification::$fieldList as $f) {
             $data[$f] = ShipNotification::checkData( $xml->xpath("//" . $f) );
         }

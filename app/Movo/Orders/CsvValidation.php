@@ -15,7 +15,7 @@ class CsvValidation {
     {
         $size = count($header);
         for($i = 0; $i < $size; $i++) {
-            if (strcasecmp ( $header[$i] , $data[$i] ) != 0) {
+            if (strcmp ( $header[$i] , $data[$i] ) != 0) {
                 return false;
             }
         }

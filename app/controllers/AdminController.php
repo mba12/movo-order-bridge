@@ -179,26 +179,6 @@ class AdminController extends \BaseController
 
     }
 
-    public function processUploads()
-    {
-
-        $partnerId = Input::get("partner_id");
-        $fileName = $this->backupCsvFile();
-
-        $status = '';
-        if (strcasecmp($partnerId,'STACK') == 0) {
-            $status = $this->processStack($this->slackHeader, $fileName, $partnerId);
-        } else if (strcasecmp($partnerId,'MOVO') == 0 || strcasecmp($partnerId,'AHA') == 0) {
-            $status = $this->processPartner($this->movoHeader, $fileName, $partnerId);
-        }
-
-        Log::info("Completed upload: " . $fileName);
-
-        return View::make('admin.upload', [
-            'statusList' => $status,
-        ]);
-    }
-
     private function backupCsvFile() {
 
         // Get the app base directory
@@ -222,6 +202,27 @@ class AdminController extends \BaseController
 
         return $folder . '/' . $fileName;
     }
+
+    public function processUploads()
+    {
+
+        $partnerId = Input::get("partner_id");
+        $fileName = $this->backupCsvFile();
+
+        $status = '';
+        if (strcasecmp($partnerId,'STACK') == 0) {
+            $status = $this->processStack($this->slackHeader, $fileName, $partnerId);
+        } else if (strcasecmp($partnerId,'MOVO') == 0 || strcasecmp($partnerId,'AHA') == 0) {
+            $status = $this->processPartner($this->movoHeader, $fileName, $partnerId);
+        }
+
+        Log::info("Completed upload: " . $fileName);
+
+        return View::make('admin.upload', [
+            'statusList' => $status,
+        ]);
+    }
+
 
     private function processStack($header, $fileName, $partnerId) {
 
@@ -342,8 +343,6 @@ class AdminController extends \BaseController
                         }
                         $c++;
                     }
-
-                    $map['partner_id'] = $partnerId;
 
                     if (strcasecmp($partnerId, "MOVO") == 0 || strcasecmp($partnerId, "AHA")) {
                         $convertedData = OrderInput::convertMovoCSVInputToData($map);
