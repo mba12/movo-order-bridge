@@ -28,7 +28,7 @@
     <div id="content-wrap" style="background-color: #efeeee;border-top: 1px solid #cecece;border-bottom: 1px solid #cecece;margin-bottom: 3%;color:#333333;">
         <div class="inner" style="max-width: 700px;margin: 0 auto;padding: 40px 0;width: 80%;">
             <p style="line-height: 1.4em;margin: 18px 0;">This email is a shipping notification for your order placed on  <span class="bold" style="font-weight: 700;">{{{ $data['order_date'] }}}</span></p>
-             @foreach($data['items'] as $item)
+             @foreach($data['items']['line-item'] as $item)
                  <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold product" style="font-weight: 700;font-size: 1.125em;">{{intval($item['ship-quantity'])}} x {{$item['name']}} ({{$item['item-code']}})</span></p>
              @endforeach
             <p style="line-height: 1.4em;margin: 18px 0;"><span class="bold" style="font-weight: 700;">Shipping Address:</span><br>
