@@ -67,11 +67,12 @@ class ShipNotification extends \Eloquent
         $xml = new SimpleXMLElement($doc);
         $data = ShipNotification::parseData($xml);
         ShipNotification::saveData($data);
-        $quantity = ShipNotification::sumQuantity($betterArray['ship-advice']['detail']['line-item']);
+
+        $items = $betterArray['ship-advice']['detail'];
+        $quantity = ShipNotification::sumQuantity($items);
         $timestamp = DateTime::createFromFormat('Ymd', $betterArray['ship-advice']['header']['order-header']['customer-order-date']);
         $order_date = date('m-d-Y', $timestamp->getTimestamp() );
 
-        $items = $betterArray['ship-advice']['detail']['line-item'];
         ShipNotification::lookupItemDescriptions($items);
 
         ShippedItems::saveData($betterArray['message-header']['message-id'], $items);
@@ -100,13 +101,21 @@ class ShipNotification extends \Eloquent
 
     private static function lookupItemDescriptions(&$items) {
         // universal-product-code
+        /*
         $size = count($items);
         for($i=0;$i<$size;$i++) {
             $items[$i]['name'] = Product::getNameBySKU($items[$i]['universal-product-code']);
         }
+        */
+        foreach($items as &$item) {
+            $item['name'] = Product::getNameBySKU($item['universal-product-code']);
+        }
     }
 
     private static function sumQuantity($items) {
+        $debug = var_export($items, true);
+        Log::info("The array: " . $debug);
+
         $quantity = 0;
         foreach($items as $i) {
             $quantity += $i['ship-quantity'];
