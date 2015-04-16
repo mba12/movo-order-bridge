@@ -103,6 +103,12 @@ class ProcessOrder
 
             (new OrderLogHandler)->handleNotification($data);
             (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
+
+            // TODO: If there is an error with the email receipt the user will get a message that there was
+            //       a problem with their order and they may resubmit even those on the previous line
+            //       the order would have been successfully submitted to Ingram.
+            //       Assuming the inputs were validated already this should be an unlikely event
+
             (new ReceiptHandler)->handleNotification($data); // This sends the email to the customer
             return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
 
