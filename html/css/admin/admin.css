@@ -8,39 +8,23 @@
 * v0.7.2
 * Docs at http://davidtheclark.github.io/scut
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, menu, nav, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, menu, nav, section, summary,
+time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -50,7 +34,8 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline; }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
   display: block; }
 
 body {
@@ -62,7 +47,8 @@ ol, ul {
 blockquote, q {
   quotes: none; }
 
-blockquote:before, blockquote:after, q:before, q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
   content: ' ';
   content: none; }
 
@@ -108,16 +94,16 @@ a {
 .screen-size-check {
   display: none;
   width: 1px; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .screen-size-check {
       width: 2px; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .screen-size-check {
       width: 3px; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .screen-size-check {
       width: 4px; } }
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: min-width 1300px 12) {
     .screen-size-check {
       width: 5px; } }
 
@@ -146,83 +132,83 @@ a {
 
 .hide-for-mobile {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .hide-for-mobile {
       display: block !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-up {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-only {
     display: none !important; } }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-tablet-only {
     display: block !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-up {
     display: none !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-only {
     display: none !important; } }
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-desktop-only {
     display: block !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-up {
     display: none !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-only {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .show-for-mobile-only {
     display: none !important; } }
 
 .show-for-tablet-up {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-up {
       display: block !important; } }
 
 .show-for-tablet-only {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-only {
       display: block !important; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-tablet-only {
       display: none !important; } }
 
 .show-for-ipad-portrait-up {
   display: none !important; }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: min-width 768px 12) {
     .show-for-ipad-portrait-up {
       display: block !important; } }
 
 .show-for-desktop-up {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-up {
       display: block !important; } }
 
 .show-for-desktop-only {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-only {
       display: block !important; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-desktop-only {
       display: none !important; } }
 
 .show-for-large-up {
   display: none !important; }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-large-up {
       display: block !important; } }
 
@@ -294,7 +280,7 @@ a {
       width: auto;
       height: 40px;
       margin-left: 5px;
-      color: white;
+      color: #fff;
       white-space: nowrap;
       padding: 10px 18px; }
     .youtube-player .close-btn .x {
@@ -325,7 +311,8 @@ a {
   background-position: 50%;
   background-repeat: no-repeat; }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
@@ -346,19 +333,19 @@ USAGE:
 
 */
 .white {
-  color: white !important; }
+  color: #fff !important; }
 
 .black {
-  color: black; }
+  color: #000; }
   .black a {
-    color: black; }
+    color: #000; }
 
 .green {
   color: #0e8016; }
 
 body {
   font-family: Roboto, sans-serif;
-  color: #333333; }
+  color: #333; }
 
 section {
   padding: 55px 0; }
@@ -378,7 +365,7 @@ section {
   color: #f52f41; }
 
 a {
-  color: #333333;
+  color: #333;
   -webkit-transition: 0.3s all;
   -moz-transition: 0.3s all;
   transition: 0.3s all; }
@@ -391,7 +378,7 @@ input, select {
   border-radius: 4px;
   height: 31px;
   padding: 0 5px 0 10px;
-  color: #333333;
+  color: #333;
   font-size: 0.75em; }
   input.error, select.error {
     border: 1px solid #f52f41; }
@@ -400,8 +387,8 @@ input[type='text'] {
   -webkit-appearance: none; }
 
 input[type='submit'] {
-  background-color: #555555;
-  color: white;
+  background-color: #555;
+  color: #fff;
   border: none;
   height: 31px !important;
   padding: 3px 16px;
@@ -410,7 +397,7 @@ input[type='submit'] {
   -moz-transition: 0.3s all;
   transition: 0.3s all; }
   input[type='submit']:hover {
-    background-color: #666666; }
+    background-color: #666; }
 
 h2 {
   text-transform: uppercase;
@@ -424,7 +411,7 @@ h2 {
 #header .inner {
   padding: 30px 0;
   position: relative; }
-  @media screen and (min-width: 800px) {
+  @media screen and (min-width: min-width 800px 12) {
     #header .inner {
       padding: 56px 0; } }
   #header .inner a .logo {
@@ -433,20 +420,20 @@ h2 {
     left: 0;
     width: 231px;
     height: 44px;
-    background-image: url('../../img/admin/movo-logo.png');
+    background-image: url("../../img/admin/movo-logo.png");
     background-size: 231px 44px;
     background-repeat: no-repeat; }
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
       #header .inner a .logo {
-        background-image: url('../../img/admin/movo-logo@2x.png');
+        background-image: url("../../img/admin/movo-logo@2x.png");
         background-size: 231px 44px; } }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: min-width 800px 12) {
       #header .inner a .logo {
         top: 49px; } }
   #header .inner #nav-links {
     white-space: nowrap;
     margin-top: 60px; }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: min-width 800px 12) {
       #header .inner #nav-links {
         width: 100%;
         text-align: right;
@@ -458,7 +445,7 @@ h2 {
       margin-left: 3.5%;
       font-size: 1em;
       display: inline-block; }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: min-width 800px 12) {
         #header .inner #nav-links li {
           font-size: 1.0625em; } }
       #header .inner #nav-links li:first-child {
@@ -470,6 +457,12 @@ h2 {
         color: #f52f41;
         text-rendering: optimizeLegibility; }
       .coupons #header .inner #nav-links li a.coupons {
+        color: #f52f41;
+        text-rendering: optimizeLegibility; }
+      .manual #header .inner #nav-links li a.manual {
+        color: #f52f41;
+        text-rendering: optimizeLegibility; }
+      .upload #header .inner #nav-links li a.upload {
         color: #f52f41;
         text-rendering: optimizeLegibility; }
 
@@ -494,7 +487,7 @@ h2 {
     float: left;
     text-align: center; }
     .stats #orders ul li a:hover {
-      color: #333333; }
+      color: #333; }
     .stats #orders ul li .circle {
       width: 130px;
       height: 130px;
@@ -502,27 +495,27 @@ h2 {
       margin-bottom: 12px;
       position: relative; }
       .stats #orders ul li .circle .number {
-        color: white;
+        color: #fff;
         font-size: 2.9375em;
         font-weight: 300;
         padding: 40px 22px 0; }
     .stats #orders ul li.hour .circle {
-      background-color: #555555; }
+      background-color: #555; }
     .stats #orders ul li.day .circle {
       background-color: #939393; }
     .stats #orders ul li.week .circle {
       background-color: #cccccc; }
       .stats #orders ul li.week .circle .number {
-        color: #333333; }
+        color: #333; }
     .stats #orders ul li.month .circle {
-      background-color: white; }
+      background-color: #fff; }
       .stats #orders ul li.month .circle .number {
-        color: #333333; }
+        color: #333; }
     .stats #orders ul li.errors .circle {
       background-color: #f52f41; }
     .stats #orders ul li .period {
       font-weight: 500;
-      color: #333333;
+      color: #333;
       margin-bottom: 0px;
       font-size: 1.0625rem; }
 .stats #coupons ul {
@@ -624,12 +617,12 @@ h2 {
     display: table; }
   .orders #search-header:after {
     clear: both; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .orders #search-header h2 {
       float: left; } }
   .orders #search-header #search {
     margin-bottom: 20px; }
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: min-width 601px 12) {
       .orders #search-header #search {
         float: right; } }
     .orders #search-header #search input {
@@ -646,12 +639,12 @@ h2 {
     display: table; }
   .orders #orders:after {
     clear: both; }
-  @media screen and (min-width: 650px) {
+  @media screen and (min-width: min-width 650px 12) {
     .orders #orders {
       -webkit-column-count: 2;
       -moz-column-count: 2;
       column-count: 2; } }
-  @media screen and (min-width: 900px) {
+  @media screen and (min-width: min-width 900px 12) {
     .orders #orders {
       -webkit-column-count: 3;
       -moz-column-count: 3;
@@ -665,7 +658,7 @@ h2 {
       display: table;
       width: 100%;
       padding-bottom: 7px; }
-      @media screen and (min-width: 601px) {
+      @media screen and (min-width: min-width 601px 12) {
         .orders #orders li a {
           padding-bottom: 13px; } }
       .orders #orders li a .left {
@@ -674,7 +667,7 @@ h2 {
         vertical-align: top; }
         .orders #orders li a .left.error .date {
           background-color: #f52f41;
-          color: white; }
+          color: #fff; }
         .orders #orders li a .left .date {
           text-align: center;
           margin-right: 8px;
@@ -703,11 +696,11 @@ h2 {
     .orders .pagination li.active {
       color: #f52f41; }
     .orders .pagination li.disabled, .orders .pagination li:last-of-type {
-      color: #cccccc;
+      color: #ccc;
       font-size: 1.375em;
       position: relative;
       top: -4px; }
-@media screen and (min-width: 700px) {
+@media screen and (min-width: min-width 700px 12) {
   .orders.order-details .inner .details {
     -webkit-column-count: 2;
     -moz-column-count: 2;
@@ -727,4 +720,6 @@ h2 {
     font-weight: 700;
     font-size: 1em;
     margin-bottom: 5px;
-    color: #333333; }
+    color: #333; }
+
+/*# sourceMappingURL=admin.css.map */

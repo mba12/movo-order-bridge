@@ -1,5 +1,5 @@
 @extends('admin.main')
-@section('page-id')orders @stop
+@section('page-id')upload @stop
 @section('content')
     <section class="gray">
         <div class="inner">
@@ -12,5 +12,5 @@
     </section>
 @stop
 @section('inline-scripts')
-    <script src="/js/admin/orders.js"></script>
+    <script src="/js/admin/upload.js"></script>
 @stop

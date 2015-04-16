@@ -116,24 +116,22 @@ class ProcessOrder
     public function processMultipleOffline($masterOrderList) {
 
         $orderLog = new OrderErrorLogHandler();
-        $response = '';
+        $count = 0;
+        $orderStatus = array();
         foreach($masterOrderList as $key => $order) {
             $data = $order->asArray();
             $response = $this->processOffline($data);
 
-            $orderLog ->handleNotification(['response' => $response]);
             // if one of the orders throws an error
             // return immediately
-            /*
-            $jsonArray = json_decode($response, true);
-            if( intval($jsonArray['status']) != 200 ) {
-                return $response;
+            $orderStatus[$count++] = $response;
+            if( intval($response['status']) != 200 ) {
+                $orderLog->handleNotification(["Error" => $response]);
+                break;
             }
-            */
-
         }
 
-        return $response;
+        return $orderStatus;
     }
 
 
@@ -145,7 +143,7 @@ class ProcessOrder
         if(!OrderValidate::validateCsvOrder($data)){
             (new OrderErrorLogHandler)->handleNotification($data);
 
-            return Response::json(array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Please refresh the page and try again.'));
+            return array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Please refresh the page and try again.');
         }
 
         $couponInstance = Coupon::getValidCouponInstanceCSV($data);
@@ -153,10 +151,10 @@ class ProcessOrder
         try {
             $salesTaxRate = 0.00;
         } catch (Exception $e) {
-            return Response::json(array('status' => '400', 'error_code'=>1001,'message' => 'Error 1001: There was an error submitting your order. Please try again.'));
+            return array('status' => '400', 'error_code'=>1001,'message' => 'Error 1001: There was an error submitting your order. Please try again.');
         }
         if (!isset($salesTaxRate)) {
-            return Response::json(array('status' => '400', 'error_code'=>1002,'message' => 'Error 1002: There was an error submitting your order. Your state and zip code do not match'));
+            return array('status' => '400', 'error_code'=>1002,'message' => 'Error 1002: There was an error submitting your order. Your state and zip code do not match');
         }
 
         try {
@@ -187,7 +185,7 @@ class ProcessOrder
             $shippingMethod = Shipping::getShippingMethod($data["shipping-type"]);
 
         } catch (Exception $e) {
-            return Response::json(array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.'));
+            return array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.');
         }
         $saveEmail = $data['email'];
 
@@ -203,14 +201,14 @@ class ProcessOrder
             $data['order_id'] = $order->id;
             //(new DonationHandler)->handleNotification(["order"=>$order,"data"=>$data]);
         } catch (ErrorException $e) {
-            return Response::json(array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.'));
+            return array('status' => '400', 'error_code'=>1004,'message' => 'Error 1004: There was an error submitting your order. Please try again.');
         }
 
         try {
             $result = $this->fakeCharge($orderTotal, $data);
         } catch (Exception $e) {
             $this->flagOrderAsCriticalError($order);
-            return Response::json(array('status' => '400', 'error_code'=>2001,'message' => 'Error 2001: There was an error submitting your order.'));
+            return array('status' => '400', 'error_code'=>2001,'message' => 'Error 2001: There was an error submitting your order.');
         }
 
         $result['id'] = "no stripe charge";
@@ -228,11 +226,11 @@ class ProcessOrder
             $data['email'] = getenv('ingram.receipt-email'); // highjack the email address so customers don't get an email
             (new ReceiptHandler)->handleOfflineNotification($data); // This sends the email to the customer
 
-            return Response::json(array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data));
+            return array('status' => '200', 'message' => 'Your order has been submitted!', 'data' => $data);
 
         }  else {
             $this->updateOrderWithDeclinedCardErrorFlag($order);
-            return Response::json(array('status' => '400','error_code'=>1005, 'message' => 'Error 1005: There was a problem processing your credit card.'));
+            return array('status' => '400','error_code'=>1005, 'message' => 'Error 1005: There was a problem processing your credit card.');
         }
     }
 

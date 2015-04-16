@@ -1,5 +1,5 @@
 @extends('admin.main')
-@section('page-id')coupons @stop
+@section('page-id')manual @stop
 @section('page-css')
     {{ HTML::style('css/vendor/jquery/jquery.datetimepicker.css') }}
 @stop

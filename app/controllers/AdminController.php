@@ -188,15 +188,14 @@ class AdminController extends \BaseController
         $status = '';
         if (strcasecmp($partnerId,'STACK') == 0) {
             $status = $this->processStack($this->slackHeader, $fileName, $partnerId);
-        } else if (strcasecmp($partnerId,'MOVO') == 0) {
+        } else if (strcasecmp($partnerId,'MOVO') == 0 || strcasecmp($partnerId,'AHA') == 0) {
             $status = $this->processPartner($this->movoHeader, $fileName, $partnerId);
         }
 
         Log::info("Completed upload: " . $fileName);
-        $filename = "Saved file";
+
         return View::make('admin.upload', [
-            'status' => $status,
-            'filename'=>$filename
+            'statusList' => $status,
         ]);
     }
 
@@ -312,8 +311,9 @@ class AdminController extends \BaseController
 
         // read and parse the csv file
         $processor=new Movo\Orders\ProcessOrder();
-        $row = 0;
+        $row = 0; $count = 0;
         $status = '';
+        $statusList = array();
         if (($handle = fopen($fileName, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
@@ -322,6 +322,7 @@ class AdminController extends \BaseController
                     $valid = CsvValidation::validateHeaders($header, $data);
                     if ($valid === false) {
                         Log::info("Header validation false ");
+                        $status = "The attached CSV file header was not in Movo format. You are likely loaded a Stack Social formatted file as a Movo/AHA file.";
                         break;
                     } else {
                         $row++;
@@ -343,32 +344,23 @@ class AdminController extends \BaseController
                     }
 
                     $map['partner_id'] = $partnerId;
-                    if(strcasecmp($partnerId, "STACK") == 0) {
-                        $map['shipping-type'] = "2";
-                        $convertedData = OrderInput::convertStackCSVInputToData($map);
 
-                        // If a return then skip and continue
-                        if (isset($data['Refunded - Do Not Ship']) && length($data['Refunded - Do Not Ship']) > 0) {
-                            $row++;
-                            continue;
-                        }
-
-                    } else if (strcasecmp($partnerId, "MOVO") == 0) {
+                    if (strcasecmp($partnerId, "MOVO") == 0 || strcasecmp($partnerId, "AHA")) {
                         $convertedData = OrderInput::convertMovoCSVInputToData($map);
                     }
 
                     $status = $processor->processOffline($convertedData);
-                    // TODO: check the status and see if there was an error
-
-                    Log::info("Processing status: " . $status);
+                    $statusList[$count] = $status;
                 }
-                $row++;
+                $row++; $count++;
             }
             fclose($handle);
         }
-
-        return $status;
-
+        if($row === 0) {
+            return $status;
+        } else {
+            return $statusList;
+        }
     }
 
 

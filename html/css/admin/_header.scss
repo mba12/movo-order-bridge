@@ -60,6 +60,18 @@
               text-rendering: optimizeLegibility;
             }
           }
+          &.manual {
+            .manual & {
+              color:          $movoRed;
+              text-rendering: optimizeLegibility;
+            }
+          }
+          &.upload {
+            .upload & {
+              color:          $movoRed;
+              text-rendering: optimizeLegibility;
+            }
+          }
         }
       }
     }

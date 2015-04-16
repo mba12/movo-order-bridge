@@ -82,10 +82,11 @@ class OrderInput
         "partner_id" => "Partner-Id",
         "partner_order_id" => "Partner-Order_Id");
 
-    private static $productIdMap = array ( 'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
-        'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);
+    private static $productIdMap = array (  'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
+                                            'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);
 
-private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty','Standard-Qty','Neon-Qty');
+    private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty',
+                                         'Standard-Qty','Neon-Qty');
 
 
     public static function convertInputToData($data)
@@ -139,6 +140,7 @@ private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Lar
 
     public static function convertStackCSVInputToData($csvData)
     {
+
         $orderObject = new OrderObject();
         $row = 0;
         foreach(OrderInput::$stackFieldMap as $key => $value ) {
@@ -220,9 +222,6 @@ private static $productList = array ('X-Small-Qty','Small-Qty','Medium-Qty','Lar
 
     public static function convertMovoCSVInputToData($csvData)
     {
-
-        // TODO: check for Refunded - Do Not Ship and 	Reason fields
-
         $row = 0;
         foreach(OrderInput::$movoFieldMap as $key => $value ) {
             if (isset($csvData[$value])) {
