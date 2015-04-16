@@ -69,13 +69,20 @@ class ShipNotification extends \Eloquent
         ShipNotification::saveData($data);
 
         $items = $betterArray['ship-advice']['detail'];
-        $quantity = ShipNotification::sumQuantity($items);
+
+        // NOTE: this is a real hack to deal with how the arrays come back from Ingram
+        if (array_key_exists(0, $items['line-item'] ) === false) {
+            $temp = $items['line-item'];
+            unset($items['line-item']);
+            $items['line-item'][0] = $temp;
+        }
+
+        $quantity = ShipNotification::sumQuantity($items['line-item']); // ok
+        ShipNotification::lookupItemDescriptions($items['line-item']); // OK
+        ShippedItems::saveData($betterArray['message-header']['message-id'], $items['line-item']);
+
         $timestamp = DateTime::createFromFormat('Ymd', $betterArray['ship-advice']['header']['order-header']['customer-order-date']);
         $order_date = date('m-d-Y', $timestamp->getTimestamp() );
-
-        ShipNotification::lookupItemDescriptions($items);
-
-        ShippedItems::saveData($betterArray['message-header']['message-id'], $items);
 
         $updateInfo =   [   'order_number' => strval($data['purchase-order-number']),
                             'tracking_code' => strval($data['bill-of-lading']),
@@ -101,23 +108,25 @@ class ShipNotification extends \Eloquent
 
     private static function lookupItemDescriptions(&$items) {
         // universal-product-code
-        /*
+
         $size = count($items);
         for($i=0;$i<$size;$i++) {
             $items[$i]['name'] = Product::getNameBySKU($items[$i]['universal-product-code']);
         }
-        */
+        /*
         foreach($items as &$item) {
             $item['name'] = Product::getNameBySKU($item['universal-product-code']);
         }
+        */
     }
 
     private static function sumQuantity($items) {
-        // $debug = var_export($items, true);
-        // Log::info("The array: " . $debug);
+        $debug = var_export($items, true);
+        Log::info("The array " . count($items) . ": " . $debug);
 
         $quantity = 0;
-        foreach($items as $i) {
+        $size = count($items);
+        for($i=0; $i<$size; $i++) {
             $quantity += $i['ship-quantity'];
         }
         return $quantity;

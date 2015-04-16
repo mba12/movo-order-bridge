@@ -13,7 +13,18 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, menu, nav, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, menu, nav, section, summary,
+time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -23,7 +34,8 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline; }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
   display: block; }
 
 body {
@@ -35,7 +47,8 @@ ol, ul {
 blockquote, q {
   quotes: none; }
 
-blockquote:before, blockquote:after, q:before, q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
   content: ' ';
   content: none; }
 
@@ -81,16 +94,16 @@ a {
 .screen-size-check {
   display: none;
   width: 1px; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .screen-size-check {
       width: 2px; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .screen-size-check {
       width: 3px; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .screen-size-check {
       width: 4px; } }
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: min-width 1300px 12) {
     .screen-size-check {
       width: 5px; } }
 
@@ -119,83 +132,83 @@ a {
 
 .hide-for-mobile {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .hide-for-mobile {
       display: block !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-up {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .hide-for-tablet-only {
     display: none !important; } }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-tablet-only {
     display: block !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-up {
     display: none !important; } }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: min-width 769px 12) {
   .hide-for-desktop-only {
     display: none !important; } }
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-desktop-only {
     display: block !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-up {
     display: none !important; } }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: min-width 1025px 12) {
   .hide-for-large-only {
     display: none !important; } }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: min-width 601px 12) {
   .show-for-mobile-only {
     display: none !important; } }
 
 .show-for-tablet-up {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-up {
       display: block !important; } }
 
 .show-for-tablet-only {
   display: none !important; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     .show-for-tablet-only {
       display: block !important; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-tablet-only {
       display: none !important; } }
 
 .show-for-ipad-portrait-up {
   display: none !important; }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: min-width 768px 12) {
     .show-for-ipad-portrait-up {
       display: block !important; } }
 
 .show-for-desktop-up {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-up {
       display: block !important; } }
 
 .show-for-desktop-only {
   display: none !important; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: min-width 769px 12) {
     .show-for-desktop-only {
       display: block !important; } }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-desktop-only {
       display: none !important; } }
 
 .show-for-large-up {
   display: none !important; }
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: min-width 1025px 12) {
     .show-for-large-up {
       display: block !important; } }
 
@@ -298,7 +311,8 @@ a {
   background-position: 50%;
   background-repeat: no-repeat; }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
@@ -330,7 +344,8 @@ USAGE:
   overflow: hidden;
   -moz-appearance: textfield; }
 
-.stepper .stepper-input::-webkit-inner-spin-button, .stepper .stepper-input::-webkit-outer-spin-button {
+.stepper .stepper-input::-webkit-inner-spin-button,
+.stepper .stepper-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
@@ -400,7 +415,7 @@ html {
     display: table; }
   #form-content-box:after {
     clear: both; }
-  @media screen and (min-width: 601px) {
+  @media screen and (min-width: min-width 601px 12) {
     #form-content-box {
       margin: 80px auto 0;
       padding: 32px; } }
@@ -427,7 +442,7 @@ html {
     background-color: #fff;
     padding: 20px;
     overflow: auto; }
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: min-width 601px 12) {
       #form-content-box section {
         padding: 30px;
         min-height: 311px;
@@ -540,7 +555,7 @@ html {
     right: -15px;
     width: 36px;
     height: 36px;
-    background-image: url('/img/close.png');
+    background-image: url("/img/close.png");
     background-size: 36px 36px;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -549,7 +564,7 @@ html {
     transition: 0.3s all; }
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
       #form-content-box #close {
-        background-image: url('/img/close@2x.png');
+        background-image: url("/img/close@2x.png");
         background-size: 36px 36px; } }
     #form-content-box #close:hover {
       -webkit-transform: rotate(90deg);
@@ -563,7 +578,7 @@ html {
     position: relative;
     z-index: 1;
     display: none; }
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: min-width 601px 12) {
       #form-content-box #nav {
         display: block; } }
     #form-content-box #nav ul {
@@ -592,14 +607,14 @@ html {
     background-color: #fff;
     padding: 20px 15px 0;
     width: 100%; }
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: min-width 601px 12) {
       #form-content-box #fixed-right-module {
         float: right;
         padding: 30px 17px 0;
         width: 40%; } }
     #form-content-box #fixed-right-module .top {
       margin-bottom: 12px; }
-      @media screen and (min-width: 601px) {
+      @media screen and (min-width: min-width 601px 12) {
         #form-content-box #fixed-right-module .top {
           margin-bottom: 25px; } }
       #form-content-box #fixed-right-module .top .left {
@@ -743,26 +758,27 @@ html {
     #form-content-box #payment .credit-cards {
       width: 143px;
       height: 23px;
-      background-image: url('/img/credit-cards.png');
+      background-image: url("/img/credit-cards.png");
       background-size: 143px 23px;
       background-repeat: no-repeat;
       margin-bottom: 10px;
       float: left; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
         #form-content-box #payment .credit-cards {
-          background-image: url('/img/credit-cards@2x.png');
+          background-image: url("/img/credit-cards@2x.png");
           background-size: 143px 23px; } }
-      @media screen and (min-width: 601px) {
+      @media screen and (min-width: min-width 601px 12) {
         #form-content-box #payment .credit-cards {
           width: 159px;
           height: 26px;
-          background-image: url('/img/credit-cards.png');
+          background-image: url("/img/credit-cards.png");
           background-size: 159px 26px;
-          background-repeat: no-repeat; }
-          @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
-            #form-content-box #payment .credit-cards {
-              background-image: url('/img/credit-cards@2x.png');
-              background-size: 159px 26px; } } }
+          background-repeat: no-repeat; } }
+  @media screen and (min-width: min-width 601px 12) and (-webkit-min-device-pixel-ratio: 2), screen and (min-width: min-width 601px 12) and (min-resolution: 144dppx) {
+    #form-content-box #payment .credit-cards {
+      background-image: url("/img/credit-cards@2x.png");
+      background-size: 159px 26px; } }
+
     #form-content-box #payment #secure {
       width: 100px;
       text-align: right;
@@ -771,14 +787,14 @@ html {
       #form-content-box #payment #secure #lock-icon {
         width: 13px;
         height: 17px;
-        background-image: url('/img/lock.png');
+        background-image: url("/img/lock.png");
         background-size: 13px 17px;
         background-repeat: no-repeat;
         display: inline-block;
         opacity: 0.8; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
           #form-content-box #payment #secure #lock-icon {
-            background-image: url('/img/lock@2x.png');
+            background-image: url("/img/lock@2x.png");
             background-size: 13px 17px; } }
       #form-content-box #payment #secure h5 {
         display: inline-block;
@@ -818,7 +834,7 @@ html {
       line-height: 1.3em; }
     #form-content-box #payment #submit-order .order {
       display: none; }
-      @media screen and (min-width: 655px) {
+      @media screen and (min-width: min-width 655px 12) {
         #form-content-box #payment #submit-order .order {
           display: inline-block; } }
   #form-content-box #summary {
@@ -865,3 +881,5 @@ html {
   transition: 0.3s all; }
   .small-gray-button:hover {
     background-color: #d8d8d8; }
+
+/*# sourceMappingURL=main.css.map */

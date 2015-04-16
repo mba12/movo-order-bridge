@@ -13,9 +13,9 @@ USAGE:
 */
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,700);
 body {
-  color: #333333;
+  color: #333;
   font-family: 'Open Sans', sans-serif;
-  background-color: white;
+  background-color: #fff;
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
@@ -27,7 +27,7 @@ body {
 p {
   line-height: 1.4em;
   margin: 18px 0;
-  color: #333333; }
+  color: #333; }
 
 a {
   color: #f6303e;
@@ -51,7 +51,7 @@ a {
   border-top: 1px solid #cecece;
   border-bottom: 1px solid #cecece;
   margin-bottom: 30px;
-  color: #333333; }
+  color: #333; }
   #content-wrap .inner {
     max-width: 700px;
     margin: 0 auto;
@@ -68,3 +68,5 @@ a {
   margin-bottom: 50px; }
   #website a {
     text-decoration: none !important; }
+
+/*# sourceMappingURL=email-receipt.css.map */
