@@ -344,7 +344,7 @@ class AdminController extends \BaseController
                         $c++;
                     }
 
-                    if (strcasecmp($partnerId, "MOVO") == 0 || strcasecmp($partnerId, "AHA")) {
+                    if (strcasecmp($partnerId, "MOVO") == 0 || strcasecmp($partnerId, "AHA") == 0) {
                         $convertedData = OrderInput::convertMovoCSVInputToData($map);
                     }
 
