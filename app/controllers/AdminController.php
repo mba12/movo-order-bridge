@@ -13,7 +13,7 @@ class AdminController extends \BaseController
         'City','State','Zip','Country','Email','Refunded','Carrier','Tracking Number');
 
     private $movoHeader = array('Partner-id','Partner-Order-Id','Billing First Name','Billing Last Name',
-                                'Shipping-Type','First','Last','Email Address',
+                                'Shipping-Type', 'Ship On Date','First','Last','Email Address',
                                 'Telephone','Shipping Address 1','Shipping Address 2','Shipping Address 3','City',
                                 'State','Zip',
                                 'X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty',
@@ -86,10 +86,17 @@ class AdminController extends \BaseController
         // $combinedItems = $order->combineAndCountItems($order->items()->all());
         $combinedItems = $order->combineAndCountItems($order->items()->getResults());
 
+        if(isset($order->tracking_code) && strlen($order->tracking_code) > 0) {
+            $trackLink = 'https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=' . $order->tracking_code . '&cntry_code=us';
+        } else {
+            $trackLink = '';
+        }
+
         return View::make("admin.order-details", [
             'order' => $order,
             'shipping' => Shipping::find($order->shipping_type),
             'combinedItems' => $combinedItems,
+            'trackLink' => $trackLink,
         ]);
     }
 
@@ -345,7 +352,12 @@ class AdminController extends \BaseController
                     }
 
                     if (strcasecmp($partnerId, "MOVO") == 0 || strcasecmp($partnerId, "AHA") == 0) {
-                        $convertedData = OrderInput::convertMovoCSVInputToData($map);
+                        try {
+                            $convertedData = OrderInput::convertMovoCSVInputToData($map);
+                        } catch (Exception $e) {
+                            $statusList[$count] = array('status' => '777', 'error_code'=>2047,'message' => 'Error 2047: The Ship On Date is in a bad format or more than two weeks away.');
+                            break;
+                        }
                     }
 
                     $status = $processor->processOffline($convertedData);

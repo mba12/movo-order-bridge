@@ -68,7 +68,7 @@
                 <div class="row">
                     <h3>Shipping:</h3>
                     {{$shipping->type}} ({{$shipping->scac_code}})
-                    {{$order->tracking_code}}
+                    {{ HTML::link($trackLink, $order->tracking_code)}}
                 </div>
                 <div class="row">
                     <h3>Coupon:</h3>

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta name="pusher-key" content="{{{Config::get("services.pusher.public")}}}"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700' rel='stylesheet' type='text/css'>
+
     {{ HTML::style('css/admin/admin.css') }}
     @yield('page-css')
 </head>

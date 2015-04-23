@@ -429,7 +429,9 @@ class IngramShipping implements ShippingInterface
                             'ship-fax' => '',
                             'ship-email' => $data['email'],
                             'ship-via' => $data['shipping-code'],
-                            'ship-request-date' => $date_str,
+                            'ship-request-date' => (isset($data['ship-request-date']) &&
+                                                    strlen($data['ship-request-date']) > 5)?
+                                                             $data['ship-request-date']:$date_str,
                             'ship-request-from' => 'Indianapolis',
                             'ship-request-warehouse' => 'MVO1',
                         ],

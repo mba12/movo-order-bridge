@@ -19,6 +19,7 @@ class OrderInput
     private static $SHIP_STATE = "shipping-state";
     private static $BILL_STATE = "billing-state";
     private static $SHIP_ZIP = "shipping-zip";
+    private static $SHIP_DATE = "ship-request-date";
 
     private static $STATE_CODES =  [
         "Alabama" => "AL","Alaska" => "AK","Arizona" => "AZ","Arkansas" => "AR","California" => "CA",
@@ -76,6 +77,7 @@ class OrderInput
         "shipping-zip" => "Zip",
         "shipping-country" => "Country",
         "shipping-phone" => "Telephone",
+        "ship-request-date" => "Ship On Date",
         "billing-first-name" => "Billing First Name",
         "billing-last-name" => "Billing Last Name",
         "email" => "Email Address",
@@ -214,10 +216,29 @@ class OrderInput
                     $newValue = $value;
                 }
                 break;
+            case OrderInput::$SHIP_DATE:
+                // Check that the date format is: 20150422
+
+                if (strlen($value) == 0) {
+                    $newValue = $value;
+                    break;
+                }  // if default today then skip this check
+
+                $shipDate = date_create_from_format ("Ymd", $value);
+                // check if the ship time is more than 180 days away
+                $dateInterval = date_diff($shipDate, DateTime::setTimestamp(time()));
+                if ($dateInterval->d > 180) {
+                    // Throw an exception: the date is greater than 2 weeks away
+                    throw new Exception('Send Date is greater than 180 days away');
+                }
+                $newValue = $value;
+                break;
             default:
                 $newValue = $value;
         }
         return $newValue;
+
+        // 20150422
     }
 
     public static function convertMovoCSVInputToData($csvData)

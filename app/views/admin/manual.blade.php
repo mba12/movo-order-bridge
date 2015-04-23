@@ -15,10 +15,26 @@
                        "route"=>"manualorderentry",
                        "method"=>"PUT",
                     ])}}
-                    @include('products')
-                    @include('loops')
+
+
+
+                    <table>
+                        @foreach($waves as $wave)
+                             <tr><td>{{$wave->sku}}</td><td>{{$wave->name}}</td><td>{{$wave->price}}</td></tr>
+                        @endforeach
+                    </table>
+
+                    <table>
+                        @foreach($loops as $loop)
+                            <tr><td>{{$loop->sku}}</td><td>{{$loop->name}}</td><td>{{$loop->price}}</td></tr>
+                        @endforeach
+                    </table>
+
+
                     @include('billing')
                     @include('shipping')
+
+
                         <div class="buttons">
                         <div class="update-button">
                             <div>
