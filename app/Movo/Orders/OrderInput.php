@@ -226,7 +226,8 @@ class OrderInput
 
                 $shipDate = date_create_from_format ("Ymd", $value);
                 // check if the ship time is more than 180 days away
-                $dateInterval = date_diff($shipDate, DateTime::setTimestamp(time()));
+                $now = new \DateTime();
+                $dateInterval = date_diff($shipDate, $now );
                 if ($dateInterval->d > 180) {
                     // Throw an exception: the date is greater than 2 weeks away
                     throw new Exception('Send Date is greater than 180 days away');
