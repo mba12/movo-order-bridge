@@ -165,6 +165,16 @@ Route::any('/ingram/order-status', array(
     'uses' => 'IngramController@orderStatus',
 ));
 
+Route::any('/verify/user-signup', array(
+    'as' => 'verify-sign-up',
+    'uses' => 'VerifyController@userSignup',
+));
+
+Route::any('/verify/user-confirm', array(
+    'as' => 'user-confirm',
+    'uses' => 'VerifyController@userConfirm',
+));
+
 Route::get('connection-test-http', function () {
     $client = new GuzzleHttp\Client();
     $response = $client->post('http://messagehub-dev.brightpoint.com:9135/HttpPost', [
