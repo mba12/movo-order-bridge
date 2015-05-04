@@ -2,6 +2,7 @@
 
 class Verify extends \Eloquent
 {
+    protected $table = "verify";
     protected $fillable = [
         'first_name',
         'last_name',
