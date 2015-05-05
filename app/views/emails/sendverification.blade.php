@@ -28,8 +28,8 @@
     <div id="content-wrap" style="background-color: #efeeee;border-top: 1px solid #cecece;border-bottom: 1px solid #cecece;margin-bottom: 3%;color:#333333;">
         <div class="inner" style="max-width: 700px;margin: 0 auto;padding: 40px 0;width: 80%;">
             <p>
-                @if(isset($data['fullName']) && strlen($data['fullName']) > 0)
-                    {{{  $data['fullName'] }}}<br/>
+                @if(isset($data['full_name']) && strlen($data['full_name']) > 0)
+                    {{{  $data['full_name'] }}}<br/>
                 @endif
                 @if(isset($data['email'])  && strlen($data['email']) > 0)
                     {{{ $data['email'] }}}<br/>

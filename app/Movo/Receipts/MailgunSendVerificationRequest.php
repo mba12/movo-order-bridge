@@ -17,7 +17,7 @@ class MailgunSendVerificationRequest extends Verification implements VerifyInter
         $data['link'] = 'https://' . $data['env'] . 'verify/user-confirm?action=verify&tracking=' . $data['key'] . '&id=' . $data['id'];
 
         Mail::send('emails.sendverification', array('data' => $data), function ($message) use ($data) {
-            $message->to($data['email'], $data['fullName'])->subject('Movo Email Verification')->from("no-reply@getmovo.com");
+            $message->to($data['email'], $data['full_name'])->subject('Movo Email Verification')->from("no-reply@getmovo.com");
         });
         if(count(Mail::failures()) > 0){
             throw new OrderException("There was a problem with mailing a receipt. Please try again.");

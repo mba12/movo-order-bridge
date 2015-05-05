@@ -16,50 +16,50 @@ class VerifyController extends \BaseController {
 		$log = new Logger('user-signups');
 		$log->pushHandler(new StreamHandler(base_path().'/app/storage/logs/user-signups.log', Logger::INFO));
 		$log->addInfo($content);
-        $first = Input::get("first");
-        $last = Input::get("last");
-        $email = Input::get("email");
-        $key = $first . $last . $email;
+        $key = Input::get("fullname") . Input::get("email");
 
         $inputValues =
         [
-            "first_name"=>Input::get("first"),
-            "last_name"=>Input::get("last"),
+            "full_name"=>Input::get("fullname"),
             "email"=>Input::get("email"),
             "key"=>md5($key),
         ];
 
-        // Retrieve the user by the attributes, or create it if it doesn't exist...
-        $verify = Verify::firstOrCreate($inputValues);
-        // Logs the new user to the database
-		//$verify = Verify::create($inputValues);
+        try {
+            // Retrieve the user by the attributes, or create it if it doesn't exist...
+            // Logs the new user to the database
+            $verify = Verify::firstOrCreate($inputValues);
+
+        } catch (Exception $e) {
+            Log::info("Exception during email notification for email: " . Input::get('email'));
+            Log::info("Exception during ship notification: " . $e->getMessage());
+            Log::info("Exception during ship notification: " . $e->getTraceAsString());
+            return Response::json(array('status' => '300','error_code'=>1, 'message' => 'Duplicate email key. The full name value or key value was likely changed and this is the second attempt at sending an email except the values have been updated between the first and subsequent attempt.'));
+
+        }
+
         $newId = $verify->id;
-        $data = $inputValues;
-        $data['fullName'] = $first . " " . $last;
-        $data['id'] = $newId;
+        $inputValues['id'] = $newId;
 
         $environment = App::environment();
         Log::info("Environment is: " . $environment);
         switch($environment) {
             case 'production':
             case 'prod':
-                Log::info("Sending ship notification to: " . $trackingInfo['ship-email']);
-                $data['env'] = 'orders.getmovo.com/';
+                $inputValues['env'] = 'orders.getmovo.com/';
                 break;
             case 'devorders':
-                $data['env'] = 'devorders.getmovo.com/';
+                $inputValues['env'] = 'devorders.getmovo.com/';
                 break;
             case 'qaorders':
-                $data['env'] = 'qaorders.getmovo.com/';
+                $inputValues['env'] = 'qaorders.getmovo.com/';
                 break;
             default:
-                $data['env'] = 'movo.app:8000/';
+                $inputValues['env'] = 'movo.app:8000/';
         }
 
         // Now send an email to the user to ask them to confirm their email with us
-        (new VerifyHandler)->handleNotification($data);
-
-		//$content =  View::make("ingram.track-inventory");
+        (new VerifyHandler)->handleNotification($inputValues);
 
         return Response::json(array('status' => '200','error_code'=>0, 'message' => 'Email verification processed.'));
 	}
