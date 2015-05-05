@@ -31,6 +31,8 @@ class Verify extends \Eloquent
         $confirmed = false;
         if (intval($id) === $storedId && strcasecmp($key, $storedKey) == 0) {
             $confirmed = true;
+            $this->verified = true;
+            $this->save();
         }
         return $confirmed;
     }
