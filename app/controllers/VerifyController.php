@@ -38,6 +38,24 @@ class VerifyController extends \BaseController {
         $data['fullName'] = $first . " " . $last;
         $data['id'] = $newId;
 
+        $environment = App::environment();
+        Log::info("Environment is: " . $environment);
+        switch($environment) {
+            case 'production':
+            case 'prod':
+                Log::info("Sending ship notification to: " . $trackingInfo['ship-email']);
+                $data['env'] = 'orders.getmovo.com/';
+                break;
+            case 'devorders':
+                $data['env'] = 'devorders.getmovo.com/';
+                break;
+            case 'qaorders':
+                $data['env'] = 'qaorders.getmovo.com/';
+                break;
+            default:
+                $data['env'] = 'movo.app:8000/';
+        }
+
         // Now send an email to the user to ask them to confirm their email with us
         (new VerifyHandler)->handleNotification($data);
 
@@ -47,6 +65,9 @@ class VerifyController extends \BaseController {
 	}
 
 	public function userConfirm(){
+
+        $environment = App::environment();
+        Log::info("Track User Confirm environment: " . $environment);
 
         // Get the incoming request
         $request = Request::instance();
@@ -58,7 +79,7 @@ class VerifyController extends \BaseController {
 		$log->addInfo($content);
 
         $id = Input::get('id');
-        $key = Input::get('key');
+        $key = Input::get('tracking');
         // Log incoming to the database
         $verify = Verify::find($id);
         $confirmed = $verify->confirm($id, $key);
@@ -67,11 +88,10 @@ class VerifyController extends \BaseController {
 
             if($confirmed === false) {
                 $log->addInfo("************ BAD EMAIL NOTIFICATION RECEIVED ************");
-                $content =  View::make("verify.confirm_bad");
+                $content =  View::make("verify.invalid");
             } else {
-                $content =  View::make("verify.confirm_good");
+                $content =  View::make("verify.confirm");
             }
-
 
         } catch (Exception $e) {
             Log::info("Exception during email notification for email: " . Input::get('email'));
@@ -79,7 +99,7 @@ class VerifyController extends \BaseController {
             Log::info("Exception during ship notification: " . $e->getTraceAsString());
         }
 
-		return Response::make($content, '200')->header('Content-Type', 'text/xml');
+		return Response::make($content, '200')->header('Content-Type', 'text/html');
 	}
 
 }

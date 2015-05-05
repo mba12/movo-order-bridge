@@ -28,16 +28,8 @@
 <div id="content-wrap" style="background-color: #efeeee;border-top: 1px solid #cecece;border-bottom: 1px solid #cecece;margin-bottom: 3%;color:#333333;">
     <div class="inner" style="max-width: 700px;margin: 0 auto;padding: 40px 0;width: 80%;">
 
-        <p style="line-height: 1.4em;margin: 18px 0;">We were unable to verify your account. Please confirm the data below is correct and if it is please get in touch so we can resolve this for you: <a href="mailto:info@getmovo.com" style="color: #f6303e;text-decoration: underline;">info@getmovo.com</a>.</p>
-        <p>
-            @if(isset($data['fullName']) && strlen($data['fullName']) > 0)
-                {{{  $data['fullName'] }}}<br/>
-            @endif
-            @if(isset($data['email'])  && strlen($data['email']) > 0)
-                {{{ $data['email'] }}}<br/>
-            @endif
-
-        </p>
+        <p style="line-height: 1.4em;margin: 18px 0;">Apologies, we were unable to verify your account. Please forward your confirmation request email to us at <a href="mailto:info@getmovo.com" style="color: #f6303e;text-decoration: underline;">info@getmovo.com</a> so we can resolve this for you.</p>
+        <p style="line-height: 1.4em;margin: 18px 0;">Thank you!</p>
         <p style="line-height: 1.4em;margin: 18px 0;">-Team Movo</p>
     </div>
 </div>
