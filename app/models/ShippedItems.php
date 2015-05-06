@@ -67,7 +67,7 @@ class ShippedItems extends \Eloquent
             $inputValues['message_id'] = $messageId;
             foreach(ShippedItems::$fieldList as $v) {
                 $dbField = str_replace("-", "_", $v);
-                $inputValues[$dbField] = $item[$v];
+                $inputValues[$dbField] = isset($item[$v])?$item[$v]:"";
             }
             ShippedItems::create($inputValues);
         }
