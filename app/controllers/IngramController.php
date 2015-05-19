@@ -82,7 +82,7 @@ class IngramController extends \BaseController {
 
                 $environment = App::environment();
                 Log::info("Environment is: " . $environment);
-                $trackingInfo['ship-email'] = 'michael@getmovo.com';
+                // $trackingInfo['ship-email'] = 'michael@getmovo.com';
                 switch($environment) {
                     case 'production':
                     case 'prod':
