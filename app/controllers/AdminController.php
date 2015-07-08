@@ -232,8 +232,10 @@ class AdminController extends \BaseController
             $status = $this->processRetail($this->retailHeader, $fileName, $partnerId);
         }
 
-        Log::info("Status: ");
         Log::info("Completed upload: " . $fileName);
+
+        $stringArray = print_r($status, true);
+        Log::info("Status: " . $stringArray);
 
         return View::make('admin.upload', [
             'statusList' => $status,
