@@ -482,10 +482,154 @@ class IngramShipping implements ShippingInterface
                 ]
             ],
         ];
+
+        // NOTE: for Retail POs only add these three fields
+        if (isset($data['partner_id']) && strcasecmp($data['partner_id'],"RETAIL") === 0 )
+        {
+            // This is the Retail Code pre-setup with Ingram
+            if ( isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 ) {
+                $array['message']['sales-order-submission']['header']['shipment-information']['ship-to-code'] = $data['ship-to-code'];
+            }
+
+            if ( isset($data['ship-no-later']) && strlen($data['ship-no-later']) > 0 ) {
+                $array['message']['sales-order-submission']['header']['shipment-information']['ship-no-later'] = $data['ship-no-later'];
+            }
+
+            if ( isset($data['dock-date']) && strlen($data['dock-date']) > 0 ) {
+                $array['message']['sales-order-submission']['header']['shipment-information']['dock-date'] = $data['dock-date'];
+            }
+        }
+
+
         $xml = $this->convertToXML($array);
         $xml = $this->replaceItemNodeNames($xml);
         return $xml;
     }
 
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function generateRetailXMLFromData(array $data)
+    {
+        $date = new \DateTime;
+        $date_str = date_format($date, 'Ymd');
+
+        $array = [
+            'message' => [
+                'message-header' => [
+                    'message-id' => '12345',
+                    'transaction-name' => 'sales-order-submission',
+                    'partner-name' => Config::get('services.ingram.partner-name'),
+                    'partner-password' => '',
+                    'source-url' => Config::get('services.ingram.source-url'),
+                    'create-timestamp' => $date_str,
+                    'response-request' => '1',
+                ],
+                'sales-order-submission' => [
+                    'header' => [
+                        'customer-id' => Config::get('services.ingram.customer-id'),
+                        'business-name' => '',
+                        'carrier-name' => $data['shipping-code'],
+                        'customer-information' => [
+                            'customer-first-name' => $data['billing-first-name'],
+                            'customer-last-name' => $data['billing-last-name'],
+                            'customer-middle-initial' => '',
+                            'customer-address1' => $data['billing-address'],
+                            'customer-address2' => (isset($data['billing-address2']) &&
+                                strlen($data['billing-address2']) > 0)?$data['billing-address2'] :'',
+                            'customer-address3' => (isset($data['billing-address3']) &&
+                                strlen($data['billing-address3']) > 0)?$data['billing-address3'] :'',
+                            'customer-city' => $data['billing-city'],
+                            'customer-state' => $data['billing-state'],
+                            'customer-post-code' => $data['billing-zip'],
+                            'customer-country-code' => $data['billing-country'],
+                            'customer-phone1' => $data['billing-phone'],
+                            'customer-phone2' => '',
+                            'customer-fax' => '',
+                            'customer-email' => $data['email'],
+                        ],
+                        'shipment-information' => [
+                            'ship-first-name' => $data['shipping-first-name'],
+                            'ship-last-name' => $data['shipping-last-name'],
+                            'ship-address1' => $data['shipping-address'],
+                            'ship-address2' => (isset($data['shipping-address2']) &&
+                                strlen($data['shipping-address2']) > 0)?$data['shipping-address2'] :'',
+                            'ship-address3' => (isset($data['shipping-address3']) &&
+                                strlen($data['shipping-address3']) > 0)?$data['shipping-address3'] :'',
+                            'ship-city' => $data['shipping-city'],
+                            'ship-state' => $data['shipping-state'],
+                            'ship-post-code' => $data['shipping-zip'],
+                            'ship-country-code' => $data['shipping-country'],
+                            'ship-phone1' => $data['shipping-phone'],
+                            'ship-phone2' => '',
+                            'ship-fax' => '',
+                            'ship-email' => $data['email'],
+                            'ship-via' => $data['shipping-code'],
+                            'ship-request-date' => (isset($data['ship-request-date']) &&
+                                strlen($data['ship-request-date']) > 5)?
+                                $data['ship-request-date']:$date_str,
+                            'ship-request-from' => 'Indianapolis',
+                            'ship-request-warehouse' => 'MVO1',
+                            'ship-no-later' => $data['ship-no-later'],
+				            'dock-date' => $data['dock-date'],
+                        ],
+                        'purchase-order-information' => [
+                            'purchase-order-number' => $data['order_id'],
+                            'purchase-order-amount' => '',
+                            'currency-code' => 'USD',
+                            'account-description' => '',
+                            'comments' => '',
+                        ],
+                        'credit-card-information' => [
+                            'credit-card-number' => '',
+                            'credit-card-expiration-date' => '',
+                            'credit-card-identification' => '',
+                            'global-card-classification-code' => '',
+                            'card-holder-name' => '',
+                            'card-holder-address1' => '',
+                            'card-holder-address2' => '',
+                            'card-holder-city' => '',
+                            'card-holder-state' => '',
+                            'card-holder-post-code' => '',
+                            'card-holder-country-code' => '',
+                            'authorized-amount' => '',
+                            'billing-sequence-number' => '',
+                            'billing-authorization-response' => '',
+                            'billing-address-match' => '',
+                            'billing-zip-match' => '',
+                            'avs-hold' => '',
+                            'merchant-name' => '',
+                        ],
+                        'order-header' => [
+                            'customer-order-number' => $data['order_id'],
+                            'customer-order-date' => $date_str,
+                            'order-type' => 'WEB-SALES',
+                            'order-sub-total' => '',
+                            'order-discount' => '',
+                            'order-tax1' => '',
+                            'order-tax2' => '',
+                            'order-tax3' => '',
+                            'order-shipment-charge' => '',
+                            'order-total-net' => '',
+                            'order-status' => 'SUBMITTED',
+                            'order-type' => 'WEB SALES',
+                            'gift-flag' => '',
+                        ]
+                    ],
+                    'detail' => $data['items'],
+                ]
+            ],
+        ];
+
+        if ( isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 ) {
+            $array['message']['sales-order-submission']['shipment-information']['ship-to-code'] = $data['ship-to-code'];
+        }
+
+        $xml = $this->convertToXML($array);
+        $xml = $this->replaceItemNodeNames($xml);
+        return $xml;
+    }
 
 }

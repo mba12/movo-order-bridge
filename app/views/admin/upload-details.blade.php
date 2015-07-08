@@ -10,7 +10,7 @@
 <body>
 {{ Form::open(array('url'=>'/admin/processUploads/','files'=>true)) }}
 <p>
-{{ Form::select('partner_id', array('STACK' => 'StackSocial', 'AHA' => 'American Heart', 'MOVO' => "Movo"), 'STACK', array( 'style' => 'background-color: yellow;')) }}
+{{ Form::select('partner_id', array('STACK' => 'StackSocial', 'MOVO' => "Movo/AHA", 'RETAIL' => "Retail"), 'STACK', array( 'style' => 'background-color: yellow;')) }}
 </p>
 {{ Form::label('file','File',array('id'=>'','class'=>'')) }}
 {{ Form::file('file','',array('id'=>'','class'=>'')) }}
@@ -45,9 +45,13 @@
                     {{$status['message']}}
                 </td>
                 <td class="tablecell">
-                    @foreach($status['data']['items'] as $item)
-                        {{{$item['quantity']}}} X {{{$item['description']}}}<br/>
-                    @endforeach
+                    @if(isset($status['data']['items']))
+                        @foreach($status['data']['items'] as $item)
+                            @if(isset($item['quantity']) && strlen($item['quantity']) > 0)
+                                {{{$item['quantity']}}} X {{{$item['description']}}}<br/>
+                            @endif
+                        @endforeach
+                    @endif
                 </td>
                 <td class="tablecell">
                     {{{$status['data']['shipping-first-name']}}} {{{$status['data']['shipping-last-name']}}}<br/>

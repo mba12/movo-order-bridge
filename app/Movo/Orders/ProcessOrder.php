@@ -24,10 +24,8 @@ use Shipping;
 
 class ProcessOrder
 {
-
     public function process()
     {
-
         $data = [];
         $data = OrderInput::convertInputToData($data);
 
@@ -140,12 +138,8 @@ class ProcessOrder
         return $orderStatus;
     }
 
-
-
     public function processOffline($data)
     {
-
-
         if(!OrderValidate::validateCsvOrder($data)){
             (new OrderErrorLogHandler)->handleNotification($data);
 

@@ -10,6 +10,9 @@ namespace Movo\Orders;
 
 use Illuminate\Support\Facades\Input;
 use GuzzleHttp;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
 class OrderInput
 {
     private static $COUNTRY = "shipping-country";
@@ -20,6 +23,7 @@ class OrderInput
     private static $BILL_STATE = "billing-state";
     private static $SHIP_ZIP = "shipping-zip";
     private static $SHIP_DATE = "ship-request-date";
+    private static $SHIP_BY_DATE = "dock-date";
 
     private static $STATE_CODES =  [
         "Alabama" => "AL","Alaska" => "AK","Arizona" => "AZ","Arkansas" => "AR","California" => "CA",
@@ -83,6 +87,30 @@ class OrderInput
         "email" => "Email Address",
         "partner_id" => "Partner-id",
         "partner_order_id" => "Partner-Order-Id");
+
+
+    private static $retailFieldMap = array(
+        "ship-to-code" => "Retailer Code",
+        "dock-date" => "Delivery Date",
+        "shipping-type" => "Shipping-Type",
+        "shipping-first-name" => "First",
+        "shipping-last-name" => "Last",
+        "shipping-address" => "Shipping Address 1" ,
+        "shipping-address2" => "Shipping Address 2" ,
+        "shipping-address3" => "Shipping Address 3" ,
+        "shipping-city" => "City",
+        "shipping-state" => "State",
+        "shipping-zip" => "Zip",
+        "shipping-country" => "Country",
+        "shipping-phone" => "Telephone",
+        "ship-request-date" => "Ship On Date",
+        "ship-no-later" => "Ship No Later",
+        "billing-first-name" => "Billing First Name",
+        "billing-last-name" => "Billing Last Name",
+        "email" => "Email Address",
+        "partner_id" => "Partner-id",
+        "partner_order_id" => "Partner-Order-Id");
+
 
     private static $productIdMap = array (  'X-Small-Qty' => 1,'Small-Qty' => 2,'Medium-Qty' => 3,'Large-Qty' => 4,
                                             'X-Large-Qty' => 5,'Standard-Qty'=>6,'Neon-Qty'=>7);
@@ -190,6 +218,8 @@ class OrderInput
 
     private static function filterCheckField($key, $value) {
 
+        \Log::info("Filtering: " . $key . " :: " . $value);
+
         switch ($key) {
             case OrderInput::$COUNTRY:
             case OrderInput::$BILLING_COUNTRY:
@@ -217,6 +247,7 @@ class OrderInput
                 }
                 break;
             case OrderInput::$SHIP_DATE:
+            case OrderInput::$SHIP_BY_DATE:
                 // Check that the date format is: 20150422
 
                 if (strlen($value) == 0) {
@@ -229,7 +260,7 @@ class OrderInput
                 $now = new \DateTime();
                 $dateInterval = date_diff($shipDate, $now );
                 if ($dateInterval->d > 180) {
-                    // Throw an exception: the date is greater than 2 weeks away
+                    // Throw an exception: the date is greater than 6 months away
                     throw new Exception('Send Date is greater than 180 days away');
                 }
                 $newValue = $value;
@@ -238,8 +269,6 @@ class OrderInput
                 $newValue = $value;
         }
         return $newValue;
-
-        // 20150422
     }
 
     public static function convertMovoCSVInputToData($csvData)
@@ -272,6 +301,60 @@ class OrderInput
                 $i++;
             }
         }
+
+        $data['billing-address'] = "";
+        $data['billing-city'] = "";
+        $data['billing-state'] = "";
+        $data['billing-zip'] = "";
+        $data['billing-country'] = "";
+        $data['billing-phone'] = "";
+        $data['coupon'] = "";
+
+        $data['items']= $items;
+
+        return $data;
+    }
+
+    // TODO: there are now three of these functions
+    //       should be converted into a single function
+    public static function convertRetailCSVInputToData($csvData)
+    {
+        \Log::info("ENTERED convertRetailCSVInputToData");
+        $row = 0;
+        foreach(OrderInput::$retailFieldMap as $key => $value ) {
+
+            \Log::info("Index: " . $key . " => " . $value);
+
+            if (isset($csvData[$value])) {
+                $filtered = OrderInput::filterCheckField($key, $csvData[$value]);
+                $data[$key] = $filtered;
+            } else {
+                $data[$key] = "";
+            }
+            $row++;
+        }
+
+        \Log::info("DEBUG 1");
+
+        // Now loop through the products and add them to the item array
+        $data['quantity'] = 0; // represents the total number of items in the order
+        $items=[];
+        $i = 0;
+        foreach(OrderInput::$productList as $product) {
+            if( isset($csvData[$product]) && strlen(strval($csvData[$product])) > 0 && is_numeric($csvData[$product]) ) {
+                $productId = OrderInput::$productIdMap[$product];
+                $p =  \Product::find($productId, ['sku', 'name']);
+                $items[$i]=[
+                    "sku"=> $p->sku,
+                    "description"=> $p->name,
+                    "quantity"=>$csvData[$product],
+                ];
+                $data['quantity']+=$csvData[$product];
+                $i++;
+            }
+        }
+
+        \Log::info("DEBUG 2");
 
         $data['billing-address'] = "";
         $data['billing-city'] = "";

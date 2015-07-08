@@ -57,6 +57,12 @@ class SaveOrderDetails
         $order->partner_id = isset($data['partner_id'])?$data['partner_id']:"";
         $order->partner_order_id = isset($data['partner_order_id'])?$data['partner_order_id']:"";
 
+        if (isset($data['partner_id']) && strcasecmp($data['partner_id'] , "RETAIL") === 0 ) {
+            $order->ship_to_code = $data['ship-to-code'];
+            $order->ship_no_later = $data['ship-no-later'];
+            $order->dock_date = $data['dock-date'];
+        }
+
         $order->save();
         $combinedItems = $order->combineAndCountItems($data['items']);
 

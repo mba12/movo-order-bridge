@@ -22,6 +22,8 @@ class Order extends \Eloquent
         'shipping_country',
         'shipping_phone',
 
+
+
         'billing_first_name',
         'billing_last_name',
         'billing_address',
@@ -41,6 +43,11 @@ class Order extends \Eloquent
 
         'partner_id',
         'partner_order_id',
+
+        'ship_to_code',
+        'ship_no_later',
+        'dock_date'
+
     ];
 
     public static function parseAndSaveData($xmlString)
