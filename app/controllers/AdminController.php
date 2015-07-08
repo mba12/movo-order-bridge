@@ -19,6 +19,12 @@ class AdminController extends \BaseController
                                 'X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty',
                                 'Standard-Qty','Neon-Qty');
 
+    private $retailHeader = array('Partner-id','Partner-Order-Id','Retailer Code','Billing First Name','Billing Last Name',
+        'Shipping-Type','Ship On Date','Ship No Later','Delivery Date','First','Last','Email Address',
+        'Telephone', 'Shipping Address 1','Shipping Address 2','Shipping Address 3','City',
+        'State','Zip', 'X-Small-Qty','Small-Qty','Medium-Qty','Large-Qty','X-Large-Qty',
+        'Standard-Qty','Neon-Qty');
+
     private $env;
     private $url;
 
@@ -221,8 +227,12 @@ class AdminController extends \BaseController
             $status = $this->processStack($this->slackHeader, $fileName, $partnerId);
         } else if (strcasecmp($partnerId,'MOVO') == 0 || strcasecmp($partnerId,'AHA') == 0) {
             $status = $this->processPartner($this->movoHeader, $fileName, $partnerId);
+        } else if (strcasecmp($partnerId,'RETAIL') == 0) {
+            Log::info("Entering processRetail: ");
+            $status = $this->processRetail($this->retailHeader, $fileName, $partnerId);
         }
 
+        Log::info("Status: ");
         Log::info("Completed upload: " . $fileName);
 
         return View::make('admin.upload', [
@@ -374,6 +384,86 @@ class AdminController extends \BaseController
         }
     }
 
+    private function processRetail($header, $fileName, $partnerId) {
+
+        Log::info("Start processRetail ");
+        // read and parse the csv file
+        $processor=new Movo\Orders\ProcessOrder();
+        $row = 0; $count = 0;
+        $status = '';
+        $statusList = array();
+        if (($handle = fopen($fileName, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+
+                Log::info("Reading Data " . $row);
+                // validate the header row before processing
+                if($row === 0) {
+                    $valid = CsvValidation::validateHeaders($header, $data);
+                    if ($valid === false) {
+                        Log::info("Header validation false ");
+                        $status = "The attached CSV file header was not in Retail Order format. You are likely mistakenly loaded a Movo formatted file as a Retail file.";
+                        break;
+                    } else {
+                        Log::info("Retail Header validation true");
+                        $row++;
+                        continue;
+                    }
+                } else {
+
+                    // Pass each row to the order processing routine
+                    $map = array();
+                    $c = 0;
+                    foreach($header as $key) {
+                        if (isset($data[$c])) {
+                            Log::info("Data: " . $data[$c]);
+                            $map[$key] = $data[$c];
+                        } else {
+                            $map[$key] = "";
+                            Log::info("Missing data: " . $row . " :: " . $c);
+                        }
+                        $c++;
+                    }
+
+                    Log::info("Partner ID: " . $partnerId);
+                    if (strcasecmp($partnerId, "RETAIL") === 0) {
+                        try {
+                            Log::info("Printing Array");
+                            $this->print_array("PRINT ARRAY:", $map);
+                            $convertedData = OrderInput::convertRetailCSVInputToData($map);
+                            Log::info("Printing Converted Map");
+                            $this->print_map("MAP", $convertedData);
+
+                        } catch (Exception $e) {
+                            $statusList[$count] = array('status' => '777', 'error_code'=>2047,'message' => 'Error 2047: The Ship On Date is in a bad format or more than two weeks away.');
+                            Log::info("Exception: " . $e->getMessage());
+                            break;
+                        }
+                        $status = $processor->processOffline($convertedData);
+
+                        if(is_array($status)) {
+                            $this->print_array("Status Array", $status);
+                        } else {
+                            Log::info("Retail return status: " . $status);
+                        }
+
+                    } else {
+                        $status = "Partner ID in column 1 needs to be 'RETAIL' and is set to: " . $partnerId;
+                    }
+
+                    $statusList[$count] = $status;
+                }
+                $row++; $count++;
+            }
+            fclose($handle);
+        }
+        if($row === 0) {
+            return $status;
+        } else {
+            return $statusList;
+        }
+    }
+
+
 
     public function manualOrderEntry()
     {
@@ -381,4 +471,54 @@ class AdminController extends \BaseController
             "michael" => "Michael",
         ]);
     }
+
+    public function print_array($title,$array){
+
+        if(is_array($array)) {
+            $size = sizeof($array);
+            Log::info("Size: " . $size);
+
+            $count = 0;
+            Log::info("BEGIN " . $title . "||---------------------------------||" );
+            foreach($array as $v) {
+                $count++;
+                if(is_null($v)) {
+                    Log::info("Array value is NULL");
+                } else if(isset($v)) {
+                    if(is_array($v)) {
+                        $this->print_array("SubArray", $v);
+                    } else {
+                        Log::info("value2: " . $v);
+                    }
+
+                } else {
+                    Log::info("Array value is not set");
+                }
+                Log::info("Count: " + $count);
+            }
+        } else {
+            echo $title." is not an array.";
+        }
+
+        Log::info("END ". $title . "||---------------------------------||");
+    }
+
+    public function print_map($title,$map){
+
+            Log::info("BEGIN MAP " . $title . "||---------------------------------||\n");
+            foreach($map as $k => $v) {
+                if(isset($k) && isset($v)) {
+                    if(is_array($v)) {
+                        $this->print_map($k,$v);
+                    } else {
+                        Log::info($k . "=>" .$v);
+                    }
+                } else {
+                    Log::info("Map value is not set");
+                }
+            }
+            Log::info( "END ".$title."||---------------------------------||\n");
+
+    }
+
 }
