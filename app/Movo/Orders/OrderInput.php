@@ -271,6 +271,65 @@ class OrderInput
         return $newValue;
     }
 
+    private static function filterRetailCheckField($key, $value) {
+
+        \Log::info("Filtering: " . $key . " :: " . $value);
+
+        switch ($key) {
+            case OrderInput::$COUNTRY:
+            case OrderInput::$BILLING_COUNTRY:
+                //TODO: needs to handle more country codes
+                $newValue = "US";
+                break;
+            case OrderInput::$SHIP_PHONE:
+            case OrderInput::$BILL_PHONE:
+                // strip out any non-numeric characters
+                $newValue = preg_replace("/[^0-9]/", "", $value);
+                break;
+            case OrderInput::$SHIP_STATE:
+            case OrderInput::$BILL_STATE:
+                if(strlen($value) === 0) {
+                    $newValue = ""; // Sometimes no address is provided with a Retailer code
+                } else if(strlen($value) === 2) {
+                    $newValue = $value;
+                } else {
+                    $newValue = OrderInput::$STATE_CODES[ucwords($value)];
+                }
+                break;
+            case OrderInput::$SHIP_ZIP:
+                if(strlen($value) === 4) {
+                    $newValue = "0" . $value;
+                } else {
+                    $newValue = $value;
+                }
+                break;
+            case OrderInput::$SHIP_DATE:
+            case OrderInput::$SHIP_BY_DATE:
+                // Check that the date format is: 20150422
+
+                if (strlen($value) == 0) {
+                    $newValue = $value;
+                    break;
+                }  // if default today then skip this check
+
+                $shipDate = date_create_from_format ("Ymd", $value);
+                // check if the ship time is more than 180 days away
+                $now = new \DateTime();
+                $dateInterval = date_diff($shipDate, $now );
+                if ($dateInterval->d > 180 || $dateInterval->d < 1) {
+                    // Throw an exception: the date is greater than 6 months away
+                    throw new Exception('Send Date is greater than 180 days away or in the past.');
+                }
+                $newValue = $value;
+                break;
+            default:
+                $newValue = $value;
+        }
+        return $newValue;
+    }
+
+
+
     public static function convertMovoCSVInputToData($csvData)
     {
         $row = 0;
@@ -321,12 +380,13 @@ class OrderInput
     {
         \Log::info("ENTERED convertRetailCSVInputToData");
         $row = 0;
+
         foreach(OrderInput::$retailFieldMap as $key => $value ) {
 
             \Log::info("Index: " . $key . " => " . $value);
 
             if (isset($csvData[$value])) {
-                $filtered = OrderInput::filterCheckField($key, $csvData[$value]);
+                $filtered = OrderInput::filterRetailCheckField($key, $csvData[$value]);
                 $data[$key] = $filtered;
             } else {
                 $data[$key] = "";
