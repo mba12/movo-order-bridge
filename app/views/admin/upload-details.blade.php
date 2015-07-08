@@ -54,17 +54,19 @@
                     @endif
                 </td>
                 <td class="tablecell">
-                    {{{$status['data']['shipping-first-name']}}} {{{$status['data']['shipping-last-name']}}}<br/>
-                    {{{$status['data']['shipping-address']}}}<br/>
-                    {{{$status['data']['shipping-address2'] or ''}}}
-                    @if(isset($status['data']['shipping-address2']) && strlen($status['data']['shipping-address2']) > 0)
-                        <br/>
+                    @if(isset($status['data']))
+                        {{{$status['data']['shipping-first-name']}}} {{{$status['data']['shipping-last-name']}}}<br/>
+                        {{{$status['data']['shipping-address']}}}<br/>
+                        {{{$status['data']['shipping-address2'] or ''}}}
+                        @if(isset($status['data']['shipping-address2']) && strlen($status['data']['shipping-address2']) > 0)
+                            <br/>
+                        @endif
+                        {{{$status['data']['shipping-address3'] or ''}}}
+                        @if(isset($status['data']['shipping-address3']) && strlen($status['data']['shipping-address3']) > 0)
+                            <br/>
+                        @endif
+                        {{{$status['data']['shipping-city']}}}, {{{$status['data']['shipping-state']}}} {{{$status['data']['shipping-zip']}}}<br/>
                     @endif
-                    {{{$status['data']['shipping-address3'] or ''}}}
-                    @if(isset($status['data']['shipping-address3']) && strlen($status['data']['shipping-address3']) > 0)
-                        <br/>
-                    @endif
-                    {{{$status['data']['shipping-city']}}}, {{{$status['data']['shipping-state']}}} {{{$status['data']['shipping-zip']}}}<br/>
                 </td>
             </tr>
             <?php $i++ ?>
