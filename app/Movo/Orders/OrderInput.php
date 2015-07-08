@@ -259,9 +259,9 @@ class OrderInput
                 // check if the ship time is more than 180 days away
                 $now = new \DateTime();
                 $dateInterval = date_diff($shipDate, $now );
-                if ($dateInterval->d > 180) {
+                if ($dateInterval->d > 180 || $dateInterval->d < 1) {
                     // Throw an exception: the date is greater than 6 months away
-                    throw new Exception('Send Date is greater than 180 days away');
+                    throw new Exception('Send Date is greater than 180 days away or in the past.');
                 }
                 $newValue = $value;
                 break;

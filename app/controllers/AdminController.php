@@ -363,7 +363,7 @@ class AdminController extends \BaseController
                         $c++;
                     }
 
-                    if (strcasecmp($partnerId, "MOVO") == 0 || strcasecmp($partnerId, "AHA") == 0) {
+                    if (strcasecmp($partnerId, "MOVO") === 0 || strcasecmp($partnerId, "AHA") === 0) {
                         try {
                             $convertedData = OrderInput::convertMovoCSVInputToData($map);
                         } catch (Exception $e) {
@@ -436,7 +436,7 @@ class AdminController extends \BaseController
                             $this->print_map("MAP", $convertedData);
 
                         } catch (Exception $e) {
-                            $statusList[$count] = array('status' => '777', 'error_code'=>2047,'message' => 'Error 2047: The Ship On Date is in a bad format or more than two weeks away.');
+                            $statusList[$count] = array('status' => '777', 'error_code'=>2047,'message' => 'Error 2047: The Ship On Date is in a bad format or more than 180 days away.<br/>' . $e->getMessage());
                             Log::info("Exception: " . $e->getMessage());
                             break;
                         }
