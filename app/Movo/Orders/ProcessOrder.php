@@ -140,10 +140,18 @@ class ProcessOrder
 
     public function processOffline($data)
     {
-        if(!OrderValidate::validateCsvOrder($data)){
-            (new OrderErrorLogHandler)->handleNotification($data);
+        if(isset($data['data']['partner_id']) && strcasecmp($data['data']['partner_id'], "RETAIL") === 0 ) {
+            if(!OrderValidate::validateRetailPOOrder($data)){
+                (new OrderErrorLogHandler)->handleNotification($data);
 
-            return array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Please refresh the page and try again.');
+                return array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your Retail PO order. Validation failed on required fields.');
+            }
+        } else {
+            if(!OrderValidate::validateCsvOrder($data)){
+                (new OrderErrorLogHandler)->handleNotification($data);
+
+                return array('status' => '503', 'error_code'=>2000,'message' => 'Error 2000: There was a critical error submitting your order. Validation failed on required fields.');
+            }
         }
 
         $couponInstance = Coupon::getValidCouponInstanceCSV($data);

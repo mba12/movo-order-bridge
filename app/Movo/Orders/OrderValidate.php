@@ -115,4 +115,43 @@ class OrderValidate
         return !$validation->fails();
     }
 
+    public static function validateRetailPOOrder($data)
+    {
+
+        $validation = Validator::make(
+            $data,
+            array(
+                'billing-first-name' => array('required'),
+                'billing-last-name' => array('required'),
+                'email' => array('required', 'email'),
+            )
+        );
+        $itemCount = 0;
+        for ($i = 0; $i < sizeof($data['items']); $i++) {
+            if (!isset($data['items'][$i]['quantity'])) {
+                $itemCount++;
+            } else {
+                $itemCount += $data['items'][$i]['quantity'];
+            }
+        }
+        if($itemCount == 0) {
+            return false;
+        }
+        if ($itemCount != $data['quantity']) {
+            return false;
+        }
+        for ($i = 0; $i < sizeof($data['items']); $i++) {
+            if (!isset($data['items'][$i])) {
+                return false;
+            }
+            if (!isset($data['items'][$i]['sku'])) {
+                return false;
+            }
+            if (!isset($data['items'][$i]['description'])) {
+                return false;
+            }
+        }
+        return !$validation->fails();
+    }
+
 }
