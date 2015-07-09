@@ -381,13 +381,18 @@ class OrderInput
         \Log::info("ENTERED convertRetailCSVInputToData");
         $row = 0;
 
+
+        // If a re
         foreach(OrderInput::$retailFieldMap as $key => $value ) {
 
             \Log::info("Index: " . $key . " => " . $value);
 
+
             if (isset($csvData[$value])) {
-                $filtered = OrderInput::filterRetailCheckField($key, $csvData[$value]);
-                $data[$key] = $filtered;
+                // NOTE: turning off address filtering when a RETAIL CODE is being used
+                // $filtered = OrderInput::filterRetailCheckField($key, $csvData[$value]);
+                // $data[$key] = $filtered;
+                $data[$key] = $csvData[$value];
             } else {
                 $data[$key] = "";
             }

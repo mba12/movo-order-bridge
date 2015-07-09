@@ -140,7 +140,10 @@ class ProcessOrder
 
     public function processOffline($data)
     {
-        if(isset($data['data']['partner_id']) && strcasecmp($data['data']['partner_id'], "RETAIL") === 0 ) {
+
+        \Log::info("PROCESS OFFLINE CHECK: " . print_r( $data , true));
+        if(isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 && isset($data['partner_id']) &&
+            strcasecmp($data['partner_id'], "RETAIL") === 0 ) {
             if(!OrderValidate::validateRetailPOOrder($data)){
                 (new OrderErrorLogHandler)->handleNotification($data);
 
