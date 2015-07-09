@@ -65,7 +65,10 @@
                         @if(isset($status['data']['shipping-address3']) && strlen($status['data']['shipping-address3']) > 0)
                             <br/>
                         @endif
-                        {{{$status['data']['shipping-city']}}}, {{{$status['data']['shipping-state']}}} {{{$status['data']['shipping-zip']}}}<br/>
+                        @if(isset($status['data']['shipping-city']) && strlen($status['data']['shipping-city']) > 0)
+                            {{{$status['data']['shipping-city']}}},
+                        @endif
+                        {{{$status['data']['shipping-state']}}} {{{$status['data']['shipping-zip']}}}<br/>
                     @endif
                 </td>
             </tr>
