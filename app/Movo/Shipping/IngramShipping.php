@@ -498,6 +498,14 @@ class IngramShipping implements ShippingInterface
             if ( isset($data['dock-date']) && strlen($data['dock-date']) > 0 ) {
                 $array['message']['sales-order-submission']['header']['shipment-information']['dock-date'] = $data['dock-date'];
             }
+
+            if ( isset($data['partner_order_id']) && strlen($data['partner_order_id']) > 0 ) {
+                $array['message']['sales-order-submission']['header']['customer-order-number'] = $data['order_id'];
+            }
+
+            if ( isset($data['partner_order_id']) && strlen($data['partner_order_id']) > 0 ) {
+                $array['message']['sales-order-submission']['header']['purchase-order-number'] = $data['partner_order_id'];
+            }
         }
 
 
