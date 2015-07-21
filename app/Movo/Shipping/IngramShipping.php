@@ -247,7 +247,7 @@ class IngramShipping implements ShippingInterface
         $log->addInfo("xml: " . $new_xml);
 
         $xmlObj = simplexml_load_string($xml);
-        $id = $xmlObj->xpath('//purchase-order-number');
+        $id = $xmlObj->xpath('//customer-order-number');
         $orderId = intval($id[0]);
         if(!isset($environment) && !isset($url)) {
             $errorLog->handleNotification([ "Error" => "Parameters not set properly",
