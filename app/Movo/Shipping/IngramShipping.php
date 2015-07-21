@@ -532,6 +532,8 @@ class IngramShipping implements ShippingInterface
                         'customer-id' => Config::get('services.ingram.customer-id'),
                         'business-name' => '',
                         'carrier-name' => $data['shipping-code'],
+                        'customer-order-number' => $data['order_id'],  // this is the Movo database order number
+                        'purchase-order-number' => $data['partner_order_id'],  // i.e. This is the Amazon PO number
                         'customer-information' => [
                             'customer-first-name' => $data['billing-first-name'],
                             'customer-last-name' => $data['billing-last-name'],
