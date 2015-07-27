@@ -55,7 +55,7 @@ class Order extends \Eloquent
 
         // <transaction-name>sales-order-success</transaction-name> sales-order-success
         $xml = new SimpleXMLElement($xmlString);
-        $result = $xml->xpath('//purchase-order-number')[0];  // NOTE: Field contains the stripe id
+        $result = $xml->xpath('//customer-order-number')[0];  // NOTE: Field contains the stripe id
         $idVal = intval($result);
         $order=Order::find($idVal)->first();
         $order->ingram_order_id= (String)$xml->xpath('//message-id')[0];

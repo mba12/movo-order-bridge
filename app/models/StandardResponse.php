@@ -95,6 +95,8 @@ EOF;
         $response->save();
 
         if ( $pos === false ) {
+            Log::info("Let's lookup order number: " . strval($orderId));
+
             // then the response is good
             $order=Order::find($orderId)->first();
 
