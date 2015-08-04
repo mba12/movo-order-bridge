@@ -57,6 +57,7 @@ class ProcessOrder
                         if(!isset($data['items'][$i]['quantity'])){
                             $data['items'][$i]['quantity']=1;
                         }
+
                         $data['items'][$i]['price']=$product->price;
 
                         $data['items'][$i]['line-no']=$i+1;
@@ -140,8 +141,8 @@ class ProcessOrder
 
     public function processOffline($data)
     {
-
         \Log::info("PROCESS OFFLINE CHECK: " . print_r( $data , true));
+
         if(isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 && isset($data['partner_id']) &&
             strcasecmp($data['partner_id'], "RETAIL") === 0 ) {
             if(!OrderValidate::validateRetailPOOrder($data)){
@@ -180,14 +181,19 @@ class ProcessOrder
                         if(!isset($data['items'][$i]['quantity'])){
                             $data['items'][$i]['quantity']=1;
                         }
-                        $data['items'][$i]['price']=$product->price;
+
+                        if (isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 ) {
+                            // NOTE: Price is already set on the input form...no need to set price
+                        } else {
+                            $data['items'][$i]['price']=$product->price;
+                        }
 
                         $data['items'][$i]['line-no']=$i+1;
                         $data['items'][$i]['item-code']=$product->sku;
                         $data['items'][$i]['unit-of-measure']='EA';
 
                         $data['items'][$i]['discount'] = $this->getDiscount($couponInstance, $product->price*$data['items'][$i]['quantity']);
-                        $totalUnitPrices+=$product->price*$data['items'][$i]['quantity'];
+                        $totalUnitPrices+=$data['items'][$i]['price']*$data['items'][$i]['quantity'];
                         $totalDiscount+=$data['items'][$i]['discount'];
                     }
                 }

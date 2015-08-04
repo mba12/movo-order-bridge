@@ -23,6 +23,12 @@ class Manual {
         $pickers.datetimepicker();
     }
 
+    private onSkuQtyButtonClick(e):void {
+        if ( ! confirm("Clear order?")) {
+            e.preventDefault();
+        }
+    }
+
 }
 
 interface JQuery{

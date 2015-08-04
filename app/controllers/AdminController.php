@@ -154,12 +154,14 @@ class AdminController extends \BaseController
         $manual = array();
         $manual['test'] = 'test';
 
-        $waves=Product::waves();
-        $loops=Product::loops();
+        Log::info("PRE Products ");
+
+        $waves=Product::allManual();
+
+        Log::info("Products: " . $waves);
+
         $charities=Charity::getList();
-        $unitPrice = $waves[0]->price;
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
-        $shippingDropdownData = ShippingDropdown::createData($shippingInfo);
         $sizeInfo = $waves;
         $stateTaxMethods = Tax::getStateTaxMethods();
         $coupon = null;
@@ -169,13 +171,10 @@ class AdminController extends \BaseController
         }
 
         return View::make('admin.manual', [
-            'shippingDropdownData' => $shippingDropdownData,
-            'unitPrice' => $unitPrice,
+            'shippingDropdownData' => $shippingInfo,
             'sizeInfo' => $sizeInfo,
-            'coupon' => $coupon,
             'stateTaxMethods' => $stateTaxMethods,
             'after3pm' => strtotime("03:00 pm") - time() < 0,
-            'loops'=>$loops,
             'charities'=>$charities,
             'waves'=>$waves,
             'manual'=>$manual
@@ -465,13 +464,75 @@ class AdminController extends \BaseController
         }
     }
 
+/*
+    public function processUploads()
+    {
+
+        $partnerId = Input::get("partner_id");
+        $fileName = $this->backupCsvFile();
+
+        $status = '';
+        if (strcasecmp($partnerId,'STACK') == 0) {
+            $status = $this->processStack($this->slackHeader, $fileName, $partnerId);
+        } else if (strcasecmp($partnerId,'MOVO') == 0 || strcasecmp($partnerId,'AHA') == 0) {
+            $status = $this->processPartner($this->movoHeader, $fileName, $partnerId);
+        } else if (strcasecmp($partnerId,'RETAIL') == 0) {
+            Log::info("Entering processRetail: ");
+            $status = $this->processRetail($this->retailHeader, $fileName, $partnerId);
+        }
+
+        Log::info("Completed upload: " . $fileName);
+
+        $stringArray = print_r($status, true);
+        Log::info("Status: " . $stringArray);
+
+        return View::make('admin.upload', [
+            'statusList' => $status,
+        ]);
+    }
+*/
 
 
     public function manualOrderEntry()
     {
-        return View::make("admin.manual", [
-            "michael" => "Michael",
-        ]);
+        $processor=new Movo\Orders\ProcessOrder();
+        Log::info("Entered Manual Order Entry");
+
+        $input = Input::all();
+        Log::info(print_r($input));
+
+        $partnerId = $input["partner_id"];
+
+
+        $unitID = $input['unitID']; // this is an array of skus Array ( [0] => 857458005022 [1] => 857458005060 [2] => 857458005084 [3] => 857458005121 [4] => [5] => [6] => [7] => [8] => [9] => )
+        $quantities = $input['quantities'];            // [quantity] => Array ( [0] => 4 [1] => 4 [2] => 3 [3] => 5 [4] => 0 [5] => 0 [6] => 0 [7] => 0 [8] => 0 [9] => 0 )
+        $prices = $input['price'];            //    [price] => Array ( [0] => 29.99 [1] => 5 [2] => 34.99 [3] => 5.50 [4] => [5] => [6] => [7] => [8] => [9] => )
+        $items = array();
+        $quantity = 0;
+        for($i = 0; $i < 10; $i++) {
+            if (isset($unitID[$i]) && strlen($unitID[$i]) > 9) {
+                $quantity += $quantities[$i];
+                $items[$i] = ['sku' => $unitID[$i], 'description' => Product::getNameBySKU($unitID[$i]), 'quantity' => $quantities[$i], 'price' => $prices[$i]];
+            } else {
+                break;
+            }
+        }
+
+        $input['quantity'] = $quantity;
+        $input['items'] = $items;
+        $input['coupon'] = "";
+
+        if (isset($input['shipping-state-input']) && strlen($input['shipping-state-input']) > 1) {
+            $input['shipping-state'] = $input['shipping-state-input'];
+        }
+
+        $processor->processOffline($input);
+
+        $this->manual();
+
+        //return View::make("admin.manual", [
+        //    "michael" => "Michael",
+        // ]);
     }
 
     public function print_array($title,$array){

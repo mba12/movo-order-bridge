@@ -17,6 +17,16 @@ class Product extends \Eloquent
         return $product->price;
     }
 
+    public static function allManual(){
+        if (Cache::has("allManual")) {
+            return Cache::get("allManual");
+        }
+        $products = Product::select( 'sku', 'name', 'price' )->get();
+        Cache::put("allManual", $products, 1440);
+        return $products;
+    }
+
+
     public static function waves(){
         if (Cache::has("waves")) {
             return Cache::get("waves");
