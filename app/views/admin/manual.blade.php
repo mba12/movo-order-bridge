@@ -82,11 +82,13 @@
 
         function retainToggle(t) {
             console.log("RetainToggle called");
+            /*
             if(t.options[t.selectedIndex].value != 'RETAIL' ) {
                 $('.retailFields').prop('disabled', true);
             } else {
                 $('.retailFields').prop('disabled', false);
             }
+            */
         }
 
         function pageLoaded() {
@@ -121,7 +123,7 @@
                 }
             });
 
-            $('.retailFields').prop('disabled', true);
+            // $('.retailFields').prop('disabled', true);
         }
 
         function fillShipping(f) {
