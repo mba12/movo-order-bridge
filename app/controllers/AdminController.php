@@ -502,6 +502,20 @@ class AdminController extends \BaseController
         Log::info(print_r($input));
 
         $partnerId = $input["partner_id"];
+/*
+        <input name="ship-request-date" type="text" id="ship-on-date" placeholder="Ship On Date" class="retailFields" >
+        <input name="ship-no-later" type="text" id="ship-no-later" placeholder="Ship No Later" class="retailFields" >
+        <input name="dock-date" type="text" id="delivery-date"  placeholder="Delivery Date" class="retailFields" >
+
+            <ship-no-later>08/14/2015</ship-no-later>
+            <dock-date>08/17/2015</dock-date>
+*/
+
+        if(strcasecmp($input['partner_id'], 'RETAIL') === 0) {
+            $input['ship-request-date'] = substr($input['ship-request-date'], 6, 4) . substr($input['ship-request-date'], 0, 2) . substr($input['ship-request-date'], 3, 2);
+            $input['ship-no-later'] = substr($input['ship-no-later'], 6, 4) . substr($input['ship-no-later'], 0, 2) . substr($input['ship-no-later'], 3, 2);
+            $input['dock-date'] = substr($input['dock-date'], 6, 4) . substr($input['dock-date'], 0, 2) . substr($input['dock-date'], 3, 2);
+        }
 
 
         $unitID = $input['unitID']; // this is an array of skus Array ( [0] => 857458005022 [1] => 857458005060 [2] => 857458005084 [3] => 857458005121 [4] => [5] => [6] => [7] => [8] => [9] => )
