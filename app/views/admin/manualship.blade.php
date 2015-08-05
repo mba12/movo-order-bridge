@@ -3,9 +3,9 @@
 
     <p>
 <!--    <input type="text" name="partner_id" placeholder="Partner Id" id="shipping-partner-id"/> -->
-        {{ Form::select('partner_id', array('STACK' => 'StackSocial', 'MOVO' => "Movo/AHA", 'RETAIL' => "Retail"), 'STACK', array( 'style' => 'background-color: red; width: 149px;', 'onchange' => "retainToggle(this)")) }}
+        {{ Form::select('partner_id', array('STACK' => 'StackSocial', 'MOVO' => "Movo", 'AHA' => "AHA", 'RETAIL' => "Retail"), 'STACK', array( 'style' => 'background-color: red; width: 149px;', 'onchange' => "retainToggle(this)")) }}
 
-        <input type="text" name="partner_order_id" placeholder="Partner Order Id" id="shipping-partner-order-id" class="retailFields"/>
+        <input type="text" name="partner_order_id" placeholder="Partner Order Id" id="shipping-partner-order-id" />
     <input type="text" name="ship-to-code" placeholder="Retailer Code" id="shipping-retailer-code" class="retailFields" />
     </p>
     <p>
