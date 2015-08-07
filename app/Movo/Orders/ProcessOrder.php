@@ -141,7 +141,7 @@ class ProcessOrder
 
     public function processOffline($data)
     {
-        \Log::info("PROCESS OFFLINE CHECK: " . print_r( $data , true));
+        \Log::info("PROCESS OFFLINE INCOMING VALUES: " . print_r( $data , true));
 
         if(isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 && isset($data['partner_id']) &&
             strcasecmp($data['partner_id'], "RETAIL") === 0 ) {
@@ -182,9 +182,8 @@ class ProcessOrder
                             $data['items'][$i]['quantity']=1;
                         }
 
-                        if (isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 ) {
-                            // NOTE: Price is already set on the input form...no need to set price
-                        } else {
+                        if (  !(isset($data['items'][$i]['price']) && strlen($data['items'][$i]['price']) > 0) ) {
+                            // NOTE: If price is not already set on the input form...use the default
                             $data['items'][$i]['price']=$product->price;
                         }
 
@@ -205,7 +204,6 @@ class ProcessOrder
             return array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.');
         }
         $saveEmail = $data['email'];
-
         $orderTotal = $this->getOrderTotal($totalUnitPrices, $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState);
         $data = $this->populateDataWithOrderAmounts($data, $totalUnitPrices,  $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance);
 
@@ -276,7 +274,7 @@ class ProcessOrder
      * @param $couponInstance
      * @return mixed
      */
-    public function populateDataWithOrderAmounts($data,  $totalUnitPrices, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance)
+    public function populateDataWithOrderAmounts($data, $totalUnitPrices, $discount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance)
     {
 
         $tax=SalesTax::calculateTotalTax($totalUnitPrices  - $discount, $shippingMethod->rate, $salesTaxRate, $shippingState);

@@ -92,7 +92,6 @@
         }
 
         function pageLoaded() {
-
             $("#ship-on-date").datepicker( {
                 firstDay: 0,
                 maxDate: '+6m +0w +0d',

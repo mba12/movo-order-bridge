@@ -80,8 +80,13 @@ class SaveOrderDetails
      */
     public static function saveOrderItemPercentages($item, $data)
     {
+        $itemPercentageOfTotal = 0;
 
-        $itemPercentageOfTotal = $item['price'] / $data['total-unit-prices'];
+        // NOTE: to avoid division by zero
+        if ($data['total-unit-prices'] != 0) {
+            $itemPercentageOfTotal = $item['price'] / $data['total-unit-prices'];
+        }
+
         $orderItem = new \Item(
             [
 
