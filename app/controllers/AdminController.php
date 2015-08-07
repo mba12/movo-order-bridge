@@ -154,12 +154,7 @@ class AdminController extends \BaseController
         $manual = array();
         $manual['test'] = 'test';
 
-        Log::info("PRE Products ");
-
         $waves=Product::allManual();
-
-        Log::info("Products: " . $waves);
-
         $charities=Charity::getList();
         $shippingInfo = Shipping::getShippingMethodsAndPrices();
         $sizeInfo = $waves;
@@ -511,12 +506,23 @@ class AdminController extends \BaseController
             <dock-date>08/17/2015</dock-date>
 */
 
-        if(strcasecmp($input['partner_id'], 'RETAIL') === 0) {
+        // A little validation for phone numbers  billing-phone
+        $input['shipping-phone'] = preg_replace('/\D+/', '', $input['shipping-phone']);
+        $input['shipping-phone'] = substr($input['shipping-phone'] , 0, 10);
+        $input['billing-phone'] = preg_replace('/\D+/', '', $input['billing-phone']);
+        $input['billing-phone'] = substr($input['billing-phone'] , 0, 10);
+
+        if (isset($input['ship-request-date']) && strlen($input['ship-request-date']) > 9) {
             $input['ship-request-date'] = substr($input['ship-request-date'], 6, 4) . substr($input['ship-request-date'], 0, 2) . substr($input['ship-request-date'], 3, 2);
+        } else {
+            $input['ship-request-date'] = date('Ymd');
+        }
+        Log::info("Updated Ship Request Date: " . $input['ship-request-date']);
+
+        if(strcasecmp($input['partner_id'], 'RETAIL') === 0) {
             $input['ship-no-later'] = substr($input['ship-no-later'], 6, 4) . substr($input['ship-no-later'], 0, 2) . substr($input['ship-no-later'], 3, 2);
             $input['dock-date'] = substr($input['dock-date'], 6, 4) . substr($input['dock-date'], 0, 2) . substr($input['dock-date'], 3, 2);
         }
-
 
         $unitID = $input['unitID']; // this is an array of skus Array ( [0] => 857458005022 [1] => 857458005060 [2] => 857458005084 [3] => 857458005121 [4] => [5] => [6] => [7] => [8] => [9] => )
         $quantities = $input['quantities'];            // [quantity] => Array ( [0] => 4 [1] => 4 [2] => 3 [3] => 5 [4] => 0 [5] => 0 [6] => 0 [7] => 0 [8] => 0 [9] => 0 )
