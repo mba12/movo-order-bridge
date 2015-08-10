@@ -372,37 +372,45 @@ class IngramShipping implements ShippingInterface
     /**
      * @param array $data
      * @return mixed
+     * (array $data)
      */
-    public function generateXMLFromData(array $data)
+    public function generateXMLFromData($data)
     {
+
+        Log::info("Starting generateXMLFromData " );
+
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
 
         $items = [];
         $count = 1;
-        foreach ($data['items'] as $item) {
-            $items[] = [
-                "line-no" => $count++,
-                "item-code" => $item->sku,
-                "product-name" => 'CDATA[[' . $item->description . ']]',
-                "quantity" => $item->quantity,
-                "line-status" => "IN STOCK",
-                "unit-of-measure" => "EA",
-                'sid' => '',
-                'esn' => '',
-                'min' => '',
-                'mdn' => '',
-                'irdb' => '',
-                'imei' => '',
-                'market-id' => '',
-                'base-price' => '',
-                'line-discount' => '',
-                'line-tax1' => '',
-                'line-tax2' => '',
-                'line-tax3' => '',
-            ];
+        $size = sizeof($data['items']);
+
+        for ($i = 0; $i < $size; $i++) {
+
+                $items[] = [
+                    "line-no" => $count++,
+                    "item-code" => $data['items'][$i]['sku'], //  $item->sku,
+                    "product-name" => 'CDATA[[' . $data['items'][$i]['description'] . ']]',
+                    "quantity" => $data['items'][$i]['quantity'],
+                    "unit-of-measure" => "EA",
+                    'sid' => '',
+                    'esn' => '',
+                    'min' => '',
+                    'mdn' => '',
+                    'irdb' => '',
+                    'imei' => '',
+                    'market-id' => '',
+                    "line-status" => "IN STOCK",
+                    'base-price' => 0.00,
+                    'line-discount' => 0.00,
+                    'line-tax1' => 0.00,
+                    'line-tax2' => 0.00,
+                    'line-tax3' => 0.00,];
         }
 
+
+        Log::info("Finished Items: " . $count );
         $array = [
             'message' => [
                 'message-header' => [
@@ -462,9 +470,10 @@ class IngramShipping implements ShippingInterface
                         ],
                         'purchase-order-information' => [
                             'purchase-order-number' =>  (isset($data['partner_order_id']) && strlen($data['partner_order_id']) > 0  )?$data['partner_order_id']:$data['order_id'],
-                            'purchase-order-amount' => '',
-                            'currency-code' => 'USD',
                             'account-description' => '',
+                            'purchase-order-amount' => 0.00,
+                            'purchase-order-event' => '',
+                            'currency-code' => 'USD',
                             'comments' => '',
                         ],
                         'credit-card-information' => [
@@ -479,7 +488,7 @@ class IngramShipping implements ShippingInterface
                             'card-holder-state' => '',
                             'card-holder-post-code' => '',
                             'card-holder-country-code' => '',
-                            'authorized-amount' => '',
+                            'authorized-amount' => 1000.00,
                             'billing-sequence-number' => '',
                             'billing-authorization-response' => '',
                             'billing-address-match' => '',
@@ -490,20 +499,21 @@ class IngramShipping implements ShippingInterface
                         'order-header' => [
                             'customer-order-number' => $data['order_id'],
                             'customer-order-date' => $date_str,
-                            'order-type' => 'WEB-SALES',
-                            'order-sub-total' => '',
-                            'order-discount' => '',
-                            'order-tax1' => '',
-                            'order-tax2' => '',
-                            'order-tax3' => '',
-                            'order-shipment-charge' => '',
-                            'order-total-net' => '',
+                            'order-sub-total' => 0.00,
+                            'order-discount' => 0.00,
+                            'order-tax1' => 0.00,
+                            'order-tax2' => 0.00,
+                            'order-tax3' => 0.00,
+                            'order-shipment-charge' => 0.00,
+                            'order-total-net' => 0.00,
                             'order-status' => 'SUBMITTED',
-                            'order-type' => 'WEB SALES',
+                            'order-type' => 'WEB-SALES',
                             'gift-flag' => '',
                         ]
                     ],
                     'detail' => $items,
+                ], 'transactionInfo' => [
+                    'eventID' => ''
                 ]
             ],
         ];
