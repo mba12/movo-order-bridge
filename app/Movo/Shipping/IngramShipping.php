@@ -378,6 +378,31 @@ class IngramShipping implements ShippingInterface
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
 
+        $items = [];
+        $count = 1;
+        foreach ($data['items'] as $item) {
+            $items[] = [
+                "line-no" => $count++,
+                "item-code" => $item->sku,
+                "product-name" => 'CDATA[[' . $item->description . ']]',
+                "quantity" => $item->quantity,
+                "line-status" => "IN STOCK",
+                "unit-of-measure" => "EA",
+                'sid' => '',
+                'esn' => '',
+                'min' => '',
+                'mdn' => '',
+                'irdb' => '',
+                'imei' => '',
+                'market-id' => '',
+                'base-price' => '',
+                'line-discount' => '',
+                'line-tax1' => '',
+                'line-tax2' => '',
+                'line-tax3' => '',
+            ];
+        }
+
         $array = [
             'message' => [
                 'message-header' => [
@@ -478,7 +503,7 @@ class IngramShipping implements ShippingInterface
                             'gift-flag' => '',
                         ]
                     ],
-                    'detail' => $data['items'],
+                    'detail' => $items,
                 ]
             ],
         ];
@@ -500,7 +525,6 @@ class IngramShipping implements ShippingInterface
             }
         }
 
-
         $xml = $this->convertToXML($array);
         $xml = $this->replaceItemNodeNames($xml);
         return $xml;
@@ -515,6 +539,33 @@ class IngramShipping implements ShippingInterface
     {
         $date = new \DateTime;
         $date_str = date_format($date, 'Ymd');
+
+
+        $items = [];
+        $count = 1;
+        foreach ($data['items'] as $item) {
+            $items[] = [
+                "line-no" => $count++,
+                "item-code" => $item->sku,
+                "product-name" => 'CDATA[[' . $item->description . ']]',
+                "quantity" => $item->quantity,
+                "line-status" => "IN STOCK",
+                "unit-of-measure" => "EA",
+                'sid' => '',
+                'esn' => '',
+                'min' => '',
+                'mdn' => '',
+                'irdb' => '',
+                'imei' => '',
+                'market-id' => '',
+                'base-price' => '',
+                'line-discount' => '',
+                'line-tax1' => '',
+                'line-tax2' => '',
+                'line-tax3' => '',
+            ];
+        }
+
 
         $array = [
             'message' => [
@@ -620,7 +671,7 @@ class IngramShipping implements ShippingInterface
                             'gift-flag' => '',
                         ]
                     ],
-                    'detail' => $data['items'],
+                    'detail' => $items,
                 ]
             ],
         ];
