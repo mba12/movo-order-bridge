@@ -40,12 +40,6 @@ class ShipNotification extends \Eloquent
 
         "customer-order-number",
         "customer-order-date",
-        "order-sub-total",
-        "order-discount",
-        "order-tax1",
-        "order-tax2",
-        "order-tax3",
-        "order-shipment-charge",
         "order-total-net",
         "order-status",
         "order-type",

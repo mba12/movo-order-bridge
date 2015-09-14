@@ -391,7 +391,7 @@ class IngramShipping implements ShippingInterface
                 $items[] = [
                     "line-no" => $count++,
                     "item-code" => $data['items'][$i]['sku'], //  $item->sku,
-                    "product-name" => 'CDATA[[' . $data['items'][$i]['description'] . ']]',
+                   // "product-name" => 'CDATA[[' . $data['items'][$i]['description'] . ']]',
                     "quantity" => $data['items'][$i]['quantity'],
                     "unit-of-measure" => "EA",
                     'sid' => '',
@@ -403,10 +403,7 @@ class IngramShipping implements ShippingInterface
                     'market-id' => '',
                     "line-status" => "IN STOCK",
                     'base-price' => 0.00,
-                    'line-discount' => 0.00,
-                    'line-tax1' => 0.00,
-                    'line-tax2' => 0.00,
-                    'line-tax3' => 0.00,];
+                    ];
         }
 
 
@@ -488,7 +485,6 @@ class IngramShipping implements ShippingInterface
                             'card-holder-state' => '',
                             'card-holder-post-code' => '',
                             'card-holder-country-code' => '',
-                            'authorized-amount' => 1000.00,
                             'billing-sequence-number' => '',
                             'billing-authorization-response' => '',
                             'billing-address-match' => '',
@@ -499,13 +495,6 @@ class IngramShipping implements ShippingInterface
                         'order-header' => [
                             'customer-order-number' => $data['order_id'],
                             'customer-order-date' => $date_str,
-                            'order-sub-total' => 0.00,
-                            'order-discount' => 0.00,
-                            'order-tax1' => 0.00,
-                            'order-tax2' => 0.00,
-                            'order-tax3' => 0.00,
-                            'order-shipment-charge' => 0.00,
-                            'order-total-net' => 0.00,
                             'order-status' => 'SUBMITTED',
                             'order-type' => 'WEB-SALES',
                             'gift-flag' => '',
@@ -557,7 +546,6 @@ class IngramShipping implements ShippingInterface
             $items[] = [
                 "line-no" => $count++,
                 "item-code" => $item->sku,
-                "product-name" => 'CDATA[[' . $item->description . ']]',
                 "quantity" => $item->quantity,
                 "line-status" => "IN STOCK",
                 "unit-of-measure" => "EA",
@@ -569,10 +557,6 @@ class IngramShipping implements ShippingInterface
                 'imei' => '',
                 'market-id' => '',
                 'base-price' => '',
-                'line-discount' => '',
-                'line-tax1' => '',
-                'line-tax2' => '',
-                'line-tax3' => '',
             ];
         }
 
@@ -657,7 +641,6 @@ class IngramShipping implements ShippingInterface
                             'card-holder-state' => '',
                             'card-holder-post-code' => '',
                             'card-holder-country-code' => '',
-                            'authorized-amount' => '',
                             'billing-sequence-number' => '',
                             'billing-authorization-response' => '',
                             'billing-address-match' => '',
@@ -669,13 +652,6 @@ class IngramShipping implements ShippingInterface
                             'customer-order-number' => $data['order_id'],
                             'customer-order-date' => $date_str,
                             'order-type' => 'WEB-SALES',
-                            'order-sub-total' => '',
-                            'order-discount' => '',
-                            'order-tax1' => '',
-                            'order-tax2' => '',
-                            'order-tax3' => '',
-                            'order-shipment-charge' => '',
-                            'order-total-net' => '',
                             'order-status' => 'SUBMITTED',
                             'order-type' => 'WEB SALES',
                             'gift-flag' => '',

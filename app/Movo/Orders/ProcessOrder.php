@@ -141,7 +141,7 @@ class ProcessOrder
 
     public function processOffline($data)
     {
-        \Log::info("PROCESS OFFLINE INCOMING VALUES: " . print_r( $data , true));
+        \Log::info("PROCESS OFFLINE INCOMING VALUES XXX: " . print_r( $data , true));
 
         if(isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 && isset($data['partner_id']) &&
             strcasecmp($data['partner_id'], "RETAIL") === 0 ) {
@@ -203,6 +203,9 @@ class ProcessOrder
         } catch (Exception $e) {
             return array('status' => '400', 'error_code'=>1003,'message' => 'Error 1003: There was an error submitting your order. Please try again.');
         }
+
+        \Log::info("After processing: \n" . print_r($data, true) );
+
         $saveEmail = $data['email'];
         $orderTotal = $this->getOrderTotal($totalUnitPrices, $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState);
         $data = $this->populateDataWithOrderAmounts($data, $totalUnitPrices,  $totalDiscount, $shippingMethod, $salesTaxRate, $shippingState, $couponInstance);
@@ -234,6 +237,7 @@ class ProcessOrder
             $this->updateOrderWithChargeId($result, $order);
             (new OrderLogHandler)->handleNotification($data);
 
+            \Log::info("Outgoing to Ingram: \n" . print_r($data, true) );
             (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
             // (new ShippingHandler)->handleNotificationWithSettings($this->env, $this->url, $data); // This notifies Ingram of an incoming order
 
