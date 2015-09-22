@@ -5,7 +5,7 @@
                 <div class="thumb">
                     <img src="img/movo-wave-thumb.jpg"/>
                 </div>
-                <h5 class="product-title">Movo Wave</h5>
+                <h5 class="product-title">Movo Bluetooth Wave</h5>
             </div>
             <div class="right">
                 <div class="quantity">

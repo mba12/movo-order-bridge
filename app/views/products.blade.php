@@ -1,7 +1,7 @@
 <section id="products">
-    <h3 class="section-title">Waves</h3>
+    <h3 class="section-title">Bluetooth Waves</h3>
     <div class="products"></div>
-    <a href="img/product-sizing-guide.jpg" target="_blank" id="product-sizing-btn">
+    <a href="http://www.getmovo.com/sizing" target="_blank" id="product-sizing-btn">
         Product sizing guide
     </a>
     <div id="too-many-units">
