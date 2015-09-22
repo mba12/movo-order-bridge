@@ -1066,7 +1066,8 @@ var SalesTax = (function () {
         this.rate = 0;
         this.state = "";
         this.zipcode = "";
-        this.taxMethods = [new ExcludeShippingMethod(), new IncludeShippingMethod()];
+        // private taxMethods = [new ExcludeShippingMethod(), new IncludeShippingMethod()];
+        this.taxMethods = [new IncludeShippingMethod()];
     }
     SalesTax.prototype.setLocation = function (zipcode, state, callback) {
         var _this = this;
@@ -1087,6 +1088,7 @@ var SalesTax = (function () {
                     return;
                 }
                 _this.rate = response.rate;
+                console.log("This is a test to compile: " + _this.rate);
                 if (callback)
                     callback(response);
             },

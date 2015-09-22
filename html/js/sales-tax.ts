@@ -4,7 +4,8 @@ class SalesTax {
     public state:string = "";
     public zipcode:string = "";
 
-    private taxMethods = [new ExcludeShippingMethod(), new IncludeShippingMethod()]
+    // private taxMethods = [new ExcludeShippingMethod(), new IncludeShippingMethod()];
+    private taxMethods = [new IncludeShippingMethod()];
 
     constructor() {
 
@@ -24,6 +25,7 @@ class SalesTax {
                     return;
                 }
                 this.rate = response.rate;
+                console.log("This is a test to compile: " + this.rate);
                 if (callback) callback(response);
 
             }, error: (response)=> {

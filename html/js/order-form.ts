@@ -26,6 +26,7 @@ class OrderForm {
 
     private $closeBtn:JQuery;
 
+
     constructor() {
         this.setSelectors();
         this.initEvents();
@@ -72,7 +73,6 @@ class OrderForm {
     private onCloseClick():void {
         this.closeForm();
     }
-
 }
 
 new OrderForm();
