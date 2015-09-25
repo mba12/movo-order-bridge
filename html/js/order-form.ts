@@ -25,7 +25,7 @@
 class OrderForm {
 
     private $closeBtn:JQuery;
-    
+
     constructor() {
         this.setSelectors();
         this.initEvents();
