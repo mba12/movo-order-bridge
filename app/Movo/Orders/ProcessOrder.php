@@ -101,7 +101,7 @@ class ProcessOrder
             $this->updateOrderWithChargeId($result, $order);
 
             (new OrderLogHandler)->handleNotification($data);
-            (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
+            // (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
 
             // TODO: If there is an error with the email receipt the user will get a message that there was
             //       a problem with their order and they may resubmit even those on the previous line
