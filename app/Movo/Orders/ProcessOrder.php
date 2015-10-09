@@ -239,7 +239,7 @@ class ProcessOrder
 
             \Log::info("Outgoing to Ingram: \n" . print_r($data, true) );
             (new ShippingHandler)->handleNotification($data); // This notifies Ingram of an incoming order
-            // (new ShippingHandler)->handleNotificationWithSettings($this->env, $this->url, $data); // This notifies Ingram of an incoming order
+            (new ShippingHandler)->handleNotificationWithSettings($this->env, $this->url, $data); // This notifies Ingram of an incoming order
 
             $data['email'] = 'michael@getmovo.com';
             $data['email'] = getenv('ingram.receipt-email'); // highjack the email address so customers don't get an email
