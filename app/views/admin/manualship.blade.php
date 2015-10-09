@@ -6,7 +6,7 @@
         {{ Form::select('partner_id', array('STACK' => 'StackSocial', 'MOVO' => "Movo", 'AHA' => "AHA", 'RETAIL' => "Retail"), 'STACK', array( 'style' => 'background-color: red; width: 149px;', 'onchange' => "retainToggle(this)")) }}
 
         <input type="text" name="partner_order_id" placeholder="Partner Order Id" id="shipping-partner-order-id" />
-    <input type="text" name="ship-to-code" placeholder="Retailer Code" id="shipping-retailer-code" class="retailFields" />
+    <input type="text" name="ship-to-code" placeholder="Retailer Acct Num" id="shipping-retailer-code" class="retailFields" />
     </p>
     <p>
     <input name="ship-request-date" type="text" id="ship-on-date" placeholder="Ship On Date" class="retailFields" >

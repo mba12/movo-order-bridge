@@ -512,7 +512,8 @@ class IngramShipping implements ShippingInterface
         {
             // This is the Retail Code pre-setup with Ingram
             if ( isset($data['ship-to-code']) && strlen($data['ship-to-code']) > 0 ) {
-                $array['message']['sales-order-submission']['header']['shipment-information']['ship-to-code'] = $data['ship-to-code'];
+                $array['message']['sales-order-submission']['header']['customer-id'] = $data['ship-to-code'];
+                // $array['message']['sales-order-submission']['header']['shipment-information']['ship-to-code'] = $data['ship-to-code'];
             }
 
             if ( isset($data['ship-no-later']) && strlen($data['ship-no-later']) > 0 ) {
