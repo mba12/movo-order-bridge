@@ -103,10 +103,15 @@ class ShipNotification extends \Eloquent
     private static function lookupItemDescriptions(&$items) {
         // universal-product-code
 
-        $size = count($items);
-        for($i=0;$i<$size;$i++) {
-            $items[$i]['name'] = Product::getNameBySKU($items[$i]['universal-product-code']);
-        }
+            $size = count($items);
+            for($i=0;$i<$size;$i++) {
+                try {
+                    $items[$i]['name'] = Product::getNameBySKU($items[$i]['universal-product-code']);
+                } catch (Exception $e) {
+                    Log::info('Caught exception: ',  $e->getMessage(), "\n") ;
+                    $items[$i]['name'] = "SKU MISSING";
+                }
+            }
         /*
         foreach($items as &$item) {
             $item['name'] = Product::getNameBySKU($item['universal-product-code']);
